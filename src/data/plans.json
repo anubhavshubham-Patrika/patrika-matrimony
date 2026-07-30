@@ -1,0 +1,96 @@
+[
+  {
+    "planId": "plan_free",
+    "name": "Free",
+    "price": 0,
+    "currency": "INR",
+    "durationDays": 0,
+    "color": "#666666",
+    "icon": "account-outline",
+    "features": [
+      "Browse up to 20 profiles/day",
+      "Send 5 interests/day",
+      "View basic profile info",
+      "Use basic filters",
+      "1 photo visible per profile"
+    ],
+    "limitations": [
+      "No contact details",
+      "No direct messaging",
+      "No phone numbers",
+      "Limited search filters"
+    ]
+  },
+  {
+    "planId": "plan_gold",
+    "name": "Gold",
+    "price": 1999,
+    "currency": "INR",
+    "durationDays": 90,
+    "color": "#F39C12",
+    "icon": "crown-outline",
+    "popular": false,
+    "features": [
+      "Unlimited profile views",
+      "Send unlimited interests",
+      "View contact details (phone/email)",
+      "Direct in-app messaging",
+      "All search filters unlocked",
+      "Gold badge on your profile",
+      "Priority listing in search",
+      "5 profile boosts/month"
+    ],
+    "limitations": [
+      "No relationship manager",
+      "No video calls"
+    ]
+  },
+  {
+    "planId": "plan_platinum",
+    "name": "Platinum",
+    "price": 3999,
+    "currency": "INR",
+    "durationDays": 180,
+    "color": "#8E44AD",
+    "icon": "diamond-stone",
+    "popular": true,
+    "features": [
+      "Everything in Gold",
+      "In-app secure voice calls",
+      "Advanced horoscope & star filters",
+      "College & organization filters",
+      "Access to private photos",
+      "Platinum badge on profile",
+      "Featured in 'Verified Profiles' section",
+      "10 profile boosts/month",
+      "Read receipts in chat",
+      "Profile highlighted in search results"
+    ],
+    "limitations": [
+      "No dedicated relationship manager"
+    ]
+  },
+  {
+    "planId": "plan_assisted",
+    "name": "Assisted",
+    "price": 9999,
+    "currency": "INR",
+    "durationDays": 365,
+    "color": "#C0392B",
+    "icon": "account-tie",
+    "popular": false,
+    "features": [
+      "Everything in Platinum",
+      "Dedicated Relationship Manager",
+      "RM shortlists matches on your behalf",
+      "In-app RM chat & calls",
+      "Profile makeover by expert",
+      "Priority customer support (24/7)",
+      "Unlimited profile boosts",
+      "Offline meeting coordination",
+      "Personalized match recommendations weekly",
+      "NRI specialist matching (if applicable)"
+    ],
+    "limitations": []
+  }
+]

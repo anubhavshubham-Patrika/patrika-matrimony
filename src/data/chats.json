@@ -1,0 +1,1307 @@
+[
+  {
+    "conversationId": "C001",
+    "participants": ["P001", "P045"],
+    "messages": [
+      { "chatId": "MSG0001", "fromProfileId": "P001", "text": "Namaste! I came across your profile and would like to connect.", "timestamp": "2026-07-20T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0002", "fromProfileId": "P045", "text": "Namaste! Thanks for reaching out. I reviewed your profile as well and found your background very impressive.", "timestamp": "2026-07-20T11:15:00Z", "readStatus": true },
+      { "chatId": "MSG0003", "fromProfileId": "P001", "text": "Glad to hear! Are you currently based in Jaipur or residing elsewhere?", "timestamp": "2026-07-20T12:00:00Z", "readStatus": true },
+      { "chatId": "MSG0004", "fromProfileId": "P045", "text": "I am working in Gurgaon right now, but I visit Jaipur every weekend. How about you?", "timestamp": "2026-07-20T14:20:00Z", "readStatus": true },
+      { "chatId": "MSG0005", "fromProfileId": "P001", "text": "I work in Jaipur itself as a Senior Software Engineer. Would your family be open to a call this weekend?", "timestamp": "2026-07-20T15:45:00Z", "readStatus": true },
+      { "chatId": "MSG0006", "fromProfileId": "P045", "text": "Yes, definitely! Let me share my parents' contact details with you.", "timestamp": "2026-07-20T17:10:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Yes, definitely! Let me share my parents' contact details with you.",
+    "lastMessageTime": "2026-07-20T17:10:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C002",
+    "participants": ["P001", "P012"],
+    "messages": [
+      { "chatId": "MSG0007", "fromProfileId": "P012", "text": "Jai Jinendra! I found your profile very interesting and liked your family values.", "timestamp": "2026-07-21T09:10:00Z", "readStatus": true },
+      { "chatId": "MSG0008", "fromProfileId": "P001", "text": "Jai Jinendra! Thank you. We are glad to connect with a fellow Digambar Jain family.", "timestamp": "2026-07-21T10:05:00Z", "readStatus": true },
+      { "chatId": "MSG0009", "fromProfileId": "P012", "text": "Are you planning to visit Jodhpur anytime soon? We could meet in person over coffee.", "timestamp": "2026-07-21T11:40:00Z", "readStatus": true },
+      { "chatId": "MSG0010", "fromProfileId": "P001", "text": "Yes! I am coming home next Saturday for a cousin's wedding. Saturday afternoon works great.", "timestamp": "2026-07-21T14:15:00Z", "readStatus": true },
+      { "chatId": "MSG0011", "fromProfileId": "P012", "text": "Sounds perfect. I will discuss with my family and confirm the location.", "timestamp": "2026-07-21T16:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Sounds perfect. I will discuss with my family and confirm the location.",
+    "lastMessageTime": "2026-07-21T16:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C003",
+    "participants": ["P001", "P089"],
+    "messages": [
+      { "chatId": "MSG0012", "fromProfileId": "P089", "text": "Sat Sri Akal! Hope you are doing well. My sister saw your profile and suggested I reach out.", "timestamp": "2026-07-22T08:30:00Z", "readStatus": true },
+      { "chatId": "MSG0013", "fromProfileId": "P001", "text": "Sat Sri Akal! Wonderful to meet you. Thanks to your sister for the connection.", "timestamp": "2026-07-22T09:45:00Z", "readStatus": true },
+      { "chatId": "MSG0014", "fromProfileId": "P089", "text": "I noticed you love trekking and outdoor photography. I am a big travel enthusiast too!", "timestamp": "2026-07-22T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0015", "fromProfileId": "P001", "text": "That's awesome! I recently visited Spiti Valley. Do you travel often?", "timestamp": "2026-07-22T13:00:00Z", "readStatus": true },
+      { "chatId": "MSG0016", "fromProfileId": "P089", "text": "Whenever work allows! I try to plan at least two trips a year. Would love to share some photos.", "timestamp": "2026-07-22T15:30:00Z", "readStatus": true },
+      { "chatId": "MSG0017", "fromProfileId": "P001", "text": "I would love to see them! Let's connect over WhatsApp if you are comfortable.", "timestamp": "2026-07-22T17:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "I would love to see them! Let's connect over WhatsApp if you are comfortable.",
+    "lastMessageTime": "2026-07-22T17:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C004",
+    "participants": ["P001", "P067"],
+    "messages": [
+      { "chatId": "MSG0018", "fromProfileId": "P001", "text": "Hello, my parents asked me to reach out to you.", "timestamp": "2026-07-23T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0019", "fromProfileId": "P067", "text": "Hello! Good to hear from you. Have your parents reviewed our profile details?", "timestamp": "2026-07-23T11:30:00Z", "readStatus": true },
+      { "chatId": "MSG0020", "fromProfileId": "P001", "text": "Yes, they matched the horoscope Gunas and our pundit gave a green signal with 29 Gunas.", "timestamp": "2026-07-23T13:15:00Z", "readStatus": true },
+      { "chatId": "MSG0021", "fromProfileId": "P067", "text": "That is fantastic news! My parents were also looking forward to a positive response.", "timestamp": "2026-07-23T15:00:00Z", "readStatus": true },
+      { "chatId": "MSG0022", "fromProfileId": "P001", "text": "Would it be convenient for your father to talk with mine tomorrow evening around 7 PM?", "timestamp": "2026-07-23T16:45:00Z", "readStatus": true },
+      { "chatId": "MSG0023", "fromProfileId": "P067", "text": "Tomorrow 7 PM works great. I will let my father know.", "timestamp": "2026-07-23T18:20:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Tomorrow 7 PM works great. I will let my father know.",
+    "lastMessageTime": "2026-07-23T18:20:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C005",
+    "participants": ["P001", "P023"],
+    "messages": [
+      { "chatId": "MSG0024", "fromProfileId": "P023", "text": "Khamma Ghani! Very glad to connect with your family on Patrika Matrimony.", "timestamp": "2026-07-24T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0025", "fromProfileId": "P001", "text": "Hukum! Khamma Ghani. It is a pleasure to meet you. Which city are you currently located in?", "timestamp": "2026-07-24T10:20:00Z", "readStatus": true },
+      { "chatId": "MSG0026", "fromProfileId": "P023", "text": "We are currently based in Udaipur, but our native town is Nagaur. Where are you settled?", "timestamp": "2026-07-24T12:00:00Z", "readStatus": true },
+      { "chatId": "MSG0027", "fromProfileId": "P001", "text": "We are in Bikaner. My father runs a textile manufacturing business here.", "timestamp": "2026-07-24T14:10:00Z", "readStatus": true },
+      { "chatId": "MSG0028", "fromProfileId": "P023", "text": "Wonderful! We have extended family in Bikaner as well. Small world!", "timestamp": "2026-07-24T16:00:00Z", "readStatus": true },
+      { "chatId": "MSG0029", "fromProfileId": "P001", "text": "Indeed! Let's exchange family contact numbers so our elders can speak.", "timestamp": "2026-07-24T17:45:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Indeed! Let's exchange family contact numbers so our elders can speak.",
+    "lastMessageTime": "2026-07-24T17:45:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C006",
+    "participants": ["P001", "P098"],
+    "messages": [
+      { "chatId": "MSG0030", "fromProfileId": "P001", "text": "Hi! Thanks for accepting my interest request.", "timestamp": "2026-07-25T11:00:00Z", "readStatus": true },
+      { "chatId": "MSG0031", "fromProfileId": "P098", "text": "Hi! You're welcome. I saw you work in Finance in Mumbai.", "timestamp": "2026-07-25T12:15:00Z", "readStatus": true },
+      { "chatId": "MSG0032", "fromProfileId": "P001", "text": "Yes, I am a Chartered Accountant at a private firm in BKC. What about your profession?", "timestamp": "2026-07-25T13:40:00Z", "readStatus": true },
+      { "chatId": "MSG0033", "fromProfileId": "P098", "text": "I am an Assistant Professor at Delhi University, focusing on Economics.", "timestamp": "2026-07-25T15:10:00Z", "readStatus": true },
+      { "chatId": "MSG0034", "fromProfileId": "P001", "text": "Impressive! Are you open to relocating to Mumbai after marriage?", "timestamp": "2026-07-25T16:30:00Z", "readStatus": true },
+      { "chatId": "MSG0035", "fromProfileId": "P098", "text": "Yes, I am open to moving. Mumbai has great academic institutions as well.", "timestamp": "2026-07-25T17:50:00Z", "readStatus": true },
+      { "chatId": "MSG0036", "fromProfileId": "P001", "text": "That is great to know. Let's arrange a video call this Sunday to chat more.", "timestamp": "2026-07-25T19:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "That is great to know. Let's arrange a video call this Sunday to chat more.",
+    "lastMessageTime": "2026-07-25T19:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C007",
+    "participants": ["P001", "P177"],
+    "messages": [
+      { "chatId": "MSG0037", "fromProfileId": "P177", "text": "Namaste! I noticed in your profile that you are fond of classical music and literature.", "timestamp": "2026-07-26T10:15:00Z", "readStatus": true },
+      { "chatId": "MSG0038", "fromProfileId": "P001", "text": "Namaste! Yes, I play the sitar and love reading Hindi literature.", "timestamp": "2026-07-26T11:40:00Z", "readStatus": true },
+      { "chatId": "MSG0039", "fromProfileId": "P177", "text": "That is so wonderful! Who is your favorite author?", "timestamp": "2026-07-26T13:05:00Z", "readStatus": true },
+      { "chatId": "MSG0040", "fromProfileId": "P001", "text": "Premchand and Munshi Premchand's novels are my all-time favorites. What about you?", "timestamp": "2026-07-26T14:30:00Z", "readStatus": true },
+      { "chatId": "MSG0041", "fromProfileId": "P177", "text": "I enjoy Harivansh Rai Bachchan's poetry! Great to find someone with shared interests.", "timestamp": "2026-07-26T16:00:00Z", "readStatus": false }
+    ],
+    "lastMessage": "I enjoy Harivansh Rai Bachchan's poetry! Great to find someone with shared interests.",
+    "lastMessageTime": "2026-07-26T16:00:00Z",
+    "unreadCount": 1
+  },
+  {
+    "conversationId": "C008",
+    "participants": ["P001", "P078"],
+    "messages": [
+      { "chatId": "MSG0042", "fromProfileId": "P001", "text": "Hello! Hope your week is going well. Are you comfortable with horoscope matching?", "timestamp": "2026-07-26T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0043", "fromProfileId": "P078", "text": "Hello! Yes, horoscope matching is quite important for our family.", "timestamp": "2026-07-26T10:15:00Z", "readStatus": true },
+      { "chatId": "MSG0044", "fromProfileId": "P001", "text": "Could you please share your exact birth time and place?", "timestamp": "2026-07-26T11:30:00Z", "readStatus": true },
+      { "chatId": "MSG0045", "fromProfileId": "P078", "text": "Born 12th March 1997 in Kota at 08:30 AM. How about yours?", "timestamp": "2026-07-26T13:00:00Z", "readStatus": true },
+      { "chatId": "MSG0046", "fromProfileId": "P001", "text": "Born 25th November 1995 in Ajmer at 02:15 PM. I will send both to our astrologer.", "timestamp": "2026-07-26T14:45:00Z", "readStatus": true },
+      { "chatId": "MSG0047", "fromProfileId": "P078", "text": "Great! Let me know what the astrologer says.", "timestamp": "2026-07-26T16:15:00Z", "readStatus": false }
+    ],
+    "lastMessage": "Great! Let me know what the astrologer says.",
+    "lastMessageTime": "2026-07-26T16:15:00Z",
+    "unreadCount": 1
+  },
+  {
+    "conversationId": "C009",
+    "participants": ["P001", "P145"],
+    "messages": [
+      { "chatId": "MSG0048", "fromProfileId": "P145", "text": "Jai Jinendra! My mother saw your profile photo and really liked your simple and elegant look.", "timestamp": "2026-07-27T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0049", "fromProfileId": "P001", "text": "Jai Jinendra! Please give my warm regards to auntie. We also liked your profile very much.", "timestamp": "2026-07-27T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0050", "fromProfileId": "P145", "text": "Would you like to meet in person when you visit Jaipur next week?", "timestamp": "2026-07-27T12:45:00Z", "readStatus": true },
+      { "chatId": "MSG0051", "fromProfileId": "P001", "text": "Yes, I will be in Jaipur from Friday to Sunday. Let's meet on Saturday evening.", "timestamp": "2026-07-27T14:10:00Z", "readStatus": true },
+      { "chatId": "MSG0052", "fromProfileId": "P145", "text": "Saturday evening is great. We can meet at World Trade Park or a quiet café nearby.", "timestamp": "2026-07-27T15:35:00Z", "readStatus": true },
+      { "chatId": "MSG0053", "fromProfileId": "P001", "text": "Café works best. Looking forward to it!", "timestamp": "2026-07-27T17:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Café works best. Looking forward to it!",
+    "lastMessageTime": "2026-07-27T17:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C010",
+    "participants": ["P001", "P190"],
+    "messages": [
+      { "chatId": "MSG0054", "fromProfileId": "P190", "text": "Sat Sri Akal! I saw you completed your Master's from IIT Delhi.", "timestamp": "2026-07-27T08:30:00Z", "readStatus": true },
+      { "chatId": "MSG0055", "fromProfileId": "P001", "text": "Sat Sri Akal! Yes, graduated in 2021. And I saw you are a Doctor practicing in Chandigarh.", "timestamp": "2026-07-27T09:45:00Z", "readStatus": true },
+      { "chatId": "MSG0056", "fromProfileId": "P190", "text": "Yes, doing my residency at PGIMER Chandigarh.", "timestamp": "2026-07-27T11:15:00Z", "readStatus": true },
+      { "chatId": "MSG0057", "fromProfileId": "P001", "text": "That's amazing! How do you manage your busy hospital schedule?", "timestamp": "2026-07-27T12:50:00Z", "readStatus": true },
+      { "chatId": "MSG0058", "fromProfileId": "P190", "text": "It gets hectic, but I really enjoy my work. Balance comes with time and support!", "timestamp": "2026-07-27T14:20:00Z", "readStatus": true },
+      { "chatId": "MSG0059", "fromProfileId": "P001", "text": "Very true. Respect for your dedication!", "timestamp": "2026-07-27T15:45:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Very true. Respect for your dedication!",
+    "lastMessageTime": "2026-07-27T15:45:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C011",
+    "participants": ["P001", "P018"],
+    "messages": [
+      { "chatId": "MSG0060", "fromProfileId": "P001", "text": "Namaste! My parents saw your family details and noticed we belong to the same Maheshwari community.", "timestamp": "2026-07-28T09:15:00Z", "readStatus": true },
+      { "chatId": "MSG0061", "fromProfileId": "P018", "text": "Namaste! Yes, we belong to the Kakani gotra. What is your gotra?", "timestamp": "2026-07-28T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0062", "fromProfileId": "P001", "text": "We are Inani gotra from Bhilwara. Gotras are distinct, so astrologically no conflict.", "timestamp": "2026-07-28T11:50:00Z", "readStatus": true },
+      { "chatId": "MSG0063", "fromProfileId": "P018", "text": "That's good. My parents were keen on checking the gotra compatibility first.", "timestamp": "2026-07-28T13:10:00Z", "readStatus": true },
+      { "chatId": "MSG0064", "fromProfileId": "P001", "text": "Shall we share our contact numbers for a formal family call?", "timestamp": "2026-07-28T14:35:00Z", "readStatus": true },
+      { "chatId": "MSG0065", "fromProfileId": "P018", "text": "Yes, please share. My father will call your family this evening.", "timestamp": "2026-07-28T16:00:00Z", "readStatus": false }
+    ],
+    "lastMessage": "Yes, please share. My father will call your family this evening.",
+    "lastMessageTime": "2026-07-28T16:00:00Z",
+    "unreadCount": 1
+  },
+  {
+    "conversationId": "C012",
+    "participants": ["P001", "P160"],
+    "messages": [
+      { "chatId": "MSG0066", "fromProfileId": "P160", "text": "Hi! I noticed you are interested in badminton and fitness.", "timestamp": "2026-07-28T08:00:00Z", "readStatus": true },
+      { "chatId": "MSG0067", "fromProfileId": "P001", "text": "Hi! Yes, I play badminton every morning before heading to the office.", "timestamp": "2026-07-28T09:15:00Z", "readStatus": true },
+      { "chatId": "MSG0068", "fromProfileId": "P160", "text": "That is awesome! I am also a regular at the local sports club.", "timestamp": "2026-07-28T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0069", "fromProfileId": "P001", "text": "Fitness is key to a healthy lifestyle. What other sports do you play?", "timestamp": "2026-07-28T11:45:00Z", "readStatus": true },
+      { "chatId": "MSG0070", "fromProfileId": "P160", "text": "I love swimming and occasional cycling trips on weekends.", "timestamp": "2026-07-28T13:00:00Z", "readStatus": true },
+      { "chatId": "MSG0071", "fromProfileId": "P001", "text": "Sounds great! Would love to chat more about our routines over a call.", "timestamp": "2026-07-28T14:20:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Sounds great! Would love to chat more about our routines over a call.",
+    "lastMessageTime": "2026-07-28T14:20:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C013",
+    "participants": ["P001", "P040"],
+    "messages": [
+      { "chatId": "MSG0072", "fromProfileId": "P040", "text": "Khamma Ghani! I am reaching out on behalf of my brother.", "timestamp": "2026-07-27T11:10:00Z", "readStatus": true },
+      { "chatId": "MSG0073", "fromProfileId": "P001", "text": "Khamma Ghani! Nice to meet you. Please tell me more about your brother.", "timestamp": "2026-07-27T12:30:00Z", "readStatus": true },
+      { "chatId": "MSG0074", "fromProfileId": "P040", "text": "He is a Civil Engineer in Jodhpur, very down-to-earth and family oriented.", "timestamp": "2026-07-27T14:00:00Z", "readStatus": true },
+      { "chatId": "MSG0075", "fromProfileId": "P001", "text": "That sounds lovely. I am an Architect based in Jaipur.", "timestamp": "2026-07-27T15:25:00Z", "readStatus": true },
+      { "chatId": "MSG0076", "fromProfileId": "P040", "text": "Your professions complement each other very well! Let's arrange a direct chat between you two.", "timestamp": "2026-07-27T16:50:00Z", "readStatus": true },
+      { "chatId": "MSG0077", "fromProfileId": "P001", "text": "Sure, that sounds good to me.", "timestamp": "2026-07-27T18:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Sure, that sounds good to me.",
+    "lastMessageTime": "2026-07-27T18:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C014",
+    "participants": ["P001", "P128"],
+    "messages": [
+      { "chatId": "MSG0078", "fromProfileId": "P001", "text": "Hello! Hope you had a nice weekend. I saw you recently relocated to Pune.", "timestamp": "2026-07-26T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0079", "fromProfileId": "P128", "text": "Hello! Yes, moved to Pune last month for a new job role.", "timestamp": "2026-07-26T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0080", "fromProfileId": "P001", "text": "How are you finding the city so far?", "timestamp": "2026-07-26T12:40:00Z", "readStatus": true },
+      { "chatId": "MSG0081", "fromProfileId": "P128", "text": "The weather is lovely! Still getting used to the local food, but loving the vibe.", "timestamp": "2026-07-26T14:05:00Z", "readStatus": true },
+      { "chatId": "MSG0082", "fromProfileId": "P001", "text": "Pune has great food joints! I can give you a list of recommended places.", "timestamp": "2026-07-26T15:30:00Z", "readStatus": true },
+      { "chatId": "MSG0083", "fromProfileId": "P128", "text": "That would be very helpful! Thank you so much.", "timestamp": "2026-07-26T17:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "That would be very helpful! Thank you so much.",
+    "lastMessageTime": "2026-07-26T17:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C015",
+    "participants": ["P001", "P003"],
+    "messages": [
+      { "chatId": "MSG0084", "fromProfileId": "P003", "text": "Jai Jinendra! Just wanted to follow up on our last conversation.", "timestamp": "2026-07-25T09:30:00Z", "readStatus": true },
+      { "chatId": "MSG0085", "fromProfileId": "P001", "text": "Jai Jinendra! Apologies for the delayed response, was wrapped up with work.", "timestamp": "2026-07-25T11:00:00Z", "readStatus": true },
+      { "chatId": "MSG0086", "fromProfileId": "P003", "text": "No problem at all! Did your parents get a chance to check the profile?", "timestamp": "2026-07-25T12:30:00Z", "readStatus": true },
+      { "chatId": "MSG0087", "fromProfileId": "P001", "text": "Yes, they reviewed it yesterday and are very positive. They'd like to talk to your parents.", "timestamp": "2026-07-25T14:15:00Z", "readStatus": true },
+      { "chatId": "MSG0088", "fromProfileId": "P003", "text": "Awesome! Let me share my father's contact number.", "timestamp": "2026-07-25T16:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Awesome! Let me share my father's contact number.",
+    "lastMessageTime": "2026-07-25T16:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C016",
+    "participants": ["P001", "P092"],
+    "messages": [
+      { "chatId": "MSG0089", "fromProfileId": "P001", "text": "Sat Sri Akal! Are you open to living in a joint family after marriage?", "timestamp": "2026-07-24T10:15:00Z", "readStatus": true },
+      { "chatId": "MSG0090", "fromProfileId": "P092", "text": "Sat Sri Akal! Yes, I grew up in a joint family and value close family bonds.", "timestamp": "2026-07-24T11:45:00Z", "readStatus": true },
+      { "chatId": "MSG0091", "fromProfileId": "P001", "text": "That is really great to hear. We live with my grandparents in Amritsar.", "timestamp": "2026-07-24T13:20:00Z", "readStatus": true },
+      { "chatId": "MSG0092", "fromProfileId": "P092", "text": "Grandparents bring so much warmth to a home. I would love that.", "timestamp": "2026-07-24T15:00:00Z", "readStatus": true },
+      { "chatId": "MSG0093", "fromProfileId": "P001", "text": "So glad we share the same perspective on family.", "timestamp": "2026-07-24T16:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "So glad we share the same perspective on family.",
+    "lastMessageTime": "2026-07-24T16:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C017",
+    "participants": ["P001", "P184"],
+    "messages": [
+      { "chatId": "MSG0094", "fromProfileId": "P184", "text": "Namaste! I noticed you are an entrepreneur running an organic farming startup.", "timestamp": "2026-07-23T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0095", "fromProfileId": "P001", "text": "Namaste! Yes, started it three years ago in Alwar. Passionate about sustainable living.", "timestamp": "2026-07-23T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0096", "fromProfileId": "P184", "text": "That is so inspiring! I work in Environmental Science, so I deeply appreciate your work.", "timestamp": "2026-07-23T12:15:00Z", "readStatus": true },
+      { "chatId": "MSG0097", "fromProfileId": "P001", "text": "Wow, that's a wonderful coincidence! We should definitely talk more.", "timestamp": "2026-07-23T14:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Wow, that's a wonderful coincidence! We should definitely talk more.",
+    "lastMessageTime": "2026-07-23T14:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C018",
+    "participants": ["P001", "P015"],
+    "messages": [
+      { "chatId": "MSG0098", "fromProfileId": "P015", "text": "Hello! My sister matched with your profile and sent an interest request.", "timestamp": "2026-07-22T10:20:00Z", "readStatus": true },
+      { "chatId": "MSG0099", "fromProfileId": "P001", "text": "Hello! Yes, I accepted the request today. Nice to connect with you.", "timestamp": "2026-07-22T11:50:00Z", "readStatus": true },
+      { "chatId": "MSG0100", "fromProfileId": "P015", "text": "She is a Graphic Designer in Jaipur. Are you currently in Jaipur as well?", "timestamp": "2026-07-22T13:30:00Z", "readStatus": true },
+      { "chatId": "MSG0101", "fromProfileId": "P001", "text": "Yes, I am working as a Product Designer here. We share the same field!", "timestamp": "2026-07-22T15:10:00Z", "readStatus": true },
+      { "chatId": "MSG0102", "fromProfileId": "P015", "text": "That's perfect! I will let her know to chat with you directly.", "timestamp": "2026-07-22T16:45:00Z", "readStatus": true }
+    ],
+    "lastMessage": "That's perfect! I will let her know to chat with you directly.",
+    "lastMessageTime": "2026-07-22T16:45:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C019",
+    "participants": ["P001", "P071"],
+    "messages": [
+      { "chatId": "MSG0103", "fromProfileId": "P001", "text": "Khamma Ghani! My parents were inquiring about family background.", "timestamp": "2026-07-21T09:40:00Z", "readStatus": true },
+      { "chatId": "MSG0104", "fromProfileId": "P071", "text": "Khamma Ghani! Happy to answer. We belong to a traditional Marwari Oswal family from Barmer.", "timestamp": "2026-07-21T11:15:00Z", "readStatus": true },
+      { "chatId": "MSG0105", "fromProfileId": "P001", "text": "We are also Oswal Jains from Pali. Our traditions align very closely.", "timestamp": "2026-07-21T13:00:00Z", "readStatus": true },
+      { "chatId": "MSG0106", "fromProfileId": "P071", "text": "Yes! It is always nice to find strong cultural alignment.", "timestamp": "2026-07-21T14:40:00Z", "readStatus": true },
+      { "chatId": "MSG0107", "fromProfileId": "P001", "text": "Let's plan a family meetup in Jaipur next month.", "timestamp": "2026-07-21T16:20:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Let's plan a family meetup in Jaipur next month.",
+    "lastMessageTime": "2026-07-21T16:20:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C020",
+    "participants": ["P001", "P139"],
+    "messages": [
+      { "chatId": "MSG0108", "fromProfileId": "P139", "text": "Hi! Hope your day is going well. Are you available for a quick phone call today?", "timestamp": "2026-07-20T10:15:00Z", "readStatus": true },
+      { "chatId": "MSG0109", "fromProfileId": "P001", "text": "Hi! Today is a bit packed with client meetings, but tomorrow evening after 7 PM works!", "timestamp": "2026-07-20T11:45:00Z", "readStatus": true },
+      { "chatId": "MSG0110", "fromProfileId": "P139", "text": "Tomorrow 7 PM is great. I will give you a call then.", "timestamp": "2026-07-20T13:30:00Z", "readStatus": true },
+      { "chatId": "MSG0111", "fromProfileId": "P001", "text": "Looking forward to speaking with you!", "timestamp": "2026-07-20T15:10:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Looking forward to speaking with you!",
+    "lastMessageTime": "2026-07-20T15:10:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C021",
+    "participants": ["P001", "P050"],
+    "messages": [
+      { "chatId": "MSG0112", "fromProfileId": "P001", "text": "Namaste! I came across your profile and would like to connect.", "timestamp": "2026-07-19T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0113", "fromProfileId": "P050", "text": "Namaste! Thanks for reaching out. I reviewed your profile as well and found your background very impressive.", "timestamp": "2026-07-19T11:45:00Z", "readStatus": true },
+      { "chatId": "MSG0114", "fromProfileId": "P001", "text": "Glad to hear! Are you currently based in Jaipur or residing elsewhere?", "timestamp": "2026-07-19T13:15:00Z", "readStatus": true },
+      { "chatId": "MSG0115", "fromProfileId": "P050", "text": "I am working in Gurgaon right now, but I visit Jaipur every weekend. How about you?", "timestamp": "2026-07-19T15:00:00Z", "readStatus": true },
+      { "chatId": "MSG0116", "fromProfileId": "P001", "text": "I work in Jaipur itself as a Senior Software Engineer. Would your family be open to a call this weekend?", "timestamp": "2026-07-19T16:30:00Z", "readStatus": true },
+      { "chatId": "MSG0117", "fromProfileId": "P050", "text": "Yes, definitely! Let me share my parents' contact details with you.", "timestamp": "2026-07-19T18:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Yes, definitely! Let me share my parents' contact details with you.",
+    "lastMessageTime": "2026-07-19T18:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C022",
+    "participants": ["P001", "P115"],
+    "messages": [
+      { "chatId": "MSG0118", "fromProfileId": "P115", "text": "Jai Jinendra! I found your profile very interesting and liked your family values.", "timestamp": "2026-07-18T09:10:00Z", "readStatus": true },
+      { "chatId": "MSG0119", "fromProfileId": "P001", "text": "Jai Jinendra! Thank you. We are glad to connect with a fellow Digambar Jain family.", "timestamp": "2026-07-18T10:40:00Z", "readStatus": true },
+      { "chatId": "MSG0120", "fromProfileId": "P115", "text": "Are you planning to visit Jodhpur anytime soon? We could meet in person over coffee.", "timestamp": "2026-07-18T12:20:00Z", "readStatus": true },
+      { "chatId": "MSG0121", "fromProfileId": "P001", "text": "Yes! I am coming home next Saturday for a cousin's wedding. Saturday afternoon works great.", "timestamp": "2026-07-18T14:10:00Z", "readStatus": true },
+      { "chatId": "MSG0122", "fromProfileId": "P115", "text": "Sounds perfect. I will discuss with my family and confirm the location.", "timestamp": "2026-07-18T16:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Sounds perfect. I will discuss with my family and confirm the location.",
+    "lastMessageTime": "2026-07-18T16:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C023",
+    "participants": ["P001", "P199"],
+    "messages": [
+      { "chatId": "MSG0123", "fromProfileId": "P199", "text": "Sat Sri Akal! Hope you are doing well. My sister saw your profile and suggested I reach out.", "timestamp": "2026-07-17T08:30:00Z", "readStatus": true },
+      { "chatId": "MSG0124", "fromProfileId": "P001", "text": "Sat Sri Akal! Wonderful to meet you. Thanks to your sister for the connection.", "timestamp": "2026-07-17T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0125", "fromProfileId": "P199", "text": "I noticed you love trekking and outdoor photography. I am a big travel enthusiast too!", "timestamp": "2026-07-17T11:40:00Z", "readStatus": true },
+      { "chatId": "MSG0126", "fromProfileId": "P001", "text": "That's awesome! I recently visited Spiti Valley. Do you travel often?", "timestamp": "2026-07-17T13:20:00Z", "readStatus": true },
+      { "chatId": "MSG0127", "fromProfileId": "P199", "text": "Whenever work allows! I try to plan at least two trips a year. Would love to share some photos.", "timestamp": "2026-07-17T15:10:00Z", "readStatus": true },
+      { "chatId": "MSG0128", "fromProfileId": "P001", "text": "I would love to see them! Let's connect over WhatsApp if you are comfortable.", "timestamp": "2026-07-17T17:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "I would love to see them! Let's connect over WhatsApp if you are comfortable.",
+    "lastMessageTime": "2026-07-17T17:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C024",
+    "participants": ["P001", "P062"],
+    "messages": [
+      { "chatId": "MSG0129", "fromProfileId": "P001", "text": "Hello, my parents asked me to reach out to you.", "timestamp": "2026-07-16T09:30:00Z", "readStatus": true },
+      { "chatId": "MSG0130", "fromProfileId": "P062", "text": "Hello! Good to hear from you. Have your parents reviewed our profile details?", "timestamp": "2026-07-16T11:00:00Z", "readStatus": true },
+      { "chatId": "MSG0131", "fromProfileId": "P001", "text": "Yes, they matched the horoscope Gunas and our pundit gave a green signal with 29 Gunas.", "timestamp": "2026-07-16T12:45:00Z", "readStatus": true },
+      { "chatId": "MSG0132", "fromProfileId": "P062", "text": "That is fantastic news! My parents were also looking forward to a positive response.", "timestamp": "2026-07-16T14:30:00Z", "readStatus": true },
+      { "chatId": "MSG0133", "fromProfileId": "P001", "text": "Would it be convenient for your father to talk with mine tomorrow evening around 7 PM?", "timestamp": "2026-07-16T16:15:00Z", "readStatus": true },
+      { "chatId": "MSG0134", "fromProfileId": "P062", "text": "Tomorrow 7 PM works great. I will let my father know.", "timestamp": "2026-07-16T17:50:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Tomorrow 7 PM works great. I will let my father know.",
+    "lastMessageTime": "2026-07-16T17:50:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C025",
+    "participants": ["P001", "P088"],
+    "messages": [
+      { "chatId": "MSG0135", "fromProfileId": "P088", "text": "Khamma Ghani! Very glad to connect with your family on Patrika Matrimony.", "timestamp": "2026-07-15T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0136", "fromProfileId": "P001", "text": "Hukum! Khamma Ghani. It is a pleasure to meet you. Which city are you currently located in?", "timestamp": "2026-07-15T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0137", "fromProfileId": "P088", "text": "We are currently based in Udaipur, but our native town is Nagaur. Where are you settled?", "timestamp": "2026-07-15T12:50:00Z", "readStatus": true },
+      { "chatId": "MSG0138", "fromProfileId": "P001", "text": "We are in Bikaner. My father runs a textile manufacturing business here.", "timestamp": "2026-07-15T14:30:00Z", "readStatus": true },
+      { "chatId": "MSG0139", "fromProfileId": "P088", "text": "Wonderful! We have extended family in Bikaner as well. Small world!", "timestamp": "2026-07-15T16:10:00Z", "readStatus": true },
+      { "chatId": "MSG0140", "fromProfileId": "P001", "text": "Indeed! Let's exchange family contact numbers so our elders can speak.", "timestamp": "2026-07-15T17:45:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Indeed! Let's exchange family contact numbers so our elders can speak.",
+    "lastMessageTime": "2026-07-15T17:45:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C026",
+    "participants": ["P001", "P007"],
+    "messages": [
+      { "chatId": "MSG0141", "fromProfileId": "P001", "text": "Hi! Thanks for accepting my interest request.", "timestamp": "2026-07-14T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0142", "fromProfileId": "P007", "text": "Hi! You're welcome. I saw you work in Finance in Mumbai.", "timestamp": "2026-07-14T10:15:00Z", "readStatus": true },
+      { "chatId": "MSG0143", "fromProfileId": "P001", "text": "Yes, I am a Chartered Accountant at a private firm in BKC. What about your profession?", "timestamp": "2026-07-14T11:40:00Z", "readStatus": true },
+      { "chatId": "MSG0144", "fromProfileId": "P007", "text": "I am an Assistant Professor at Delhi University, focusing on Economics.", "timestamp": "2026-07-14T13:10:00Z", "readStatus": true },
+      { "chatId": "MSG0145", "fromProfileId": "P001", "text": "Impressive! Are you open to relocating to Mumbai after marriage?", "timestamp": "2026-07-14T14:45:00Z", "readStatus": true },
+      { "chatId": "MSG0146", "fromProfileId": "P007", "text": "Yes, I am open to moving. Mumbai has great academic institutions as well.", "timestamp": "2026-07-14T16:15:00Z", "readStatus": true },
+      { "chatId": "MSG0147", "fromProfileId": "P001", "text": "That is great to know. Let's arrange a video call this Sunday to chat more.", "timestamp": "2026-07-14T17:50:00Z", "readStatus": true }
+    ],
+    "lastMessage": "That is great to know. Let's arrange a video call this Sunday to chat more.",
+    "lastMessageTime": "2026-07-14T17:50:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C027",
+    "participants": ["P001", "P142"],
+    "messages": [
+      { "chatId": "MSG0148", "fromProfileId": "P142", "text": "Namaste! I noticed in your profile that you are fond of classical music and literature.", "timestamp": "2026-07-13T10:15:00Z", "readStatus": true },
+      { "chatId": "MSG0149", "fromProfileId": "P001", "text": "Namaste! Yes, I play the sitar and love reading Hindi literature.", "timestamp": "2026-07-13T11:45:00Z", "readStatus": true },
+      { "chatId": "MSG0150", "fromProfileId": "P142", "text": "That is so wonderful! Who is your favorite author?", "timestamp": "2026-07-13T13:20:00Z", "readStatus": true },
+      { "chatId": "MSG0151", "fromProfileId": "P001", "text": "Premchand and Munshi Premchand's novels are my all-time favorites. What about you?", "timestamp": "2026-07-13T15:00:00Z", "readStatus": true },
+      { "chatId": "MSG0152", "fromProfileId": "P142", "text": "I enjoy Harivansh Rai Bachchan's poetry! Great to find someone with shared interests.", "timestamp": "2026-07-13T16:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "I enjoy Harivansh Rai Bachchan's poetry! Great to find someone with shared interests.",
+    "lastMessageTime": "2026-07-13T16:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C028",
+    "participants": ["P001", "P039"],
+    "messages": [
+      { "chatId": "MSG0153", "fromProfileId": "P001", "text": "Hello! Hope your week is going well. Are you comfortable with horoscope matching?", "timestamp": "2026-07-12T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0154", "fromProfileId": "P039", "text": "Hello! Yes, horoscope matching is quite important for our family.", "timestamp": "2026-07-12T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0155", "fromProfileId": "P001", "text": "Could you please share your exact birth time and place?", "timestamp": "2026-07-12T12:00:00Z", "readStatus": true },
+      { "chatId": "MSG0156", "fromProfileId": "P039", "text": "Born 12th March 1997 in Kota at 08:30 AM. How about yours?", "timestamp": "2026-07-12T13:45:00Z", "readStatus": true },
+      { "chatId": "MSG0157", "fromProfileId": "P001", "text": "Born 25th November 1995 in Ajmer at 02:15 PM. I will send both to our astrologer.", "timestamp": "2026-07-12T15:30:00Z", "readStatus": true },
+      { "chatId": "MSG0158", "fromProfileId": "P039", "text": "Great! Let me know what the astrologer says.", "timestamp": "2026-07-12T17:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Great! Let me know what the astrologer says.",
+    "lastMessageTime": "2026-07-12T17:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C029",
+    "participants": ["P001", "P173"],
+    "messages": [
+      { "chatId": "MSG0159", "fromProfileId": "P173", "text": "Jai Jinendra! My mother saw your profile photo and really liked your simple and elegant look.", "timestamp": "2026-07-11T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0160", "fromProfileId": "P001", "text": "Jai Jinendra! Please give my warm regards to auntie. We also liked your profile very much.", "timestamp": "2026-07-11T11:30:00Z", "readStatus": true },
+      { "chatId": "MSG0161", "fromProfileId": "P173", "text": "Would you like to meet in person when you visit Jaipur next week?", "timestamp": "2026-07-11T13:00:00Z", "readStatus": true },
+      { "chatId": "MSG0162", "fromProfileId": "P001", "text": "Yes, I will be in Jaipur from Friday to Sunday. Let's meet on Saturday evening.", "timestamp": "2026-07-11T14:45:00Z", "readStatus": true },
+      { "chatId": "MSG0163", "fromProfileId": "P173", "text": "Saturday evening is great. We can meet at World Trade Park or a quiet café nearby.", "timestamp": "2026-07-11T16:30:00Z", "readStatus": true },
+      { "chatId": "MSG0164", "fromProfileId": "P001", "text": "Café works best. Looking forward to it!", "timestamp": "2026-07-11T18:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Café works best. Looking forward to it!",
+    "lastMessageTime": "2026-07-11T18:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C030",
+    "participants": ["P001", "P029"],
+    "messages": [
+      { "chatId": "MSG0165", "fromProfileId": "P029", "text": "Sat Sri Akal! I saw you completed your Master's from IIT Delhi.", "timestamp": "2026-07-10T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0166", "fromProfileId": "P001", "text": "Sat Sri Akal! Yes, graduated in 2021. And I saw you are a Doctor practicing in Chandigarh.", "timestamp": "2026-07-10T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0167", "fromProfileId": "P029", "text": "Yes, doing my residency at PGIMER Chandigarh.", "timestamp": "2026-07-10T12:15:00Z", "readStatus": true },
+      { "chatId": "MSG0168", "fromProfileId": "P001", "text": "That's amazing! How do you manage your busy hospital schedule?", "timestamp": "2026-07-10T14:00:00Z", "readStatus": true },
+      { "chatId": "MSG0169", "fromProfileId": "P029", "text": "It gets hectic, but I really enjoy my work. Balance comes with time and support!", "timestamp": "2026-07-10T15:45:00Z", "readStatus": true },
+      { "chatId": "MSG0170", "fromProfileId": "P001", "text": "Very true. Respect for your dedication!", "timestamp": "2026-07-10T17:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Very true. Respect for your dedication!",
+    "lastMessageTime": "2026-07-10T17:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C031",
+    "participants": ["P001", "P105"],
+    "messages": [
+      { "chatId": "MSG0171", "fromProfileId": "P001", "text": "Namaste! My parents saw your family details and noticed we belong to the same Maheshwari community.", "timestamp": "2026-07-09T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0172", "fromProfileId": "P105", "text": "Namaste! Yes, we belong to the Kakani gotra. What is your gotra?", "timestamp": "2026-07-09T11:30:00Z", "readStatus": true },
+      { "chatId": "MSG0173", "fromProfileId": "P001", "text": "We are Inani gotra from Bhilwara. Gotras are distinct, so astrologically no conflict.", "timestamp": "2026-07-09T13:10:00Z", "readStatus": true },
+      { "chatId": "MSG0174", "fromProfileId": "P105", "text": "That's good. My parents were keen on checking the gotra compatibility first.", "timestamp": "2026-07-09T14:45:00Z", "readStatus": true },
+      { "chatId": "MSG0175", "fromProfileId": "P001", "text": "Shall we share our contact numbers for a formal family call?", "timestamp": "2026-07-09T16:20:00Z", "readStatus": true },
+      { "chatId": "MSG0176", "fromProfileId": "P105", "text": "Yes, please share. My father will call your family this evening.", "timestamp": "2026-07-09T18:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Yes, please share. My father will call your family this evening.",
+    "lastMessageTime": "2026-07-09T18:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C032",
+    "participants": ["P001", "P064"],
+    "messages": [
+      { "chatId": "MSG0177", "fromProfileId": "P064", "text": "Hi! I noticed you are interested in badminton and fitness.", "timestamp": "2026-07-08T09:30:00Z", "readStatus": true },
+      { "chatId": "MSG0178", "fromProfileId": "P001", "text": "Hi! Yes, I play badminton every morning before heading to the office.", "timestamp": "2026-07-08T11:00:00Z", "readStatus": true },
+      { "chatId": "MSG0179", "fromProfileId": "P064", "text": "That is awesome! I am also a regular at the local sports club.", "timestamp": "2026-07-08T12:30:00Z", "readStatus": true },
+      { "chatId": "MSG0180", "fromProfileId": "P001", "text": "Fitness is key to a healthy lifestyle. What other sports do you play?", "timestamp": "2026-07-08T14:15:00Z", "readStatus": true },
+      { "chatId": "MSG0181", "fromProfileId": "P064", "text": "I love swimming and occasional cycling trips on weekends.", "timestamp": "2026-07-08T16:00:00Z", "readStatus": true },
+      { "chatId": "MSG0182", "fromProfileId": "P001", "text": "Sounds great! Would love to chat more about our routines over a call.", "timestamp": "2026-07-08T17:40:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Sounds great! Would love to chat more about our routines over a call.",
+    "lastMessageTime": "2026-07-08T17:40:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C033",
+    "participants": ["P001", "P181"],
+    "messages": [
+      { "chatId": "MSG0183", "fromProfileId": "P181", "text": "Khamma Ghani! I am reaching out on behalf of my brother.", "timestamp": "2026-07-07T10:15:00Z", "readStatus": true },
+      { "chatId": "MSG0184", "fromProfileId": "P001", "text": "Khamma Ghani! Nice to meet you. Please tell me more about your brother.", "timestamp": "2026-07-07T11:45:00Z", "readStatus": true },
+      { "chatId": "MSG0185", "fromProfileId": "P181", "text": "He is a Civil Engineer in Jodhpur, very down-to-earth and family oriented.", "timestamp": "2026-07-07T13:20:00Z", "readStatus": true },
+      { "chatId": "MSG0186", "fromProfileId": "P001", "text": "That sounds lovely. I am an Architect based in Jaipur.", "timestamp": "2026-07-07T15:00:00Z", "readStatus": true },
+      { "chatId": "MSG0187", "fromProfileId": "P181", "text": "Your professions complement each other very well! Let's arrange a direct chat between you two.", "timestamp": "2026-07-07T16:30:00Z", "readStatus": true },
+      { "chatId": "MSG0188", "fromProfileId": "P001", "text": "Sure, that sounds good to me.", "timestamp": "2026-07-07T18:10:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Sure, that sounds good to me.",
+    "lastMessageTime": "2026-07-07T18:10:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C034",
+    "participants": ["P001", "P048"],
+    "messages": [
+      { "chatId": "MSG0189", "fromProfileId": "P001", "text": "Hello! Hope you had a nice weekend. I saw you recently relocated to Pune.", "timestamp": "2026-07-06T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0190", "fromProfileId": "P048", "text": "Hello! Yes, moved to Pune last month for a new job role.", "timestamp": "2026-07-06T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0191", "fromProfileId": "P001", "text": "How are you finding the city so far?", "timestamp": "2026-07-06T12:10:00Z", "readStatus": true },
+      { "chatId": "MSG0192", "fromProfileId": "P048", "text": "The weather is lovely! Still getting used to the local food, but loving the vibe.", "timestamp": "2026-07-06T14:00:00Z", "readStatus": true },
+      { "chatId": "MSG0193", "fromProfileId": "P001", "text": "Pune has great food joints! I can give you a list of recommended places.", "timestamp": "2026-07-06T15:45:00Z", "readStatus": true },
+      { "chatId": "MSG0194", "fromProfileId": "P048", "text": "That would be very helpful! Thank you so much.", "timestamp": "2026-07-06T17:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "That would be very helpful! Thank you so much.",
+    "lastMessageTime": "2026-07-06T17:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C035",
+    "participants": ["P001", "P118"],
+    "messages": [
+      { "chatId": "MSG0195", "fromProfileId": "P118", "text": "Jai Jinendra! Just wanted to follow up on our last conversation.", "timestamp": "2026-07-05T10:20:00Z", "readStatus": true },
+      { "chatId": "MSG0196", "fromProfileId": "P001", "text": "Jai Jinendra! Apologies for the delayed response, was wrapped up with work.", "timestamp": "2026-07-05T12:00:00Z", "readStatus": true },
+      { "chatId": "MSG0197", "fromProfileId": "P118", "text": "No problem at all! Did your parents get a chance to check the profile?", "timestamp": "2026-07-05T13:40:00Z", "readStatus": true },
+      { "chatId": "MSG0198", "fromProfileId": "P001", "text": "Yes, they reviewed it yesterday and are very positive. They'd like to talk to your parents.", "timestamp": "2026-07-05T15:20:00Z", "readStatus": true },
+      { "chatId": "MSG0199", "fromProfileId": "P118", "text": "Awesome! Let me share my father's contact number.", "timestamp": "2026-07-05T17:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Awesome! Let me share my father's contact number.",
+    "lastMessageTime": "2026-07-05T17:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C036",
+    "participants": ["P001", "P083"],
+    "messages": [
+      { "chatId": "MSG0200", "fromProfileId": "P001", "text": "Sat Sri Akal! Are you open to living in a joint family after marriage?", "timestamp": "2026-07-04T09:15:00Z", "readStatus": true },
+      { "chatId": "MSG0201", "fromProfileId": "P083", "text": "Sat Sri Akal! Yes, I grew up in a joint family and value close family bonds.", "timestamp": "2026-07-04T10:45:00Z", "readStatus": true },
+      { "chatId": "MSG0202", "fromProfileId": "P001", "text": "That is really great to hear. We live with my grandparents in Amritsar.", "timestamp": "2026-07-04T12:30:00Z", "readStatus": true },
+      { "chatId": "MSG0203", "fromProfileId": "P083", "text": "Grandparents bring so much warmth to a home. I would love that.", "timestamp": "2026-07-04T14:15:00Z", "readStatus": true },
+      { "chatId": "MSG0204", "fromProfileId": "P001", "text": "So glad we share the same perspective on family.", "timestamp": "2026-07-04T16:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "So glad we share the same perspective on family.",
+    "lastMessageTime": "2026-07-04T16:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C037",
+    "participants": ["P002", "P044"],
+    "messages": [
+      { "chatId": "MSG0205", "fromProfileId": "P002", "text": "Namaste! I came across your profile and would like to connect.", "timestamp": "2026-07-03T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0206", "fromProfileId": "P044", "text": "Namaste! Thanks for reaching out. Your background looks impressive.", "timestamp": "2026-07-03T11:15:00Z", "readStatus": true },
+      { "chatId": "MSG0207", "fromProfileId": "P002", "text": "Are you currently based in Jaipur or residing elsewhere?", "timestamp": "2026-07-03T12:30:00Z", "readStatus": true },
+      { "chatId": "MSG0208", "fromProfileId": "P044", "text": "I am working in Delhi, but visit home every fortnight.", "timestamp": "2026-07-03T14:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "I am working in Delhi, but visit home every fortnight.",
+    "lastMessageTime": "2026-07-03T14:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C038",
+    "participants": ["P003", "P088"],
+    "messages": [
+      { "chatId": "MSG0209", "fromProfileId": "P003", "text": "Jai Jinendra! My family liked your profile details.", "timestamp": "2026-07-03T09:15:00Z", "readStatus": true },
+      { "chatId": "MSG0210", "fromProfileId": "P088", "text": "Jai Jinendra! Happy to connect. We are Oswal Jains from Udaipur.", "timestamp": "2026-07-03T10:45:00Z", "readStatus": true },
+      { "chatId": "MSG0211", "fromProfileId": "P003", "text": "Wonderful! We are based in Kota. Let's arrange a call.", "timestamp": "2026-07-03T12:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Wonderful! We are based in Kota. Let's arrange a call.",
+    "lastMessageTime": "2026-07-03T12:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C039",
+    "participants": ["P004", "P132"],
+    "messages": [
+      { "chatId": "MSG0212", "fromProfileId": "P004", "text": "Sat Sri Akal! Glad to accept your interest request.", "timestamp": "2026-07-02T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0213", "fromProfileId": "P132", "text": "Sat Sri Akal! Nice connecting with you. What do you do for work?", "timestamp": "2026-07-02T11:50:00Z", "readStatus": true },
+      { "chatId": "MSG0214", "fromProfileId": "P004", "text": "I am a Data Analyst in Noida. How about you?", "timestamp": "2026-07-02T13:20:00Z", "readStatus": true },
+      { "chatId": "MSG0215", "fromProfileId": "P132", "text": "I am a Financial Auditor in Gurgaon.", "timestamp": "2026-07-02T15:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "I am a Financial Auditor in Gurgaon.",
+    "lastMessageTime": "2026-07-02T15:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C040",
+    "participants": ["P005", "P176"],
+    "messages": [
+      { "chatId": "MSG0216", "fromProfileId": "P005", "text": "Khamma Ghani! Hope you are having a pleasant day.", "timestamp": "2026-07-02T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0217", "fromProfileId": "P176", "text": "Khamma Ghani! Thank you. I liked your profile interests.", "timestamp": "2026-07-02T10:20:00Z", "readStatus": true },
+      { "chatId": "MSG0218", "fromProfileId": "P005", "text": "Glad to hear! Are you open to Kundali matching?", "timestamp": "2026-07-02T11:45:00Z", "readStatus": true },
+      { "chatId": "MSG0219", "fromProfileId": "P176", "text": "Yes, our family checks Kundali matching. Will share birth details.", "timestamp": "2026-07-02T13:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Yes, our family checks Kundali matching. Will share birth details.",
+    "lastMessageTime": "2026-07-02T13:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C041",
+    "participants": ["P006", "P022"],
+    "messages": [
+      { "chatId": "MSG0220", "fromProfileId": "P006", "text": "Hello, my parents asked me to reach out to you.", "timestamp": "2026-07-01T11:00:00Z", "readStatus": true },
+      { "chatId": "MSG0221", "fromProfileId": "P022", "text": "Hello! Good to hear. Are your parents available for a call?", "timestamp": "2026-07-01T12:30:00Z", "readStatus": true },
+      { "chatId": "MSG0222", "fromProfileId": "P006", "text": "Yes, this Sunday evening works best for us.", "timestamp": "2026-07-01T14:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Yes, this Sunday evening works best for us.",
+    "lastMessageTime": "2026-07-01T14:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C042",
+    "participants": ["P007", "P066"],
+    "messages": [
+      { "chatId": "MSG0223", "fromProfileId": "P007", "text": "Namaste! Glad to connect.", "timestamp": "2026-07-01T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0224", "fromProfileId": "P066", "text": "Namaste! Thank you. What are your main hobbies?", "timestamp": "2026-07-01T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0225", "fromProfileId": "P007", "text": "I love playing classical music and reading novels.", "timestamp": "2026-07-01T13:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "I love playing classical music and reading novels.",
+    "lastMessageTime": "2026-07-01T13:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C043",
+    "participants": ["P008", "P110"],
+    "messages": [
+      { "chatId": "MSG0226", "fromProfileId": "P008", "text": "Jai Jinendra! Hope you are well.", "timestamp": "2026-06-30T09:40:00Z", "readStatus": true },
+      { "chatId": "MSG0227", "fromProfileId": "P110", "text": "Jai Jinendra! All good here. Glad to connect with your family.", "timestamp": "2026-06-30T11:10:00Z", "readStatus": true },
+      { "chatId": "MSG0228", "fromProfileId": "P008", "text": "Are you based in Jaipur or relocating soon?", "timestamp": "2026-06-30T12:50:00Z", "readStatus": true },
+      { "chatId": "MSG0229", "fromProfileId": "P110", "text": "Currently in Jaipur, job is permanent here.", "timestamp": "2026-06-30T14:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Currently in Jaipur, job is permanent here.",
+    "lastMessageTime": "2026-06-30T14:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C044",
+    "participants": ["P009", "P154"],
+    "messages": [
+      { "chatId": "MSG0230", "fromProfileId": "P009", "text": "Sat Sri Akal! Nice to connect with you.", "timestamp": "2026-06-29T10:15:00Z", "readStatus": true },
+      { "chatId": "MSG0231", "fromProfileId": "P154", "text": "Sat Sri Akal! Thanks. Where did you complete your degree?", "timestamp": "2026-06-29T11:45:00Z", "readStatus": true },
+      { "chatId": "MSG0232", "fromProfileId": "P009", "text": "B.Tech from MNIT Jaipur in 2020.", "timestamp": "2026-06-29T13:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "B.Tech from MNIT Jaipur in 2020.",
+    "lastMessageTime": "2026-06-29T13:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C045",
+    "participants": ["P010", "P198"],
+    "messages": [
+      { "chatId": "MSG0233", "fromProfileId": "P010", "text": "Khamma Ghani! Reaching out after seeing your Kundali details.", "timestamp": "2026-06-28T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0234", "fromProfileId": "P198", "text": "Khamma Ghani! Have you checked Guna compatibility?", "timestamp": "2026-06-28T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0235", "fromProfileId": "P010", "text": "Yes, 31 Gunas match perfectly!", "timestamp": "2026-06-28T12:15:00Z", "readStatus": true },
+      { "chatId": "MSG0236", "fromProfileId": "P198", "text": "That's wonderful news! Let's arrange a family meeting.", "timestamp": "2026-06-28T14:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "That's wonderful news! Let's arrange a family meeting.",
+    "lastMessageTime": "2026-06-28T14:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C046",
+    "participants": ["P011", "P042"],
+    "messages": [
+      { "chatId": "MSG0237", "fromProfileId": "P011", "text": "Hello! Liked your profile and background.", "timestamp": "2026-06-27T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0238", "fromProfileId": "P042", "text": "Hello! Thank you. Would love to know more about your family.", "timestamp": "2026-06-27T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0239", "fromProfileId": "P011", "text": "We are a joint family residing in Jodhpur.", "timestamp": "2026-06-27T13:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "We are a joint family residing in Jodhpur.",
+    "lastMessageTime": "2026-06-27T13:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C047",
+    "participants": ["P013", "P130"],
+    "messages": [
+      { "chatId": "MSG0240", "fromProfileId": "P013", "text": "Jai Jinendra! Glad to meet you on Patrika Matrimony.", "timestamp": "2026-06-26T09:15:00Z", "readStatus": true },
+      { "chatId": "MSG0241", "fromProfileId": "P130", "text": "Jai Jinendra! Nice to connect with your family.", "timestamp": "2026-06-26T10:45:00Z", "readStatus": true },
+      { "chatId": "MSG0242", "fromProfileId": "P013", "text": "Shall we share phone numbers for family call?", "timestamp": "2026-06-26T12:30:00Z", "readStatus": true },
+      { "chatId": "MSG0243", "fromProfileId": "P130", "text": "Yes, sharing my father's contact number now.", "timestamp": "2026-06-26T14:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Yes, sharing my father's contact number now.",
+    "lastMessageTime": "2026-06-26T14:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C048",
+    "participants": ["P014", "P174"],
+    "messages": [
+      { "chatId": "MSG0244", "fromProfileId": "P014", "text": "Sat Sri Akal! Thanks for accepting the request.", "timestamp": "2026-06-25T11:00:00Z", "readStatus": true },
+      { "chatId": "MSG0245", "fromProfileId": "P174", "text": "Sat Sri Akal! Welcome. Which city are you based in?", "timestamp": "2026-06-25T12:30:00Z", "readStatus": true },
+      { "chatId": "MSG0246", "fromProfileId": "P014", "text": "I am in Ludhiana, running a boutique firm.", "timestamp": "2026-06-25T14:10:00Z", "readStatus": true }
+    ],
+    "lastMessage": "I am in Ludhiana, running a boutique firm.",
+    "lastMessageTime": "2026-06-25T14:10:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C049",
+    "participants": ["P016", "P062"],
+    "messages": [
+      { "chatId": "MSG0247", "fromProfileId": "P016", "text": "Namaste! Saw your interest request today.", "timestamp": "2026-06-24T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0248", "fromProfileId": "P062", "text": "Namaste! Yes, glad we connected. How is your work life balance?", "timestamp": "2026-06-24T11:30:00Z", "readStatus": true },
+      { "chatId": "MSG0249", "fromProfileId": "P016", "text": "Pretty balanced, working 5 days a week in HR.", "timestamp": "2026-06-24T13:15:00Z", "readStatus": true },
+      { "chatId": "MSG0250", "fromProfileId": "P062", "text": "That's great. Let's talk over a call soon.", "timestamp": "2026-06-24T15:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "That's great. Let's talk over a call soon.",
+    "lastMessageTime": "2026-06-24T15:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C050",
+    "participants": ["P017", "P106"],
+    "messages": [
+      { "chatId": "MSG0251", "fromProfileId": "P017", "text": "Khamma Ghani! Hope you are doing well.", "timestamp": "2026-06-23T09:30:00Z", "readStatus": true },
+      { "chatId": "MSG0252", "fromProfileId": "P106", "text": "Khamma Ghani! All good. Loved your profile photos.", "timestamp": "2026-06-23T11:00:00Z", "readStatus": true },
+      { "chatId": "MSG0253", "fromProfileId": "P017", "text": "Thank you! Let's arrange a family Zoom meet.", "timestamp": "2026-06-23T12:45:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Thank you! Let's arrange a family Zoom meet.",
+    "lastMessageTime": "2026-06-23T12:45:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C051",
+    "participants": ["P019", "P194"],
+    "messages": [
+      { "chatId": "MSG0254", "fromProfileId": "P019", "text": "Jai Jinendra! Interested in connecting with your family.", "timestamp": "2026-06-22T10:15:00Z", "readStatus": true },
+      { "chatId": "MSG0255", "fromProfileId": "P194", "text": "Jai Jinendra! We are glad to connect too.", "timestamp": "2026-06-22T11:45:00Z", "readStatus": true },
+      { "chatId": "MSG0256", "fromProfileId": "P019", "text": "Are you comfortable with Kundali matching?", "timestamp": "2026-06-22T13:30:00Z", "readStatus": true },
+      { "chatId": "MSG0257", "fromProfileId": "P194", "text": "Yes, Kundali matching is mandatory for us. Will send details.", "timestamp": "2026-06-22T15:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Yes, Kundali matching is mandatory for us. Will send details.",
+    "lastMessageTime": "2026-06-22T15:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C052",
+    "participants": ["P020", "P038"],
+    "messages": [
+      { "chatId": "MSG0258", "fromProfileId": "P020", "text": "Sat Sri Akal! How is your week going?", "timestamp": "2026-06-21T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0259", "fromProfileId": "P038", "text": "Sat Sri Akal! Going great. Thanks for reaching out.", "timestamp": "2026-06-21T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0260", "fromProfileId": "P020", "text": "Would love to know more about your lifestyle and hobbies.", "timestamp": "2026-06-21T12:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Would love to know more about your lifestyle and hobbies.",
+    "lastMessageTime": "2026-06-21T12:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C053",
+    "participants": ["P021", "P082"],
+    "messages": [
+      { "chatId": "MSG0261", "fromProfileId": "P021", "text": "Namaste! Saw your profile and found a lot of common ground.", "timestamp": "2026-06-20T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0262", "fromProfileId": "P082", "text": "Namaste! Yes, both of us are in software development.", "timestamp": "2026-06-20T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0263", "fromProfileId": "P021", "text": "That's awesome! Which tech stack do you work on?", "timestamp": "2026-06-20T13:00:00Z", "readStatus": true },
+      { "chatId": "MSG0264", "fromProfileId": "P082", "text": "Full stack with React and Node.js. How about you?", "timestamp": "2026-06-20T14:40:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Full stack with React and Node.js. How about you?",
+    "lastMessageTime": "2026-06-20T14:40:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C054",
+    "participants": ["P024", "P014"],
+    "messages": [
+      { "chatId": "MSG0265", "fromProfileId": "P024", "text": "Khamma Ghani! Nice to meet you.", "timestamp": "2026-06-19T09:15:00Z", "readStatus": true },
+      { "chatId": "MSG0266", "fromProfileId": "P014", "text": "Khamma Ghani! Pleasure connecting with you.", "timestamp": "2026-06-19T10:45:00Z", "readStatus": true },
+      { "chatId": "MSG0267", "fromProfileId": "P024", "text": "Where are your roots in Rajasthan?", "timestamp": "2026-06-19T12:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Where are your roots in Rajasthan?",
+    "lastMessageTime": "2026-06-19T12:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C055",
+    "participants": ["P025", "P058"],
+    "messages": [
+      { "chatId": "MSG0268", "fromProfileId": "P025", "text": "Jai Jinendra! My parents asked me to drop a message.", "timestamp": "2026-06-18T11:00:00Z", "readStatus": true },
+      { "chatId": "MSG0269", "fromProfileId": "P058", "text": "Jai Jinendra! Good to hear. Are you based in Jaipur?", "timestamp": "2026-06-18T12:30:00Z", "readStatus": true },
+      { "chatId": "MSG0270", "fromProfileId": "P025", "text": "Yes, working in C-Scheme Jaipur.", "timestamp": "2026-06-18T14:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Yes, working in C-Scheme Jaipur.",
+    "lastMessageTime": "2026-06-18T14:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C056",
+    "participants": ["P026", "P102"],
+    "messages": [
+      { "chatId": "MSG0271", "fromProfileId": "P026", "text": "Sat Sri Akal! Hope your day is going well.", "timestamp": "2026-06-17T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0272", "fromProfileId": "P102", "text": "Sat Sri Akal! Yes, going great. Thanks for reaching out.", "timestamp": "2026-06-17T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0273", "fromProfileId": "P026", "text": "Would love to catch up over phone call this weekend.", "timestamp": "2026-06-17T13:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Would love to catch up over phone call this weekend.",
+    "lastMessageTime": "2026-06-17T13:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C057",
+    "participants": ["P027", "P146"],
+    "messages": [
+      { "chatId": "MSG0274", "fromProfileId": "P027", "text": "Namaste! Thanks for connecting.", "timestamp": "2026-06-16T09:30:00Z", "readStatus": true },
+      { "chatId": "MSG0275", "fromProfileId": "P146", "text": "Namaste! Glad to meet you too.", "timestamp": "2026-06-16T11:00:00Z", "readStatus": true },
+      { "chatId": "MSG0276", "fromProfileId": "P027", "text": "What are your future career plans?", "timestamp": "2026-06-16T12:45:00Z", "readStatus": true }
+    ],
+    "lastMessage": "What are your future career plans?",
+    "lastMessageTime": "2026-06-16T12:45:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C058",
+    "participants": ["P028", "P190"],
+    "messages": [
+      { "chatId": "MSG0277", "fromProfileId": "P028", "text": "Khamma Ghani! How are you doing today?", "timestamp": "2026-06-15T10:15:00Z", "readStatus": true },
+      { "chatId": "MSG0278", "fromProfileId": "P190", "text": "Khamma Ghani! Doing fine. Glad to see your profile.", "timestamp": "2026-06-15T11:45:00Z", "readStatus": true },
+      { "chatId": "MSG0279", "fromProfileId": "P028", "text": "Let's share contact numbers with each other's families.", "timestamp": "2026-06-15T13:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Let's share contact numbers with each other's families.",
+    "lastMessageTime": "2026-06-15T13:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C059",
+    "participants": ["P030", "P078"],
+    "messages": [
+      { "chatId": "MSG0280", "fromProfileId": "P030", "text": "Jai Jinendra! Hope your week is starting off nicely.", "timestamp": "2026-06-14T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0281", "fromProfileId": "P078", "text": "Jai Jinendra! Yes, indeed. Thanks for writing.", "timestamp": "2026-06-14T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0282", "fromProfileId": "P030", "text": "Are you open to moving to Bengaluru?", "timestamp": "2026-06-14T12:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Are you open to moving to Bengaluru?",
+    "lastMessageTime": "2026-06-14T12:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C060",
+    "participants": ["P031", "P122"],
+    "messages": [
+      { "chatId": "MSG0283", "fromProfileId": "P031", "text": "Sat Sri Akal! Wonderful to meet you here.", "timestamp": "2026-06-13T11:00:00Z", "readStatus": true },
+      { "chatId": "MSG0284", "fromProfileId": "P122", "text": "Sat Sri Akal! Same here. What are your weekend activities?", "timestamp": "2026-06-13T12:30:00Z", "readStatus": true },
+      { "chatId": "MSG0285", "fromProfileId": "P031", "text": "I love playing tennis and spending time with family.", "timestamp": "2026-06-13T14:10:00Z", "readStatus": true }
+    ],
+    "lastMessage": "I love playing tennis and spending time with family.",
+    "lastMessageTime": "2026-06-13T14:10:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C061",
+    "participants": ["P032", "P166"],
+    "messages": [
+      { "chatId": "MSG0286", "fromProfileId": "P032", "text": "Namaste! Reaching out regarding your profile.", "timestamp": "2026-06-12T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0287", "fromProfileId": "P166", "text": "Namaste! Thanks. Have you checked Kundali compatibility?", "timestamp": "2026-06-12T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0288", "fromProfileId": "P032", "text": "Yes, 28 Gunas matching!", "timestamp": "2026-06-12T13:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Yes, 28 Gunas matching!",
+    "lastMessageTime": "2026-06-12T13:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C062",
+    "participants": ["P033", "P010"],
+    "messages": [
+      { "chatId": "MSG0289", "fromProfileId": "P033", "text": "Khamma Ghani! Very nice to connect.", "timestamp": "2026-06-11T09:15:00Z", "readStatus": true },
+      { "chatId": "MSG0290", "fromProfileId": "P010", "text": "Khamma Ghani! Likewise. Which community do you belong to?", "timestamp": "2026-06-11T10:45:00Z", "readStatus": true },
+      { "chatId": "MSG0291", "fromProfileId": "P033", "text": "Maheshwari family from Ajmer.", "timestamp": "2026-06-11T12:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Maheshwari family from Ajmer.",
+    "lastMessageTime": "2026-06-11T12:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C063",
+    "participants": ["P034", "P054"],
+    "messages": [
+      { "chatId": "MSG0292", "fromProfileId": "P034", "text": "Jai Jinendra! Interested in your profile.", "timestamp": "2026-06-10T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0293", "fromProfileId": "P054", "text": "Jai Jinendra! Thank you. Where are you currently working?", "timestamp": "2026-06-10T11:50:00Z", "readStatus": true },
+      { "chatId": "MSG0294", "fromProfileId": "P034", "text": "Working in Jaipur in Banking sector.", "timestamp": "2026-06-10T13:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Working in Jaipur in Banking sector.",
+    "lastMessageTime": "2026-06-10T13:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C064",
+    "participants": ["P035", "P098"],
+    "messages": [
+      { "chatId": "MSG0295", "fromProfileId": "P035", "text": "Sat Sri Akal! How are you doing today?", "timestamp": "2026-06-09T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0296", "fromProfileId": "P098", "text": "Sat Sri Akal! Doing great. Loved your intro.", "timestamp": "2026-06-09T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0297", "fromProfileId": "P035", "text": "Let's arrange a call over the weekend.", "timestamp": "2026-06-09T12:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Let's arrange a call over the weekend.",
+    "lastMessageTime": "2026-06-09T12:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C065",
+    "participants": ["P036", "P142"],
+    "messages": [
+      { "chatId": "MSG0298", "fromProfileId": "P036", "text": "Namaste! My sister liked your profile photos.", "timestamp": "2026-06-08T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0299", "fromProfileId": "P142", "text": "Namaste! Please give my regards to her.", "timestamp": "2026-06-08T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0300", "fromProfileId": "P036", "text": "Will do! Let me know when you're free to talk.", "timestamp": "2026-06-08T13:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Will do! Let me know when you're free to talk.",
+    "lastMessageTime": "2026-06-08T13:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C066",
+    "participants": ["P037", "P186"],
+    "messages": [
+      { "chatId": "MSG0301", "fromProfileId": "P037", "text": "Khamma Ghani! Pleasure connecting with you.", "timestamp": "2026-06-07T09:30:00Z", "readStatus": true },
+      { "chatId": "MSG0302", "fromProfileId": "P186", "text": "Khamma Ghani! Same here. Are you open to moving after marriage?", "timestamp": "2026-06-07T11:00:00Z", "readStatus": true },
+      { "chatId": "MSG0303", "fromProfileId": "P037", "text": "Yes, open to relocation for right match.", "timestamp": "2026-06-07T12:45:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Yes, open to relocation for right match.",
+    "lastMessageTime": "2026-06-07T12:45:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C067",
+    "participants": ["P038", "P030"],
+    "messages": [
+      { "chatId": "MSG0304", "fromProfileId": "P038", "text": "Jai Jinendra! How is your family doing?", "timestamp": "2026-06-06T10:15:00Z", "readStatus": true },
+      { "chatId": "MSG0305", "fromProfileId": "P030", "text": "Jai Jinendra! All good here. Thanks for asking.", "timestamp": "2026-06-06T11:45:00Z", "readStatus": true },
+      { "chatId": "MSG0306", "fromProfileId": "P038", "text": "Let's share contact numbers for family call.", "timestamp": "2026-06-06T13:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Let's share contact numbers for family call.",
+    "lastMessageTime": "2026-06-06T13:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C068",
+    "participants": ["P039", "P074"],
+    "messages": [
+      { "chatId": "MSG0307", "fromProfileId": "P039", "text": "Sat Sri Akal! Hope you are well.", "timestamp": "2026-06-05T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0308", "fromProfileId": "P074", "text": "Sat Sri Akal! Doing great. What is your profession?", "timestamp": "2026-06-05T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0309", "fromProfileId": "P039", "text": "I am an Architect in Jaipur.", "timestamp": "2026-06-05T12:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "I am an Architect in Jaipur.",
+    "lastMessageTime": "2026-06-05T12:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C069",
+    "participants": ["P040", "P118"],
+    "messages": [
+      { "chatId": "MSG0310", "fromProfileId": "P040", "text": "Namaste! Interested in knowing more about your hobbies.", "timestamp": "2026-06-04T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0311", "fromProfileId": "P118", "text": "Namaste! I love painting and traveling.", "timestamp": "2026-06-04T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0312", "fromProfileId": "P040", "text": "That's wonderful! Painting is a creative pursuit.", "timestamp": "2026-06-04T13:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "That's wonderful! Painting is a creative pursuit.",
+    "lastMessageTime": "2026-06-04T13:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C070",
+    "participants": ["P041", "P162"],
+    "messages": [
+      { "chatId": "MSG0313", "fromProfileId": "P041", "text": "Khamma Ghani! Glad to connect.", "timestamp": "2026-06-03T09:15:00Z", "readStatus": true },
+      { "chatId": "MSG0314", "fromProfileId": "P162", "text": "Khamma Ghani! Thanks. Where did you study?", "timestamp": "2026-06-03T10:45:00Z", "readStatus": true },
+      { "chatId": "MSG0315", "fromProfileId": "P041", "text": "Graduated from BITS Pilani.", "timestamp": "2026-06-03T12:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Graduated from BITS Pilani.",
+    "lastMessageTime": "2026-06-03T12:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C071",
+    "participants": ["P042", "P006"],
+    "messages": [
+      { "chatId": "MSG0316", "fromProfileId": "P042", "text": "Jai Jinendra! Connecting after seeing profile match.", "timestamp": "2026-06-02T11:00:00Z", "readStatus": true },
+      { "chatId": "MSG0317", "fromProfileId": "P006", "text": "Jai Jinendra! Good to meet you.", "timestamp": "2026-06-02T12:30:00Z", "readStatus": true },
+      { "chatId": "MSG0318", "fromProfileId": "P042", "text": "Let's plan a family call soon.", "timestamp": "2026-06-02T14:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Let's plan a family call soon.",
+    "lastMessageTime": "2026-06-02T14:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C072",
+    "participants": ["P043", "P050"],
+    "messages": [
+      { "chatId": "MSG0319", "fromProfileId": "P043", "text": "Sat Sri Akal! Nice connecting.", "timestamp": "2026-06-01T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0320", "fromProfileId": "P050", "text": "Sat Sri Akal! Welcome. What city are you in?", "timestamp": "2026-06-01T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0321", "fromProfileId": "P043", "text": "Currently in Chandigarh.", "timestamp": "2026-06-01T13:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Currently in Chandigarh.",
+    "lastMessageTime": "2026-06-01T13:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C073",
+    "participants": ["P044", "P094"],
+    "messages": [
+      { "chatId": "MSG0322", "fromProfileId": "P044", "text": "Namaste! My parents reviewed your profile.", "timestamp": "2026-05-31T09:30:00Z", "readStatus": true },
+      { "chatId": "MSG0323", "fromProfileId": "P094", "text": "Namaste! What did they think?", "timestamp": "2026-05-31T11:00:00Z", "readStatus": true },
+      { "chatId": "MSG0324", "fromProfileId": "P044", "text": "They were very happy with family values.", "timestamp": "2026-05-31T12:45:00Z", "readStatus": true }
+    ],
+    "lastMessage": "They were very happy with family values.",
+    "lastMessageTime": "2026-05-31T12:45:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C074",
+    "participants": ["P045", "P138"],
+    "messages": [
+      { "chatId": "MSG0325", "fromProfileId": "P045", "text": "Khamma Ghani! Hope you have a great week ahead.", "timestamp": "2026-05-30T10:15:00Z", "readStatus": true },
+      { "chatId": "MSG0326", "fromProfileId": "P138", "text": "Khamma Ghani! Thank you. Same to you.", "timestamp": "2026-05-30T11:45:00Z", "readStatus": true },
+      { "chatId": "MSG0327", "fromProfileId": "P045", "text": "Let's connect over coffee when in Jaipur.", "timestamp": "2026-05-30T13:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Let's connect over coffee when in Jaipur.",
+    "lastMessageTime": "2026-05-30T13:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C075",
+    "participants": ["P046", "P182"],
+    "messages": [
+      { "chatId": "MSG0328", "fromProfileId": "P046", "text": "Jai Jinendra! Interested in connecting.", "timestamp": "2026-05-29T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0329", "fromProfileId": "P182", "text": "Jai Jinendra! Glad to meet you.", "timestamp": "2026-05-29T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0330", "fromProfileId": "P046", "text": "Shall we share phone numbers?", "timestamp": "2026-05-29T12:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Shall we share phone numbers?",
+    "lastMessageTime": "2026-05-29T12:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C076",
+    "participants": ["P047", "P026"],
+    "messages": [
+      { "chatId": "MSG0331", "fromProfileId": "P047", "text": "Sat Sri Akal! Thanks for accepting interest.", "timestamp": "2026-05-28T11:00:00Z", "readStatus": true },
+      { "chatId": "MSG0332", "fromProfileId": "P026", "text": "Sat Sri Akal! Welcome. What's your line of work?", "timestamp": "2026-05-28T12:30:00Z", "readStatus": true },
+      { "chatId": "MSG0333", "fromProfileId": "P047", "text": "Working as a Doctor in Delhi.", "timestamp": "2026-05-28T14:10:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Working as a Doctor in Delhi.",
+    "lastMessageTime": "2026-05-28T14:10:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C077",
+    "participants": ["P048", "P070"],
+    "messages": [
+      { "chatId": "MSG0334", "fromProfileId": "P048", "text": "Namaste! Reaching out on behalf of my family.", "timestamp": "2026-05-27T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0335", "fromProfileId": "P070", "text": "Namaste! Good to meet you. Where are you located?", "timestamp": "2026-05-27T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0336", "fromProfileId": "P048", "text": "We live in Udaipur.", "timestamp": "2026-05-27T13:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "We live in Udaipur.",
+    "lastMessageTime": "2026-05-27T13:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C078",
+    "participants": ["P049", "P114"],
+    "messages": [
+      { "chatId": "MSG0337", "fromProfileId": "P049", "text": "Khamma Ghani! Hope you are well.", "timestamp": "2026-05-26T09:15:00Z", "readStatus": true },
+      { "chatId": "MSG0338", "fromProfileId": "P114", "text": "Khamma Ghani! All good. Glad to connect.", "timestamp": "2026-05-26T10:45:00Z", "readStatus": true },
+      { "chatId": "MSG0339", "fromProfileId": "P049", "text": "Let's arrange a call soon.", "timestamp": "2026-05-26T12:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Let's arrange a call soon.",
+    "lastMessageTime": "2026-05-26T12:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C079",
+    "participants": ["P050", "P158"],
+    "messages": [
+      { "chatId": "MSG0340", "fromProfileId": "P050", "text": "Jai Jinendra! Saw your profile details.", "timestamp": "2026-05-25T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0341", "fromProfileId": "P158", "text": "Jai Jinendra! Glad to meet you.", "timestamp": "2026-05-25T11:50:00Z", "readStatus": true },
+      { "chatId": "MSG0342", "fromProfileId": "P050", "text": "Have a great week ahead!", "timestamp": "2026-05-25T13:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Have a great week ahead!",
+    "lastMessageTime": "2026-05-25T13:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C080",
+    "participants": ["P051", "P002"],
+    "messages": [
+      { "chatId": "MSG0343", "fromProfileId": "P051", "text": "Sat Sri Akal! Connecting regarding matrimonial match.", "timestamp": "2026-05-24T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0344", "fromProfileId": "P002", "text": "Sat Sri Akal! Happy to connect.", "timestamp": "2026-05-24T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0345", "fromProfileId": "P051", "text": "Let's talk over phone tomorrow.", "timestamp": "2026-05-24T12:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Let's talk over phone tomorrow.",
+    "lastMessageTime": "2026-05-24T12:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C081",
+    "participants": ["P052", "P046"],
+    "messages": [
+      { "chatId": "MSG0346", "fromProfileId": "P052", "text": "Namaste! Liked your educational background.", "timestamp": "2026-05-23T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0347", "fromProfileId": "P046", "text": "Namaste! Thank you. Where did you study?", "timestamp": "2026-05-23T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0348", "fromProfileId": "P052", "text": "Completed MBA from IIM Ahmedabad.", "timestamp": "2026-05-23T13:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Completed MBA from IIM Ahmedabad.",
+    "lastMessageTime": "2026-05-23T13:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C082",
+    "participants": ["P053", "P090"],
+    "messages": [
+      { "chatId": "MSG0349", "fromProfileId": "P053", "text": "Khamma Ghani! Nice profile.", "timestamp": "2026-05-22T09:15:00Z", "readStatus": true },
+      { "chatId": "MSG0350", "fromProfileId": "P090", "text": "Khamma Ghani! Thanks for writing.", "timestamp": "2026-05-22T10:45:00Z", "readStatus": true },
+      { "chatId": "MSG0351", "fromProfileId": "P053", "text": "Would love to chat further.", "timestamp": "2026-05-22T12:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Would love to chat further.",
+    "lastMessageTime": "2026-05-22T12:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C083",
+    "participants": ["P054", "P134"],
+    "messages": [
+      { "chatId": "MSG0352", "fromProfileId": "P054", "text": "Jai Jinendra! Family requested me to message.", "timestamp": "2026-05-21T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0353", "fromProfileId": "P134", "text": "Jai Jinendra! Glad to meet you.", "timestamp": "2026-05-21T11:50:00Z", "readStatus": true },
+      { "chatId": "MSG0354", "fromProfileId": "P054", "text": "Let's match horoscopes.", "timestamp": "2026-05-21T13:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Let's match horoscopes.",
+    "lastMessageTime": "2026-05-21T13:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C084",
+    "participants": ["P055", "P178"],
+    "messages": [
+      { "chatId": "MSG0355", "fromProfileId": "P055", "text": "Sat Sri Akal! Great connecting with you.", "timestamp": "2026-05-20T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0356", "fromProfileId": "P178", "text": "Sat Sri Akal! Likewise. How is work?", "timestamp": "2026-05-20T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0357", "fromProfileId": "P055", "text": "Work is great! Let's talk over weekend.", "timestamp": "2026-05-20T12:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Work is great! Let's talk over weekend.",
+    "lastMessageTime": "2026-05-20T12:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C085",
+    "participants": ["P056", "P022"],
+    "messages": [
+      { "chatId": "MSG0358", "fromProfileId": "P056", "text": "Namaste! Are you currently in Rajasthan?", "timestamp": "2026-05-19T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0359", "fromProfileId": "P022", "text": "Namaste! Yes, living in Jaipur.", "timestamp": "2026-05-19T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0360", "fromProfileId": "P056", "text": "Awesome! I am in Jaipur as well.", "timestamp": "2026-05-19T13:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Awesome! I am in Jaipur as well.",
+    "lastMessageTime": "2026-05-19T13:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C086",
+    "participants": ["P057", "P066"],
+    "messages": [
+      { "chatId": "MSG0361", "fromProfileId": "P057", "text": "Khamma Ghani! Reaching out after seeing profile.", "timestamp": "2026-05-18T09:15:00Z", "readStatus": true },
+      { "chatId": "MSG0362", "fromProfileId": "P066", "text": "Khamma Ghani! Thanks. Tell me about family.", "timestamp": "2026-05-18T10:45:00Z", "readStatus": true },
+      { "chatId": "MSG0363", "fromProfileId": "P057", "text": "We are a traditional Maheshwari family.", "timestamp": "2026-05-18T12:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "We are a traditional Maheshwari family.",
+    "lastMessageTime": "2026-05-18T12:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C087",
+    "participants": ["P058", "P110"],
+    "messages": [
+      { "chatId": "MSG0364", "fromProfileId": "P058", "text": "Jai Jinendra! Good to connect.", "timestamp": "2026-05-17T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0365", "fromProfileId": "P110", "text": "Jai Jinendra! Thanks. Have a good day.", "timestamp": "2026-05-17T11:50:00Z", "readStatus": true },
+      { "chatId": "MSG0366", "fromProfileId": "P058", "text": "Let's share contact numbers.", "timestamp": "2026-05-17T13:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Let's share contact numbers.",
+    "lastMessageTime": "2026-05-17T13:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C088",
+    "participants": ["P059", "P154"],
+    "messages": [
+      { "chatId": "MSG0367", "fromProfileId": "P059", "text": "Sat Sri Akal! Nice meeting you here.", "timestamp": "2026-05-16T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0368", "fromProfileId": "P154", "text": "Sat Sri Akal! Welcome. What are your interests?", "timestamp": "2026-05-16T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0369", "fromProfileId": "P059", "text": "Trekking, reading, and photography.", "timestamp": "2026-05-16T12:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Trekking, reading, and photography.",
+    "lastMessageTime": "2026-05-16T12:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C089",
+    "participants": ["P060", "P198"],
+    "messages": [
+      { "chatId": "MSG0370", "fromProfileId": "P060", "text": "Namaste! Interested in your profile.", "timestamp": "2026-05-15T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0371", "fromProfileId": "P198", "text": "Namaste! Thank you. Where do you live?", "timestamp": "2026-05-15T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0372", "fromProfileId": "P060", "text": "Based in Kota.", "timestamp": "2026-05-15T13:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Based in Kota.",
+    "lastMessageTime": "2026-05-15T13:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C090",
+    "participants": ["P061", "P042"],
+    "messages": [
+      { "chatId": "MSG0373", "fromProfileId": "P061", "text": "Khamma Ghani! Glad to connect.", "timestamp": "2026-05-14T09:15:00Z", "readStatus": true },
+      { "chatId": "MSG0374", "fromProfileId": "P042", "text": "Khamma Ghani! Same here.", "timestamp": "2026-05-14T10:45:00Z", "readStatus": true },
+      { "chatId": "MSG0375", "fromProfileId": "P061", "text": "Let's arrange family discussion.", "timestamp": "2026-05-14T12:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Let's arrange family discussion.",
+    "lastMessageTime": "2026-05-14T12:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C091",
+    "participants": ["P063", "P130"],
+    "messages": [
+      { "chatId": "MSG0376", "fromProfileId": "P063", "text": "Jai Jinendra! Hope you have a nice weekend.", "timestamp": "2026-05-13T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0377", "fromProfileId": "P130", "text": "Jai Jinendra! Thanks.", "timestamp": "2026-05-13T11:50:00Z", "readStatus": true },
+      { "chatId": "MSG0378", "fromProfileId": "P063", "text": "Will call tomorrow evening.", "timestamp": "2026-05-13T13:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Will call tomorrow evening.",
+    "lastMessageTime": "2026-05-13T13:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C092",
+    "participants": ["P065", "P018"],
+    "messages": [
+      { "chatId": "MSG0379", "fromProfileId": "P065", "text": "Sat Sri Akal! Thanks for accepting interest.", "timestamp": "2026-05-12T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0380", "fromProfileId": "P018", "text": "Sat Sri Akal! Welcome.", "timestamp": "2026-05-12T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0381", "fromProfileId": "P065", "text": "Looking forward to speaking.", "timestamp": "2026-05-12T12:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Looking forward to speaking.",
+    "lastMessageTime": "2026-05-12T12:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C093",
+    "participants": ["P067", "P106"],
+    "messages": [
+      { "chatId": "MSG0382", "fromProfileId": "P067", "text": "Namaste! My parents liked your profile.", "timestamp": "2026-05-11T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0383", "fromProfileId": "P106", "text": "Namaste! Thank you.", "timestamp": "2026-05-11T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0384", "fromProfileId": "P067", "text": "Let's match Gunas.", "timestamp": "2026-05-11T13:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Let's match Gunas.",
+    "lastMessageTime": "2026-05-11T13:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C094",
+    "participants": ["P068", "P150"],
+    "messages": [
+      { "chatId": "MSG0385", "fromProfileId": "P068", "text": "Khamma Ghani! Glad to connect.", "timestamp": "2026-05-10T09:15:00Z", "readStatus": true },
+      { "chatId": "MSG0386", "fromProfileId": "P150", "text": "Khamma Ghani! Same here.", "timestamp": "2026-05-10T10:45:00Z", "readStatus": true },
+      { "chatId": "MSG0387", "fromProfileId": "P068", "text": "Have a great day ahead.", "timestamp": "2026-05-10T12:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Have a great day ahead.",
+    "lastMessageTime": "2026-05-10T12:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C095",
+    "participants": ["P069", "P194"],
+    "messages": [
+      { "chatId": "MSG0388", "fromProfileId": "P069", "text": "Jai Jinendra! Interested in your profile.", "timestamp": "2026-05-09T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0389", "fromProfileId": "P194", "text": "Jai Jinendra! Thanks.", "timestamp": "2026-05-09T11:50:00Z", "readStatus": true },
+      { "chatId": "MSG0390", "fromProfileId": "P069", "text": "Let's share contact numbers.", "timestamp": "2026-05-09T13:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Let's share contact numbers.",
+    "lastMessageTime": "2026-05-09T13:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C096",
+    "participants": ["P070", "P038"],
+    "messages": [
+      { "chatId": "MSG0391", "fromProfileId": "P070", "text": "Sat Sri Akal! Hope you're doing well.", "timestamp": "2026-05-08T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0392", "fromProfileId": "P038", "text": "Sat Sri Akal! Doing fine.", "timestamp": "2026-05-08T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0393", "fromProfileId": "P070", "text": "Let's connect over call.", "timestamp": "2026-05-08T12:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Let's connect over call.",
+    "lastMessageTime": "2026-05-08T12:15:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C097",
+    "participants": ["P071", "P082"],
+    "messages": [
+      { "chatId": "MSG0394", "fromProfileId": "P071", "text": "Namaste! Saw your profile background.", "timestamp": "2026-05-07T10:00:00Z", "readStatus": true },
+      { "chatId": "MSG0395", "fromProfileId": "P082", "text": "Namaste! Thank you.", "timestamp": "2026-05-07T11:20:00Z", "readStatus": true },
+      { "chatId": "MSG0396", "fromProfileId": "P071", "text": "Let's talk soon.", "timestamp": "2026-05-07T13:00:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Let's talk soon.",
+    "lastMessageTime": "2026-05-07T13:00:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C098",
+    "participants": ["P072", "P126"],
+    "messages": [
+      { "chatId": "MSG0397", "fromProfileId": "P072", "text": "Khamma Ghani! Nice connecting.", "timestamp": "2026-05-06T09:15:00Z", "readStatus": true },
+      { "chatId": "MSG0398", "fromProfileId": "P126", "text": "Khamma Ghani! Pleasure.", "timestamp": "2026-05-06T10:45:00Z", "readStatus": true },
+      { "chatId": "MSG0399", "fromProfileId": "P072", "text": "Have a wonderful week.", "timestamp": "2026-05-06T12:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Have a wonderful week.",
+    "lastMessageTime": "2026-05-06T12:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C099",
+    "participants": ["P073", "P170"],
+    "messages": [
+      { "chatId": "MSG0400", "fromProfileId": "P073", "text": "Jai Jinendra! Glad to meet you.", "timestamp": "2026-05-05T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0401", "fromProfileId": "P170", "text": "Jai Jinendra! Likewise.", "timestamp": "2026-05-05T11:50:00Z", "readStatus": true },
+      { "chatId": "MSG0402", "fromProfileId": "P073", "text": "Let's share family details.", "timestamp": "2026-05-05T13:30:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Let's share family details.",
+    "lastMessageTime": "2026-05-05T13:30:00Z",
+    "unreadCount": 0
+  },
+  {
+    "conversationId": "C100",
+    "participants": ["P074", "P014"],
+    "messages": [
+      { "chatId": "MSG0403", "fromProfileId": "P074", "text": "Sat Sri Akal! Nice connecting on Patrika Matrimony.", "timestamp": "2026-05-04T09:00:00Z", "readStatus": true },
+      { "chatId": "MSG0404", "fromProfileId": "P014", "text": "Sat Sri Akal! Same here. Looking forward to knowing your family better.", "timestamp": "2026-05-04T10:30:00Z", "readStatus": true },
+      { "chatId": "MSG0405", "fromProfileId": "P074", "text": "Definitely, let's arrange a call with our parents this weekend.", "timestamp": "2026-05-04T12:15:00Z", "readStatus": true }
+    ],
+    "lastMessage": "Definitely, let's arrange a call with our parents this weekend.",
+    "lastMessageTime": "2026-05-04T12:15:00Z",
+    "unreadCount": 0
+  }
+]

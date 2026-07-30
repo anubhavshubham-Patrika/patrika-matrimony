@@ -1,0 +1,60 @@
+{
+  "expo": {
+    "name": "Patrika Matrimony",
+    "slug": "patrika-matrimony",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#C0392B"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.rajasthanpatrika.matrimony"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png",
+        "backgroundColor": "#C0392B"
+      },
+      "package": "com.rajasthanpatrika.matrimony",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Patrika Matrimony needs access to your photos to upload a profile picture.",
+          "cameraPermission": "Patrika Matrimony needs camera access for selfie verification."
+        }
+      ],
+      "expo-status-bar"
+    ],
+    "scheme": "patrikamatrimony",
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "2596d393-7796-4a34-af93-d21b793528fb"
+      }
+    }
+  }
+}
