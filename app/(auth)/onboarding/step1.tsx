@@ -15,13 +15,13 @@ export default function Step1() {
   const [profileFor, setProfileFor] = useState(state.onboardingData?.profileFor || '');
 
   const options = [
-    { id: 'Self', label: t.self, iconName: 'account-outline', iconType: 'material' },
-    { id: 'Son', label: t.son, iconName: 'face-man-outline', iconType: 'material' },
-    { id: 'Daughter', label: t.daughter, iconName: 'face-woman-outline', iconType: 'material' },
-    { id: 'Brother', label: t.brother, iconName: 'account-tie-outline', iconType: 'material' },
-    { id: 'Sister', label: t.sister, iconName: 'face-woman', iconType: 'material' },
-    { id: 'Friend', label: t.friend, iconName: 'account-group-outline', iconType: 'material' },
-    { id: 'Relative', label: t.relative, iconName: 'account-supervisor-outline', iconType: 'material' },
+    { id: 'Self', label: t.self, iconName: 'account-outline' },
+    { id: 'Son', label: t.son, iconName: 'face-man-outline' },
+    { id: 'Daughter', label: t.daughter, iconName: 'face-woman-outline' },
+    { id: 'Brother', label: t.brother, iconName: 'account-tie-outline' },
+    { id: 'Sister', label: t.sister, iconName: 'face-woman' },
+    { id: 'Friend', label: t.friend, iconName: 'account-group-outline' },
+    { id: 'Relative', label: t.relative, iconName: 'account-supervisor-outline' },
   ];
 
   const handleNext = () => {
@@ -32,63 +32,84 @@ export default function Step1() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
+      {/* Top Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#200D08" />
+          <Ionicons name="arrow-back" size={24} color="#2C1A1D" />
         </TouchableOpacity>
         <View style={styles.headerTitleRow}>
-          <PatrikaRibbonLogo size={26} />
+          <PatrikaRibbonLogo size={28} />
           <Text style={styles.headerBrand}>Patrika Matrimony</Text>
         </View>
-        <Text style={styles.stepIndicator}>1/13</Text>
+        <Text style={styles.stepIndicator}>Step 1 of 13</Text>
       </View>
 
-      {/* Progress Bar */}
-      <View style={styles.progressTrack}>
-        <View style={[styles.progressBar, { width: `${(1 / 13) * 100}%` }]} />
+      {/* Progress Bar & Percentage (Matching Screenshot 2) */}
+      <View style={styles.progressContainer}>
+        <View style={styles.progressTrack}>
+          <View style={[styles.progressBar, { width: `${(1 / 13) * 100}%` }]} />
+        </View>
+        <Text style={styles.progressPercentText}>8% Complete</Text>
       </View>
 
-      {/* Content */}
+      {/* Main Content Scroll View */}
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>{t.step1Title}</Text>
-        <Text style={styles.subtitle}>{t.step1Subtitle}</Text>
+        {/* Floating White Card Container (Matching Screenshot 2) */}
+        <View style={styles.formCard}>
+          {/* Card Accent Header */}
+          <View style={styles.cardHeaderBanner}>
+            <Text style={styles.cardHeaderTitle}>{t.step1Title}</Text>
+            <Text style={styles.cardHeaderSubtitle}>{t.step1Subtitle}</Text>
+          </View>
 
-        <View style={styles.grid}>
-          {options.map((item) => {
-            const isSelected = profileFor === item.id;
-            return (
-              <TouchableOpacity
-                key={item.id}
-                style={[styles.card, isSelected && styles.cardSelected]}
-                onPress={() => setProfileFor(item.id)}
-                activeOpacity={0.85}
-              >
-                <View style={[styles.iconCircle, isSelected && styles.iconCircleSelected]}>
-                  <MaterialCommunityIcons
-                    name={item.iconName as any}
-                    size={32}
-                    color={isSelected ? '#6B0000' : '#8C7B6B'}
-                  />
-                </View>
-                <Text style={[styles.cardLabel, isSelected && styles.cardLabelSelected]}>
-                  {item.label}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
+          <View style={styles.cardBody}>
+            {/* Green Live Activity Callout Pill (Matching Screenshot 2) */}
+            <View style={styles.liveCalloutPill}>
+              <Ionicons name="trending-up" size={16} color="#1E8449" style={{ marginRight: 6 }} />
+              <Text style={styles.liveCalloutText}>127 verified profiles joined in the last 3 days!</Text>
+            </View>
+
+            {/* Options Grid */}
+            <View style={styles.grid}>
+              {options.map((item) => {
+                const isSelected = profileFor === item.id;
+                return (
+                  <TouchableOpacity
+                    key={item.id}
+                    style={[styles.cardItem, isSelected && styles.cardItemSelected]}
+                    onPress={() => setProfileFor(item.id)}
+                    activeOpacity={0.88}
+                  >
+                    <View style={[styles.iconCircle, isSelected && styles.iconCircleSelected]}>
+                      <MaterialCommunityIcons
+                        name={item.iconName as any}
+                        size={28}
+                        color={isSelected ? '#E91E63' : '#8C7A7C'}
+                      />
+                    </View>
+                    <Text style={[styles.cardLabel, isSelected && styles.cardLabelSelected]}>
+                      {item.label}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </View>
         </View>
       </ScrollView>
 
-      {/* Footer CTA */}
+      {/* Footer Navigation (Matching Screenshot 2: Previous & Continue Button) */}
       <View style={styles.footer}>
+        <TouchableOpacity style={styles.prevBtn} onPress={() => router.back()}>
+          <Text style={styles.prevBtnText}>← Previous</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={[styles.nextBtn, !profileFor && styles.nextBtnDisabled]}
           onPress={handleNext}
           disabled={!profileFor}
           activeOpacity={0.88}
         >
-          <Text style={styles.nextBtnText}>{t.continue}</Text>
+          <Text style={styles.nextBtnText}>{t.continue} →</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -98,7 +119,7 @@ export default function Step1() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAF6F0',
+    backgroundColor: '#FFF4F6', // Soft Pastel Pink Onboarding Background (Matching Screenshot 2)
   },
   header: {
     flexDirection: 'row',
@@ -106,9 +127,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 12,
-    backgroundColor: '#FFFDF9',
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: '#E2D7C7',
+    borderBottomColor: '#EFE6DD',
   },
   backBtn: {
     padding: 4,
@@ -121,115 +142,178 @@ const styles = StyleSheet.create({
   headerBrand: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#6B0000',
+    color: '#E91E63',
+    fontFamily: 'serif',
   },
   stepIndicator: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '700',
-    color: '#8C7B6B',
+    color: '#8C7A7C',
+  },
+  progressContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: '#FFFFFF',
+    gap: 12,
   },
   progressTrack: {
-    height: 4,
-    backgroundColor: '#E8DFD3',
-    width: '100%',
+    flex: 1,
+    height: 6,
+    backgroundColor: '#EFE6DD',
+    borderRadius: 3,
+    overflow: 'hidden',
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#6B0000',
+    backgroundColor: '#E91E63',
+    borderRadius: 3,
+  },
+  progressPercentText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#5A4A4D',
   },
   content: {
-    paddingHorizontal: 24,
-    paddingTop: 24,
+    paddingHorizontal: 16,
+    paddingTop: 16,
     paddingBottom: 40,
   },
-  title: {
-    fontSize: 26,
-    fontWeight: '800',
-    color: '#200D08',
-    letterSpacing: -0.5,
+  formCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#EFE6DD',
+    shadowColor: '#2C1A1D',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 4,
   },
-  subtitle: {
-    fontSize: 14,
-    color: '#665544',
-    marginTop: 6,
-    marginBottom: 28,
+  cardHeaderBanner: {
+    backgroundColor: '#E91E63',
+    paddingHorizontal: 20,
+    paddingVertical: 18,
+  },
+  cardHeaderTitle: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    fontFamily: 'serif',
+    marginBottom: 4,
+  },
+  cardHeaderSubtitle: {
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.85)',
+    fontWeight: '500',
+  },
+  cardBody: {
+    padding: 20,
+  },
+  liveCalloutPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E8F8F5',
+    borderWidth: 1,
+    borderColor: '#A3E4D7',
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    marginBottom: 20,
+  },
+  liveCalloutText: {
+    fontSize: 13,
+    color: '#1E8449',
+    fontWeight: '700',
+    flex: 1,
   },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    gap: 16,
+    gap: 12,
   },
-  card: {
-    width: '47%',
-    backgroundColor: '#FFFDF9',
-    paddingVertical: 22,
-    paddingHorizontal: 12,
-    borderRadius: 20,
+  cardItem: {
+    width: '48%',
+    backgroundColor: '#FAF5F7',
+    paddingVertical: 18,
+    paddingHorizontal: 10,
+    borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1.5,
-    borderColor: '#E2D7C7',
-    shadowColor: '#6B0000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 2,
+    borderColor: '#EFE6DD',
   },
-  cardSelected: {
-    borderColor: '#6B0000',
-    backgroundColor: '#FFF5F6',
-    shadowColor: '#6B0000',
-    shadowOpacity: 0.15,
-    elevation: 4,
+  cardItemSelected: {
+    borderColor: '#E91E63',
+    backgroundColor: '#FFF0F3',
   },
   iconCircle: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: '#F4EEE5',
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 12,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#EFE6DD',
   },
   iconCircleSelected: {
-    backgroundColor: '#FFEBF0',
+    backgroundColor: '#FFE4E9',
+    borderColor: '#E91E63',
   },
   cardLabel: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
-    color: '#200D08',
+    color: '#2C1A1D',
   },
   cardLabelSelected: {
-    color: '#6B0000',
+    color: '#E91E63',
     fontWeight: '800',
   },
   footer: {
-    paddingHorizontal: 24,
-    paddingVertical: 20,
-    backgroundColor: '#FFFDF9',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#EFE6DD',
+  },
+  prevBtn: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    backgroundColor: '#F5EFE6',
+  },
+  prevBtnText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#5A4A4D',
   },
   nextBtn: {
-    backgroundColor: '#6B0000',
-    paddingVertical: 16,
-    borderRadius: 28,
-    alignItems: 'center',
-    shadowColor: '#6B0000',
+    backgroundColor: '#E91E63',
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 14,
+    shadowColor: '#E91E63',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 4,
   },
   nextBtnDisabled: {
-    backgroundColor: '#E2D7C7',
+    backgroundColor: '#EFE6DD',
     shadowOpacity: 0,
     elevation: 0,
   },
   nextBtnText: {
-    color: '#FFFDF9',
-    fontSize: 17,
-    fontWeight: '700',
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: '800',
   },
 });

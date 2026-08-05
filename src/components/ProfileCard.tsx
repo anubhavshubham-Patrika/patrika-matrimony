@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Profile } from '../context/AppContext';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '../constants/theme';
 
 interface ProfileCardProps {
@@ -28,35 +27,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
   const defaultAvatar =
     profile.gender === 'Female'
-      ? 'https://via.placeholder.com/400x400/6B0000/FFFFFF?text=F'
-      : 'https://via.placeholder.com/400x400/786C10/FFFFFF?text=M';
+      ? 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80'
+      : 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&auto=format&fit=crop&q=80';
 
   const photoUri = profile.profilePhotoURL || defaultAvatar;
-
-  const renderBadges = () => {
-    return (
-      <View style={styles.badgeRow}>
-        {profile.isVerified && (
-          <View style={[styles.badge, styles.badgeVerified]}>
-            <MaterialCommunityIcons name="check-decagram" size={12} color="#786C10" />
-            <Text style={styles.badgeTextVerified}>Royal Verified</Text>
-          </View>
-        )}
-        {profile.isPremium && (
-          <View style={[styles.badge, styles.badgePremium]}>
-            <MaterialCommunityIcons name="crown" size={12} color="#6B0000" />
-            <Text style={styles.badgeTextPremium}>Rajgharana Premium</Text>
-          </View>
-        )}
-        {profile.isNewspaperAdLinked && (
-          <View style={[styles.badge, styles.badgeNewspaper]}>
-            <MaterialCommunityIcons name="newspaper-variant-outline" size={12} color="#6B0000" />
-            <Text style={styles.badgeTextNewspaper}>Patrika Ad</Text>
-          </View>
-        )}
-      </View>
-    );
-  };
 
   if (isCompact) {
     return (
@@ -64,39 +38,35 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         <Image source={{ uri: photoUri }} style={styles.compactImage} />
         <View style={styles.compactInfo}>
           <View style={styles.compactHeader}>
-            <Text style={styles.nameTextSerif} numberOfLines={1}>
-              {profile.name}
+            <Text style={styles.compactName} numberOfLines={1}>
+              {profile.name}, {profile.age}
             </Text>
             {profile.matchScore >= 60 && (
-              <Text style={styles.matchTextCompact}>{profile.matchScore}% Match</Text>
+              <View style={styles.matchBadgeCompact}>
+                <Text style={styles.matchBadgeTextCompact}>{profile.matchScore}% Match</Text>
+              </View>
             )}
           </View>
-          <Text style={styles.detailText} numberOfLines={1}>
-            {profile.caste || profile.religion} • {profile.age} yrs • {profile.height}
+          <Text style={styles.compactMeta} numberOfLines={1}>
+            {profile.caste || profile.religion} • {profile.height}
           </Text>
-          <View style={styles.compactChipRow}>
-            <View style={styles.infoChip}>
-              <Text style={styles.infoChipText}>{profile.occupation}</Text>
-            </View>
-            <View style={styles.infoChip}>
-              <Text style={styles.infoChipText}>{profile.residentCity}</Text>
-            </View>
-          </View>
-          {renderBadges()}
+          <Text style={styles.compactSubtext} numberOfLines={1}>
+            {profile.occupation} • {profile.residentCity}
+          </Text>
         </View>
         <View style={styles.compactActions}>
           <TouchableOpacity onPress={onShortlist} style={styles.compactIconBtn}>
             <Ionicons
-              name={isShortlisted ? 'star' : 'star-outline'}
+              name={isShortlisted ? 'bookmark' : 'bookmark-outline'}
               size={20}
-              color={isShortlisted ? '#D4AF37' : '#8C7B6B'}
+              color={isShortlisted ? '#C5A059' : '#8C7A7C'}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={onInterest} style={styles.compactIconBtn}>
             <Ionicons
               name={isInterestSent ? 'heart' : 'heart-outline'}
               size={20}
-              color={isInterestSent ? '#6B0000' : '#8C7B6B'}
+              color={isInterestSent ? '#E91E63' : '#8C7A7C'}
             />
           </TouchableOpacity>
         </View>
@@ -105,76 +75,80 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   }
 
   return (
-    <TouchableOpacity activeOpacity={0.9} style={styles.fullCard} onPress={onPress}>
-      {/* Photo Container */}
+    <TouchableOpacity activeOpacity={0.93} style={styles.fullCard} onPress={onPress}>
+      {/* High-Res Photo Container */}
       <View style={styles.imageContainer}>
         <Image source={{ uri: photoUri }} style={styles.fullImage} />
-        <LinearGradient
-          colors={['transparent', 'rgba(32,13,8,0.75)']}
-          style={styles.imageGradient}
-        />
-        {/* Royal Verified Badge Overlay (Matching Reference Image 2) */}
-        <View style={styles.royalVerifiedOverlay}>
-          <MaterialCommunityIcons name="check-decagram" size={13} color="#786C10" />
-          <Text style={styles.royalVerifiedText}>Royal Verified</Text>
+        
+        {/* Match Percentage Top-Right Badge (Matching Screenshots 4 & 5) */}
+        <View style={styles.matchBadgeContainer}>
+          <Text style={styles.matchBadgeText}>• {profile.matchScore || 92}% Match</Text>
         </View>
+
+        {/* Verification Pill Overlay if verified */}
+        {profile.isVerified && (
+          <View style={styles.verifiedOverlay}>
+            <MaterialCommunityIcons name="check-decagram" size={12} color="#FFFFFF" />
+            <Text style={styles.verifiedOverlayText}>Verified</Text>
+          </View>
+        )}
       </View>
 
-      {/* Profile Details (Matching Reference Image 2 Layout) */}
+      {/* Card Information Body (Matching Screenshots 4 & 5 Layout) */}
       <View style={styles.fullInfo}>
-        <Text style={styles.nameTextSerif} numberOfLines={1}>
-          {profile.name}
-        </Text>
-
-        <Text style={styles.detailText} numberOfLines={1}>
-          {profile.caste || profile.religion} • {profile.age} yrs • {profile.height}
-        </Text>
-
-        {/* Feature Chips */}
-        <View style={styles.chipRow}>
-          <View style={styles.infoChip}>
-            <Text style={styles.infoChipText}>{profile.occupation}</Text>
-          </View>
-          <View style={styles.infoChip}>
-            <Text style={styles.infoChipText}>{profile.residentCity}</Text>
-          </View>
+        {/* Name & Age Heading */}
+        <View style={styles.nameRow}>
+          <Text style={styles.nameTextSerif} numberOfLines={1}>
+            {profile.name}, {profile.age}
+          </Text>
+          <View style={styles.goldDot} />
         </View>
 
-        {/* Full-width Royal Gold Outline CTA Button (Matching Reference Image 2) */}
-        <TouchableOpacity style={styles.royalViewBtn} onPress={onPress} activeOpacity={0.85}>
-          <Text style={styles.royalViewBtnText}>View Profile</Text>
-        </TouchableOpacity>
+        {/* Location Row */}
+        <View style={styles.metaRow}>
+          <Ionicons name="location-outline" size={14} color="#8C7A7C" style={{ marginRight: 4 }} />
+          <Text style={styles.metaText} numberOfLines={1}>
+            {profile.residentCity}, {profile.residentState || 'India'}
+          </Text>
+        </View>
 
-        {/* Action Row */}
+        {/* Occupation Row */}
+        <View style={styles.metaRow}>
+          <Ionicons name="briefcase-outline" size={14} color="#8C7A7C" style={{ marginRight: 4 }} />
+          <Text style={styles.metaText} numberOfLines={1}>
+            {profile.occupation || 'Professional'}
+          </Text>
+        </View>
+
+        {/* About Bio Snippet */}
+        <Text style={styles.bioSnippet} numberOfLines={2}>
+          {profile.aboutMe || 'Looking for a compassionate life partner who values family, growth and meaningful conversations.'}
+        </Text>
+
+        {/* Action Row (Matching Screenshot 4: Express Interest + View Icon) */}
         <View style={styles.actionRow}>
           <TouchableOpacity
-            style={[styles.actionBtn, isInterestSent ? styles.actionBtnInterestSent : null]}
+            style={[styles.expressBtn, isInterestSent && styles.expressBtnSent]}
             onPress={onInterest}
-            activeOpacity={0.8}
+            activeOpacity={0.85}
           >
             <Ionicons
               name={isInterestSent ? 'heart' : 'heart-outline'}
-              size={16}
-              color={isInterestSent ? '#FFFFFF' : '#6B0000'}
+              size={18}
+              color={isInterestSent ? '#FFFFFF' : '#5A4A4D'}
+              style={{ marginRight: 6 }}
             />
-            <Text style={[styles.actionBtnText, isInterestSent ? { color: '#FFFFFF' } : { color: '#6B0000' }]}>
-              {isInterestSent ? 'Interested' : 'Send Interest'}
+            <Text style={[styles.expressBtnText, isInterestSent && { color: '#FFFFFF' }]}>
+              {isInterestSent ? 'Interest Sent' : 'Express Interest'}
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.actionBtn, isShortlisted ? styles.actionBtnShortlisted : null]}
-            onPress={onShortlist}
-            activeOpacity={0.8}
+            style={styles.viewIconBtn}
+            onPress={onPress}
+            activeOpacity={0.85}
           >
-            <Ionicons
-              name={isShortlisted ? 'star' : 'star-outline'}
-              size={16}
-              color={isShortlisted ? '#FFFFFF' : '#786C10'}
-            />
-            <Text style={[styles.actionBtnText, isShortlisted ? { color: '#FFFFFF' } : { color: '#786C10' }]}>
-              {isShortlisted ? 'Shortlisted' : 'Shortlist'}
-            </Text>
+            <Ionicons name="eye-outline" size={18} color="#FFFFFF" />
           </TouchableOpacity>
         </View>
       </View>
@@ -184,23 +158,23 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
 const styles = StyleSheet.create({
   fullCard: {
-    backgroundColor: '#FFFDF9', // Warm Parchment Ivory
-    borderRadius: 16,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
     marginVertical: 10,
-    marginHorizontal: 14,
+    marginHorizontal: 12,
     borderWidth: 1,
-    borderColor: '#E2D7C7',
-    shadowColor: '#6B0000',
+    borderColor: '#EFE6DD',
+    shadowColor: '#2C1A1D',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
-    shadowRadius: 8,
+    shadowRadius: 10,
     elevation: 4,
     overflow: 'hidden',
-    width: 290, // Fixed width for horizontal scrolling
+    width: 290,
   },
   imageContainer: {
     width: '100%',
-    height: 240,
+    height: 250,
     position: 'relative',
   },
   fullImage: {
@@ -208,179 +182,128 @@ const styles = StyleSheet.create({
     height: '100%',
     resizeMode: 'cover',
   },
-  imageGradient: {
+  matchBadgeContainer: {
     position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: 80,
-  },
-  royalVerifiedOverlay: {
-    position: 'absolute',
-    top: 12,
-    right: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFF9E6',
-    borderWidth: 1,
-    borderColor: '#786C10',
+    top: 14,
+    right: 14,
+    backgroundColor: 'rgba(70,50,40,0.65)',
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 14,
+    borderRadius: 12,
+    borderWidth: 0.5,
+    borderColor: 'rgba(255,255,255,0.4)',
+  },
+  matchBadgeText: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  verifiedOverlay: {
+    position: 'absolute',
+    bottom: 12,
+    left: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#27AE60',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
     gap: 4,
   },
-  royalVerifiedText: {
-    color: '#786C10',
-    fontSize: 11,
+  verifiedOverlayText: {
+    color: '#FFFFFF',
+    fontSize: 10,
     fontWeight: '700',
   },
   fullInfo: {
     padding: 16,
   },
+  nameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
   nameTextSerif: {
     fontSize: 20,
     fontWeight: '800',
-    color: '#200D08', // Royal Dark Maroon/Brown
+    color: '#2C1A1D',
     letterSpacing: -0.3,
+    fontFamily: 'serif',
+  },
+  goldDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#C5A059',
+    marginLeft: 6,
+  },
+  metaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 4,
   },
-  detailText: {
+  metaText: {
     fontSize: 13,
-    color: '#665544', // Warm Medium Brown Subtext
+    color: '#5A4A4D',
     fontWeight: '500',
-    marginBottom: 10,
   },
-  chipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 14,
-  },
-  compactChipRow: {
-    flexDirection: 'row',
-    gap: 6,
-    marginTop: 4,
-  },
-  infoChip: {
-    backgroundColor: '#F5EFE6', // Soft Warm Cream Chip (Matching Reference Image 2)
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 8,
-    borderWidth: 0.5,
-    borderColor: '#E2D7C7',
-  },
-  infoChipText: {
+  bioSnippet: {
     fontSize: 12,
-    color: '#3A2A1A',
-    fontWeight: '600',
-  },
-  royalViewBtn: {
-    backgroundColor: '#FFFDF9',
-    borderWidth: 1.5,
-    borderColor: '#786C10', // Royal Gold Border (Matching Reference Image 2)
-    paddingVertical: 10,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  royalViewBtnText: {
-    color: '#786C10',
-    fontSize: 14,
-    fontWeight: '700',
+    color: '#8C7A7C',
+    lineHeight: 18,
+    marginTop: 6,
+    marginBottom: 16,
   },
   actionRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 8,
+    alignItems: 'center',
+    gap: 10,
   },
-  actionBtn: {
+  expressBtn: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: '#E2D7C7',
-    backgroundColor: '#FAF6F0',
-    gap: 4,
+    backgroundColor: '#EFE5DF',
+    paddingVertical: 12,
+    borderRadius: 14,
   },
-  actionBtnInterestSent: {
-    backgroundColor: '#6B0000',
-    borderColor: '#6B0000',
+  expressBtnSent: {
+    backgroundColor: '#E91E63',
   },
-  actionBtnShortlisted: {
-    backgroundColor: '#786C10',
-    borderColor: '#786C10',
-  },
-  actionBtnText: {
-    fontSize: 12,
+  expressBtnText: {
+    fontSize: 13,
     fontWeight: '700',
+    color: '#5A4A4D',
   },
-  badgeRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 6,
-    marginTop: 6,
-  },
-  badge: {
-    flexDirection: 'row',
+  viewIconBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 14,
+    backgroundColor: '#A67C52',
     alignItems: 'center',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 12,
-    gap: 4,
-  },
-  badgeVerified: {
-    backgroundColor: '#FFF9E6',
-    borderWidth: 1,
-    borderColor: '#786C10',
-  },
-  badgePremium: {
-    backgroundColor: '#FFF5F6',
-    borderWidth: 1,
-    borderColor: '#6B0000',
-  },
-  badgeNewspaper: {
-    backgroundColor: '#FAF6F0',
-    borderWidth: 1,
-    borderColor: '#6B0000',
-  },
-  badgeTextVerified: {
-    color: '#786C10',
-    fontSize: 10,
-    fontWeight: '700',
-  },
-  badgeTextPremium: {
-    color: '#6B0000',
-    fontSize: 10,
-    fontWeight: '700',
-  },
-  badgeTextNewspaper: {
-    color: '#6B0000',
-    fontSize: 10,
-    fontWeight: '700',
+    justifyContent: 'center',
   },
 
-  // Compact card layout
+  // Compact layout
   compactCard: {
     flexDirection: 'row',
-    backgroundColor: '#FFFDF9',
-    borderRadius: 14,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
     marginVertical: 6,
     marginHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#E2D7C7',
-    shadowColor: '#6B0000',
+    borderColor: '#EFE6DD',
+    shadowColor: '#2C1A1D',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 4,
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
     elevation: 2,
     overflow: 'hidden',
   },
   compactImage: {
-    width: 90,
-    height: 115,
+    width: 95,
+    height: 110,
     resizeMode: 'cover',
   },
   compactInfo: {
@@ -392,12 +315,34 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 4,
+  },
+  compactName: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#2C1A1D',
+    fontFamily: 'serif',
+  },
+  matchBadgeCompact: {
+    backgroundColor: 'rgba(197,160,89,0.15)',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 8,
+  },
+  matchBadgeTextCompact: {
+    fontSize: 10,
+    color: '#C5A059',
+    fontWeight: '700',
+  },
+  compactMeta: {
+    fontSize: 12,
+    color: '#5A4A4D',
+    fontWeight: '600',
     marginBottom: 2,
   },
-  matchTextCompact: {
+  compactSubtext: {
     fontSize: 11,
-    color: '#786C10',
-    fontWeight: '700',
+    color: '#8C7A7C',
   },
   compactActions: {
     justifyContent: 'space-around',

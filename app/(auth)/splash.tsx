@@ -48,16 +48,16 @@ export default function SplashScreen() {
           }
         ]}
       >
-        {/* Patrika Ribbon Logo */}
+        {/* Patrika Official Logo */}
         <View style={styles.logoContainer}>
           <PatrikaRibbonLogo size={140} />
         </View>
 
-        {/* Headlines matching second screenshot */}
+        {/* Headlines */}
         <Text style={styles.welcomeTitle}>{t.welcomeTo || 'Welcome to'}</Text>
         <Text style={styles.brandTitle}>Patrika Matrimony</Text>
         <Text style={styles.subtitle}>
-          {t.trustedMatchesSub || 'Trusted matches from Rajasthan Patrika'}
+          {t.trustedMatchesSub || 'Trusted matches from Rajasthan Patrika • Preserving Heritage & Uniting Souls'}
         </Text>
       </Animated.View>
 
@@ -69,7 +69,7 @@ export default function SplashScreen() {
           onPress={() => router.push('/(auth)/onboarding/step1')}
           activeOpacity={0.88}
         >
-          <Text style={styles.letsStartText}>Let's Start</Text>
+          <Text style={styles.letsStartText}>Let's Start →</Text>
         </TouchableOpacity>
 
         {/* Already have an account? Login */}
@@ -91,7 +91,7 @@ export default function SplashScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAF6F0', // Warm Cream background (#FAF6F0) matching second screenshot
+    backgroundColor: '#F9F6F0',
     justifyContent: 'space-between',
   },
   topHeader: {
@@ -109,36 +109,38 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   welcomeTitle: {
-    fontSize: 34,
+    fontSize: 32,
     fontWeight: '800',
-    color: '#200D08',
+    color: '#2C1A1D',
+    fontFamily: 'serif',
     letterSpacing: -0.5,
     marginBottom: 4,
   },
   brandTitle: {
     fontSize: 38,
     fontWeight: '800',
-    color: '#6B0000', // Royal Crimson (#6B0000)
+    color: '#E91E63',
+    fontFamily: 'serif',
     letterSpacing: -0.5,
-    marginBottom: 16,
+    marginBottom: 14,
   },
   subtitle: {
-    fontSize: 16,
-    color: '#665544',
+    fontSize: 15,
+    color: '#5A4A4D',
     fontWeight: '500',
-    lineHeight: 24,
+    lineHeight: 22,
   },
   bottomArea: {
     paddingHorizontal: 28,
-    paddingBottom: 32,
+    paddingBottom: 36,
   },
   letsStartBtn: {
-    backgroundColor: '#6B0000', // Royal Crimson (#6B0000)
+    backgroundColor: '#E91E63',
     borderRadius: 28,
     paddingVertical: 18,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#6B0000',
+    shadowColor: '#E91E63',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.25,
     shadowRadius: 10,
@@ -146,7 +148,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   letsStartText: {
-    color: '#FFFDF9',
+    color: '#FFFFFF',
     fontSize: 18,
     fontWeight: '800',
   },
@@ -155,12 +157,12 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
   },
   loginLinkText: {
-    color: '#665544',
+    color: '#5A4A4D',
     fontSize: 14,
     fontWeight: '500',
   },
   loginBoldText: {
-    color: '#6B0000',
+    color: '#E91E63',
     fontWeight: '800',
   },
 });

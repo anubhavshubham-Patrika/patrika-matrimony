@@ -1,60 +1,64 @@
 // src/constants/theme.ts
 export const Colors = {
-  // Deep Royal Crimson / Maroon Red (from reference images)
-  primary: '#6B0000', 
-  primaryDark: '#4A0000',
-  primaryLight: '#8B1A1A',
+  // Deep Royal Crimson & Vibrant Rose (from reference screenshots 1-5)
+  primary: '#E91E63',          // Vibrant Rose Red (from Matrimony Onboarding)
+  primaryDark: '#D81B60',
+  primaryCrimson: '#6B0000',   // Deep Royal Crimson
+  primaryLight: '#FF4081',
   
-  // Royal Gold & Amber (from reference images)
-  gold: '#D4AF37',
+  // Royal Gold, Amber & Taupe (from reference screenshots 4 & 5)
+  gold: '#C5A059',             // Warm Gold Accent
   goldDark: '#786C10',
   goldLight: '#E5B869',
-  goldPill: '#FCD04B',
-  goldBg: '#FFF9E6',
+  taupe: '#A67C52',            // Warm Taupe
+  taupeBg: '#ECE3D8',          // AI-Selected Section Background (Screenshot 5)
+  taupeCard: '#E6DCCF',
   
-  // Warm Parchment / Cream Backgrounds (from reference images)
-  background: '#FAF6F0', 
-  surface: '#FFFDF9',
+  // Backgrounds & Surface (from reference screenshots 2-5)
+  background: '#F9F6F0',       // Warm Parchment Feed Background (Screenshots 4 & 5)
+  onboardingBg: '#FFF4F6',     // Soft Pastel Pink Onboarding Background (Screenshot 2)
+  roseBg: '#FF7597',           // Vibrant Pink Background (Screenshot 3)
+  surface: '#FFFFFF',
   surfaceVariant: '#F5EFE6',
   cardBg: '#FFFFFF',
   
-  // Royal Dark Text Colors
-  text: '#200D08', // Deep Royal Brown/Maroon Headings
-  textSecondary: '#665544', // Warm Medium Brown Subtitles
-  textMuted: '#8C7B6B',
+  // High-Contrast Indian Typography Colors
+  text: '#2C1A1D',             // Deep Dark Brown/Red Headline Text
+  textSecondary: '#5A4A4D',    // Warm Subtitle Text
+  textMuted: '#8C7A7C',
   textOnPrimary: '#FFFFFF',
-  textGold: '#E5B869',
+  textGold: '#C5A059',
   
-  // System Colors
+  // Callouts & Badges
   success: '#27AE60',
-  successLight: '#E8F8F5',
+  successLight: '#E8F8F5',     // Green Profile Activity Callout (Screenshot 2)
+  successText: '#1E8449',
   warning: '#F39C12',
-  error: '#6B0000',
+  error: '#E91E63',
   info: '#3498DB',
   
   // Borders & Dividers
-  border: '#E2D7C7',
-  borderLight: '#F2EBE1',
-  divider: '#EAE2D5',
+  border: '#EFE6DD',
+  borderLight: '#F5EFE6',
+  divider: '#E5DBD0',
   
-  cardShadow: 'rgba(107,0,0,0.08)',
-  overlay: 'rgba(32,13,8,0.6)',
-  overlayLight: 'rgba(32,13,8,0.3)',
+  cardShadow: 'rgba(44,26,29,0.08)',
+  overlay: 'rgba(44,26,29,0.6)',
+  overlayLight: 'rgba(44,26,29,0.3)',
   
   badge: {
-    verified: '#786C10',
-    premium: '#D4AF37',
+    verified: '#C5A059',
+    premium: '#E91E63',
     newspaper: '#6B0000',
-    new: '#8B1A1A',
+    new: '#9C27B0',
   },
   
   gradient: {
-    primary: ['#7A0000', '#500000'],
+    primary: ['#E91E63', '#C2185B'],
+    rose: ['#FF5E83', '#E91E63'],
     ribbon: ['#8B0000', '#6B0000', '#4A0000'],
-    accent: ['#6B0000', '#8B1A1A'],
-    gold: ['#FCD04B', '#D4AF37'],
-    dark: ['#200D08', '#100604'],
-    card: ['rgba(107,0,0,0.85)', 'rgba(74,0,0,0.95)'],
+    gold: ['#E5B869', '#C5A059'],
+    dark: ['#2C1A1D', '#1A0E10'],
   },
 };
 
@@ -98,35 +102,35 @@ export const Spacing = {
 };
 
 export const BorderRadius = {
-  sm: 4,
-  md: 8,
-  lg: 12,
-  xl: 16,
-  '2xl': 20,
-  pill: 28,
+  sm: 6,
+  md: 10,
+  lg: 14,
+  xl: 18,
+  '2xl': 24,
+  pill: 30,
   full: 9999,
 };
 
 export const Shadow = {
   sm: {
-    shadowColor: '#6B0000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
+    shadowColor: '#2C1A1D',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.04,
+    shadowRadius: 4,
     elevation: 2,
   },
   md: {
-    shadowColor: '#6B0000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: '#2C1A1D',
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
-    shadowRadius: 6,
+    shadowRadius: 8,
     elevation: 4,
   },
   lg: {
-    shadowColor: '#6B0000',
-    shadowOffset: { width: 0, height: 4 },
+    shadowColor: '#2C1A1D',
+    shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.12,
-    shadowRadius: 12,
+    shadowRadius: 14,
     elevation: 8,
   },
 };
