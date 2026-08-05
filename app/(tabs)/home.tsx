@@ -5,6 +5,8 @@ import { useApp } from '../../src/context/AppContext';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import ProfileCard from '../../src/components/ProfileCard';
 
+import PatrikaRibbonLogo from '../../src/components/PatrikaRibbonLogo';
+
 export default function HomeScreen() {
   const router = useRouter();
   const { state, dispatch, profiles } = useApp();
@@ -44,16 +46,19 @@ export default function HomeScreen() {
 
   const renderHeader = () => (
     <View style={styles.header}>
-      <Text style={styles.logoText}>Patrika Matrimony</Text>
+      <View style={styles.headerBrandRow}>
+        <PatrikaRibbonLogo size={32} />
+        <Text style={styles.logoText}>Patrika Matrimony</Text>
+      </View>
       <View style={styles.headerIcons}>
         <TouchableOpacity style={styles.iconBtn}>
-          <Ionicons name="notifications-outline" size={24} color="#333" />
+          <Ionicons name="notifications-outline" size={24} color="#111111" />
           <View style={styles.badgeCount}>
             <Text style={styles.badgeCountText}>3</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconBtn}>
-          <Ionicons name="menu-outline" size={26} color="#333" />
+        <TouchableOpacity style={styles.iconBtn} onPress={() => router.push('/(tabs)/profile')}>
+          <Ionicons name="menu-outline" size={26} color="#111111" />
         </TouchableOpacity>
       </View>
     </View>
@@ -237,6 +242,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
+  },
+  headerBrandRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   logoText: {
     fontSize: 20,

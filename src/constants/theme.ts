@@ -1,33 +1,33 @@
 // src/constants/theme.ts
 export const Colors = {
-  primary: '#C0392B',
-  primaryDark: '#96281B',
-  primaryLight: '#E74C3C',
-  accent: '#E67E22',
-  accentLight: '#F39C12',
+  primary: '#E31837', // Vibrant Patrika Ribbon Red
+  primaryDark: '#B71C1C',
+  primaryLight: '#FF3856',
+  accent: '#E31837',
+  accentLight: '#FF5252',
   gold: '#F1C40F',
   goldDark: '#D4AC0D',
   
-  background: '#F5F5F5',
+  background: '#FFFFFF', // Clean White Background
   surface: '#FFFFFF',
-  surfaceVariant: '#FFF5F5',
+  surfaceVariant: '#FFF5F6',
   
-  text: '#1A1A2E',
-  textSecondary: '#666666',
+  text: '#111111', // Deep Black for Headings
+  textSecondary: '#666666', // Medium Gray for Subtitles
   textMuted: '#999999',
   textOnPrimary: '#FFFFFF',
   
   success: '#27AE60',
   successLight: '#2ECC71',
   warning: '#F39C12',
-  error: '#E74C3C',
+  error: '#E31837',
   info: '#3498DB',
   
   border: '#E0E0E0',
-  borderLight: '#F0F0F0',
+  borderLight: '#F2F2F7',
   divider: '#EEEEEE',
   
-  cardShadow: 'rgba(0,0,0,0.08)',
+  cardShadow: 'rgba(0,0,0,0.06)',
   overlay: 'rgba(0,0,0,0.5)',
   overlayLight: 'rgba(0,0,0,0.3)',
   
@@ -39,10 +39,11 @@ export const Colors = {
   },
   
   gradient: {
-    primary: ['#C0392B', '#E74C3C'],
-    accent: ['#E67E22', '#F39C12'],
-    dark: ['#1A1A2E', '#2C3E50'],
-    card: ['rgba(192,57,43,0.8)', 'rgba(150,40,27,0.95)'],
+    primary: ['#FF2E4D', '#E31837'],
+    ribbon: ['#FF2E4D', '#E31837', '#A7001E'],
+    accent: ['#E31837', '#FF5252'],
+    dark: ['#111111', '#222222'],
+    card: ['rgba(227,24,55,0.85)', 'rgba(167,0,30,0.95)'],
   },
 };
 
@@ -90,6 +91,7 @@ export const BorderRadius = {
   lg: 12,
   xl: 16,
   '2xl': 20,
+  pill: 28,
   full: 9999,
 };
 
@@ -97,7 +99,7 @@ export const Shadow = {
   sm: {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.05,
     shadowRadius: 3,
     elevation: 2,
   },

@@ -1,190 +1,142 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated, SafeAreaView, Dimensions, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Animated, SafeAreaView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-
-const { width } = Dimensions.get('window');
+import PatrikaRibbonLogo from '../../src/components/PatrikaRibbonLogo';
+import LanguageToggle from '../../src/components/LanguageToggle';
 
 export default function SplashScreen() {
   const router = useRouter();
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(0.8)).current;
+  const scaleAnim = useRef(new Animated.Value(0.9)).current;
 
   useEffect(() => {
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 1000,
+        duration: 800,
         useNativeDriver: true,
       }),
       Animated.spring(scaleAnim, {
         toValue: 1,
-        friction: 8,
+        friction: 7,
         useNativeDriver: true,
       }),
     ]).start();
   }, [fadeAnim, scaleAnim]);
 
-  const communities = ['Rajput', 'Marwari', 'Jain', 'Brahmin'];
-
   return (
-    <LinearGradient colors={['#C0392B', '#96281B']} style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.content}>
-          <Animated.View style={[styles.logoContainer, { opacity: fadeAnim, transform: [{ scale: scaleAnim }] }]}>
-            <View style={styles.logoBadge}>
-              <Text style={styles.logoBadgeText}>P</Text>
-            </View>
-            <Text style={styles.logoHindi}>पत्रिका</Text>
-            <Text style={styles.title}>Patrika Matrimony</Text>
-            <Text style={styles.tagline}>Trusted matches from Rajasthan Patrika</Text>
-          </Animated.View>
-        </View>
+    <SafeAreaView style={styles.container}>
+      {/* Top Bar with Language Selector */}
+      <View style={styles.topHeader}>
+        <View style={{ flex: 1 }} />
+        <LanguageToggle initialLanguage="en" />
+      </View>
 
-        <View style={styles.bottomSection}>
-          <View style={styles.communitiesContainer}>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.communitiesScroll}>
-              {communities.map((community, index) => (
-                <TouchableOpacity key={index} style={styles.communityChip} onPress={() => router.push('/(auth)/onboarding/step1')}>
-                  <Text style={styles.communityChipText}>{community}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
+      {/* Main Content Area */}
+      <View style={styles.centerContent}>
+        <Animated.View style={[styles.logoWrapper, { opacity: fadeAnim, transform: [{ scale: scaleAnim }] }]}>
+          <PatrikaRibbonLogo size={110} style={{ marginBottom: 40 }} />
 
-          <TouchableOpacity style={styles.primaryButton} onPress={() => router.push('/(auth)/onboarding/step1')}>
-            <Text style={styles.primaryButtonText}>Create Profile</Text>
-          </TouchableOpacity>
+          <Text style={styles.welcomeText}>Welcome to</Text>
+          <Text style={styles.brandTitle}>Patrika Matrimony</Text>
 
-          <TouchableOpacity style={styles.secondaryButton} onPress={() => router.push('/(auth)/login')}>
-            <Text style={styles.secondaryButtonText}>Login</Text>
-          </TouchableOpacity>
+          <Text style={styles.taglineText}>Trusted matches from Rajasthan Patrika</Text>
+        </Animated.View>
+      </View>
 
-          <View style={styles.footer}>
-            <MaterialCommunityIcons name="newspaper-variant-outline" size={16} color="rgba(255,255,255,0.7)" />
-            <Text style={styles.footerText}>For Matrimonial Ads in Rajasthan Patrika</Text>
-          </View>
-        </View>
-      </SafeAreaView>
-    </LinearGradient>
+      {/* Bottom Action Area */}
+      <View style={styles.bottomSection}>
+        <TouchableOpacity
+          style={styles.primaryPillButton}
+          onPress={() => router.push('/(auth)/onboarding/step1')}
+          activeOpacity={0.88}
+        >
+          <Text style={styles.primaryPillText}>Let's Start</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.secondaryLink}
+          onPress={() => router.push('/(auth)/login')}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.secondaryLinkText}>Already have an account? <Text style={styles.secondaryBold}>Login</Text></Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  safeArea: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logoContainer: {
-    alignItems: 'center',
-  },
-  logoBadge: {
-    width: 100,
-    height: 100,
     backgroundColor: '#FFFFFF',
-    borderRadius: 50,
-    justifyContent: 'center',
+  },
+  topHeader: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 8,
+    paddingHorizontal: 20,
+    paddingTop: 12,
   },
-  logoBadgeText: {
-    fontSize: 50,
-    fontWeight: 'bold',
-    color: '#C0392B',
+  centerContent: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 28,
   },
-  logoHindi: {
-    fontSize: 24,
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    marginBottom: 8,
+  logoWrapper: {
+    alignItems: 'flex-start',
   },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 8,
+  welcomeText: {
+    fontSize: 34,
+    fontWeight: '800',
+    color: '#111111',
+    letterSpacing: -0.5,
   },
-  tagline: {
-    fontSize: 16,
-    color: 'rgba(255, 255, 255, 0.8)',
+  brandTitle: {
+    fontSize: 36,
+    fontWeight: '900',
+    color: '#E31837', // Vibrant Patrika Ribbon Red
+    marginTop: 2,
+    letterSpacing: -0.5,
+  },
+  taglineText: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#666666',
+    marginTop: 18,
+    lineHeight: 22,
   },
   bottomSection: {
     paddingHorizontal: 24,
-    paddingBottom: 40,
+    paddingBottom: 36,
   },
-  communitiesContainer: {
-    marginBottom: 24,
-  },
-  communitiesScroll: {
-    paddingVertical: 8,
-    gap: 12,
-  },
-  communityChip: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    marginRight: 10,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.4)',
-  },
-  communityChipText: {
-    color: '#FFFFFF',
-    fontWeight: '600',
-    fontSize: 14,
-  },
-  primaryButton: {
-    backgroundColor: '#FFFFFF',
+  primaryPillButton: {
+    backgroundColor: '#E31837', // Vibrant Patrika Pill Red
     paddingVertical: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  primaryButtonText: {
-    color: '#C0392B',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  secondaryButton: {
-    backgroundColor: 'transparent',
-    paddingVertical: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#FFFFFF',
-    marginBottom: 24,
-  },
-  secondaryButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  footer: {
-    flexDirection: 'row',
+    borderRadius: 28,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
+    shadowColor: '#E31837',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
   },
-  footerText: {
-    color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: 12,
+  primaryPillText: {
+    color: '#FFFFFF',
+    fontSize: 17,
+    fontWeight: '700',
+  },
+  secondaryLink: {
+    alignItems: 'center',
+    marginTop: 18,
+    paddingVertical: 8,
+  },
+  secondaryLinkText: {
+    fontSize: 14,
+    color: '#666666',
+  },
+  secondaryBold: {
+    color: '#E31837',
+    fontWeight: '700',
   },
 });

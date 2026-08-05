@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Platform, Switch } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import PatrikaRibbonLogo from '../../src/components/PatrikaRibbonLogo';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -23,13 +24,21 @@ export default function LoginScreen() {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#1A1A2E" />
+          <Ionicons name="arrow-back" size={24} color="#111111" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Patrika Matrimony</Text>
+        <View style={styles.headerBrandRow}>
+          <PatrikaRibbonLogo size={28} />
+          <Text style={styles.headerTitle}>Patrika Matrimony</Text>
+        </View>
         <View style={{ width: 40 }} />
       </View>
 
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+        <View style={styles.topIntro}>
+          <Text style={styles.welcomeTitle}>Welcome Back</Text>
+          <Text style={styles.welcomeSub}>Log in to continue your partner search</Text>
+        </View>
+
         <View style={styles.tabsContainer}>
           <TouchableOpacity style={[styles.tab, tab === 'mobile' && styles.activeTab]} onPress={() => setTab('mobile')}>
             <Text style={[styles.tabText, tab === 'mobile' && styles.activeTabText]}>Mobile OTP</Text>
@@ -53,7 +62,7 @@ export default function LoginScreen() {
                   maxLength={10}
                   value={mobile}
                   onChangeText={setMobile}
-                  placeholderTextColor="#666666"
+                  placeholderTextColor="#999999"
                 />
               </View>
 
@@ -62,12 +71,12 @@ export default function LoginScreen() {
                 <Switch
                   value={isParent}
                   onValueChange={setIsParent}
-                  trackColor={{ false: '#D3D3D3', true: '#E67E22' }}
-                  thumbColor={isParent ? '#FFFFFF' : '#FFFFFF'}
+                  trackColor={{ false: '#E0E0E0', true: '#E31837' }}
+                  thumbColor="#FFFFFF"
                 />
               </View>
 
-              <TouchableOpacity style={styles.primaryButton} onPress={handleSubmit}>
+              <TouchableOpacity style={styles.primaryButton} onPress={handleSubmit} activeOpacity={0.88}>
                 <Text style={styles.primaryButtonText}>Get OTP</Text>
               </TouchableOpacity>
             </View>
@@ -80,7 +89,7 @@ export default function LoginScreen() {
                 autoCapitalize="none"
                 value={email}
                 onChangeText={setEmail}
-                placeholderTextColor="#666666"
+                placeholderTextColor="#999999"
               />
               <View style={styles.passwordContainer}>
                 <TextInput
@@ -89,17 +98,17 @@ export default function LoginScreen() {
                   secureTextEntry={!showPassword}
                   value={password}
                   onChangeText={setPassword}
-                  placeholderTextColor="#666666"
+                  placeholderTextColor="#999999"
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-                  <Ionicons name={showPassword ? "eye-off-outline" : "eye-outline"} size={24} color="#666666" />
+                  <Ionicons name={showPassword ? "eye-off-outline" : "eye-outline"} size={22} color="#666666" />
                 </TouchableOpacity>
               </View>
               <TouchableOpacity style={styles.forgotPassword}>
                 <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.primaryButton} onPress={handleSubmit}>
+              <TouchableOpacity style={styles.primaryButton} onPress={handleSubmit} activeOpacity={0.88}>
                 <Text style={styles.primaryButtonText}>Login</Text>
               </TouchableOpacity>
             </View>
@@ -113,7 +122,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: 'row',
@@ -123,40 +132,53 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: '#F2F2F7',
   },
   backButton: {
-    padding: 8,
+    padding: 6,
+  },
+  headerBrandRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   headerTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#C0392B',
+    fontWeight: '800',
+    color: '#E31837',
   },
   container: {
     flex: 1,
     padding: 24,
   },
+  topIntro: {
+    marginBottom: 24,
+  },
+  welcomeTitle: {
+    fontSize: 26,
+    fontWeight: '800',
+    color: '#111111',
+  },
+  welcomeSub: {
+    fontSize: 14,
+    color: '#666666',
+    marginTop: 4,
+  },
   tabsContainer: {
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
+    backgroundColor: '#F2F2F7',
+    borderRadius: 24,
     padding: 4,
     marginBottom: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
   },
   tab: {
     flex: 1,
-    paddingVertical: 12,
+    paddingVertical: 10,
     alignItems: 'center',
-    borderRadius: 6,
+    borderRadius: 20,
   },
   activeTab: {
-    backgroundColor: '#C0392B',
+    backgroundColor: '#E31837',
   },
   tabText: {
     fontSize: 14,
@@ -165,16 +187,10 @@ const styles = StyleSheet.create({
   },
   activeTabText: {
     color: '#FFFFFF',
+    fontWeight: '700',
   },
   formContainer: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 3,
   },
   mobileForm: {},
   inputGroup: {
@@ -182,9 +198,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#E0E0E0',
-    borderRadius: 8,
+    borderRadius: 14,
     marginBottom: 20,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#FAFAFA',
   },
   countryCode: {
     paddingHorizontal: 16,
@@ -193,20 +209,20 @@ const styles = StyleSheet.create({
   },
   countryCodeText: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#1A1A2E',
+    fontWeight: '700',
+    color: '#111111',
   },
   mobileInput: {
     flex: 1,
     padding: 16,
     fontSize: 16,
-    color: '#1A1A2E',
+    color: '#111111',
   },
   parentToggleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 24,
+    marginBottom: 28,
   },
   parentToggleText: {
     flex: 1,
@@ -215,41 +231,46 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   primaryButton: {
-    backgroundColor: '#C0392B',
+    backgroundColor: '#E31837',
     paddingVertical: 16,
-    borderRadius: 8,
+    borderRadius: 28,
     alignItems: 'center',
+    shadowColor: '#E31837',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
   },
   primaryButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
   emailForm: {},
   input: {
     borderWidth: 1,
     borderColor: '#E0E0E0',
-    borderRadius: 8,
+    borderRadius: 14,
     padding: 16,
     marginBottom: 16,
     fontSize: 16,
-    color: '#1A1A2E',
-    backgroundColor: '#F9F9F9',
+    color: '#111111',
+    backgroundColor: '#FAFAFA',
   },
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#E0E0E0',
-    borderRadius: 8,
-    backgroundColor: '#F9F9F9',
+    borderRadius: 14,
+    backgroundColor: '#FAFAFA',
     marginBottom: 12,
   },
   passwordInput: {
     flex: 1,
     padding: 16,
     fontSize: 16,
-    color: '#1A1A2E',
+    color: '#111111',
   },
   eyeIcon: {
     padding: 16,
@@ -259,7 +280,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   forgotPasswordText: {
-    color: '#C0392B',
+    color: '#E31837',
     fontSize: 14,
     fontWeight: '600',
   },
