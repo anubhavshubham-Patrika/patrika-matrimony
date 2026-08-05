@@ -221,27 +221,6 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Footer Section (Matching Reference Image 3 Layout & Text) */}
-        <View style={styles.royalFooter}>
-          <Text style={styles.footerBrandHeader}>RAJGHARANA MATRIMONY</Text>
-          <Text style={styles.footerDescription}>
-            Preserving Heritage, Uniting Souls. Patrika Matrimony offers a deeply rooted, trusted platform for finding your ideal life partner within royal and esteemed communities.
-          </Text>
-          
-          <Text style={styles.footerSectionHeading}>EXPLORE</Text>
-          <TouchableOpacity><Text style={styles.footerLinkText}>Our Legacy</Text></TouchableOpacity>
-          <TouchableOpacity><Text style={styles.footerLinkText}>Success Stories</Text></TouchableOpacity>
-          <TouchableOpacity><Text style={styles.footerLinkText}>Royal Communities</Text></TouchableOpacity>
-          
-          <Text style={styles.footerSectionHeading}>SUPPORT</Text>
-          <TouchableOpacity><Text style={styles.footerLinkText}>Safety Protocols</Text></TouchableOpacity>
-          <TouchableOpacity><Text style={styles.footerLinkText}>Contact Concierge</Text></TouchableOpacity>
-
-          <Text style={styles.footerCopyright}>
-            © 2026 Rajgharana Matrimony. Preserving Heritage, Uniting Souls.
-          </Text>
-        </View>
-
         <View style={styles.bottomPadding} />
       </ScrollView>
     </SafeAreaView>
@@ -375,49 +354,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '700',
     fontSize: 14,
-  },
-  // Royal Footer (Matching Reference Image 3)
-  royalFooter: {
-    backgroundColor: '#EAE5DB', // Warm Parchment Beige (Matching Reference Image 3)
-    padding: 24,
-    marginTop: 30,
-    borderTopWidth: 1,
-    borderColor: '#D8CFC0',
-  },
-  footerBrandHeader: {
-    fontSize: 22,
-    fontWeight: '800',
-    color: '#6B0000', // Royal Crimson Header
-    letterSpacing: -0.5,
-    marginBottom: 12,
-  },
-  footerDescription: {
-    fontSize: 14,
-    color: '#554433',
-    lineHeight: 22,
-    marginBottom: 20,
-  },
-  footerSectionHeading: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: '#200D08',
-    letterSpacing: 1,
-    marginTop: 14,
-    marginBottom: 8,
-  },
-  footerLinkText: {
-    fontSize: 14,
-    color: '#6B0000',
-    textDecorationLine: 'underline',
-    marginBottom: 8,
-    fontWeight: '600',
-  },
-  footerCopyright: {
-    fontSize: 12,
-    color: '#776655',
-    textAlign: 'center',
-    marginTop: 24,
-    lineHeight: 18,
   },
   bottomPadding: {
     height: 40,
