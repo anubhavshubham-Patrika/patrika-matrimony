@@ -2,104 +2,160 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useApp } from '../../../src/context/AppContext';
+import { Translations } from '../../../src/constants/translations';
+import PatrikaRibbonLogo from '../../../src/components/PatrikaRibbonLogo';
 
 export default function Step6() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    education: '', field: '', employment: '', occupation: '', income: ''
-  });
-  
-  const dispatch = (action: any) => console.log('Dispatch:', action);
+  const { state, dispatch } = useApp();
+  const lang = state.language || 'en';
+  const t = Translations[lang];
+
+  const educations = ['B.Tech / B.E.', 'MBBS / MD', 'MBA / PGDM', 'B.Com / M.Com', 'B.Sc / M.Sc', 'BCA / MCA', 'CA / CS', 'Law / LLB', 'PhD / Doctorate', '12th Pass', 'Other'];
+  const fields = ['Engineering / Tech', 'Medicine / Healthcare', 'Management / Business', 'Banking / Finance', 'Arts / Humanities', 'Science / Biotech', 'Law / Legal', 'Civil Services / Govt', 'Other'];
+  const employments = ['Private Company', 'Government / PSU', 'Business / Self-Employed', 'Defence / Armed Forces', 'Civil Services', 'Not Working'];
+  const incomes = ['Below 3 Lakhs', '3 - 5 Lakhs', '5 - 10 Lakhs', '10 - 15 Lakhs', '15 - 25 Lakhs', '25 - 50 Lakhs', '50 Lakhs+'];
+
+  const [education, setEducation] = useState(state.onboardingData?.education?.degree || 'B.Tech / B.E.');
+  const [field, setField] = useState(state.onboardingData?.education?.field || 'Engineering / Tech');
+  const [employmentType, setEmploymentType] = useState(state.onboardingData?.employmentType || 'Private Company');
+  const [occupation, setOccupation] = useState(state.onboardingData?.occupation || '');
+  const [annualIncomeRange, setAnnualIncomeRange] = useState(state.onboardingData?.annualIncomeRange || '10 - 15 Lakhs');
 
   const handleNext = () => {
-    dispatch({ type: 'UPDATE_ONBOARDING', payload: formData });
+    dispatch({
+      type: 'UPDATE_ONBOARDING',
+      payload: {
+        education: { degree: education, field },
+        employmentType,
+        occupation,
+        annualIncomeRange,
+      },
+    });
     router.push('/(auth)/onboarding/step7');
   };
 
-  const educations = ['B.Tech/B.E.', 'MBBS', 'MBA/PGDM', 'B.Com', 'B.Sc', 'MA/MSc', 'PhD', '12th Pass', '10th Pass', 'Other'];
-  const fields = ['Engineering/Tech', 'Medicine/Health', 'Management', 'Arts/Science', 'Law', 'Finance', 'Doctorate', 'Other'];
-  const employments = ['Private', 'Govt/Public', 'Business/Self-employed', 'Defence', 'Civil Services', 'Not Working'];
-  const incomes = ['Below 2L', '2-5L', '5-10L', '10-20L', '20-30L', '30-50L', '50L+'];
-
   return (
     <SafeAreaView style={styles.container}>
+      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#333" />
+          <Ionicons name="arrow-back" size={24} color="#111111" />
         </TouchableOpacity>
-        <View style={styles.progressWrapper}>
-          <View style={styles.progressContainer}>
-            <View style={[styles.progressBar, { width: `${(6/13)*100}%` }]} />
-          </View>
-          <Text style={styles.progressText}>Step 6 of 13</Text>
+        <View style={styles.headerTitleRow}>
+          <PatrikaRibbonLogo size={26} />
+          <Text style={styles.headerBrand}>Patrika Matrimony</Text>
         </View>
+        <Text style={styles.stepIndicator}>6/13</Text>
       </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>Education & Profession</Text>
-        
-        <View style={styles.field}>
-          <Text style={styles.label}>Highest Education</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.hScroll}>
-            {educations.map(e => (
-              <TouchableOpacity key={e} style={[styles.chip, formData.education === e && styles.chipSelected]}
-                onPress={() => setFormData({...formData, education: e})}>
-                <Text style={[styles.chipText, formData.education === e && styles.chipTextSelected]}>{e}</Text>
-              </TouchableOpacity>
-            ))}
+      {/* Progress Bar */}
+      <View style={styles.progressTrack}>
+        <View style={[styles.progressBar, { width: `${(6 / 13) * 100}%` }]} />
+      </View>
+
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        <Text style={styles.title}>{t.step6Title}</Text>
+        <Text style={styles.subtitle}>{t.step6Subtitle}</Text>
+
+        {/* Highest Education */}
+        <View style={styles.fieldGroup}>
+          <Text style={styles.fieldLabel}>{t.highestDegree}</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipScroll}>
+            {educations.map((e) => {
+              const isSel = education === e;
+              return (
+                <TouchableOpacity
+                  key={e}
+                  style={[styles.chip, isSel && styles.chipSelected]}
+                  onPress={() => setEducation(e)}
+                  activeOpacity={0.8}
+                >
+                  <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{e}</Text>
+                </TouchableOpacity>
+              );
+            })}
           </ScrollView>
         </View>
 
-        <View style={styles.field}>
-          <Text style={styles.label}>Field of Study</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.hScroll}>
-            {fields.map(f => (
-              <TouchableOpacity key={f} style={[styles.chip, formData.field === f && styles.chipSelected]}
-                onPress={() => setFormData({...formData, field: f})}>
-                <Text style={[styles.chipText, formData.field === f && styles.chipTextSelected]}>{f}</Text>
-              </TouchableOpacity>
-            ))}
+        {/* Field of Study */}
+        <View style={styles.fieldGroup}>
+          <Text style={styles.fieldLabel}>{t.educationField}</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipScroll}>
+            {fields.map((f) => {
+              const isSel = field === f;
+              return (
+                <TouchableOpacity
+                  key={f}
+                  style={[styles.chip, isSel && styles.chipSelected]}
+                  onPress={() => setField(f)}
+                  activeOpacity={0.8}
+                >
+                  <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{f}</Text>
+                </TouchableOpacity>
+              );
+            })}
           </ScrollView>
         </View>
 
-        <View style={styles.field}>
-          <Text style={styles.label}>Employment Type</Text>
+        {/* Employment Type */}
+        <View style={styles.fieldGroup}>
+          <Text style={styles.fieldLabel}>{t.employmentType}</Text>
           <View style={styles.chipGrid}>
-            {employments.map(e => (
-              <TouchableOpacity key={e} style={[styles.chip, formData.employment === e && styles.chipSelected]}
-                onPress={() => setFormData({...formData, employment: e})}>
-                <Text style={[styles.chipText, formData.employment === e && styles.chipTextSelected]}>{e}</Text>
-              </TouchableOpacity>
-            ))}
+            {employments.map((emp) => {
+              const isSel = employmentType === emp;
+              return (
+                <TouchableOpacity
+                  key={emp}
+                  style={[styles.chipGridItem, isSel && styles.chipGridItemSelected]}
+                  onPress={() => setEmploymentType(emp)}
+                  activeOpacity={0.8}
+                >
+                  <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{emp}</Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </View>
 
-        <View style={styles.field}>
-          <Text style={styles.label}>Occupation / Role</Text>
-          <TextInput 
-            style={styles.input} 
-            placeholder="e.g. Software Engineer, Doctor" 
-            value={formData.occupation} 
-            onChangeText={(t) => setFormData({...formData, occupation: t})} 
+        {/* Occupation Input */}
+        <View style={styles.fieldGroup}>
+          <Text style={styles.fieldLabel}>{t.occupation}</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="e.g. Software Engineer / Senior Doctor / Manager"
+            value={occupation}
+            onChangeText={setOccupation}
+            placeholderTextColor="#999999"
           />
         </View>
 
-        <View style={styles.field}>
-          <Text style={styles.label}>Annual Income</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.hScroll}>
-            {incomes.map(i => (
-              <TouchableOpacity key={i} style={[styles.chip, formData.income === i && styles.chipSelected]}
-                onPress={() => setFormData({...formData, income: i})}>
-                <Text style={[styles.chipText, formData.income === i && styles.chipTextSelected]}>{i}</Text>
-              </TouchableOpacity>
-            ))}
+        {/* Annual Income */}
+        <View style={styles.fieldGroup}>
+          <Text style={styles.fieldLabel}>{t.annualIncome}</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipScroll}>
+            {incomes.map((inc) => {
+              const isSel = annualIncomeRange === inc;
+              return (
+                <TouchableOpacity
+                  key={inc}
+                  style={[styles.chip, isSel && styles.chipSelected]}
+                  onPress={() => setAnnualIncomeRange(inc)}
+                  activeOpacity={0.8}
+                >
+                  <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{inc}</Text>
+                </TouchableOpacity>
+              );
+            })}
           </ScrollView>
         </View>
       </ScrollView>
 
+      {/* Footer CTA */}
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.nextBtn} onPress={handleNext}>
-          <Text style={styles.nextBtnText}>Continue</Text>
+        <TouchableOpacity style={styles.nextBtn} onPress={handleNext} activeOpacity={0.88}>
+          <Text style={styles.nextBtnText}>{t.continue}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -107,25 +163,142 @@ export default function Step6() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F5F5F5' },
-  header: { flexDirection: 'row', alignItems: 'center', padding: 16, backgroundColor: '#FFF', borderBottomWidth: 1, borderColor: '#EEE' },
-  backBtn: { padding: 8, marginRight: 16 },
-  progressWrapper: { flex: 1 },
-  progressContainer: { height: 6, backgroundColor: '#EEE', borderRadius: 3, overflow: 'hidden', marginBottom: 4 },
-  progressBar: { height: '100%', backgroundColor: '#C0392B' },
-  progressText: { fontSize: 12, color: '#666', textAlign: 'right' },
-  content: { padding: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', color: '#333', marginBottom: 24 },
-  field: { marginBottom: 20 },
-  label: { fontSize: 16, fontWeight: '600', color: '#444', marginBottom: 8 },
-  hScroll: { flexDirection: 'row', paddingBottom: 8 },
-  chipGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  chip: { paddingVertical: 10, paddingHorizontal: 16, backgroundColor: '#FFF', borderWidth: 1, borderColor: '#DDD', borderRadius: 20, marginBottom: 8, marginRight: 8 },
-  chipSelected: { borderColor: '#C0392B', backgroundColor: '#FFF0F0' },
-  chipText: { color: '#666', fontSize: 14 },
-  chipTextSelected: { color: '#C0392B', fontWeight: 'bold' },
-  input: { backgroundColor: '#FFF', borderWidth: 1, borderColor: '#DDD', padding: 14, borderRadius: 8, fontSize: 16 },
-  footer: { padding: 20, backgroundColor: '#FFF', borderTopWidth: 1, borderColor: '#EEE' },
-  nextBtn: { backgroundColor: '#C0392B', paddingVertical: 16, borderRadius: 8, alignItems: 'center' },
-  nextBtnText: { color: '#FFF', fontSize: 18, fontWeight: 'bold' }
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+  },
+  backBtn: {
+    padding: 4,
+  },
+  headerTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  headerBrand: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#E31837',
+  },
+  stepIndicator: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#666666',
+  },
+  progressTrack: {
+    height: 4,
+    backgroundColor: '#F2F2F7',
+    width: '100%',
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: '#E31837',
+  },
+  content: {
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 40,
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: '800',
+    color: '#111111',
+    letterSpacing: -0.5,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#666666',
+    marginTop: 6,
+    marginBottom: 24,
+  },
+  fieldGroup: {
+    marginBottom: 22,
+  },
+  fieldLabel: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#111111',
+    marginBottom: 10,
+  },
+  chipScroll: {
+    gap: 8,
+  },
+  chip: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    backgroundColor: '#F2F2F7',
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  chipSelected: {
+    backgroundColor: '#FFF5F6',
+    borderColor: '#E31837',
+  },
+  chipGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  chipGridItem: {
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 20,
+    backgroundColor: '#F2F2F7',
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  chipGridItemSelected: {
+    backgroundColor: '#FFF5F6',
+    borderColor: '#E31837',
+  },
+  chipText: {
+    fontSize: 14,
+    color: '#555555',
+    fontWeight: '500',
+  },
+  chipTextSelected: {
+    color: '#E31837',
+    fontWeight: '700',
+  },
+  input: {
+    backgroundColor: '#FAFAFA',
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    fontSize: 16,
+    color: '#111111',
+  },
+  footer: {
+    paddingHorizontal: 24,
+    paddingVertical: 20,
+    backgroundColor: '#FFFFFF',
+    borderTopWidth: 1,
+    borderColor: '#F2F2F7',
+  },
+  nextBtn: {
+    backgroundColor: '#E31837',
+    paddingVertical: 16,
+    borderRadius: 28,
+    alignItems: 'center',
+    shadowColor: '#E31837',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  nextBtnText: {
+    color: '#FFFFFF',
+    fontSize: 17,
+    fontWeight: '700',
+  },
 });

@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useApp } from '../context/AppContext';
 
 interface LanguageToggleProps {
   initialLanguage?: 'hi' | 'en';
   onLanguageChange?: (lang: 'hi' | 'en') => void;
 }
 
-export default function LanguageToggle({ initialLanguage = 'en', onLanguageChange }: LanguageToggleProps) {
-  const [selectedLang, setSelectedLang] = useState<'hi' | 'en'>(initialLanguage);
+export default function LanguageToggle({ onLanguageChange }: LanguageToggleProps) {
+  const { state, dispatch } = useApp();
+  const selectedLang = state.language || 'en';
 
   const handleSelect = (lang: 'hi' | 'en') => {
-    setSelectedLang(lang);
+    dispatch({ type: 'SET_LANGUAGE', payload: lang });
     if (onLanguageChange) {
       onLanguageChange(lang);
     }
@@ -40,7 +42,7 @@ export default function LanguageToggle({ initialLanguage = 'en', onLanguageChang
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: '#EEEEEE',
+    backgroundColor: '#F2F2F7',
     borderRadius: 24,
     padding: 3,
     alignItems: 'center',

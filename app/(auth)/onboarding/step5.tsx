@@ -1,86 +1,247 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Modal, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useApp } from '../../../src/context/AppContext';
+import { Translations } from '../../../src/constants/translations';
+import PatrikaRibbonLogo from '../../../src/components/PatrikaRibbonLogo';
 
 export default function Step5() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    country: 'India', state: '', city: ''
-  });
-  
-  const dispatch = (action: any) => console.log('Dispatch:', action);
+  const { state, dispatch } = useApp();
+  const lang = state.language || 'en';
+  const t = Translations[lang];
 
-  const rajasthanCities = ['Jaipur', 'Jodhpur', 'Udaipur', 'Kota', 'Ajmer', 'Bikaner', 'Sikar', 'Bharatpur'];
+  const countriesList = [
+    'India', 'USA', 'UK', 'Canada', 'UAE', 'Australia', 'Singapore', 'Germany', 'Saudi Arabia', 'Kuwait', 'Qatar', 'New Zealand', 'Other'
+  ];
+
+  const statesList = [
+    'Rajasthan', 'Maharashtra', 'Delhi NCR', 'Punjab', 'Gujarat', 'Uttar Pradesh', 'Madhya Pradesh',
+    'Haryana', 'Karnataka', 'Telangana', 'Tamil Nadu', 'West Bengal', 'Bihar', 'Kerala', 'Assam',
+    'Odisha', 'Himachal Pradesh', 'Uttarakhand', 'Goa', 'Jammu & Kashmir', 'Other'
+  ];
+
+  const popularCities = [
+    'Jaipur', 'Jodhpur', 'Udaipur', 'Kota', 'Ajmer', 'Bikaner', 'Sikar', 'Delhi', 'Mumbai', 'Bengaluru', 'Pune', 'Ahmedabad'
+  ];
+
+  const [country, setCountry] = useState(state.onboardingData?.country || 'India');
+  const [residentState, setResidentState] = useState(state.onboardingData?.residentState || 'Rajasthan');
+  const [residentCity, setResidentCity] = useState(state.onboardingData?.residentCity || 'Jaipur');
+
+  const [showCountryModal, setShowCountryModal] = useState(false);
+  const [showStateModal, setShowStateModal] = useState(false);
+  const [showCityModal, setShowCityModal] = useState(false);
+  const [citySearch, setCitySearch] = useState('');
 
   const handleNext = () => {
-    dispatch({ type: 'UPDATE_ONBOARDING', payload: formData });
+    dispatch({
+      type: 'UPDATE_ONBOARDING',
+      payload: { country, residentState, residentCity },
+    });
     router.push('/(auth)/onboarding/step6');
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#333" />
+          <Ionicons name="arrow-back" size={24} color="#111111" />
         </TouchableOpacity>
-        <View style={styles.progressWrapper}>
-          <View style={styles.progressContainer}>
-            <View style={[styles.progressBar, { width: `${(5/13)*100}%` }]} />
-          </View>
-          <Text style={styles.progressText}>Step 5 of 13</Text>
+        <View style={styles.headerTitleRow}>
+          <PatrikaRibbonLogo size={26} />
+          <Text style={styles.headerBrand}>Patrika Matrimony</Text>
         </View>
+        <Text style={styles.stepIndicator}>5/13</Text>
       </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>Location</Text>
-        
-        <View style={styles.field}>
-          <Text style={styles.label}>Country</Text>
+      {/* Progress Bar */}
+      <View style={styles.progressTrack}>
+        <View style={[styles.progressBar, { width: `${(5 / 13) * 100}%` }]} />
+      </View>
+
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        <Text style={styles.title}>{t.step5Title}</Text>
+        <Text style={styles.subtitle}>{t.step5Subtitle}</Text>
+
+        {/* Country Dropdown */}
+        <View style={styles.fieldGroup}>
+          <Text style={styles.fieldLabel}>{t.country}</Text>
+          <TouchableOpacity
+            style={styles.dropdownTrigger}
+            onPress={() => setShowCountryModal(true)}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.dropdownValueText}>{country || t.selectCountry}</Text>
+            <Ionicons name="chevron-down" size={20} color="#666666" />
+          </TouchableOpacity>
+        </View>
+
+        {/* State Dropdown */}
+        <View style={styles.fieldGroup}>
+          <Text style={styles.fieldLabel}>{t.state}</Text>
+          <TouchableOpacity
+            style={styles.dropdownTrigger}
+            onPress={() => setShowStateModal(true)}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.dropdownValueText}>{residentState || t.selectState}</Text>
+            <Ionicons name="chevron-down" size={20} color="#666666" />
+          </TouchableOpacity>
+        </View>
+
+        {/* City Input & Dropdown */}
+        <View style={styles.fieldGroup}>
+          <Text style={styles.fieldLabel}>{t.city}</Text>
+          <TouchableOpacity
+            style={styles.dropdownTrigger}
+            onPress={() => setShowCityModal(true)}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.dropdownValueText}>{residentCity || t.selectCity}</Text>
+            <Ionicons name="chevron-down" size={20} color="#666666" />
+          </TouchableOpacity>
+
+          {/* Popular Cities Suggestion Chips */}
+          <Text style={styles.popularTitle}>{t.popularCities}:</Text>
           <View style={styles.chipGrid}>
-            {['India', 'USA', 'UK', 'Canada', 'UAE', 'Australia', 'Other'].map(c => (
-              <TouchableOpacity key={c} style={[styles.chip, formData.country === c && styles.chipSelected]}
-                onPress={() => setFormData({...formData, country: c})}>
-                <Text style={[styles.chipText, formData.country === c && styles.chipTextSelected]}>{c}</Text>
-              </TouchableOpacity>
-            ))}
+            {popularCities.map((c) => {
+              const isSel = residentCity === c;
+              return (
+                <TouchableOpacity
+                  key={c}
+                  style={[styles.smallChip, isSel && styles.smallChipSelected]}
+                  onPress={() => setResidentCity(c)}
+                  activeOpacity={0.8}
+                >
+                  <Text style={[styles.smallChipText, isSel && styles.smallChipTextSelected]}>{c}</Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </View>
-
-        <View style={styles.field}>
-          <Text style={styles.label}>Resident State</Text>
-          <TextInput 
-            style={styles.input} 
-            placeholder="e.g. Rajasthan" 
-            value={formData.state} 
-            onChangeText={(t) => setFormData({...formData, state: t})} 
-          />
-        </View>
-
-        <View style={styles.field}>
-          <Text style={styles.label}>Resident City</Text>
-          <TextInput 
-            style={styles.input} 
-            placeholder="e.g. Jaipur" 
-            value={formData.city} 
-            onChangeText={(t) => setFormData({...formData, city: t})} 
-          />
-          
-          <Text style={styles.subLabel}>Popular in Rajasthan:</Text>
-          <View style={styles.chipGrid}>
-            {rajasthanCities.map(c => (
-              <TouchableOpacity key={c} style={styles.smallChip} onPress={() => setFormData({...formData, city: c})}>
-                <Text style={styles.smallChipText}>{c}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-
       </ScrollView>
 
+      {/* Country Modal */}
+      <Modal visible={showCountryModal} transparent animationType="slide">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Select Country</Text>
+              <TouchableOpacity onPress={() => setShowCountryModal(false)}>
+                <Ionicons name="close" size={24} color="#111111" />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView style={{ maxHeight: 300 }}>
+              {countriesList.map((c) => (
+                <TouchableOpacity
+                  key={c}
+                  style={[styles.modalOptionItem, country === c && styles.modalOptionSelected]}
+                  onPress={() => {
+                    setCountry(c);
+                    setShowCountryModal(false);
+                  }}
+                >
+                  <Text style={[styles.modalOptionText, country === c && styles.modalOptionTextSelected]}>{c}</Text>
+                  {country === c && <Ionicons name="checkmark" size={20} color="#E31837" />}
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
+      {/* State Modal */}
+      <Modal visible={showStateModal} transparent animationType="slide">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Select State</Text>
+              <TouchableOpacity onPress={() => setShowStateModal(false)}>
+                <Ionicons name="close" size={24} color="#111111" />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView style={{ maxHeight: 320 }}>
+              {statesList.map((s) => (
+                <TouchableOpacity
+                  key={s}
+                  style={[styles.modalOptionItem, residentState === s && styles.modalOptionSelected]}
+                  onPress={() => {
+                    setResidentState(s);
+                    setShowStateModal(false);
+                  }}
+                >
+                  <Text style={[styles.modalOptionText, residentState === s && styles.modalOptionTextSelected]}>{s}</Text>
+                  {residentState === s && <Ionicons name="checkmark" size={20} color="#E31837" />}
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
+      {/* City Modal */}
+      <Modal visible={showCityModal} transparent animationType="slide">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Select City</Text>
+              <TouchableOpacity onPress={() => setShowCityModal(false)}>
+                <Ionicons name="close" size={24} color="#111111" />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.searchBox}>
+              <Ionicons name="search-outline" size={18} color="#666666" style={{ marginRight: 8 }} />
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Type or search city..."
+                value={citySearch}
+                onChangeText={setCitySearch}
+                placeholderTextColor="#999999"
+              />
+            </View>
+
+            <ScrollView style={{ maxHeight: 320 }}>
+              {popularCities
+                .filter((c) => c.toLowerCase().includes(citySearch.toLowerCase()))
+                .map((c) => (
+                  <TouchableOpacity
+                    key={c}
+                    style={[styles.modalOptionItem, residentCity === c && styles.modalOptionSelected]}
+                    onPress={() => {
+                      setResidentCity(c);
+                      setShowCityModal(false);
+                    }}
+                  >
+                    <Text style={[styles.modalOptionText, residentCity === c && styles.modalOptionTextSelected]}>{c}</Text>
+                    {residentCity === c && <Ionicons name="checkmark" size={20} color="#E31837" />}
+                  </TouchableOpacity>
+                ))}
+              {citySearch.length > 0 && (
+                <TouchableOpacity
+                  style={styles.modalOptionItem}
+                  onPress={() => {
+                    setResidentCity(citySearch);
+                    setShowCityModal(false);
+                  }}
+                >
+                  <Text style={{ color: '#E31837', fontWeight: '700' }}>Use "{citySearch}"</Text>
+                </TouchableOpacity>
+              )}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Footer CTA */}
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.nextBtn} onPress={handleNext}>
-          <Text style={styles.nextBtnText}>Continue</Text>
+        <TouchableOpacity style={styles.nextBtn} onPress={handleNext} activeOpacity={0.88}>
+          <Text style={styles.nextBtnText}>{t.continue}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -88,27 +249,198 @@ export default function Step5() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F5F5F5' },
-  header: { flexDirection: 'row', alignItems: 'center', padding: 16, backgroundColor: '#FFF', borderBottomWidth: 1, borderColor: '#EEE' },
-  backBtn: { padding: 8, marginRight: 16 },
-  progressWrapper: { flex: 1 },
-  progressContainer: { height: 6, backgroundColor: '#EEE', borderRadius: 3, overflow: 'hidden', marginBottom: 4 },
-  progressBar: { height: '100%', backgroundColor: '#C0392B' },
-  progressText: { fontSize: 12, color: '#666', textAlign: 'right' },
-  content: { padding: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', color: '#333', marginBottom: 24 },
-  field: { marginBottom: 20 },
-  label: { fontSize: 16, fontWeight: '600', color: '#444', marginBottom: 8 },
-  subLabel: { fontSize: 14, color: '#888', marginTop: 12, marginBottom: 8 },
-  chipGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  chip: { paddingVertical: 10, paddingHorizontal: 16, backgroundColor: '#FFF', borderWidth: 1, borderColor: '#DDD', borderRadius: 20, marginBottom: 8, marginRight: 8 },
-  chipSelected: { borderColor: '#C0392B', backgroundColor: '#FFF0F0' },
-  chipText: { color: '#666', fontSize: 14 },
-  chipTextSelected: { color: '#C0392B', fontWeight: 'bold' },
-  smallChip: { paddingVertical: 6, paddingHorizontal: 12, backgroundColor: '#EFEFEF', borderRadius: 16, marginBottom: 8, marginRight: 8 },
-  smallChipText: { color: '#555', fontSize: 13 },
-  input: { backgroundColor: '#FFF', borderWidth: 1, borderColor: '#DDD', padding: 14, borderRadius: 8, fontSize: 16 },
-  footer: { padding: 20, backgroundColor: '#FFF', borderTopWidth: 1, borderColor: '#EEE' },
-  nextBtn: { backgroundColor: '#C0392B', paddingVertical: 16, borderRadius: 8, alignItems: 'center' },
-  nextBtnText: { color: '#FFF', fontSize: 18, fontWeight: 'bold' }
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+  },
+  backBtn: {
+    padding: 4,
+  },
+  headerTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  headerBrand: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#E31837',
+  },
+  stepIndicator: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#666666',
+  },
+  progressTrack: {
+    height: 4,
+    backgroundColor: '#F2F2F7',
+    width: '100%',
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: '#E31837',
+  },
+  content: {
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 40,
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: '800',
+    color: '#111111',
+    letterSpacing: -0.5,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#666666',
+    marginTop: 6,
+    marginBottom: 24,
+  },
+  fieldGroup: {
+    marginBottom: 22,
+  },
+  fieldLabel: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#111111',
+    marginBottom: 10,
+  },
+  dropdownTrigger: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FAFAFA',
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+  },
+  dropdownValueText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#111111',
+  },
+  popularTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#666666',
+    marginTop: 14,
+    marginBottom: 10,
+  },
+  chipGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  smallChip: {
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 16,
+    backgroundColor: '#F2F2F7',
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  smallChipSelected: {
+    backgroundColor: '#FFF5F6',
+    borderColor: '#E31837',
+  },
+  smallChipText: {
+    fontSize: 13,
+    color: '#555555',
+    fontWeight: '500',
+  },
+  smallChipTextSelected: {
+    color: '#E31837',
+    fontWeight: '700',
+  },
+
+  // Modal styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContainer: {
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    padding: 20,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#111111',
+  },
+  searchBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F2F2F7',
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginBottom: 14,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 14,
+    color: '#111111',
+  },
+  modalOptionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    borderBottomWidth: 1,
+    borderColor: '#F2F2F7',
+  },
+  modalOptionSelected: {
+    backgroundColor: '#FFF5F6',
+  },
+  modalOptionText: {
+    fontSize: 15,
+    color: '#333333',
+  },
+  modalOptionTextSelected: {
+    color: '#E31837',
+    fontWeight: '700',
+  },
+  footer: {
+    paddingHorizontal: 24,
+    paddingVertical: 20,
+    backgroundColor: '#FFFFFF',
+    borderTopWidth: 1,
+    borderColor: '#F2F2F7',
+  },
+  nextBtn: {
+    backgroundColor: '#E31837',
+    paddingVertical: 16,
+    borderRadius: 28,
+    alignItems: 'center',
+    shadowColor: '#E31837',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  nextBtnText: {
+    color: '#FFFFFF',
+    fontSize: 17,
+    fontWeight: '700',
+  },
 });

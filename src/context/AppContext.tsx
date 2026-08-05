@@ -72,6 +72,7 @@ interface AppState {
   searchFilters: SearchFilters;
   onboardingData: Partial<Profile>;
   onboardingStep: number;
+  language: 'en' | 'hi';
 }
 
 export interface SearchFilters {
@@ -102,7 +103,8 @@ export type AppAction =
   | { type: 'SET_FILTERS'; payload: Partial<SearchFilters> }
   | { type: 'RESET_FILTERS' }
   | { type: 'UPDATE_ONBOARDING'; payload: Partial<Profile> }
-  | { type: 'SET_ONBOARDING_STEP'; payload: number };
+  | { type: 'SET_ONBOARDING_STEP'; payload: number }
+  | { type: 'SET_LANGUAGE'; payload: 'en' | 'hi' };
 
 const defaultFilters: SearchFilters = {
   minAge: 21,
@@ -132,10 +134,13 @@ const initialState: AppState = {
   searchFilters: defaultFilters,
   onboardingData: {},
   onboardingStep: 1,
+  language: 'en',
 };
 
 function reducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
+    case 'SET_LANGUAGE':
+      return { ...state, language: action.payload };
     case 'LOGIN':
       return { ...state, isLoggedIn: true, currentUser: action.payload };
     case 'LOGOUT':

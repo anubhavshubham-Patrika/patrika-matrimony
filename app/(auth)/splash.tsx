@@ -1,11 +1,17 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated, SafeAreaView } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useApp } from '../../src/context/AppContext';
+import { Translations } from '../../src/constants/translations';
 import PatrikaRibbonLogo from '../../src/components/PatrikaRibbonLogo';
 import LanguageToggle from '../../src/components/LanguageToggle';
 
 export default function SplashScreen() {
   const router = useRouter();
+  const { state } = useApp();
+  const lang = state.language || 'en';
+  const t = Translations[lang];
+
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.9)).current;
 
@@ -29,7 +35,7 @@ export default function SplashScreen() {
       {/* Top Bar with Language Selector */}
       <View style={styles.topHeader}>
         <View style={{ flex: 1 }} />
-        <LanguageToggle initialLanguage="en" />
+        <LanguageToggle />
       </View>
 
       {/* Main Content Area */}
@@ -37,10 +43,10 @@ export default function SplashScreen() {
         <Animated.View style={[styles.logoWrapper, { opacity: fadeAnim, transform: [{ scale: scaleAnim }] }]}>
           <PatrikaRibbonLogo size={110} style={{ marginBottom: 40 }} />
 
-          <Text style={styles.welcomeText}>Welcome to</Text>
-          <Text style={styles.brandTitle}>Patrika Matrimony</Text>
+          <Text style={styles.welcomeText}>{t.welcomeTo}</Text>
+          <Text style={styles.brandTitle}>{t.brandName}</Text>
 
-          <Text style={styles.taglineText}>Trusted matches from Rajasthan Patrika</Text>
+          <Text style={styles.taglineText}>{t.tagline}</Text>
         </Animated.View>
       </View>
 
@@ -51,7 +57,7 @@ export default function SplashScreen() {
           onPress={() => router.push('/(auth)/onboarding/step1')}
           activeOpacity={0.88}
         >
-          <Text style={styles.primaryPillText}>Let's Start</Text>
+          <Text style={styles.primaryPillText}>{t.letsStart}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -59,7 +65,10 @@ export default function SplashScreen() {
           onPress={() => router.push('/(auth)/login')}
           activeOpacity={0.7}
         >
-          <Text style={styles.secondaryLinkText}>Already have an account? <Text style={styles.secondaryBold}>Login</Text></Text>
+          <Text style={styles.secondaryLinkText}>
+            {t.alreadyHaveAccount}{' '}
+            <Text style={styles.secondaryBold}>{t.login}</Text>
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
