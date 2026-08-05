@@ -27,34 +27,39 @@ export default function WelcomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <PatrikaRibbonLogo size={100} style={{ marginBottom: 28 }} />
-
-        <View style={styles.iconContainer}>
-          <Ionicons name="checkmark-circle" size={80} color="#786C10" />
-        </View>
-
-        <Text style={styles.title}>Welcome to Patrika Matrimony!</Text>
-        <Text style={styles.subtitle}>Your royal profile has been created successfully</Text>
-
-        <View style={styles.tipsContainer}>
-          <View style={styles.tipRow}>
-            <Ionicons name="checkmark-circle" size={22} color="#6B0000" style={styles.tipIcon} />
-            <Text style={styles.tipText}>Complete verification to get 5x more responses</Text>
+        <View style={styles.formCard}>
+          <View style={styles.cardHeaderBanner}>
+            <PatrikaRibbonLogo size={80} style={{ alignSelf: 'center', marginBottom: 10 }} />
+            <Text style={styles.cardHeaderTitle}>Welcome to Patrika Matrimony!</Text>
+            <Text style={styles.cardHeaderSubtitle}>Your profile has been created successfully</Text>
           </View>
-          <View style={styles.tipRow}>
-            <Ionicons name="checkmark-circle" size={22} color="#6B0000" style={styles.tipIcon} />
-            <Text style={styles.tipText}>Explore matches based on your preferences</Text>
-          </View>
-          <View style={styles.tipRow}>
-            <Ionicons name="checkmark-circle" size={22} color="#6B0000" style={styles.tipIcon} />
-            <Text style={styles.tipText}>Link your Rajasthan Patrika newspaper ad</Text>
+
+          <View style={styles.cardBody}>
+            <View style={styles.iconContainer}>
+              <Ionicons name="checkmark-circle" size={72} color="#1E8449" />
+            </View>
+
+            <View style={styles.tipsContainer}>
+              <View style={styles.tipRow}>
+                <Ionicons name="checkmark-circle" size={20} color="#E91E63" style={styles.tipIcon} />
+                <Text style={styles.tipText}>Complete verification to get 5x more responses</Text>
+              </View>
+              <View style={styles.tipRow}>
+                <Ionicons name="checkmark-circle" size={20} color="#E91E63" style={styles.tipIcon} />
+                <Text style={styles.tipText}>Explore matches based on your preferences</Text>
+              </View>
+              <View style={styles.tipRow}>
+                <Ionicons name="checkmark-circle" size={20} color="#E91E63" style={styles.tipIcon} />
+                <Text style={styles.tipText}>Link your Rajasthan Patrika newspaper ad</Text>
+              </View>
+            </View>
           </View>
         </View>
       </View>
 
       <View style={styles.footer}>
         <TouchableOpacity style={styles.btn} onPress={handleStart} activeOpacity={0.88}>
-          <Text style={styles.btnText}>Start Exploring Matches</Text>
+          <Text style={styles.btnText}>Start Exploring Matches →</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -64,74 +69,95 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAF6F0',
+    backgroundColor: '#FFF4F6',
   },
   content: {
     flex: 1,
     justifyContent: 'center',
+    paddingHorizontal: 16,
+  },
+  formCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#EFE6DD',
+    shadowColor: '#2C1A1D',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 4,
+  },
+  cardHeaderBanner: {
+    backgroundColor: '#E91E63',
+    paddingHorizontal: 20,
+    paddingVertical: 24,
     alignItems: 'center',
-    paddingHorizontal: 24,
+  },
+  cardHeaderTitle: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    fontFamily: 'serif',
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  cardHeaderSubtitle: {
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.85)',
+    textAlign: 'center',
+  },
+  cardBody: {
+    padding: 20,
+    alignItems: 'center',
   },
   iconContainer: {
     marginBottom: 16,
   },
-  title: {
-    fontSize: 26,
-    fontWeight: '800',
-    color: '#200D08',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 15,
-    color: '#665544',
-    textAlign: 'center',
-    marginBottom: 32,
-  },
   tipsContainer: {
     width: '100%',
-    backgroundColor: '#FFFDF9',
-    padding: 20,
-    borderRadius: 20,
+    backgroundColor: '#FAF5F7',
+    padding: 16,
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#EFE6DD',
   },
   tipRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 14,
+    marginBottom: 12,
   },
   tipIcon: {
-    marginRight: 12,
+    marginRight: 10,
   },
   tipText: {
-    fontSize: 14,
-    color: '#200D08',
+    fontSize: 13,
+    color: '#2C1A1D',
     fontWeight: '600',
     flex: 1,
-    lineHeight: 20,
+    lineHeight: 18,
   },
   footer: {
-    paddingHorizontal: 24,
-    paddingVertical: 20,
-    backgroundColor: '#FFFDF9',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#EFE6DD',
   },
   btn: {
-    backgroundColor: '#6B0000',
+    backgroundColor: '#E91E63',
     paddingVertical: 16,
-    borderRadius: 28,
+    borderRadius: 14,
     alignItems: 'center',
-    shadowColor: '#6B0000',
+    shadowColor: '#E91E63',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 4,
   },
   btnText: {
-    color: '#FFFDF9',
-    fontSize: 17,
-    fontWeight: '700',
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '800',
   },
 });
