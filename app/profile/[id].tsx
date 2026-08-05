@@ -52,7 +52,7 @@ const ProfileDetailScreen = () => {
   if (!profile) {
     return (
       <View style={styles.loadingContainer}>
-        <Text style={{ color: '#200D08' }}>Loading profile...</Text>
+        <Text style={{ color: '#2C1A1D' }}>Loading profile...</Text>
       </View>
     );
   }
@@ -71,7 +71,7 @@ const ProfileDetailScreen = () => {
   const handleLockedAction = (actionName: string) => {
     if (isFreePlan) {
       setBottomSheetContent({
-        title: 'Upgrade to Rajgharana Gold',
+        title: 'Upgrade to Patrika Gold',
         desc: `Upgrade your plan to Gold to unlock ${actionName} and connect directly.`
       });
       setBottomSheetVisible(true);
@@ -80,15 +80,15 @@ const ProfileDetailScreen = () => {
 
   const showVerificationInfo = (badge: string) => {
     setBottomSheetContent({
-      title: `Royal ${badge} Verified`,
-      desc: `This user has successfully verified their ${badge.toLowerCase()} with us.`
+      title: `${badge} Verified Profile`,
+      desc: `This member has successfully verified their ${badge.toLowerCase()} with Patrika Matrimony.`
     });
     setBottomSheetVisible(true);
   };
 
   const renderSectionHeader = (title: string, icon: keyof typeof Ionicons.glyphMap) => (
     <View style={styles.sectionHeader}>
-      <Ionicons name={icon} size={20} color="#6B0000" style={styles.sectionIcon} />
+      <Ionicons name={icon} size={20} color="#E91E63" style={styles.sectionIcon} />
       <Text style={styles.sectionTitle}>{title}</Text>
     </View>
   );
@@ -96,7 +96,7 @@ const ProfileDetailScreen = () => {
   const renderDetailRow = (icon: keyof typeof MaterialCommunityIcons.glyphMap, label: string, value: string) => (
     <View style={styles.detailRow}>
       <View style={styles.detailLabelContainer}>
-        <MaterialCommunityIcons name={icon} size={18} color="#786C10" style={styles.detailIcon} />
+        <MaterialCommunityIcons name={icon} size={18} color="#C5A059" style={styles.detailIcon} />
         <Text style={styles.detailLabel}>{label}</Text>
       </View>
       <Text style={styles.detailValue}>{value || 'Not Specified'}</Text>
@@ -117,10 +117,10 @@ const ProfileDetailScreen = () => {
           
           <View style={styles.heroTopBar}>
             <TouchableOpacity style={styles.iconButton} onPress={() => router.back()}>
-              <Ionicons name="arrow-back" size={24} color="#FFFDF9" />
+              <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.iconButton}>
-              <Ionicons name="share-social" size={24} color="#FFFDF9" />
+              <Ionicons name="share-social" size={24} color="#FFFFFF" />
             </TouchableOpacity>
           </View>
 
@@ -140,15 +140,15 @@ const ProfileDetailScreen = () => {
         <View style={styles.basicInfoCard}>
           <View style={styles.nameRow}>
             <Text style={styles.nameText}>{profile.name}, {profile.age}</Text>
-            {profile.matchPercentage && (
+            {profile.matchScore && (
               <View style={styles.matchBadge}>
-                <Text style={styles.matchText}>{profile.matchPercentage}% Match</Text>
+                <Text style={styles.matchText}>• {profile.matchScore}% Match</Text>
               </View>
             )}
           </View>
           
           <View style={styles.locationRow}>
-            <Ionicons name="location" size={16} color="#786C10" />
+            <Ionicons name="location-outline" size={16} color="#8C7A7C" />
             <Text style={styles.locationText}>{profile.residentCity}, {profile.residentState}</Text>
           </View>
           
@@ -164,20 +164,14 @@ const ProfileDetailScreen = () => {
           <View style={styles.verificationRow}>
             {profile.verifications?.mobile && (
               <TouchableOpacity onPress={() => showVerificationInfo('Mobile')} style={styles.verificationBadge}>
-                <Ionicons name="phone-portrait" size={12} color="#786C10" />
-                <Text style={styles.verificationText}>Mobile</Text>
+                <Ionicons name="phone-portrait" size={12} color="#1E8449" />
+                <Text style={styles.verificationText}>Mobile Verified</Text>
               </TouchableOpacity>
             )}
-            {profile.verifications?.email && (
-              <TouchableOpacity onPress={() => showVerificationInfo('Email')} style={styles.verificationBadge}>
-                <Ionicons name="mail" size={12} color="#786C10" />
-                <Text style={styles.verificationText}>Email</Text>
-              </TouchableOpacity>
-            )}
-            {profile.verifications?.document && (
-              <TouchableOpacity onPress={() => showVerificationInfo('Document')} style={styles.verificationBadge}>
-                <Ionicons name="document-text" size={12} color="#786C10" />
-                <Text style={styles.verificationText}>Royal ID</Text>
+            {profile.isVerified && (
+              <TouchableOpacity onPress={() => showVerificationInfo('Govt ID')} style={styles.verificationBadge}>
+                <Ionicons name="shield-checkmark" size={12} color="#1E8449" />
+                <Text style={styles.verificationText}>Selfie & Govt ID</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -190,7 +184,7 @@ const ProfileDetailScreen = () => {
             onPress={() => setIsShortlisted(!isShortlisted)}
           >
             <View style={[styles.actionIconCircle, isShortlisted && styles.actionIconCircleActive]}>
-              <Ionicons name={isShortlisted ? "star" : "star-outline"} size={22} color={isShortlisted ? "#FFFDF9" : "#786C10"} />
+              <Ionicons name={isShortlisted ? "heart" : "heart-outline"} size={22} color={isShortlisted ? "#FFFFFF" : "#E91E63"} />
             </View>
             <Text style={styles.actionBtnText}>Shortlist</Text>
           </TouchableOpacity>
@@ -200,7 +194,7 @@ const ProfileDetailScreen = () => {
             onPress={() => setInterestSent(!interestSent)}
           >
             <View style={[styles.actionIconCircle, interestSent && styles.actionIconCircleInterest]}>
-              <MaterialCommunityIcons name="handshake" size={22} color={interestSent ? "#FFFDF9" : "#6B0000"} />
+              <MaterialCommunityIcons name="handshake" size={22} color={interestSent ? "#FFFFFF" : "#E91E63"} />
             </View>
             <Text style={styles.actionBtnText}>{interestSent ? 'Sent' : 'Interest'}</Text>
           </TouchableOpacity>
@@ -210,8 +204,8 @@ const ProfileDetailScreen = () => {
             onPress={() => handleLockedAction('Messaging')}
           >
             <View style={styles.actionIconCircle}>
-              <Ionicons name="chatbubble" size={20} color={isFreePlan ? "#8C7B6B" : "#6B0000"} />
-              {isFreePlan && <Ionicons name="lock-closed" size={12} color="#6B0000" style={styles.lockIcon} />}
+              <Ionicons name="chatbubble" size={20} color={isFreePlan ? "#8C7A7C" : "#E91E63"} />
+              {isFreePlan && <Ionicons name="lock-closed" size={12} color="#E91E63" style={styles.lockIcon} />}
             </View>
             <Text style={styles.actionBtnText}>Message</Text>
           </TouchableOpacity>
@@ -221,8 +215,8 @@ const ProfileDetailScreen = () => {
             onPress={() => handleLockedAction('Calling')}
           >
             <View style={styles.actionIconCircle}>
-              <Ionicons name="call" size={20} color={isFreePlan ? "#8C7B6B" : "#6B0000"} />
-              {isFreePlan && <Ionicons name="lock-closed" size={12} color="#6B0000" style={styles.lockIcon} />}
+              <Ionicons name="call" size={20} color={isFreePlan ? "#8C7A7C" : "#E91E63"} />
+              {isFreePlan && <Ionicons name="lock-closed" size={12} color="#E91E63" style={styles.lockIcon} />}
             </View>
             <Text style={styles.actionBtnText}>Call</Text>
           </TouchableOpacity>
@@ -294,10 +288,10 @@ const ProfileDetailScreen = () => {
             activeOpacity={0.7}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Ionicons name="star" size={20} color="#6B0000" style={styles.sectionIcon} />
+              <Ionicons name="star" size={20} color="#E91E63" style={styles.sectionIcon} />
               <Text style={styles.sectionTitle}>Horoscope Details</Text>
             </View>
-            <Ionicons name={isHoroscopeExpanded ? "chevron-up" : "chevron-down"} size={20} color="#665544" />
+            <Ionicons name={isHoroscopeExpanded ? "chevron-up" : "chevron-down"} size={20} color="#5A4A4D" />
           </TouchableOpacity>
           
           {isHoroscopeExpanded && (
@@ -323,56 +317,10 @@ const ProfileDetailScreen = () => {
           </View>
         )}
 
-        {/* 11. Verification Section */}
-        <View style={styles.sectionContainer}>
-          {renderSectionHeader('Royal Verification', 'shield-checkmark')}
-          <View style={styles.verificationCard}>
-            <TouchableOpacity style={styles.verifRow} onPress={() => showVerificationInfo('Mobile')}>
-              <View style={styles.verifLeft}>
-                <Ionicons name="phone-portrait-outline" size={20} color="#665544" />
-                <Text style={styles.verifLabel}>Mobile Number</Text>
-              </View>
-              {profile.verifications?.mobile ? (
-                <View style={styles.verifStatusGreen}><Ionicons name="checkmark-circle" size={16} color="#786C10" /><Text style={styles.verifStatusTextGreen}>Verified</Text></View>
-              ) : (
-                <View style={styles.verifStatusGray}><Ionicons name="close-circle" size={16} color="#8C7B6B" /><Text style={styles.verifStatusTextGray}>Pending</Text></View>
-              )}
-            </TouchableOpacity>
-            
-            <View style={styles.divider} />
-            
-            <TouchableOpacity style={styles.verifRow} onPress={() => showVerificationInfo('Email')}>
-              <View style={styles.verifLeft}>
-                <Ionicons name="mail-outline" size={20} color="#665544" />
-                <Text style={styles.verifLabel}>Email Address</Text>
-              </View>
-              {profile.verifications?.email ? (
-                <View style={styles.verifStatusGreen}><Ionicons name="checkmark-circle" size={16} color="#786C10" /><Text style={styles.verifStatusTextGreen}>Verified</Text></View>
-              ) : (
-                <View style={styles.verifStatusGray}><Ionicons name="close-circle" size={16} color="#8C7B6B" /><Text style={styles.verifStatusTextGray}>Pending</Text></View>
-              )}
-            </TouchableOpacity>
-            
-            <View style={styles.divider} />
-            
-            <TouchableOpacity style={styles.verifRow} onPress={() => showVerificationInfo('Govt ID')}>
-              <View style={styles.verifLeft}>
-                <Ionicons name="document-text-outline" size={20} color="#665544" />
-                <Text style={styles.verifLabel}>Government ID</Text>
-              </View>
-              {profile.verifications?.document ? (
-                <View style={styles.verifStatusGreen}><Ionicons name="checkmark-circle" size={16} color="#786C10" /><Text style={styles.verifStatusTextGreen}>Verified</Text></View>
-              ) : (
-                <View style={styles.verifStatusGray}><Ionicons name="close-circle" size={16} color="#8C7B6B" /><Text style={styles.verifStatusTextGray}>Pending</Text></View>
-              )}
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* 12. Photos Gallery */}
+        {/* 11. Photos Gallery */}
         {photos.length > 0 && (
           <View style={styles.sectionContainer}>
-            {renderSectionHeader('Photos', 'images')}
+            {renderSectionHeader('Photos Gallery', 'images')}
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.galleryScroll}>
               {photos.map((photoUrl: string, index: number) => (
                 <TouchableOpacity key={index} onPress={() => { setCurrentPhotoIndex(index); setGalleryFullscreenVisible(true); }}>
@@ -391,8 +339,8 @@ const ProfileDetailScreen = () => {
           style={[styles.footerBtn, interestSent && styles.footerBtnActive]} 
           onPress={() => setInterestSent(!interestSent)}
         >
-          <MaterialCommunityIcons name={interestSent ? "check-circle" : "handshake"} size={20} color={interestSent ? "#786C10" : "#6B0000"} />
-          <Text style={[styles.footerBtnText, interestSent ? { color: "#786C10" } : { color: "#6B0000" }]}>
+          <MaterialCommunityIcons name={interestSent ? "check-circle" : "handshake"} size={20} color={interestSent ? "#E91E63" : "#E91E63"} />
+          <Text style={styles.footerBtnText}>
             {interestSent ? 'Interest Sent' : 'Send Interest'}
           </Text>
         </TouchableOpacity>
@@ -403,7 +351,7 @@ const ProfileDetailScreen = () => {
           style={styles.footerBtn}
           onPress={() => handleLockedAction('Messaging')}
         >
-          <Ionicons name="chatbubble-ellipses-outline" size={20} color="#6B0000" />
+          <Ionicons name="chatbubble-ellipses-outline" size={20} color="#E91E63" />
           <Text style={styles.footerBtnText}>Message</Text>
         </TouchableOpacity>
       </View>
@@ -430,7 +378,7 @@ const ProfileDetailScreen = () => {
       <Modal visible={galleryFullscreenVisible} transparent animationType="slide">
         <View style={styles.fullScreenGallery}>
           <TouchableOpacity style={styles.closeGalleryBtn} onPress={() => setGalleryFullscreenVisible(false)}>
-            <Ionicons name="close" size={30} color="#FFFDF9" />
+            <Ionicons name="close" size={30} color="#FFFFFF" />
           </TouchableOpacity>
           <Image source={{ uri: photos[currentPhotoIndex] }} style={styles.fullScreenImage} resizeMode="contain" />
         </View>
@@ -443,17 +391,17 @@ const ProfileDetailScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAF6F0',
+    backgroundColor: '#F9F6F0',
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FAF6F0',
+    backgroundColor: '#F9F6F0',
   },
   heroContainer: {
     width: '100%',
-    height: 360,
+    height: 380,
     position: 'relative',
   },
   heroImage: {
@@ -463,7 +411,7 @@ const styles = StyleSheet.create({
   },
   heroOverlay: {
     ...StyleSheet.absoluteFill,
-    backgroundColor: 'rgba(32,13,8,0.25)',
+    backgroundColor: 'rgba(44,26,29,0.25)',
     top: 200,
   },
   heroTopBar: {
@@ -478,13 +426,13 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(32,13,8,0.4)',
+    backgroundColor: 'rgba(44,26,29,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   paginationDots: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 24,
     left: 0,
     right: 0,
     flexDirection: 'row',
@@ -494,22 +442,22 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: 'rgba(255,253,249,0.5)',
+    backgroundColor: 'rgba(255,255,255,0.5)',
     marginHorizontal: 4,
   },
   activeDot: {
-    backgroundColor: '#FCD04B',
+    backgroundColor: '#E91E63',
     width: 20,
   },
   basicInfoCard: {
-    backgroundColor: '#FFFDF9',
+    backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     marginTop: -20,
     padding: 20,
     borderWidth: 1,
-    borderColor: '#E2D7C7',
-    shadowColor: '#6B0000',
+    borderColor: '#EFE6DD',
+    shadowColor: '#2C1A1D',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
@@ -524,19 +472,18 @@ const styles = StyleSheet.create({
   nameText: {
     fontSize: 24,
     fontWeight: '800',
-    color: '#200D08',
+    color: '#2C1A1D',
+    fontFamily: 'serif',
   },
   matchBadge: {
-    backgroundColor: '#FFF9E6',
-    borderWidth: 1,
-    borderColor: '#786C10',
+    backgroundColor: 'rgba(70,50,40,0.65)',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
   },
   matchText: {
-    color: '#786C10',
-    fontSize: 12,
+    color: '#FFFFFF',
+    fontSize: 11,
     fontWeight: '700',
   },
   locationRow: {
@@ -546,7 +493,7 @@ const styles = StyleSheet.create({
   },
   locationText: {
     fontSize: 14,
-    color: '#665544',
+    color: '#5A4A4D',
     marginLeft: 4,
   },
   chipsRow: {
@@ -554,9 +501,9 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   chip: {
-    backgroundColor: '#F5EFE6',
+    backgroundColor: '#FAF5F7',
     borderWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#EFE6DD',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16,
@@ -564,26 +511,26 @@ const styles = StyleSheet.create({
   },
   chipText: {
     fontSize: 12,
-    color: '#3A2A1A',
+    color: '#2C1A1D',
     fontWeight: '600',
   },
   verificationRow: {
     flexDirection: 'row',
+    gap: 8,
   },
   verificationBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF9E6',
+    backgroundColor: '#E8F8F5',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 8,
-    marginRight: 8,
     borderWidth: 1,
-    borderColor: '#786C10',
+    borderColor: '#A3E4D7',
   },
   verificationText: {
     fontSize: 10,
-    color: '#786C10',
+    color: '#1E8449',
     marginLeft: 4,
     fontWeight: '700',
   },
@@ -591,9 +538,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingVertical: 20,
-    backgroundColor: '#FFFDF9',
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: '#E2D7C7',
+    borderBottomColor: '#EFE6DD',
     marginBottom: 10,
   },
   actionBtn: {
@@ -603,42 +550,42 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#F5EFE6',
+    backgroundColor: '#FAF5F7',
     borderWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#EFE6DD',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 8,
     position: 'relative',
   },
   actionIconCircleActive: {
-    backgroundColor: '#786C10',
-    borderColor: '#786C10',
+    backgroundColor: '#E91E63',
+    borderColor: '#E91E63',
   },
   actionIconCircleInterest: {
-    backgroundColor: '#6B0000',
-    borderColor: '#6B0000',
+    backgroundColor: '#E91E63',
+    borderColor: '#E91E63',
   },
   actionBtnText: {
     fontSize: 12,
-    color: '#665544',
+    color: '#5A4A4D',
     fontWeight: '600',
   },
   lockIcon: {
     position: 'absolute',
     bottom: -2,
     right: -2,
-    backgroundColor: '#FAF6F0',
+    backgroundColor: '#F9F6F0',
     borderRadius: 10,
     padding: 2,
   },
   sectionContainer: {
-    backgroundColor: '#FFFDF9',
+    backgroundColor: '#FFFFFF',
     padding: 20,
     marginBottom: 10,
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#EFE6DD',
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -651,26 +598,27 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#200D08',
+    color: '#2C1A1D',
+    fontFamily: 'serif',
   },
   bioText: {
     fontSize: 15,
     lineHeight: 24,
-    color: '#554433',
+    color: '#5A4A4D',
   },
   detailsCard: {
-    backgroundColor: '#F4EEE5',
-    borderRadius: 14,
+    backgroundColor: '#FAF5F7',
+    borderRadius: 16,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#E8DFD3',
+    borderColor: '#EFE6DD',
   },
   detailRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#E2D7C7',
+    borderBottomColor: '#EFE6DD',
   },
   detailLabelContainer: {
     flexDirection: 'row',
@@ -682,12 +630,12 @@ const styles = StyleSheet.create({
   },
   detailLabel: {
     fontSize: 14,
-    color: '#665544',
+    color: '#5A4A4D',
   },
   detailValue: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#200D08',
+    fontWeight: '700',
+    color: '#2C1A1D',
     width: '50%',
     textAlign: 'right',
   },
@@ -701,9 +649,9 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   hobbyChip: {
-    backgroundColor: '#FFF5F6',
+    backgroundColor: '#FFF0F3',
     borderWidth: 1,
-    borderColor: '#6B0000',
+    borderColor: '#E91E63',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
@@ -711,66 +659,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   hobbyText: {
-    color: '#6B0000',
+    color: '#E91E63',
     fontSize: 14,
-    fontWeight: '600',
-  },
-  verificationCard: {
-    borderWidth: 1,
-    borderColor: '#E2D7C7',
-    borderRadius: 14,
-    padding: 16,
-    backgroundColor: '#F4EEE5',
-  },
-  verifRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
-  },
-  verifLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  verifLabel: {
-    fontSize: 15,
-    color: '#200D08',
-    marginLeft: 12,
-    fontWeight: '600',
-  },
-  verifStatusGreen: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFF9E6',
-    borderWidth: 1,
-    borderColor: '#786C10',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  verifStatusTextGreen: {
-    color: '#786C10',
-    fontSize: 12,
     fontWeight: '700',
-    marginLeft: 4,
-  },
-  verifStatusGray: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F5EFE6',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  verifStatusTextGray: {
-    color: '#8C7B6B',
-    fontSize: 12,
-    fontWeight: '600',
-    marginLeft: 4,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#E2D7C7',
   },
   galleryScroll: {
     flexDirection: 'row',
@@ -781,21 +672,21 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginRight: 12,
     borderWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#EFE6DD',
   },
   footerBar: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#FFFDF9',
+    backgroundColor: '#FFFFFF',
     flexDirection: 'row',
     paddingVertical: 16,
     paddingHorizontal: 20,
     borderTopWidth: 1,
-    borderTopColor: '#E2D7C7',
+    borderTopColor: '#EFE6DD',
     alignItems: 'center',
-    shadowColor: '#6B0000',
+    shadowColor: '#2C1A1D',
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
@@ -813,24 +704,24 @@ const styles = StyleSheet.create({
   footerBtnText: {
     marginLeft: 8,
     fontSize: 16,
-    fontWeight: '700',
-    color: '#6B0000',
+    fontWeight: '800',
+    color: '#E91E63',
   },
   footerDivider: {
     width: 1,
     height: 24,
-    backgroundColor: '#E2D7C7',
+    backgroundColor: '#EFE6DD',
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(32,13,8,0.6)',
+    backgroundColor: 'rgba(44,26,29,0.6)',
     justifyContent: 'flex-end',
   },
   modalBg: {
     flex: 1,
   },
   bottomSheet: {
-    backgroundColor: '#FFFDF9',
+    backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     padding: 24,
@@ -840,32 +731,33 @@ const styles = StyleSheet.create({
     width: 40,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#E2D7C7',
+    backgroundColor: '#EFE6DD',
     marginBottom: 16,
   },
   bottomSheetTitle: {
     fontSize: 20,
     fontWeight: '800',
-    color: '#200D08',
+    color: '#2C1A1D',
+    fontFamily: 'serif',
     marginBottom: 8,
   },
   bottomSheetDesc: {
     fontSize: 14,
-    color: '#665544',
+    color: '#5A4A4D',
     textAlign: 'center',
     lineHeight: 20,
     marginBottom: 20,
   },
   bottomSheetBtn: {
-    backgroundColor: '#6B0000',
+    backgroundColor: '#E91E63',
     paddingVertical: 14,
     paddingHorizontal: 32,
     borderRadius: 24,
   },
   bottomSheetBtnText: {
-    color: '#FFFDF9',
+    color: '#FFFFFF',
     fontSize: 15,
-    fontWeight: '700',
+    fontWeight: '800',
   },
   fullScreenGallery: {
     flex: 1,

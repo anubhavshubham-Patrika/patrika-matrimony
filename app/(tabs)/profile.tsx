@@ -32,7 +32,7 @@ export default function ProfileTab() {
   if (!userProfile) {
     return (
       <View style={styles.centerContainer}>
-        <Text style={{ color: '#200D08' }}>Loading Profile...</Text>
+        <Text style={{ color: '#2C1A1D' }}>Loading Profile...</Text>
       </View>
     );
   }
@@ -66,7 +66,7 @@ export default function ProfileTab() {
             <View style={styles.progressBarBg}>
               <View style={[styles.progressBarFill, { width: '75%' }]} />
             </View>
-            <Text style={styles.progressHint}>Complete your profile to get more matches</Text>
+            <Text style={styles.progressHint}>Complete your profile to get 5x more matches</Text>
           </View>
         </View>
 
@@ -123,7 +123,7 @@ export default function ProfileTab() {
         </View>
 
         <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
-          <Ionicons name="log-out-outline" size={24} color="#6B0000" />
+          <Ionicons name="log-out-outline" size={24} color="#E91E63" />
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
         
@@ -137,7 +137,7 @@ export default function ProfileTab() {
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Edit Profile</Text>
               <TouchableOpacity onPress={() => setEditModalVisible(false)}>
-                <Ionicons name="close" size={28} color="#200D08" />
+                <Ionicons name="close" size={28} color="#2C1A1D" />
               </TouchableOpacity>
             </View>
             <ScrollView>
@@ -170,17 +170,17 @@ export default function ProfileTab() {
 const MenuItem = ({ icon, title, onPress }: { icon: any, title: string, onPress?: () => void }) => (
   <TouchableOpacity style={styles.menuItem} onPress={onPress}>
     <View style={styles.menuItemLeft}>
-      <Ionicons name={icon} size={22} color="#665544" />
+      <Ionicons name={icon} size={22} color="#5A4A4D" />
       <Text style={styles.menuItemText}>{title}</Text>
     </View>
-    <Ionicons name="chevron-forward" size={18} color="#8C7B6B" />
+    <Ionicons name="chevron-forward" size={18} color="#8C7A7C" />
   </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAF6F0',
+    backgroundColor: '#F9F6F0',
   },
   centerContainer: {
     flex: 1,
@@ -191,29 +191,30 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   headerContainer: {
-    backgroundColor: '#FFFDF9',
+    backgroundColor: '#FFFFFF',
     padding: 24,
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: '#E2D7C7',
+    borderBottomColor: '#EFE6DD',
   },
   profilePhoto: {
-    width: 84,
-    height: 84,
-    borderRadius: 42,
+    width: 88,
+    height: 88,
+    borderRadius: 44,
     marginBottom: 12,
-    borderWidth: 2,
-    borderColor: '#786C10',
+    borderWidth: 2.5,
+    borderColor: '#E91E63',
   },
   userName: {
     fontSize: 22,
     fontWeight: '800',
-    color: '#200D08',
+    color: '#2C1A1D',
+    fontFamily: 'serif',
     marginBottom: 2,
   },
   userId: {
     fontSize: 13,
-    color: '#8C7B6B',
+    color: '#8C7A7C',
     marginBottom: 12,
   },
   planBadgeContainer: {
@@ -225,39 +226,39 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   freeBadge: {
-    backgroundColor: '#F5EFE6',
+    backgroundColor: '#FAF5F7',
     borderWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#EFE6DD',
   },
   premiumBadge: {
     backgroundColor: '#FFF9E6',
     borderWidth: 1,
-    borderColor: '#786C10',
+    borderColor: '#C5A059',
   },
   planBadgeText: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#786C10',
+    color: '#C5A059',
   },
   upgradeBtn: {
-    backgroundColor: '#6B0000',
+    backgroundColor: '#E91E63',
     paddingHorizontal: 32,
     paddingVertical: 12,
     borderRadius: 24,
     marginBottom: 20,
   },
   upgradeBtnText: {
-    color: '#FFFDF9',
+    color: '#FFFFFF',
     fontSize: 15,
-    fontWeight: '700',
+    fontWeight: '800',
   },
   progressContainer: {
     width: '100%',
-    backgroundColor: '#F5EFE6',
+    backgroundColor: '#FAF5F7',
     padding: 16,
-    borderRadius: 14,
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#EFE6DD',
   },
   progressHeader: {
     flexDirection: 'row',
@@ -267,37 +268,37 @@ const styles = StyleSheet.create({
   progressText: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#200D08',
+    color: '#2C1A1D',
   },
   progressPercent: {
     fontSize: 14,
     fontWeight: '800',
-    color: '#6B0000',
+    color: '#E91E63',
   },
   progressBarBg: {
     height: 6,
-    backgroundColor: '#E2D7C7',
+    backgroundColor: '#EFE6DD',
     borderRadius: 3,
     marginBottom: 8,
   },
   progressBarFill: {
     height: 6,
-    backgroundColor: '#786C10',
+    backgroundColor: '#E91E63',
     borderRadius: 3,
   },
   progressHint: {
     fontSize: 12,
-    color: '#665544',
+    color: '#5A4A4D',
     textAlign: 'center',
   },
   statsContainer: {
     flexDirection: 'row',
-    backgroundColor: '#FFFDF9',
+    backgroundColor: '#FFFFFF',
     marginTop: 12,
     paddingVertical: 16,
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#EFE6DD',
   },
   statBox: {
     flex: 1,
@@ -306,32 +307,34 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 20,
     fontWeight: '800',
-    color: '#6B0000',
+    color: '#E91E63',
+    fontFamily: 'serif',
     marginBottom: 2,
   },
   statLabel: {
     fontSize: 12,
-    color: '#665544',
+    color: '#5A4A4D',
     textAlign: 'center',
   },
   statDivider: {
     width: 1,
-    backgroundColor: '#E2D7C7',
+    backgroundColor: '#EFE6DD',
   },
   menuSection: {
-    backgroundColor: '#FFFDF9',
+    backgroundColor: '#FFFFFF',
     marginTop: 12,
     paddingTop: 16,
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#EFE6DD',
   },
   sectionTitle: {
     fontSize: 15,
     fontWeight: '800',
-    color: '#200D08',
+    color: '#2C1A1D',
     paddingHorizontal: 20,
     marginBottom: 8,
+    fontFamily: 'serif',
   },
   menuItem: {
     flexDirection: 'row',
@@ -340,7 +343,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#F5EFE6',
+    borderBottomColor: '#FAF5F7',
   },
   menuItemLeft: {
     flexDirection: 'row',
@@ -348,7 +351,7 @@ const styles = StyleSheet.create({
   },
   menuItemText: {
     fontSize: 15,
-    color: '#200D08',
+    color: '#2C1A1D',
     marginLeft: 14,
     fontWeight: '500',
   },
@@ -356,17 +359,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFDF9',
+    backgroundColor: '#FFFFFF',
     marginTop: 24,
     paddingVertical: 16,
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#EFE6DD',
   },
   logoutText: {
     fontSize: 16,
     fontWeight: '800',
-    color: '#6B0000',
+    color: '#E91E63',
     marginLeft: 8,
   },
   footerSpace: {
@@ -374,11 +377,11 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(32,13,8,0.6)',
+    backgroundColor: 'rgba(44,26,29,0.6)',
     justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: '#FFFDF9',
+    backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     padding: 24,
@@ -393,27 +396,28 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 20,
     fontWeight: '800',
-    color: '#200D08',
+    color: '#2C1A1D',
+    fontFamily: 'serif',
   },
   inputLabel: {
     fontSize: 14,
-    color: '#665544',
+    color: '#5A4A4D',
     marginBottom: 6,
     fontWeight: '600',
   },
   input: {
     borderWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#EFE6DD',
     borderRadius: 12,
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 16,
     marginBottom: 16,
-    color: '#200D08',
-    backgroundColor: '#F4EEE5',
+    color: '#2C1A1D',
+    backgroundColor: '#FAF5F7',
   },
   saveBtn: {
-    backgroundColor: '#6B0000',
+    backgroundColor: '#E91E63',
     padding: 16,
     borderRadius: 28,
     alignItems: 'center',
@@ -421,8 +425,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   saveBtnText: {
-    color: '#FFFDF9',
+    color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: '800',
   }
 });

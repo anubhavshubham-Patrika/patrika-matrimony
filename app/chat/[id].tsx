@@ -9,7 +9,7 @@ import { useApp } from '../../src/context/AppContext';
 import chatsData from '../../src/data/chats.json';
 import profilesData from '../../src/data/profiles.json';
 
-const PRIMARY = '#6B0000';
+const PRIMARY = '#E91E63';
 
 interface Message {
   chatId: string;
@@ -73,7 +73,7 @@ export default function ChatScreen() {
       <View style={[styles.messagRow, isMine && styles.myRow]}>
         {!isMine && (
           <Image
-            source={{ uri: otherProfile?.profilePhotoURL || 'https://randomuser.me/api/portraits/men/1.jpg' }}
+            source={{ uri: otherProfile?.profilePhotoURL || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400' }}
             style={styles.avatarSmall}
           />
         )}
@@ -85,7 +85,7 @@ export default function ChatScreen() {
               <MaterialCommunityIcons
                 name={item.readStatus ? 'check-all' : 'check'}
                 size={12}
-                color={item.readStatus ? '#FCD04B' : 'rgba(255,253,249,0.7)'}
+                color={item.readStatus ? '#FFFFFF' : 'rgba(255,255,255,0.7)'}
                 style={{ marginLeft: 3 }}
               />
             )}
@@ -103,11 +103,11 @@ export default function ChatScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#FFFDF9" />
+          <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.headerProfile} onPress={() => router.push(`/profile/${otherProfileId}`)}>
           <Image
-            source={{ uri: otherProfile?.profilePhotoURL || 'https://randomuser.me/api/portraits/men/1.jpg' }}
+            source={{ uri: otherProfile?.profilePhotoURL || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400' }}
             style={styles.headerAvatar}
           />
           <View>
@@ -117,18 +117,18 @@ export default function ChatScreen() {
         </TouchableOpacity>
         <View style={styles.headerActions}>
           <TouchableOpacity style={styles.headerIcon}>
-            <Ionicons name="videocam-outline" size={22} color="#FFFDF9" />
+            <Ionicons name="videocam-outline" size={22} color="#FFFFFF" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.headerIcon}>
-            <Ionicons name="call-outline" size={22} color="#FFFDF9" />
+            <Ionicons name="call-outline" size={22} color="#FFFFFF" />
           </TouchableOpacity>
         </View>
       </View>
 
       {/* Secure call notice */}
       <View style={styles.secureBanner}>
-        <MaterialCommunityIcons name="shield-check" size={14} color="#786C10" />
-        <Text style={styles.secureBannerText}>Royal Secure Chat • Mobile number is private</Text>
+        <MaterialCommunityIcons name="shield-check" size={14} color="#C5A059" />
+        <Text style={styles.secureBannerText}>Patrika Secure Chat • Mobile number is private</Text>
       </View>
 
       {/* Messages */}
@@ -146,7 +146,7 @@ export default function ChatScreen() {
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
           <View style={styles.inputRow}>
             <TouchableOpacity style={styles.attachBtn}>
-              <MaterialCommunityIcons name="attachment" size={22} color="#8C7B6B" />
+              <MaterialCommunityIcons name="attachment" size={22} color="#8C7A7C" />
             </TouchableOpacity>
             <TextInput
               style={styles.input}
@@ -155,17 +155,17 @@ export default function ChatScreen() {
               onChangeText={setInputText}
               multiline
               maxLength={500}
-              placeholderTextColor="#8C7B6B"
+              placeholderTextColor="#8C7A7C"
             />
             <TouchableOpacity style={styles.sendBtn} onPress={sendMessage}>
-              <Ionicons name="send" size={18} color="#FFFDF9" />
+              <Ionicons name="send" size={18} color="#FFFFFF" />
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
       ) : (
         <View style={styles.upgradeBar}>
           <MaterialCommunityIcons name="lock" size={18} color={PRIMARY} />
-          <Text style={styles.upgradeText}>Upgrade to Rajgharana Gold to send messages</Text>
+          <Text style={styles.upgradeText}>Upgrade to Gold to send messages</Text>
           <TouchableOpacity onPress={() => router.push('/subscription')} style={styles.upgradeBtn}>
             <Text style={styles.upgradeBtnText}>Upgrade</Text>
           </TouchableOpacity>
@@ -176,19 +176,19 @@ export default function ChatScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FAF6F0' },
+  container: { flex: 1, backgroundColor: '#F9F6F0' },
   header: {
     backgroundColor: PRIMARY,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
   },
   backBtn: { padding: 4, marginRight: 8 },
   headerProfile: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 10 },
-  headerAvatar: { width: 40, height: 40, borderRadius: 20, borderWidth: 2, borderColor: '#FCD04B' },
-  headerName: { color: '#FFFDF9', fontWeight: '800', fontSize: 16 },
-  headerStatus: { color: '#E5B869', fontSize: 12, marginTop: 1 },
+  headerAvatar: { width: 42, height: 42, borderRadius: 21, borderWidth: 2, borderColor: '#FFFFFF' },
+  headerName: { color: '#FFFFFF', fontWeight: '800', fontSize: 16, fontFamily: 'serif' },
+  headerStatus: { color: 'rgba(255,255,255,0.85)', fontSize: 12, marginTop: 1 },
   headerActions: { flexDirection: 'row', gap: 8 },
   headerIcon: { padding: 6 },
   secureBanner: {
@@ -197,29 +197,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#FFF9E6',
     borderBottomWidth: 1,
-    borderBottomColor: '#E2D7C7',
-    paddingVertical: 6,
+    borderBottomColor: '#EFE6DD',
+    paddingVertical: 8,
     gap: 5,
   },
-  secureBannerText: { fontSize: 12, color: '#786C10', fontWeight: '700' },
-  messagesList: { padding: 12, paddingBottom: 8 },
+  secureBannerText: { fontSize: 12, color: '#C5A059', fontWeight: '700' },
+  messagesList: { padding: 14, paddingBottom: 8 },
   messagRow: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    marginBottom: 8,
+    marginBottom: 10,
     gap: 8,
   },
   myRow: { flexDirection: 'row-reverse' },
   avatarSmall: { width: 28, height: 28, borderRadius: 14 },
   bubble: {
     maxWidth: '75%',
-    borderRadius: 16,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    shadowColor: '#6B0000',
+    borderRadius: 18,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    shadowColor: '#2C1A1D',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.06,
-    shadowRadius: 2,
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
     elevation: 1,
   },
   myBubble: {
@@ -227,63 +227,63 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 4,
   },
   theirBubble: {
-    backgroundColor: '#FFFDF9',
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#EFE6DD',
     borderBottomLeftRadius: 4,
   },
-  bubbleText: { fontSize: 14, color: '#200D08', lineHeight: 20 },
-  myBubbleText: { color: '#FFFDF9' },
-  bubbleMeta: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginTop: 3 },
-  timeText: { fontSize: 10, color: '#8C7B6B' },
-  myTimeText: { color: 'rgba(255,253,249,0.7)' },
+  bubbleText: { fontSize: 14, color: '#2C1A1D', lineHeight: 20 },
+  myBubbleText: { color: '#FFFFFF' },
+  bubbleMeta: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginTop: 4 },
+  timeText: { fontSize: 10, color: '#8C7A7C' },
+  myTimeText: { color: 'rgba(255,255,255,0.8)' },
   inputRow: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    backgroundColor: '#FFFDF9',
-    paddingHorizontal: 10,
-    paddingVertical: 8,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 12,
+    paddingVertical: 10,
     borderTopWidth: 1,
-    borderTopColor: '#E2D7C7',
+    borderTopColor: '#EFE6DD',
     gap: 8,
   },
   attachBtn: { padding: 6 },
   input: {
     flex: 1,
-    backgroundColor: '#F4EEE5',
+    backgroundColor: '#FAF5F7',
     borderWidth: 1,
-    borderColor: '#E8DFD3',
+    borderColor: '#EFE6DD',
     borderRadius: 20,
     paddingHorizontal: 14,
     paddingVertical: 8,
     maxHeight: 100,
     fontSize: 14,
-    color: '#200D08',
+    color: '#2C1A1D',
   },
   sendBtn: {
     backgroundColor: PRIMARY,
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
   upgradeBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF5F6',
+    backgroundColor: '#FFF0F3',
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderTopWidth: 1,
-    borderTopColor: '#E2D7C7',
+    borderTopColor: '#EFE6DD',
     gap: 8,
   },
-  upgradeText: { flex: 1, fontSize: 13, color: '#200D08' },
+  upgradeText: { flex: 1, fontSize: 13, color: '#2C1A1D', fontWeight: '600' },
   upgradeBtn: {
     backgroundColor: PRIMARY,
-    paddingHorizontal: 14,
-    paddingVertical: 7,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     borderRadius: 16,
   },
-  upgradeBtnText: { color: '#FFFDF9', fontWeight: '700', fontSize: 13 },
+  upgradeBtnText: { color: '#FFFFFF', fontWeight: '800', fontSize: 13 },
 });

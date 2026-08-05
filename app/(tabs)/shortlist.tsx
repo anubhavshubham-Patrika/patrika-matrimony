@@ -4,13 +4,13 @@ import {
   SafeAreaView, StatusBar
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../src/context/AppContext';
 import profilesData from '../../src/data/profiles.json';
 import interestsData from '../../src/data/interests.json';
 
-const PRIMARY = '#6B0000';
-const GOLD = '#786C10';
+const PRIMARY = '#E91E63';
+const GOLD = '#C5A059';
 
 export default function ShortlistScreen() {
   const { state, dispatch } = useApp();
@@ -48,14 +48,14 @@ export default function ShortlistScreen() {
       activeOpacity={0.9}
     >
       <Image
-        source={{ uri: item.profilePhotoURL || 'https://randomuser.me/api/portraits/men/1.jpg' }}
+        source={{ uri: item.profilePhotoURL || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400' }}
         style={styles.shortlistPhoto}
       />
       <TouchableOpacity
         style={styles.removeBtn}
         onPress={() => dispatch({ type: 'TOGGLE_SHORTLIST', payload: item.profileId })}
       >
-        <MaterialCommunityIcons name="heart" size={18} color={GOLD} />
+        <Ionicons name="heart" size={18} color={PRIMARY} />
       </TouchableOpacity>
       <View style={styles.shortlistInfo}>
         <Text style={styles.shortlistName} numberOfLines={1}>{item.name}</Text>
@@ -99,8 +99,8 @@ export default function ShortlistScreen() {
         <View style={styles.statusBadge}>
           <Text style={[styles.statusText,
             item.status === 'Accepted' && { color: '#27AE60' },
-            item.status === 'Declined' && { color: '#6B0000' },
-            item.status === 'InterestSent' && { color: '#786C10' },
+            item.status === 'Declined' && { color: '#E91E63' },
+            item.status === 'InterestSent' && { color: '#C5A059' },
           ]}>
             {item.status === 'InterestSent' ? 'Pending' : item.status}
           </Text>
@@ -111,10 +111,10 @@ export default function ShortlistScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#FAF6F0" />
+      <StatusBar barStyle="dark-content" backgroundColor="#F9F6F0" />
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>My Royal Matches</Text>
+        <Text style={styles.headerTitle}>My Matches</Text>
       </View>
 
       {/* Tabs */}
@@ -140,9 +140,9 @@ export default function ShortlistScreen() {
       {activeTab === 'shortlisted' && (
         shortlistedProfiles.length === 0 ? (
           <View style={styles.emptyState}>
-            <MaterialCommunityIcons name="heart-outline" size={64} color="#8C7B6B" />
+            <Ionicons name="heart-outline" size={64} color="#8C7A7C" />
             <Text style={styles.emptyTitle}>No profiles shortlisted yet</Text>
-            <Text style={styles.emptySubtitle}>Tap the ⭐ on any profile card to save it here</Text>
+            <Text style={styles.emptySubtitle}>Tap the heart icon on any profile card to save it here</Text>
             <TouchableOpacity style={styles.explorBtn} onPress={() => router.push('/(tabs)/home')}>
               <Text style={styles.explorBtnText}>Explore Matches</Text>
             </TouchableOpacity>
@@ -167,7 +167,7 @@ export default function ShortlistScreen() {
           contentContainerStyle={{ padding: 12 }}
           ListEmptyComponent={
             <View style={styles.emptyState}>
-              <MaterialCommunityIcons name="handshake-outline" size={64} color="#8C7B6B" />
+              <Ionicons name="heart-dislike-outline" size={64} color="#8C7A7C" />
               <Text style={styles.emptyTitle}>
                 {activeTab === 'received' ? 'No interests received yet' : 'No interests sent yet'}
               </Text>
@@ -180,20 +180,20 @@ export default function ShortlistScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FAF6F0' },
+  container: { flex: 1, backgroundColor: '#F9F6F0' },
   header: {
-    backgroundColor: '#FFFDF9',
-    paddingHorizontal: 16,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 18,
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#E2D7C7',
+    borderBottomColor: '#EFE6DD',
   },
-  headerTitle: { fontSize: 22, fontWeight: '800', color: '#200D08' },
+  headerTitle: { fontSize: 22, fontWeight: '800', color: '#2C1A1D', fontFamily: 'serif' },
   tabRow: {
     flexDirection: 'row',
-    backgroundColor: '#FFFDF9',
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: '#E2D7C7',
+    borderBottomColor: '#EFE6DD',
   },
   tabBtn: {
     flex: 1,
@@ -203,80 +203,80 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   activeTabBtn: { borderBottomColor: PRIMARY },
-  tabBtnText: { fontSize: 12, color: '#8C7B6B', fontWeight: '600' },
+  tabBtnText: { fontSize: 12, color: '#8C7A7C', fontWeight: '600' },
   activeTabBtnText: { color: PRIMARY, fontWeight: '800' },
   shortlistGrid: { padding: 12 },
   shortlistCard: {
     flex: 1,
-    backgroundColor: '#FFFDF9',
-    borderRadius: 14,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#EFE6DD',
     overflow: 'hidden',
     marginBottom: 12,
-    shadowColor: '#6B0000',
+    shadowColor: '#2C1A1D',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 4,
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
     elevation: 2,
   },
-  shortlistPhoto: { width: '100%', height: 160, resizeMode: 'cover' },
+  shortlistPhoto: { width: '100%', height: 165, resizeMode: 'cover' },
   removeBtn: {
     position: 'absolute',
     top: 8,
     right: 8,
-    backgroundColor: 'rgba(255,253,249,0.9)',
+    backgroundColor: 'rgba(255,255,255,0.9)',
     borderRadius: 14,
-    padding: 5,
+    padding: 6,
   },
   shortlistInfo: { padding: 10 },
-  shortlistName: { fontSize: 15, fontWeight: '800', color: '#200D08' },
-  shortlistMeta: { fontSize: 12, color: '#665544', marginTop: 2 },
+  shortlistName: { fontSize: 15, fontWeight: '800', color: '#2C1A1D', fontFamily: 'serif' },
+  shortlistMeta: { fontSize: 12, color: '#5A4A4D', marginTop: 2 },
   shortlistCaste: { fontSize: 12, color: PRIMARY, fontWeight: '700', marginTop: 2 },
   interestRow: {
     flexDirection: 'row',
-    backgroundColor: '#FFFDF9',
-    borderRadius: 14,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#EFE6DD',
     padding: 12,
     marginBottom: 10,
     alignItems: 'center',
-    shadowColor: '#6B0000',
+    shadowColor: '#2C1A1D',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
+    shadowOpacity: 0.04,
+    shadowRadius: 4,
     elevation: 2,
   },
   interestAvatar: { width: 58, height: 58, borderRadius: 29, marginRight: 12 },
   interestInfo: { flex: 1 },
-  interestName: { fontSize: 15, fontWeight: '800', color: '#200D08' },
-  interestMeta: { fontSize: 12, color: '#665544', marginTop: 2 },
+  interestName: { fontSize: 15, fontWeight: '800', color: '#2C1A1D', fontFamily: 'serif' },
+  interestMeta: { fontSize: 12, color: '#5A4A4D', marginTop: 2 },
   interestCaste: { fontSize: 12, color: PRIMARY, fontWeight: '700', marginTop: 2 },
   interestActions: { gap: 6 },
   acceptBtn: {
     backgroundColor: '#27AE60',
-    paddingHorizontal: 12,
+    paddingHorizontal: 14,
     paddingVertical: 6,
     borderRadius: 16,
   },
-  acceptBtnText: { color: '#FFFDF9', fontWeight: '700', fontSize: 12 },
+  acceptBtnText: { color: '#FFFFFF', fontWeight: '800', fontSize: 12 },
   declineBtn: {
     borderWidth: 1,
-    borderColor: '#E2D7C7',
-    paddingHorizontal: 12,
+    borderColor: '#EFE6DD',
+    paddingHorizontal: 14,
     paddingVertical: 6,
     borderRadius: 16,
   },
-  declineBtnText: { color: '#665544', fontSize: 12 },
+  declineBtnText: { color: '#5A4A4D', fontSize: 12 },
   statusBadge: {
     paddingHorizontal: 12,
     paddingVertical: 6,
   },
   statusText: { fontSize: 12, fontWeight: '800' },
   emptyState: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 40 },
-  emptyTitle: { fontSize: 18, fontWeight: '800', color: '#200D08', marginTop: 16, textAlign: 'center' },
-  emptySubtitle: { fontSize: 14, color: '#665544', marginTop: 8, textAlign: 'center' },
+  emptyTitle: { fontSize: 18, fontWeight: '800', color: '#2C1A1D', marginTop: 16, textAlign: 'center', fontFamily: 'serif' },
+  emptySubtitle: { fontSize: 14, color: '#8C7A7C', marginTop: 8, textAlign: 'center' },
   explorBtn: {
     marginTop: 20,
     backgroundColor: PRIMARY,
@@ -284,5 +284,5 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 24,
   },
-  explorBtnText: { color: '#FFFDF9', fontWeight: '700', fontSize: 15 },
+  explorBtnText: { color: '#FFFFFF', fontWeight: '800', fontSize: 15 },
 });

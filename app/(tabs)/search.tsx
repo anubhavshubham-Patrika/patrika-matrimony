@@ -1,13 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { 
   View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, 
-  Image, Modal, ScrollView, SafeAreaView, Platform 
+  Modal, ScrollView, SafeAreaView, Platform 
 } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useApp } from '../../src/context/AppContext';
 import ProfileCard from '../../src/components/ProfileCard';
-import { Colors } from '../../src/constants/theme';
 
 export default function SearchScreen() {
   const router = useRouter();
@@ -88,22 +87,22 @@ export default function SearchScreen() {
       <View style={styles.header}>
         <View style={styles.searchRow}>
           <View style={styles.searchBar}>
-            <MaterialCommunityIcons name="magnify" size={20} color="#8C7B6B" />
+            <Ionicons name="search-outline" size={20} color="#8C7A7C" />
             <TextInput 
               style={styles.searchInput}
               placeholder="Search by name, caste, city..."
               value={searchQuery}
               onChangeText={setSearchQuery}
-              placeholderTextColor="#8C7B6B"
+              placeholderTextColor="#8C7A7C"
             />
             {searchQuery.length > 0 && (
               <TouchableOpacity onPress={() => setSearchQuery('')}>
-                <MaterialCommunityIcons name="close-circle" size={20} color="#8C7B6B" />
+                <Ionicons name="close-circle" size={18} color="#8C7A7C" />
               </TouchableOpacity>
             )}
           </View>
           <TouchableOpacity style={styles.filterBtn} onPress={() => setIsFilterVisible(true)}>
-            <MaterialCommunityIcons name="tune" size={22} color="#6B0000" />
+            <Ionicons name="options-outline" size={22} color="#E91E63" />
             {activeFiltersCount > 0 && (
               <View style={styles.filterBadge}>
                 <Text style={styles.filterBadgeText}>{activeFiltersCount}</Text>
@@ -131,7 +130,7 @@ export default function SearchScreen() {
         <Text style={styles.resultCount}>Showing {filteredProfiles.length} profiles</Text>
         <TouchableOpacity style={styles.sortBtn} onPress={() => setShowSortMenu(!showSortMenu)}>
           <Text style={styles.sortText}>{sortOption}</Text>
-          <MaterialCommunityIcons name="chevron-down" size={18} color="#665544" />
+          <Ionicons name="chevron-down" size={16} color="#5A4A4D" />
         </TouchableOpacity>
       </View>
 
@@ -152,7 +151,7 @@ export default function SearchScreen() {
         contentContainerStyle={styles.listContainer}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
-            <MaterialCommunityIcons name="account-search-outline" size={64} color="#8C7B6B" />
+            <Ionicons name="search-outline" size={64} color="#8C7A7C" />
             <Text style={styles.emptyTitle}>No profiles found</Text>
             <Text style={styles.emptySub}>Try adjusting your filters or search terms</Text>
           </View>
@@ -164,9 +163,9 @@ export default function SearchScreen() {
         <SafeAreaView style={styles.modalContainer}>
           <View style={styles.modalHeader}>
             <TouchableOpacity onPress={() => setIsFilterVisible(false)}>
-              <MaterialCommunityIcons name="close" size={24} color="#200D08" />
+              <Ionicons name="close" size={24} color="#2C1A1D" />
             </TouchableOpacity>
-            <Text style={styles.modalTitle}>Royal Filters</Text>
+            <Text style={styles.modalTitle}>Search Filters</Text>
             <TouchableOpacity onPress={() => setFilters({
               types: [], onlineStatus: [], activity: [], postedBy: [],
               religion: [], motherTongue: [], caste: [], location: [],
@@ -206,41 +205,41 @@ export default function SearchScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FAF6F0' },
-  header: { backgroundColor: '#FFFDF9', paddingTop: Platform.OS === 'android' ? 40 : 10, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: '#E2D7C7' },
+  container: { flex: 1, backgroundColor: '#F9F6F0' },
+  header: { backgroundColor: '#FFFFFF', paddingTop: Platform.OS === 'android' ? 40 : 10, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: '#EFE6DD' },
   searchRow: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, marginBottom: 12 },
-  searchBar: { flex: 1, flexDirection: 'row', alignItems: 'center', backgroundColor: '#F4EEE5', borderRadius: 12, paddingHorizontal: 12, height: 44, marginRight: 12, borderWidth: 1, borderColor: '#E8DFD3' },
-  searchInput: { flex: 1, marginLeft: 8, fontSize: 15, color: '#200D08' },
-  filterBtn: { width: 44, height: 44, borderRadius: 12, backgroundColor: '#FFF5F6', borderWidth: 1, borderColor: '#E2D7C7', justifyContent: 'center', alignItems: 'center' },
-  filterBadge: { position: 'absolute', top: -4, right: -4, backgroundColor: '#6B0000', borderRadius: 10, minWidth: 20, height: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#FFFDF9' },
+  searchBar: { flex: 1, flexDirection: 'row', alignItems: 'center', backgroundColor: '#FAF5F7', borderRadius: 14, paddingHorizontal: 14, height: 44, marginRight: 12, borderWidth: 1, borderColor: '#EFE6DD' },
+  searchInput: { flex: 1, marginLeft: 8, fontSize: 15, color: '#2C1A1D' },
+  filterBtn: { width: 44, height: 44, borderRadius: 14, backgroundColor: '#FFF0F3', borderWidth: 1, borderColor: '#E91E63', justifyContent: 'center', alignItems: 'center' },
+  filterBadge: { position: 'absolute', top: -4, right: -4, backgroundColor: '#E91E63', borderRadius: 10, minWidth: 20, height: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#FFFFFF' },
   filterBadgeText: { color: '#FFF', fontSize: 10, fontWeight: '800' },
   chipsScroll: { maxHeight: 40 },
   chipsContainer: { paddingHorizontal: 16, paddingBottom: 8 },
-  quickChip: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, backgroundColor: '#F5EFE6', marginRight: 8, borderWidth: 1, borderColor: '#E2D7C7' },
-  quickChipActive: { backgroundColor: '#6B0000', borderColor: '#6B0000' },
-  quickChipText: { color: '#665544', fontSize: 13, fontWeight: '600' },
-  quickChipTextActive: { color: '#FFFDF9', fontWeight: '700' },
+  quickChip: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, backgroundColor: '#FAF5F7', marginRight: 8, borderWidth: 1, borderColor: '#EFE6DD' },
+  quickChipActive: { backgroundColor: '#E91E63', borderColor: '#E91E63' },
+  quickChipText: { color: '#5A4A4D', fontSize: 13, fontWeight: '600' },
+  quickChipTextActive: { color: '#FFFFFF', fontWeight: '800' },
   resultsHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12 },
-  resultCount: { fontSize: 13, color: '#665544', fontWeight: '600' },
+  resultCount: { fontSize: 13, color: '#5A4A4D', fontWeight: '600' },
   sortBtn: { flexDirection: 'row', alignItems: 'center' },
-  sortText: { fontSize: 13, color: '#200D08', marginRight: 4, fontWeight: '700' },
+  sortText: { fontSize: 13, color: '#2C1A1D', marginRight: 4, fontWeight: '700' },
   listContainer: { paddingBottom: 20 },
   emptyContainer: { alignItems: 'center', justifyContent: 'center', paddingVertical: 60 },
-  emptyTitle: { fontSize: 18, fontWeight: '800', color: '#200D08', marginTop: 16, marginBottom: 8 },
-  emptySub: { fontSize: 14, color: '#665544', textAlign: 'center' },
-  modalContainer: { flex: 1, backgroundColor: '#FAF6F0' },
-  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 16, borderBottomWidth: 1, borderBottomColor: '#E2D7C7', backgroundColor: '#FFFDF9' },
-  modalTitle: { fontSize: 18, fontWeight: '800', color: '#200D08' },
-  resetText: { fontSize: 15, color: '#6B0000', fontWeight: '700' },
+  emptyTitle: { fontSize: 18, fontWeight: '800', color: '#2C1A1D', fontFamily: 'serif', marginTop: 16, marginBottom: 8 },
+  emptySub: { fontSize: 14, color: '#8C7A7C', textAlign: 'center' },
+  modalContainer: { flex: 1, backgroundColor: '#F9F6F0' },
+  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 16, borderBottomWidth: 1, borderBottomColor: '#EFE6DD', backgroundColor: '#FFFFFF' },
+  modalTitle: { fontSize: 18, fontWeight: '800', color: '#2C1A1D', fontFamily: 'serif' },
+  resetText: { fontSize: 15, color: '#E91E63', fontWeight: '700' },
   modalContent: { flex: 1, padding: 16 },
   filterSection: { marginBottom: 24 },
-  filterTitle: { fontSize: 15, fontWeight: '800', color: '#200D08', marginBottom: 12 },
+  filterTitle: { fontSize: 15, fontWeight: '800', color: '#2C1A1D', marginBottom: 12 },
   filterOptions: { flexDirection: 'row', flexWrap: 'wrap' },
-  filterChip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 18, backgroundColor: '#FFFDF9', borderWidth: 1, borderColor: '#E2D7C7', marginRight: 8, marginBottom: 8 },
-  filterChipSelected: { backgroundColor: '#FFF5F6', borderColor: '#6B0000' },
-  filterChipText: { fontSize: 13, color: '#554433' },
-  filterChipTextSelected: { color: '#6B0000', fontWeight: '700' },
-  modalFooter: { padding: 16, borderTopWidth: 1, borderTopColor: '#E2D7C7', backgroundColor: '#FFFDF9' },
-  applyBtn: { backgroundColor: '#6B0000', borderRadius: 28, paddingVertical: 14, alignItems: 'center' },
-  applyBtnText: { color: '#FFF', fontSize: 16, fontWeight: '700' }
+  filterChip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 18, backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#EFE6DD', marginRight: 8, marginBottom: 8 },
+  filterChipSelected: { backgroundColor: '#FFF0F3', borderColor: '#E91E63' },
+  filterChipText: { fontSize: 13, color: '#5A4A4D' },
+  filterChipTextSelected: { color: '#E91E63', fontWeight: '800' },
+  modalFooter: { padding: 16, borderTopWidth: 1, borderTopColor: '#EFE6DD', backgroundColor: '#FFFFFF' },
+  applyBtn: { backgroundColor: '#E91E63', borderRadius: 28, paddingVertical: 14, alignItems: 'center' },
+  applyBtnText: { color: '#FFF', fontSize: 16, fontWeight: '800' }
 });
