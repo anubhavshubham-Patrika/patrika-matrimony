@@ -9,7 +9,7 @@ import { useApp } from '../../src/context/AppContext';
 import chatsData from '../../src/data/chats.json';
 import profilesData from '../../src/data/profiles.json';
 
-const PRIMARY = '#C0392B';
+const PRIMARY = '#6B0000';
 
 interface Message {
   chatId: string;
@@ -85,7 +85,7 @@ export default function ChatScreen() {
               <MaterialCommunityIcons
                 name={item.readStatus ? 'check-all' : 'check'}
                 size={12}
-                color={item.readStatus ? '#4FC3F7' : 'rgba(255,255,255,0.6)'}
+                color={item.readStatus ? '#FCD04B' : 'rgba(255,253,249,0.7)'}
                 style={{ marginLeft: 3 }}
               />
             )}
@@ -103,7 +103,7 @@ export default function ChatScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#fff" />
+          <Ionicons name="arrow-back" size={24} color="#FFFDF9" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.headerProfile} onPress={() => router.push(`/profile/${otherProfileId}`)}>
           <Image
@@ -117,18 +117,18 @@ export default function ChatScreen() {
         </TouchableOpacity>
         <View style={styles.headerActions}>
           <TouchableOpacity style={styles.headerIcon}>
-            <Ionicons name="videocam-outline" size={22} color="#fff" />
+            <Ionicons name="videocam-outline" size={22} color="#FFFDF9" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.headerIcon}>
-            <Ionicons name="call-outline" size={22} color="#fff" />
+            <Ionicons name="call-outline" size={22} color="#FFFDF9" />
           </TouchableOpacity>
         </View>
       </View>
 
       {/* Secure call notice */}
       <View style={styles.secureBanner}>
-        <MaterialCommunityIcons name="shield-check" size={14} color="#27AE60" />
-        <Text style={styles.secureBannerText}>Secure chat • Your number is always private</Text>
+        <MaterialCommunityIcons name="shield-check" size={14} color="#786C10" />
+        <Text style={styles.secureBannerText}>Royal Secure Chat • Mobile number is private</Text>
       </View>
 
       {/* Messages */}
@@ -146,7 +146,7 @@ export default function ChatScreen() {
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
           <View style={styles.inputRow}>
             <TouchableOpacity style={styles.attachBtn}>
-              <MaterialCommunityIcons name="attachment" size={22} color="#999" />
+              <MaterialCommunityIcons name="attachment" size={22} color="#8C7B6B" />
             </TouchableOpacity>
             <TextInput
               style={styles.input}
@@ -155,16 +155,17 @@ export default function ChatScreen() {
               onChangeText={setInputText}
               multiline
               maxLength={500}
+              placeholderTextColor="#8C7B6B"
             />
             <TouchableOpacity style={styles.sendBtn} onPress={sendMessage}>
-              <Ionicons name="send" size={18} color="#fff" />
+              <Ionicons name="send" size={18} color="#FFFDF9" />
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
       ) : (
         <View style={styles.upgradeBar}>
           <MaterialCommunityIcons name="lock" size={18} color={PRIMARY} />
-          <Text style={styles.upgradeText}>Upgrade to Gold to send messages</Text>
+          <Text style={styles.upgradeText}>Upgrade to Rajgharana Gold to send messages</Text>
           <TouchableOpacity onPress={() => router.push('/subscription')} style={styles.upgradeBtn}>
             <Text style={styles.upgradeBtnText}>Upgrade</Text>
           </TouchableOpacity>
@@ -175,7 +176,7 @@ export default function ChatScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F0EAE2' },
+  container: { flex: 1, backgroundColor: '#FAF6F0' },
   header: {
     backgroundColor: PRIMARY,
     flexDirection: 'row',
@@ -185,20 +186,22 @@ const styles = StyleSheet.create({
   },
   backBtn: { padding: 4, marginRight: 8 },
   headerProfile: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 10 },
-  headerAvatar: { width: 40, height: 40, borderRadius: 20, borderWidth: 2, borderColor: 'rgba(255,255,255,0.4)' },
-  headerName: { color: '#fff', fontWeight: '700', fontSize: 16 },
-  headerStatus: { color: 'rgba(255,255,255,0.8)', fontSize: 12, marginTop: 1 },
+  headerAvatar: { width: 40, height: 40, borderRadius: 20, borderWidth: 2, borderColor: '#FCD04B' },
+  headerName: { color: '#FFFDF9', fontWeight: '800', fontSize: 16 },
+  headerStatus: { color: '#E5B869', fontSize: 12, marginTop: 1 },
   headerActions: { flexDirection: 'row', gap: 8 },
   headerIcon: { padding: 6 },
   secureBanner: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#E8F5E9',
+    backgroundColor: '#FFF9E6',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2D7C7',
     paddingVertical: 6,
     gap: 5,
   },
-  secureBannerText: { fontSize: 12, color: '#27AE60', fontWeight: '500' },
+  secureBannerText: { fontSize: 12, color: '#786C10', fontWeight: '700' },
   messagesList: { padding: 12, paddingBottom: 8 },
   messagRow: {
     flexDirection: 'row',
@@ -213,7 +216,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    shadowColor: '#000',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.06,
     shadowRadius: 2,
@@ -224,34 +227,38 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 4,
   },
   theirBubble: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFDF9',
+    borderWidth: 1,
+    borderColor: '#E2D7C7',
     borderBottomLeftRadius: 4,
   },
-  bubbleText: { fontSize: 14, color: '#1A1A2E', lineHeight: 20 },
-  myBubbleText: { color: '#fff' },
+  bubbleText: { fontSize: 14, color: '#200D08', lineHeight: 20 },
+  myBubbleText: { color: '#FFFDF9' },
   bubbleMeta: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginTop: 3 },
-  timeText: { fontSize: 10, color: '#999' },
-  myTimeText: { color: 'rgba(255,255,255,0.7)' },
+  timeText: { fontSize: 10, color: '#8C7B6B' },
+  myTimeText: { color: 'rgba(255,253,249,0.7)' },
   inputRow: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFDF9',
     paddingHorizontal: 10,
     paddingVertical: 8,
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: '#E2D7C7',
     gap: 8,
   },
   attachBtn: { padding: 6 },
   input: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#F4EEE5',
+    borderWidth: 1,
+    borderColor: '#E8DFD3',
     borderRadius: 20,
     paddingHorizontal: 14,
     paddingVertical: 8,
     maxHeight: 100,
     fontSize: 14,
-    color: '#1A1A2E',
+    color: '#200D08',
   },
   sendBtn: {
     backgroundColor: PRIMARY,
@@ -264,19 +271,19 @@ const styles = StyleSheet.create({
   upgradeBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF5F5',
+    backgroundColor: '#FFF5F6',
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderTopWidth: 1,
-    borderTopColor: '#FFD9D9',
+    borderTopColor: '#E2D7C7',
     gap: 8,
   },
-  upgradeText: { flex: 1, fontSize: 13, color: '#666' },
+  upgradeText: { flex: 1, fontSize: 13, color: '#200D08' },
   upgradeBtn: {
     backgroundColor: PRIMARY,
     paddingHorizontal: 14,
     paddingVertical: 7,
     borderRadius: 16,
   },
-  upgradeBtnText: { color: '#fff', fontWeight: '700', fontSize: 13 },
+  upgradeBtnText: { color: '#FFFDF9', fontWeight: '700', fontSize: 13 },
 });

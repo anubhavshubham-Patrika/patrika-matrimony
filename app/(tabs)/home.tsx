@@ -4,18 +4,13 @@ import { useRouter } from 'expo-router';
 import { useApp } from '../../src/context/AppContext';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import ProfileCard from '../../src/components/ProfileCard';
-
 import PatrikaRibbonLogo from '../../src/components/PatrikaRibbonLogo';
+import { Colors } from '../../src/constants/theme';
 
 export default function HomeScreen() {
   const router = useRouter();
   const { state, dispatch, profiles } = useApp();
 
-  // Demo user data handling:
-  // "Profile to use for demo user filter: profileId P001 (Male, Jaipur, Hindu Rajput)"
-  const demoUser = profiles.find((p) => p.profileId === 'P001');
-
-  // Helper for checking shortlists and interests
   const isShortlisted = (id: string) => state.shortlistedProfiles.includes(id);
   const isInterestSent = (id: string) => state.sentInterests.includes(id);
 
@@ -28,7 +23,7 @@ export default function HomeScreen() {
     .filter((p) => p.gender === 'Female' && p.residentState === 'Rajasthan')
     .slice(0, 10);
 
-  // 2. New Profiles (Mocked by taking first 8 profiles or sorting by createdAt)
+  // 2. New Profiles
   const newProfiles = [...profiles]
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     .slice(0, 8);
@@ -36,7 +31,7 @@ export default function HomeScreen() {
   // 3. Verified Profiles
   const verifiedProfiles = profiles.filter((p) => p.isVerified).slice(0, 8);
 
-  // 4. Nearby Profiles (Rajasthan/Jaipur)
+  // 4. Nearby Profiles
   const nearbyProfiles = profiles
     .filter((p) => p.residentState === 'Rajasthan' && p.residentCity === 'Jaipur')
     .slice(0, 8);
@@ -52,13 +47,13 @@ export default function HomeScreen() {
       </View>
       <View style={styles.headerIcons}>
         <TouchableOpacity style={styles.iconBtn}>
-          <Ionicons name="notifications-outline" size={24} color="#111111" />
+          <Ionicons name="notifications-outline" size={24} color="#200D08" />
           <View style={styles.badgeCount}>
             <Text style={styles.badgeCountText}>3</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconBtn} onPress={() => router.push('/(tabs)/profile')}>
-          <Ionicons name="menu-outline" size={26} color="#111111" />
+          <Ionicons name="menu-outline" size={26} color="#200D08" />
         </TouchableOpacity>
       </View>
     </View>
@@ -72,7 +67,7 @@ export default function HomeScreen() {
       </View>
       {showSeeAll && (
         <TouchableOpacity>
-          <Text style={styles.seeAllText}>See All</Text>
+          <Text style={styles.seeAllText}>See All →</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -83,6 +78,11 @@ export default function HomeScreen() {
       {renderHeader()}
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         
+        {/* Curated Royal Banner Header (Matching Reference Image 2 Text) */}
+        <View style={styles.curatedBanner}>
+          <Text style={styles.curatedSubtext}>Curated selections from esteemed families.</Text>
+        </View>
+
         {/* Section 1: Recommended */}
         {renderSectionHeader('Recommended for You', true)}
         <FlatList
@@ -138,9 +138,9 @@ export default function HomeScreen() {
 
         {/* Section 3: Verified Profiles */}
         {renderSectionHeader(
-          'Verified Profiles',
+          'Royal Verified Profiles',
           false,
-          <MaterialCommunityIcons name="check-decagram" size={20} color="#10B981" />
+          <MaterialCommunityIcons name="check-decagram" size={20} color="#786C10" />
         )}
         <FlatList
           horizontal
@@ -167,7 +167,7 @@ export default function HomeScreen() {
         {renderSectionHeader(
           'Nearby Profiles',
           false,
-          <Ionicons name="location-outline" size={20} color="#E31837" />
+          <Ionicons name="location-outline" size={20} color="#6B0000" />
         )}
         <FlatList
           horizontal
@@ -220,7 +220,28 @@ export default function HomeScreen() {
             <Text style={styles.linkAdBtnText}>Link your newspaper ad →</Text>
           </TouchableOpacity>
         </View>
-        
+
+        {/* Footer Section (Matching Reference Image 3 Layout & Text) */}
+        <View style={styles.royalFooter}>
+          <Text style={styles.footerBrandHeader}>RAJGHARANA MATRIMONY</Text>
+          <Text style={styles.footerDescription}>
+            Preserving Heritage, Uniting Souls. Patrika Matrimony offers a deeply rooted, trusted platform for finding your ideal life partner within royal and esteemed communities.
+          </Text>
+          
+          <Text style={styles.footerSectionHeading}>EXPLORE</Text>
+          <TouchableOpacity><Text style={styles.footerLinkText}>Our Legacy</Text></TouchableOpacity>
+          <TouchableOpacity><Text style={styles.footerLinkText}>Success Stories</Text></TouchableOpacity>
+          <TouchableOpacity><Text style={styles.footerLinkText}>Royal Communities</Text></TouchableOpacity>
+          
+          <Text style={styles.footerSectionHeading}>SUPPORT</Text>
+          <TouchableOpacity><Text style={styles.footerLinkText}>Safety Protocols</Text></TouchableOpacity>
+          <TouchableOpacity><Text style={styles.footerLinkText}>Contact Concierge</Text></TouchableOpacity>
+
+          <Text style={styles.footerCopyright}>
+            © 2026 Rajgharana Matrimony. Preserving Heritage, Uniting Souls.
+          </Text>
+        </View>
+
         <View style={styles.bottomPadding} />
       </ScrollView>
     </SafeAreaView>
@@ -230,7 +251,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#FAF6F0', // Warm Parchment Background (Matching Reference Image 2 & 3)
     paddingTop: Platform.OS === 'android' ? (StatusBar.currentHeight ?? 0) : 0,
   },
   header: {
@@ -239,9 +260,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFDF9',
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#E2D7C7',
   },
   headerBrandRow: {
     flexDirection: 'row',
@@ -250,8 +271,8 @@ const styles = StyleSheet.create({
   },
   logoText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#E31837',
+    fontWeight: '800',
+    color: '#6B0000', // Royal Crimson Red
   },
   headerIcons: {
     flexDirection: 'row',
@@ -265,7 +286,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -4,
     right: -6,
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
     borderRadius: 10,
     minWidth: 18,
     height: 18,
@@ -273,20 +294,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   badgeCountText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontSize: 10,
-    fontWeight: 'bold',
+    fontWeight: '800',
   },
   scrollContent: {
-    paddingVertical: 16,
+    paddingVertical: 12,
+  },
+  curatedBanner: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  curatedSubtext: {
+    fontSize: 14,
+    color: '#8C7B6B',
+    fontWeight: '600',
   },
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    marginBottom: 8,
-    marginTop: 16,
+    marginBottom: 6,
+    marginTop: 14,
   },
   sectionTitleRow: {
     flexDirection: 'row',
@@ -296,39 +326,41 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: 19,
+    fontWeight: '800',
+    color: '#200D08', // Royal Dark Brown Headline
   },
   seeAllText: {
     fontSize: 14,
-    color: '#E31837',
-    fontWeight: '600',
+    color: '#6B0000',
+    fontWeight: '700',
   },
   newBadgeTag: {
-    backgroundColor: '#8B5CF6',
-    paddingHorizontal: 6,
+    backgroundColor: '#786C10',
+    paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 4,
-    marginRight: 6,
+    marginRight: 8,
   },
   newBadgeTagText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: 'bold',
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '800',
   },
   listContainer: {
     paddingLeft: 4,
     paddingRight: 16,
   },
   cardWrapper: {
-    // Override margins on ProfileCard to fit better in FlatList
     marginHorizontal: 0,
   },
   patrikaSection: {
-    backgroundColor: '#E8F0FE', // Light blue background for newspaper section
-    paddingVertical: 10,
+    backgroundColor: '#F5EFE6',
+    paddingVertical: 14,
     marginTop: 20,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: '#E2D7C7',
   },
   linkAdBtn: {
     alignSelf: 'center',
@@ -336,13 +368,56 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: '#3B82F6',
-    borderRadius: 8,
+    backgroundColor: '#6B0000',
+    borderRadius: 20,
   },
   linkAdBtnText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: '#FFFFFF',
+    fontWeight: '700',
     fontSize: 14,
+  },
+  // Royal Footer (Matching Reference Image 3)
+  royalFooter: {
+    backgroundColor: '#EAE5DB', // Warm Parchment Beige (Matching Reference Image 3)
+    padding: 24,
+    marginTop: 30,
+    borderTopWidth: 1,
+    borderColor: '#D8CFC0',
+  },
+  footerBrandHeader: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: '#6B0000', // Royal Crimson Header
+    letterSpacing: -0.5,
+    marginBottom: 12,
+  },
+  footerDescription: {
+    fontSize: 14,
+    color: '#554433',
+    lineHeight: 22,
+    marginBottom: 20,
+  },
+  footerSectionHeading: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: '#200D08',
+    letterSpacing: 1,
+    marginTop: 14,
+    marginBottom: 8,
+  },
+  footerLinkText: {
+    fontSize: 14,
+    color: '#6B0000',
+    textDecorationLine: 'underline',
+    marginBottom: 8,
+    fontWeight: '600',
+  },
+  footerCopyright: {
+    fontSize: 12,
+    color: '#776655',
+    textAlign: 'center',
+    marginTop: 24,
+    lineHeight: 18,
   },
   bottomPadding: {
     height: 40,

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView, Keyb
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import PatrikaRibbonLogo from '../../src/components/PatrikaRibbonLogo';
+import { Colors } from '../../src/constants/theme';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function LoginScreen() {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#111111" />
+          <Ionicons name="arrow-back" size={24} color="#200D08" />
         </TouchableOpacity>
         <View style={styles.headerBrandRow}>
           <PatrikaRibbonLogo size={28} />
@@ -36,7 +37,7 @@ export default function LoginScreen() {
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
         <View style={styles.topIntro}>
           <Text style={styles.welcomeTitle}>Welcome Back</Text>
-          <Text style={styles.welcomeSub}>Log in to continue your partner search</Text>
+          <Text style={styles.welcomeSub}>Log in to continue your royal partner search</Text>
         </View>
 
         <View style={styles.tabsContainer}>
@@ -62,7 +63,7 @@ export default function LoginScreen() {
                   maxLength={10}
                   value={mobile}
                   onChangeText={setMobile}
-                  placeholderTextColor="#999999"
+                  placeholderTextColor="#8C7B6B"
                 />
               </View>
 
@@ -71,8 +72,8 @@ export default function LoginScreen() {
                 <Switch
                   value={isParent}
                   onValueChange={setIsParent}
-                  trackColor={{ false: '#E0E0E0', true: '#E31837' }}
-                  thumbColor="#FFFFFF"
+                  trackColor={{ false: '#E2D7C7', true: '#6B0000' }}
+                  thumbColor="#FFFDF9"
                 />
               </View>
 
@@ -89,7 +90,7 @@ export default function LoginScreen() {
                 autoCapitalize="none"
                 value={email}
                 onChangeText={setEmail}
-                placeholderTextColor="#999999"
+                placeholderTextColor="#8C7B6B"
               />
               <View style={styles.passwordContainer}>
                 <TextInput
@@ -98,10 +99,10 @@ export default function LoginScreen() {
                   secureTextEntry={!showPassword}
                   value={password}
                   onChangeText={setPassword}
-                  placeholderTextColor="#999999"
+                  placeholderTextColor="#8C7B6B"
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-                  <Ionicons name={showPassword ? "eye-off-outline" : "eye-outline"} size={22} color="#666666" />
+                  <Ionicons name={showPassword ? "eye-off-outline" : "eye-outline"} size={22} color="#665544" />
                 </TouchableOpacity>
               </View>
               <TouchableOpacity style={styles.forgotPassword}>
@@ -122,7 +123,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FAF6F0', // Warm Parchment Background
   },
   header: {
     flexDirection: 'row',
@@ -130,9 +131,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFDF9',
     borderBottomWidth: 1,
-    borderBottomColor: '#F2F2F7',
+    borderBottomColor: '#E2D7C7',
   },
   backButton: {
     padding: 6,
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#E31837',
+    color: '#6B0000', // Royal Crimson
   },
   container: {
     flex: 1,
@@ -157,19 +158,21 @@ const styles = StyleSheet.create({
   welcomeTitle: {
     fontSize: 26,
     fontWeight: '800',
-    color: '#111111',
+    color: '#200D08', // Royal Dark Maroon
   },
   welcomeSub: {
     fontSize: 14,
-    color: '#666666',
+    color: '#665544',
     marginTop: 4,
   },
   tabsContainer: {
     flexDirection: 'row',
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#F5EFE6',
     borderRadius: 24,
     padding: 4,
     marginBottom: 24,
+    borderWidth: 1,
+    borderColor: '#E2D7C7',
   },
   tab: {
     flex: 1,
@@ -178,45 +181,45 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   activeTab: {
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000', // Royal Crimson
   },
   tabText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#666666',
+    color: '#665544',
   },
   activeTabText: {
     color: '#FFFFFF',
     fontWeight: '700',
   },
   formContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FAF6F0',
   },
   mobileForm: {},
   inputGroup: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#E2D7C7',
     borderRadius: 14,
     marginBottom: 20,
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#F4EEE5', // Soft Warm Cream Input
   },
   countryCode: {
     paddingHorizontal: 16,
     borderRightWidth: 1,
-    borderRightColor: '#E0E0E0',
+    borderRightColor: '#E2D7C7',
   },
   countryCodeText: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#111111',
+    color: '#200D08',
   },
   mobileInput: {
     flex: 1,
     padding: 16,
     fontSize: 16,
-    color: '#111111',
+    color: '#200D08',
   },
   parentToggleContainer: {
     flexDirection: 'row',
@@ -227,15 +230,15 @@ const styles = StyleSheet.create({
   parentToggleText: {
     flex: 1,
     fontSize: 14,
-    color: '#666666',
+    color: '#665544',
     marginRight: 12,
   },
   primaryButton: {
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000', // Royal Crimson Primary CTA
     paddingVertical: 16,
     borderRadius: 28,
     alignItems: 'center',
-    shadowColor: '#E31837',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
@@ -249,28 +252,28 @@ const styles = StyleSheet.create({
   emailForm: {},
   input: {
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#E2D7C7',
     borderRadius: 14,
     padding: 16,
     marginBottom: 16,
     fontSize: 16,
-    color: '#111111',
-    backgroundColor: '#FAFAFA',
+    color: '#200D08',
+    backgroundColor: '#F4EEE5',
   },
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#E2D7C7',
     borderRadius: 14,
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#F4EEE5',
     marginBottom: 12,
   },
   passwordInput: {
     flex: 1,
     padding: 16,
     fontSize: 16,
-    color: '#111111',
+    color: '#200D08',
   },
   eyeIcon: {
     padding: 16,
@@ -280,8 +283,8 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   forgotPasswordText: {
-    color: '#E31837',
+    color: '#6B0000',
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: '700',
   },
 });

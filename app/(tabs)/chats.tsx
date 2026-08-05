@@ -7,7 +7,7 @@ import chatsData from '../../src/data/chats.json';
 import profilesData from '../../src/data/profiles.json';
 
 const MY_PROFILE_ID = 'P001';
-const PRIMARY = '#C0392B';
+const PRIMARY = '#6B0000';
 
 export default function ChatsScreen() {
   const router = useRouter();
@@ -18,7 +18,7 @@ export default function ChatsScreen() {
   const { currentPlan } = state;
   const isPremium = currentPlan !== 'Free';
 
-  // Build chat list from chats.json — which is an array of conversation objects
+  // Build chat list from chats.json
   const chatList = (chatsData as any[])
     .filter((conv: any) => conv.participants?.includes(MY_PROFILE_ID))
     .map((conv: any) => {
@@ -98,7 +98,7 @@ export default function ChatsScreen() {
           <MaterialCommunityIcons
             name={item.type === 'Incoming' ? 'phone-incoming' : item.type === 'Missed' ? 'phone-missed' : 'phone-outgoing'}
             size={14}
-            color={item.type === 'Incoming' ? '#27AE60' : item.type === 'Missed' ? '#E74C3C' : '#3498DB'}
+            color={item.type === 'Incoming' ? '#27AE60' : item.type === 'Missed' ? '#6B0000' : '#786C10'}
           />
           <Text style={styles.callTypeText}>
             {item.type} call • {item.duration}
@@ -113,13 +113,13 @@ export default function ChatsScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+      <StatusBar barStyle="dark-content" backgroundColor="#FAF6F0" />
 
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Chats & Calls</Text>
         <TouchableOpacity style={styles.searchIconBtn}>
-          <Ionicons name="search-outline" size={22} color="#333" />
+          <Ionicons name="search-outline" size={22} color="#200D08" />
         </TouchableOpacity>
       </View>
 
@@ -139,8 +139,8 @@ export default function ChatsScreen() {
       {/* Premium gate banner */}
       {!isPremium && activeMainTab === 'Chats' && (
         <TouchableOpacity style={styles.premiumPrompt} onPress={() => router.push('/subscription')}>
-          <MaterialCommunityIcons name="crown" size={16} color="#F39C12" />
-          <Text style={styles.premiumPromptText}>Upgrade to Gold to chat with matches →</Text>
+          <MaterialCommunityIcons name="crown" size={16} color="#786C10" />
+          <Text style={styles.premiumPromptText}>Upgrade to Rajgharana Gold to chat with matches →</Text>
         </TouchableOpacity>
       )}
 
@@ -174,7 +174,7 @@ export default function ChatsScreen() {
             />
           ) : (
             <View style={styles.emptyState}>
-              <Ionicons name="chatbubbles-outline" size={64} color="#ddd" />
+              <Ionicons name="chatbubbles-outline" size={64} color="#8C7B6B" />
               <Text style={styles.emptyStateText}>No conversations yet.</Text>
               <Text style={styles.emptyStateSubtext}>Send an interest to start chatting!</Text>
             </View>
@@ -188,7 +188,7 @@ export default function ChatsScreen() {
           contentContainerStyle={styles.listContent}
           ListEmptyComponent={
             <View style={styles.emptyState}>
-              <Ionicons name="call-outline" size={64} color="#ddd" />
+              <Ionicons name="call-outline" size={64} color="#8C7B6B" />
               <Text style={styles.emptyStateText}>No call history</Text>
             </View>
           }
@@ -199,22 +199,24 @@ export default function ChatsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: '#FAF6F0' },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 14,
+    backgroundColor: '#FFFDF9',
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#E2D7C7',
   },
-  headerTitle: { fontSize: 22, fontWeight: '800', color: '#1A1A2E' },
+  headerTitle: { fontSize: 22, fontWeight: '800', color: '#200D08' },
   searchIconBtn: { padding: 4 },
   mainTabs: {
     flexDirection: 'row',
+    backgroundColor: '#FFFDF9',
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#E2D7C7',
   },
   mainTab: {
     flex: 1,
@@ -224,8 +226,8 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   activeMainTab: { borderBottomColor: PRIMARY },
-  mainTabText: { fontSize: 15, fontWeight: '600', color: '#999' },
-  activeMainTabText: { color: PRIMARY },
+  mainTabText: { fontSize: 15, fontWeight: '600', color: '#8C7B6B' },
+  activeMainTabText: { color: PRIMARY, fontWeight: '800' },
   premiumPrompt: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -234,32 +236,33 @@ const styles = StyleSheet.create({
     padding: 10,
     gap: 6,
     borderBottomWidth: 1,
-    borderBottomColor: '#FFE082',
+    borderBottomColor: '#E2D7C7',
   },
-  premiumPromptText: { color: '#D35400', fontWeight: '600', fontSize: 13 },
+  premiumPromptText: { color: '#786C10', fontWeight: '700', fontSize: 13 },
   filterTabs: {
     flexDirection: 'row',
     paddingHorizontal: 16,
     paddingVertical: 10,
     gap: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#f5f5f5',
+    borderBottomColor: '#E2D7C7',
   },
   filterTab: {
     paddingVertical: 6,
     paddingHorizontal: 14,
     borderRadius: 20,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#F5EFE6',
   },
   activeFilterTab: { backgroundColor: PRIMARY },
-  filterTabText: { fontSize: 12, color: '#777', fontWeight: '500' },
-  activeFilterTabText: { color: '#fff', fontWeight: '700' },
+  filterTabText: { fontSize: 12, color: '#665544', fontWeight: '600' },
+  activeFilterTabText: { color: '#FFFDF9', fontWeight: '700' },
   listContent: { paddingBottom: 20 },
   chatItem: {
     flexDirection: 'row',
     padding: 14,
+    backgroundColor: '#FFFDF9',
     borderBottomWidth: 1,
-    borderBottomColor: '#F5F5F5',
+    borderBottomColor: '#E2D7C7',
     alignItems: 'center',
     position: 'relative',
   },
@@ -267,7 +270,7 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: '#eee',
+    backgroundColor: '#F5EFE6',
   },
   onlineDot: {
     position: 'absolute',
@@ -278,7 +281,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: '#27AE60',
     borderWidth: 2,
-    borderColor: '#fff',
+    borderColor: '#FFFDF9',
   },
   chatDetails: { flex: 1, marginLeft: 12 },
   chatHeader: {
@@ -287,17 +290,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 4,
   },
-  chatName: { fontSize: 15, fontWeight: '600', color: '#1A1A2E', flex: 1 },
+  chatName: { fontSize: 15, fontWeight: '700', color: '#200D08', flex: 1 },
   chatNameUnread: { fontWeight: '800' },
-  chatTime: { fontSize: 12, color: '#bbb' },
+  chatTime: { fontSize: 12, color: '#8C7B6B' },
   chatTimeUnread: { color: PRIMARY },
   chatMessageRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  chatMessage: { flex: 1, fontSize: 13, color: '#999', marginRight: 8 },
-  chatMessageUnread: { color: '#555', fontWeight: '500' },
+  chatMessage: { flex: 1, fontSize: 13, color: '#665544', marginRight: 8 },
+  chatMessageUnread: { color: '#200D08', fontWeight: '600' },
   unreadBadge: {
     backgroundColor: PRIMARY,
     borderRadius: 10,
@@ -307,8 +310,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 5,
   },
-  unreadBadgeText: { color: '#fff', fontSize: 11, fontWeight: '800' },
-  callTypeText: { fontSize: 13, color: '#666', marginLeft: 6 },
+  unreadBadgeText: { color: '#FFFDF9', fontSize: 11, fontWeight: '800' },
+  callTypeText: { fontSize: 13, color: '#665544', marginLeft: 6 },
   callBackButton: { padding: 10 },
   emptyState: {
     flex: 1,
@@ -317,6 +320,6 @@ const styles = StyleSheet.create({
     padding: 40,
     marginTop: 60,
   },
-  emptyStateText: { marginTop: 16, fontSize: 17, fontWeight: '700', color: '#555', textAlign: 'center' },
-  emptyStateSubtext: { marginTop: 6, fontSize: 14, color: '#999', textAlign: 'center' },
+  emptyStateText: { marginTop: 16, fontSize: 17, fontWeight: '800', color: '#200D08', textAlign: 'center' },
+  emptyStateSubtext: { marginTop: 6, fontSize: 14, color: '#665544', textAlign: 'center' },
 });

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import {
   View, Text, StyleSheet, FlatList, TouchableOpacity, Image,
-  SafeAreaView, StatusBar, SectionList, ScrollView
+  SafeAreaView, StatusBar
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../src/context/AppContext';
 import profilesData from '../../src/data/profiles.json';
 import interestsData from '../../src/data/interests.json';
 
-const PRIMARY = '#C0392B';
-const GOLD = '#F39C12';
+const PRIMARY = '#6B0000';
+const GOLD = '#786C10';
 
 export default function ShortlistScreen() {
   const { state, dispatch } = useApp();
@@ -45,6 +45,7 @@ export default function ShortlistScreen() {
     <TouchableOpacity
       style={styles.shortlistCard}
       onPress={() => router.push(`/profile/${item.profileId}`)}
+      activeOpacity={0.9}
     >
       <Image
         source={{ uri: item.profilePhotoURL || 'https://randomuser.me/api/portraits/men/1.jpg' }}
@@ -98,8 +99,8 @@ export default function ShortlistScreen() {
         <View style={styles.statusBadge}>
           <Text style={[styles.statusText,
             item.status === 'Accepted' && { color: '#27AE60' },
-            item.status === 'Declined' && { color: '#E74C3C' },
-            item.status === 'InterestSent' && { color: '#3498DB' },
+            item.status === 'Declined' && { color: '#6B0000' },
+            item.status === 'InterestSent' && { color: '#786C10' },
           ]}>
             {item.status === 'InterestSent' ? 'Pending' : item.status}
           </Text>
@@ -110,10 +111,10 @@ export default function ShortlistScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+      <StatusBar barStyle="dark-content" backgroundColor="#FAF6F0" />
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>My Activity</Text>
+        <Text style={styles.headerTitle}>My Royal Matches</Text>
       </View>
 
       {/* Tabs */}
@@ -139,7 +140,7 @@ export default function ShortlistScreen() {
       {activeTab === 'shortlisted' && (
         shortlistedProfiles.length === 0 ? (
           <View style={styles.emptyState}>
-            <MaterialCommunityIcons name="heart-outline" size={64} color="#ddd" />
+            <MaterialCommunityIcons name="heart-outline" size={64} color="#8C7B6B" />
             <Text style={styles.emptyTitle}>No profiles shortlisted yet</Text>
             <Text style={styles.emptySubtitle}>Tap the ⭐ on any profile card to save it here</Text>
             <TouchableOpacity style={styles.explorBtn} onPress={() => router.push('/(tabs)/home')}>
@@ -166,7 +167,7 @@ export default function ShortlistScreen() {
           contentContainerStyle={{ padding: 12 }}
           ListEmptyComponent={
             <View style={styles.emptyState}>
-              <MaterialCommunityIcons name="handshake-outline" size={64} color="#ddd" />
+              <MaterialCommunityIcons name="handshake-outline" size={64} color="#8C7B6B" />
               <Text style={styles.emptyTitle}>
                 {activeTab === 'received' ? 'No interests received yet' : 'No interests sent yet'}
               </Text>
@@ -179,20 +180,20 @@ export default function ShortlistScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F5F5F5' },
+  container: { flex: 1, backgroundColor: '#FAF6F0' },
   header: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFDF9',
     paddingHorizontal: 16,
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#E2D7C7',
   },
-  headerTitle: { fontSize: 22, fontWeight: '800', color: '#1A1A2E' },
+  headerTitle: { fontSize: 22, fontWeight: '800', color: '#200D08' },
   tabRow: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFDF9',
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#E2D7C7',
   },
   tabBtn: {
     flex: 1,
@@ -202,52 +203,56 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   activeTabBtn: { borderBottomColor: PRIMARY },
-  tabBtnText: { fontSize: 12, color: '#999', fontWeight: '600' },
-  activeTabBtnText: { color: PRIMARY },
+  tabBtnText: { fontSize: 12, color: '#8C7B6B', fontWeight: '600' },
+  activeTabBtnText: { color: PRIMARY, fontWeight: '800' },
   shortlistGrid: { padding: 12 },
   shortlistCard: {
     flex: 1,
-    backgroundColor: '#fff',
-    borderRadius: 12,
+    backgroundColor: '#FFFDF9',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#E2D7C7',
     overflow: 'hidden',
     marginBottom: 12,
-    shadowColor: '#000',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 6,
-    elevation: 3,
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    elevation: 2,
   },
   shortlistPhoto: { width: '100%', height: 160, resizeMode: 'cover' },
   removeBtn: {
     position: 'absolute',
     top: 8,
     right: 8,
-    backgroundColor: 'rgba(255,255,255,0.9)',
+    backgroundColor: 'rgba(255,253,249,0.9)',
     borderRadius: 14,
     padding: 5,
   },
   shortlistInfo: { padding: 10 },
-  shortlistName: { fontSize: 14, fontWeight: '700', color: '#1A1A2E' },
-  shortlistMeta: { fontSize: 12, color: '#666', marginTop: 2 },
-  shortlistCaste: { fontSize: 11, color: PRIMARY, marginTop: 2 },
+  shortlistName: { fontSize: 15, fontWeight: '800', color: '#200D08' },
+  shortlistMeta: { fontSize: 12, color: '#665544', marginTop: 2 },
+  shortlistCaste: { fontSize: 12, color: PRIMARY, fontWeight: '700', marginTop: 2 },
   interestRow: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderRadius: 12,
+    backgroundColor: '#FFFDF9',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#E2D7C7',
     padding: 12,
     marginBottom: 10,
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.05,
     shadowRadius: 3,
     elevation: 2,
   },
   interestAvatar: { width: 58, height: 58, borderRadius: 29, marginRight: 12 },
   interestInfo: { flex: 1 },
-  interestName: { fontSize: 15, fontWeight: '700', color: '#1A1A2E' },
-  interestMeta: { fontSize: 12, color: '#666', marginTop: 2 },
-  interestCaste: { fontSize: 12, color: PRIMARY, marginTop: 2 },
+  interestName: { fontSize: 15, fontWeight: '800', color: '#200D08' },
+  interestMeta: { fontSize: 12, color: '#665544', marginTop: 2 },
+  interestCaste: { fontSize: 12, color: PRIMARY, fontWeight: '700', marginTop: 2 },
   interestActions: { gap: 6 },
   acceptBtn: {
     backgroundColor: '#27AE60',
@@ -255,23 +260,23 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 16,
   },
-  acceptBtnText: { color: '#fff', fontWeight: '700', fontSize: 12 },
+  acceptBtnText: { color: '#FFFDF9', fontWeight: '700', fontSize: 12 },
   declineBtn: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#E2D7C7',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16,
   },
-  declineBtnText: { color: '#666', fontSize: 12 },
+  declineBtnText: { color: '#665544', fontSize: 12 },
   statusBadge: {
     paddingHorizontal: 12,
     paddingVertical: 6,
   },
-  statusText: { fontSize: 12, fontWeight: '700' },
+  statusText: { fontSize: 12, fontWeight: '800' },
   emptyState: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 40 },
-  emptyTitle: { fontSize: 18, fontWeight: '700', color: '#333', marginTop: 16, textAlign: 'center' },
-  emptySubtitle: { fontSize: 14, color: '#999', marginTop: 8, textAlign: 'center' },
+  emptyTitle: { fontSize: 18, fontWeight: '800', color: '#200D08', marginTop: 16, textAlign: 'center' },
+  emptySubtitle: { fontSize: 14, color: '#665544', marginTop: 8, textAlign: 'center' },
   explorBtn: {
     marginTop: 20,
     backgroundColor: PRIMARY,
@@ -279,5 +284,5 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 24,
   },
-  explorBtnText: { color: '#fff', fontWeight: '700', fontSize: 15 },
+  explorBtnText: { color: '#FFFDF9', fontWeight: '700', fontSize: 15 },
 });

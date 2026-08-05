@@ -35,7 +35,7 @@ export default function Step1() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#111111" />
+          <Ionicons name="arrow-back" size={24} color="#200D08" />
         </TouchableOpacity>
         <View style={styles.headerTitleRow}>
           <PatrikaRibbonLogo size={26} />
@@ -68,7 +68,7 @@ export default function Step1() {
                   <MaterialCommunityIcons
                     name={item.iconName as any}
                     size={32}
-                    color={isSelected ? '#E31837' : '#666666'}
+                    color={isSelected ? '#6B0000' : '#8C7B6B'}
                   />
                 </View>
                 <Text style={[styles.cardLabel, isSelected && styles.cardLabelSelected]}>
@@ -98,7 +98,7 @@ export default function Step1() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FAF6F0',
   },
   header: {
     flexDirection: 'row',
@@ -106,6 +106,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 12,
+    backgroundColor: '#FFFDF9',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2D7C7',
   },
   backBtn: {
     padding: 4,
@@ -118,21 +121,21 @@ const styles = StyleSheet.create({
   headerBrand: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#E31837',
+    color: '#6B0000',
   },
   stepIndicator: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#666666',
+    color: '#8C7B6B',
   },
   progressTrack: {
     height: 4,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#E8DFD3',
     width: '100%',
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
   },
   content: {
     paddingHorizontal: 24,
@@ -142,12 +145,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: '800',
-    color: '#111111',
+    color: '#200D08',
     letterSpacing: -0.5,
   },
   subtitle: {
     fontSize: 14,
-    color: '#666666',
+    color: '#665544',
     marginTop: 6,
     marginBottom: 28,
   },
@@ -159,24 +162,24 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '47%',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFDF9',
     paddingVertical: 22,
     paddingHorizontal: 12,
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1.5,
-    borderColor: '#EFEFEF',
-    shadowColor: '#000',
+    borderColor: '#E2D7C7',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 6,
     elevation: 2,
   },
   cardSelected: {
-    borderColor: '#E31837',
+    borderColor: '#6B0000',
     backgroundColor: '#FFF5F6',
-    shadowColor: '#E31837',
+    shadowColor: '#6B0000',
     shadowOpacity: 0.15,
     elevation: 4,
   },
@@ -184,7 +187,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#F7F7F7',
+    backgroundColor: '#F4EEE5',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 12,
@@ -195,37 +198,37 @@ const styles = StyleSheet.create({
   cardLabel: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#333333',
+    color: '#200D08',
   },
   cardLabelSelected: {
-    color: '#E31837',
+    color: '#6B0000',
     fontWeight: '800',
   },
   footer: {
     paddingHorizontal: 24,
     paddingVertical: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFDF9',
     borderTopWidth: 1,
-    borderColor: '#F2F2F7',
+    borderColor: '#E2D7C7',
   },
   nextBtn: {
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
     paddingVertical: 16,
     borderRadius: 28,
     alignItems: 'center',
-    shadowColor: '#E31837',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 4,
   },
   nextBtnDisabled: {
-    backgroundColor: '#F5A6B1',
+    backgroundColor: '#E2D7C7',
     shadowOpacity: 0,
     elevation: 0,
   },
   nextBtnText: {
-    color: '#FFFFFF',
+    color: '#FFFDF9',
     fontSize: 17,
     fontWeight: '700',
   },

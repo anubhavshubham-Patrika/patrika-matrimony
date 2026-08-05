@@ -1,54 +1,66 @@
 // src/constants/theme.ts
 export const Colors = {
-  primary: '#E31837', // Vibrant Patrika Ribbon Red
-  primaryDark: '#B71C1C',
-  primaryLight: '#FF3856',
-  accent: '#E31837',
-  accentLight: '#FF5252',
-  gold: '#F1C40F',
-  goldDark: '#D4AC0D',
+  // Deep Royal Crimson / Maroon Red (from reference images)
+  primary: '#6B0000', 
+  primaryDark: '#4A0000',
+  primaryLight: '#8B1A1A',
   
-  background: '#FFFFFF', // Clean White Background
-  surface: '#FFFFFF',
-  surfaceVariant: '#FFF5F6',
+  // Royal Gold & Amber (from reference images)
+  gold: '#D4AF37',
+  goldDark: '#786C10',
+  goldLight: '#E5B869',
+  goldPill: '#FCD04B',
+  goldBg: '#FFF9E6',
   
-  text: '#111111', // Deep Black for Headings
-  textSecondary: '#666666', // Medium Gray for Subtitles
-  textMuted: '#999999',
+  // Warm Parchment / Cream Backgrounds (from reference images)
+  background: '#FAF6F0', 
+  surface: '#FFFDF9',
+  surfaceVariant: '#F5EFE6',
+  cardBg: '#FFFFFF',
+  
+  // Royal Dark Text Colors
+  text: '#200D08', // Deep Royal Brown/Maroon Headings
+  textSecondary: '#665544', // Warm Medium Brown Subtitles
+  textMuted: '#8C7B6B',
   textOnPrimary: '#FFFFFF',
+  textGold: '#E5B869',
   
+  // System Colors
   success: '#27AE60',
-  successLight: '#2ECC71',
+  successLight: '#E8F8F5',
   warning: '#F39C12',
-  error: '#E31837',
+  error: '#6B0000',
   info: '#3498DB',
   
-  border: '#E0E0E0',
-  borderLight: '#F2F2F7',
-  divider: '#EEEEEE',
+  // Borders & Dividers
+  border: '#E2D7C7',
+  borderLight: '#F2EBE1',
+  divider: '#EAE2D5',
   
-  cardShadow: 'rgba(0,0,0,0.06)',
-  overlay: 'rgba(0,0,0,0.5)',
-  overlayLight: 'rgba(0,0,0,0.3)',
+  cardShadow: 'rgba(107,0,0,0.08)',
+  overlay: 'rgba(32,13,8,0.6)',
+  overlayLight: 'rgba(32,13,8,0.3)',
   
   badge: {
-    verified: '#27AE60',
-    premium: '#F39C12',
-    newspaper: '#3498DB',
-    new: '#9B59B6',
+    verified: '#786C10',
+    premium: '#D4AF37',
+    newspaper: '#6B0000',
+    new: '#8B1A1A',
   },
   
   gradient: {
-    primary: ['#FF2E4D', '#E31837'],
-    ribbon: ['#FF2E4D', '#E31837', '#A7001E'],
-    accent: ['#E31837', '#FF5252'],
-    dark: ['#111111', '#222222'],
-    card: ['rgba(227,24,55,0.85)', 'rgba(167,0,30,0.95)'],
+    primary: ['#7A0000', '#500000'],
+    ribbon: ['#8B0000', '#6B0000', '#4A0000'],
+    accent: ['#6B0000', '#8B1A1A'],
+    gold: ['#FCD04B', '#D4AF37'],
+    dark: ['#200D08', '#100604'],
+    card: ['rgba(107,0,0,0.85)', 'rgba(74,0,0,0.95)'],
   },
 };
 
 export const Typography = {
   fontFamily: {
+    serif: 'serif',
     regular: undefined,
     medium: undefined,
     bold: undefined,
@@ -97,21 +109,21 @@ export const BorderRadius = {
 
 export const Shadow = {
   sm: {
-    shadowColor: '#000',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 3,
     elevation: 2,
   },
   md: {
-    shadowColor: '#000',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 6,
     elevation: 4,
   },
   lg: {
-    shadowColor: '#000',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.12,
     shadowRadius: 12,

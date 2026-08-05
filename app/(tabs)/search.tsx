@@ -5,24 +5,22 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-// import { useApp } from '../../src/context/AppContext';
-
-const DUMMY_PROFILES = [
-  { id: '1', name: 'Riya Sharma', age: 26, height: '5\'4"', caste: 'Brahmin', occupation: 'Software Engineer', city: 'Jaipur', photo: 'https://randomuser.me/api/portraits/women/44.jpg', isVerified: true, isNew: true },
-  { id: '2', name: 'Aarav Gupta', age: 29, height: '5\'10"', caste: 'Baniya', occupation: 'Business Analyst', city: 'Delhi', photo: 'https://randomuser.me/api/portraits/men/32.jpg', isVerified: true, isNew: false },
-  { id: '3', name: 'Priya Singh', age: 27, height: '5\'5"', caste: 'Rajput', occupation: 'Doctor', city: 'Mumbai', photo: 'https://randomuser.me/api/portraits/women/68.jpg', isVerified: false, isNew: true },
-];
+import { useApp } from '../../src/context/AppContext';
+import ProfileCard from '../../src/components/ProfileCard';
+import { Colors } from '../../src/constants/theme';
 
 export default function SearchScreen() {
   const router = useRouter();
-  // const { profiles } = useApp();
-  const profiles = DUMMY_PROFILES; // using dummy for standalone
+  const { state, dispatch, profiles } = useApp();
   
   const [searchQuery, setSearchQuery] = useState('');
   const [activeChip, setActiveChip] = useState('All');
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [sortOption, setSortOption] = useState('Best Match');
   const [showSortMenu, setShowSortMenu] = useState(false);
+
+  const isShortlisted = (id: string) => state.shortlistedProfiles.includes(id);
+  const isInterestSent = (id: string) => state.sentInterests.includes(id);
 
   const chips = ['All', 'Nearby', 'New', 'Verified', 'Newspaper Ad'];
 
@@ -43,37 +41,17 @@ export default function SearchScreen() {
       const q = searchQuery.toLowerCase();
       result = result.filter(p => 
         p.name.toLowerCase().includes(q) || 
-        p.caste.toLowerCase().includes(q) || 
-        p.occupation.toLowerCase().includes(q) || 
-        p.city.toLowerCase().includes(q)
+        (p.caste && p.caste.toLowerCase().includes(q)) || 
+        (p.occupation && p.occupation.toLowerCase().includes(q)) || 
+        (p.residentCity && p.residentCity.toLowerCase().includes(q))
       );
     }
     if (activeChip !== 'All') {
-      if (activeChip === 'New') result = result.filter(p => p.isNew);
       if (activeChip === 'Verified') result = result.filter(p => p.isVerified);
+      if (activeChip === 'Newspaper Ad') result = result.filter(p => p.isNewspaperAdLinked);
     }
     return result;
   }, [profiles, searchQuery, activeChip]);
-
-  const renderProfileCard = ({ item }: { item: any }) => (
-    <TouchableOpacity 
-      style={styles.card} 
-      onPress={() => router.push(`/profile/${item.id}` as any)}
-      activeOpacity={0.9}
-    >
-      <Image source={{ uri: item.photo }} style={styles.cardImage} />
-      <View style={styles.cardInfo}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.cardName}>{item.name}</Text>
-          {item.isVerified && <MaterialCommunityIcons name="check-decagram" size={16} color="#4CAF50" />}
-        </View>
-        <Text style={styles.cardDetails}>{item.age} yrs • {item.height}</Text>
-        <Text style={styles.cardDetails}>{item.caste}</Text>
-        <Text style={styles.cardDetails}>{item.occupation}</Text>
-        <Text style={styles.cardDetails} numberOfLines={1}>{item.city}</Text>
-      </View>
-    </TouchableOpacity>
-  );
 
   const renderFilterSection = (title: string, options: string[], filterKey: string) => {
     return (
@@ -110,22 +88,22 @@ export default function SearchScreen() {
       <View style={styles.header}>
         <View style={styles.searchRow}>
           <View style={styles.searchBar}>
-            <MaterialCommunityIcons name="magnify" size={20} color="#7F8C8D" />
+            <MaterialCommunityIcons name="magnify" size={20} color="#8C7B6B" />
             <TextInput 
               style={styles.searchInput}
               placeholder="Search by name, caste, city..."
               value={searchQuery}
               onChangeText={setSearchQuery}
-              placeholderTextColor="#95A5A6"
+              placeholderTextColor="#8C7B6B"
             />
             {searchQuery.length > 0 && (
               <TouchableOpacity onPress={() => setSearchQuery('')}>
-                <MaterialCommunityIcons name="close-circle" size={20} color="#BDC3C7" />
+                <MaterialCommunityIcons name="close-circle" size={20} color="#8C7B6B" />
               </TouchableOpacity>
             )}
           </View>
           <TouchableOpacity style={styles.filterBtn} onPress={() => setIsFilterVisible(true)}>
-            <MaterialCommunityIcons name="tune" size={24} color="#C0392B" />
+            <MaterialCommunityIcons name="tune" size={22} color="#6B0000" />
             {activeFiltersCount > 0 && (
               <View style={styles.filterBadge}>
                 <Text style={styles.filterBadgeText}>{activeFiltersCount}</Text>
@@ -153,31 +131,42 @@ export default function SearchScreen() {
         <Text style={styles.resultCount}>Showing {filteredProfiles.length} profiles</Text>
         <TouchableOpacity style={styles.sortBtn} onPress={() => setShowSortMenu(!showSortMenu)}>
           <Text style={styles.sortText}>{sortOption}</Text>
-          <MaterialCommunityIcons name="chevron-down" size={20} color="#7F8C8D" />
+          <MaterialCommunityIcons name="chevron-down" size={18} color="#665544" />
         </TouchableOpacity>
       </View>
 
       <FlatList
         data={filteredProfiles}
-        keyExtractor={item => item.id}
-        renderItem={renderProfileCard}
+        keyExtractor={item => item.profileId}
+        renderItem={({ item }) => (
+          <ProfileCard
+            profile={item}
+            size="compact"
+            onPress={() => router.push(`/profile/${item.profileId}`)}
+            onInterest={() => dispatch({ type: 'SEND_INTEREST', payload: item.profileId })}
+            onShortlist={() => dispatch({ type: 'TOGGLE_SHORTLIST', payload: item.profileId })}
+            isShortlisted={isShortlisted(item.profileId)}
+            isInterestSent={isInterestSent(item.profileId)}
+          />
+        )}
         contentContainerStyle={styles.listContainer}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
-            <MaterialCommunityIcons name="account-search-outline" size={64} color="#BDC3C7" />
+            <MaterialCommunityIcons name="account-search-outline" size={64} color="#8C7B6B" />
             <Text style={styles.emptyTitle}>No profiles found</Text>
             <Text style={styles.emptySub}>Try adjusting your filters or search terms</Text>
           </View>
         }
       />
 
+      {/* Filter Modal */}
       <Modal visible={isFilterVisible} animationType="slide" presentationStyle="pageSheet">
         <SafeAreaView style={styles.modalContainer}>
           <View style={styles.modalHeader}>
             <TouchableOpacity onPress={() => setIsFilterVisible(false)}>
-              <MaterialCommunityIcons name="close" size={24} color="#2C3E50" />
+              <MaterialCommunityIcons name="close" size={24} color="#200D08" />
             </TouchableOpacity>
-            <Text style={styles.modalTitle}>Filters</Text>
+            <Text style={styles.modalTitle}>Royal Filters</Text>
             <TouchableOpacity onPress={() => setFilters({
               types: [], onlineStatus: [], activity: [], postedBy: [],
               religion: [], motherTongue: [], caste: [], location: [],
@@ -217,47 +206,41 @@ export default function SearchScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F8F9F9' },
-  header: { backgroundColor: '#FFF', paddingTop: Platform.OS === 'android' ? 40 : 10, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: '#EAEDED' },
+  container: { flex: 1, backgroundColor: '#FAF6F0' },
+  header: { backgroundColor: '#FFFDF9', paddingTop: Platform.OS === 'android' ? 40 : 10, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: '#E2D7C7' },
   searchRow: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, marginBottom: 12 },
-  searchBar: { flex: 1, flexDirection: 'row', alignItems: 'center', backgroundColor: '#F2F4F4', borderRadius: 8, paddingHorizontal: 12, height: 44, marginRight: 12 },
-  searchInput: { flex: 1, marginLeft: 8, fontSize: 16, color: '#2C3E50' },
-  filterBtn: { width: 44, height: 44, borderRadius: 8, backgroundColor: '#FADBD8', justifyContent: 'center', alignItems: 'center' },
-  filterBadge: { position: 'absolute', top: -4, right: -4, backgroundColor: '#C0392B', borderRadius: 10, minWidth: 20, height: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#FFF' },
-  filterBadgeText: { color: '#FFF', fontSize: 10, fontWeight: 'bold' },
+  searchBar: { flex: 1, flexDirection: 'row', alignItems: 'center', backgroundColor: '#F4EEE5', borderRadius: 12, paddingHorizontal: 12, height: 44, marginRight: 12, borderWidth: 1, borderColor: '#E8DFD3' },
+  searchInput: { flex: 1, marginLeft: 8, fontSize: 15, color: '#200D08' },
+  filterBtn: { width: 44, height: 44, borderRadius: 12, backgroundColor: '#FFF5F6', borderWidth: 1, borderColor: '#E2D7C7', justifyContent: 'center', alignItems: 'center' },
+  filterBadge: { position: 'absolute', top: -4, right: -4, backgroundColor: '#6B0000', borderRadius: 10, minWidth: 20, height: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#FFFDF9' },
+  filterBadgeText: { color: '#FFF', fontSize: 10, fontWeight: '800' },
   chipsScroll: { maxHeight: 40 },
   chipsContainer: { paddingHorizontal: 16, paddingBottom: 8 },
-  quickChip: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, backgroundColor: '#F2F4F4', marginRight: 8, borderWidth: 1, borderColor: '#EAEDED' },
-  quickChipActive: { backgroundColor: '#C0392B', borderColor: '#C0392B' },
-  quickChipText: { color: '#7F8C8D', fontSize: 14, fontWeight: '500' },
-  quickChipTextActive: { color: '#FFF' },
+  quickChip: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, backgroundColor: '#F5EFE6', marginRight: 8, borderWidth: 1, borderColor: '#E2D7C7' },
+  quickChipActive: { backgroundColor: '#6B0000', borderColor: '#6B0000' },
+  quickChipText: { color: '#665544', fontSize: 13, fontWeight: '600' },
+  quickChipTextActive: { color: '#FFFDF9', fontWeight: '700' },
   resultsHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12 },
-  resultCount: { fontSize: 14, color: '#7F8C8D', fontWeight: '500' },
+  resultCount: { fontSize: 13, color: '#665544', fontWeight: '600' },
   sortBtn: { flexDirection: 'row', alignItems: 'center' },
-  sortText: { fontSize: 14, color: '#2C3E50', marginRight: 4, fontWeight: '500' },
-  listContainer: { paddingHorizontal: 16, paddingBottom: 20 },
-  card: { flexDirection: 'row', backgroundColor: '#FFF', borderRadius: 12, padding: 12, marginBottom: 12, elevation: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3 },
-  cardImage: { width: 80, height: 100, borderRadius: 8, backgroundColor: '#EAEDED' },
-  cardInfo: { flex: 1, marginLeft: 12, justifyContent: 'center' },
-  cardHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 4 },
-  cardName: { fontSize: 18, fontWeight: 'bold', color: '#2C3E50', marginRight: 4 },
-  cardDetails: { fontSize: 14, color: '#7F8C8D', marginBottom: 2 },
+  sortText: { fontSize: 13, color: '#200D08', marginRight: 4, fontWeight: '700' },
+  listContainer: { paddingBottom: 20 },
   emptyContainer: { alignItems: 'center', justifyContent: 'center', paddingVertical: 60 },
-  emptyTitle: { fontSize: 18, fontWeight: 'bold', color: '#2C3E50', marginTop: 16, marginBottom: 8 },
-  emptySub: { fontSize: 14, color: '#7F8C8D', textAlign: 'center' },
-  modalContainer: { flex: 1, backgroundColor: '#FFF' },
-  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 16, borderBottomWidth: 1, borderBottomColor: '#EAEDED' },
-  modalTitle: { fontSize: 18, fontWeight: 'bold', color: '#2C3E50' },
-  resetText: { fontSize: 16, color: '#C0392B', fontWeight: '500' },
+  emptyTitle: { fontSize: 18, fontWeight: '800', color: '#200D08', marginTop: 16, marginBottom: 8 },
+  emptySub: { fontSize: 14, color: '#665544', textAlign: 'center' },
+  modalContainer: { flex: 1, backgroundColor: '#FAF6F0' },
+  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 16, borderBottomWidth: 1, borderBottomColor: '#E2D7C7', backgroundColor: '#FFFDF9' },
+  modalTitle: { fontSize: 18, fontWeight: '800', color: '#200D08' },
+  resetText: { fontSize: 15, color: '#6B0000', fontWeight: '700' },
   modalContent: { flex: 1, padding: 16 },
   filterSection: { marginBottom: 24 },
-  filterTitle: { fontSize: 16, fontWeight: 'bold', color: '#2C3E50', marginBottom: 12 },
+  filterTitle: { fontSize: 15, fontWeight: '800', color: '#200D08', marginBottom: 12 },
   filterOptions: { flexDirection: 'row', flexWrap: 'wrap' },
-  filterChip: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, backgroundColor: '#F8F9F9', borderWidth: 1, borderColor: '#EAEDED', marginRight: 8, marginBottom: 8 },
-  filterChipSelected: { backgroundColor: '#FADBD8', borderColor: '#C0392B' },
-  filterChipText: { fontSize: 14, color: '#2C3E50' },
-  filterChipTextSelected: { color: '#C0392B', fontWeight: '500' },
-  modalFooter: { padding: 16, borderTopWidth: 1, borderTopColor: '#EAEDED', backgroundColor: '#FFF' },
-  applyBtn: { backgroundColor: '#C0392B', borderRadius: 8, paddingVertical: 14, alignItems: 'center' },
-  applyBtnText: { color: '#FFF', fontSize: 16, fontWeight: 'bold' }
+  filterChip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 18, backgroundColor: '#FFFDF9', borderWidth: 1, borderColor: '#E2D7C7', marginRight: 8, marginBottom: 8 },
+  filterChipSelected: { backgroundColor: '#FFF5F6', borderColor: '#6B0000' },
+  filterChipText: { fontSize: 13, color: '#554433' },
+  filterChipTextSelected: { color: '#6B0000', fontWeight: '700' },
+  modalFooter: { padding: 16, borderTopWidth: 1, borderTopColor: '#E2D7C7', backgroundColor: '#FFFDF9' },
+  applyBtn: { backgroundColor: '#6B0000', borderRadius: 28, paddingVertical: 14, alignItems: 'center' },
+  applyBtnText: { color: '#FFF', fontSize: 16, fontWeight: '700' }
 });

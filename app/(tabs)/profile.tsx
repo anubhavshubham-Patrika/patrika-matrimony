@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Modal, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { useApp } from '../../src/context/AppContext';
 
 export default function ProfileTab() {
@@ -9,7 +9,6 @@ export default function ProfileTab() {
   const { state, dispatch, profiles } = useApp();
   const [editModalVisible, setEditModalVisible] = useState(false);
   
-  // For dummy purposes, use current user's profile if set, or default to P001
   const userProfile = state.myProfile || profiles.find(p => p.profileId === 'P001') || profiles[0];
   const { currentPlan } = state;
 
@@ -27,14 +26,13 @@ export default function ProfileTab() {
   };
 
   const handleSaveProfile = () => {
-    // Ideally dispatch update profile
     setEditModalVisible(false);
   };
 
   if (!userProfile) {
     return (
       <View style={styles.centerContainer}>
-        <Text>Loading Profile...</Text>
+        <Text style={{ color: '#200D08' }}>Loading Profile...</Text>
       </View>
     );
   }
@@ -125,7 +123,7 @@ export default function ProfileTab() {
         </View>
 
         <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
-          <Ionicons name="log-out-outline" size={24} color="#E74C3C" />
+          <Ionicons name="log-out-outline" size={24} color="#6B0000" />
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
         
@@ -139,7 +137,7 @@ export default function ProfileTab() {
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Edit Profile</Text>
               <TouchableOpacity onPress={() => setEditModalVisible(false)}>
-                <Ionicons name="close" size={28} color="#333" />
+                <Ionicons name="close" size={28} color="#200D08" />
               </TouchableOpacity>
             </View>
             <ScrollView>
@@ -172,17 +170,17 @@ export default function ProfileTab() {
 const MenuItem = ({ icon, title, onPress }: { icon: any, title: string, onPress?: () => void }) => (
   <TouchableOpacity style={styles.menuItem} onPress={onPress}>
     <View style={styles.menuItemLeft}>
-      <Ionicons name={icon} size={24} color="#666" />
+      <Ionicons name={icon} size={22} color="#665544" />
       <Text style={styles.menuItemText}>{title}</Text>
     </View>
-    <Ionicons name="chevron-forward" size={20} color="#CCC" />
+    <Ionicons name="chevron-forward" size={18} color="#8C7B6B" />
   </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F6FA',
+    backgroundColor: '#FAF6F0',
   },
   centerContainer: {
     flex: 1,
@@ -193,27 +191,29 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   headerContainer: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#FFFDF9',
     padding: 24,
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: '#EEE',
+    borderBottomColor: '#E2D7C7',
   },
   profilePhoto: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 84,
+    height: 84,
+    borderRadius: 42,
     marginBottom: 12,
+    borderWidth: 2,
+    borderColor: '#786C10',
   },
   userName: {
     fontSize: 22,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 4,
+    fontWeight: '800',
+    color: '#200D08',
+    marginBottom: 2,
   },
   userId: {
-    fontSize: 14,
-    color: '#888',
+    fontSize: 13,
+    color: '#8C7B6B',
     marginBottom: 12,
   },
   planBadgeContainer: {
@@ -225,33 +225,39 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   freeBadge: {
-    backgroundColor: '#F0F0F0',
+    backgroundColor: '#F5EFE6',
+    borderWidth: 1,
+    borderColor: '#E2D7C7',
   },
   premiumBadge: {
-    backgroundColor: '#FFD700',
+    backgroundColor: '#FFF9E6',
+    borderWidth: 1,
+    borderColor: '#786C10',
   },
   planBadgeText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#333',
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#786C10',
   },
   upgradeBtn: {
-    backgroundColor: '#C0392B',
+    backgroundColor: '#6B0000',
     paddingHorizontal: 32,
     paddingVertical: 12,
     borderRadius: 24,
     marginBottom: 20,
   },
   upgradeBtnText: {
-    color: '#FFF',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: '#FFFDF9',
+    fontSize: 15,
+    fontWeight: '700',
   },
   progressContainer: {
     width: '100%',
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#F5EFE6',
     padding: 16,
-    borderRadius: 12,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#E2D7C7',
   },
   progressHeader: {
     flexDirection: 'row',
@@ -260,38 +266,38 @@ const styles = StyleSheet.create({
   },
   progressText: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#555',
+    fontWeight: '700',
+    color: '#200D08',
   },
   progressPercent: {
     fontSize: 14,
-    fontWeight: 'bold',
-    color: '#C0392B',
+    fontWeight: '800',
+    color: '#6B0000',
   },
   progressBarBg: {
     height: 6,
-    backgroundColor: '#E0E0E0',
+    backgroundColor: '#E2D7C7',
     borderRadius: 3,
     marginBottom: 8,
   },
   progressBarFill: {
     height: 6,
-    backgroundColor: '#27AE60',
+    backgroundColor: '#786C10',
     borderRadius: 3,
   },
   progressHint: {
     fontSize: 12,
-    color: '#777',
+    color: '#665544',
     textAlign: 'center',
   },
   statsContainer: {
     flexDirection: 'row',
-    backgroundColor: '#FFF',
+    backgroundColor: '#FFFDF9',
     marginTop: 12,
     paddingVertical: 16,
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: '#EEE',
+    borderColor: '#E2D7C7',
   },
   statBox: {
     flex: 1,
@@ -299,31 +305,31 @@ const styles = StyleSheet.create({
   },
   statValue: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#C0392B',
-    marginBottom: 4,
+    fontWeight: '800',
+    color: '#6B0000',
+    marginBottom: 2,
   },
   statLabel: {
     fontSize: 12,
-    color: '#666',
+    color: '#665544',
     textAlign: 'center',
   },
   statDivider: {
     width: 1,
-    backgroundColor: '#EEE',
+    backgroundColor: '#E2D7C7',
   },
   menuSection: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#FFFDF9',
     marginTop: 12,
     paddingTop: 16,
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: '#EEE',
+    borderColor: '#E2D7C7',
   },
   sectionTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: 15,
+    fontWeight: '800',
+    color: '#200D08',
     paddingHorizontal: 20,
     marginBottom: 8,
   },
@@ -331,35 +337,36 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 16,
+    paddingVertical: 14,
     paddingHorizontal: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#F5F5F5',
+    borderBottomColor: '#F5EFE6',
   },
   menuItemLeft: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   menuItemText: {
-    fontSize: 16,
-    color: '#444',
-    marginLeft: 16,
+    fontSize: 15,
+    color: '#200D08',
+    marginLeft: 14,
+    fontWeight: '500',
   },
   logoutBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFF',
+    backgroundColor: '#FFFDF9',
     marginTop: 24,
     paddingVertical: 16,
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: '#EEE',
+    borderColor: '#E2D7C7',
   },
   logoutText: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#E74C3C',
+    fontWeight: '800',
+    color: '#6B0000',
     marginLeft: 8,
   },
   footerSpace: {
@@ -367,11 +374,11 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(32,13,8,0.6)',
     justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#FFFDF9',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     padding: 24,
@@ -385,35 +392,37 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: '800',
+    color: '#200D08',
   },
   inputLabel: {
     fontSize: 14,
-    color: '#666',
-    marginBottom: 8,
+    color: '#665544',
+    marginBottom: 6,
+    fontWeight: '600',
   },
   input: {
     borderWidth: 1,
-    borderColor: '#DDD',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    borderColor: '#E2D7C7',
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
     fontSize: 16,
     marginBottom: 16,
-    color: '#333',
+    color: '#200D08',
+    backgroundColor: '#F4EEE5',
   },
   saveBtn: {
-    backgroundColor: '#C0392B',
+    backgroundColor: '#6B0000',
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 28,
     alignItems: 'center',
     marginTop: 8,
     marginBottom: 20,
   },
   saveBtnText: {
-    color: '#FFF',
+    color: '#FFFDF9',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '700',
   }
 });

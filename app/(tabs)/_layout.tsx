@@ -2,13 +2,14 @@ import React from 'react';
 import { Tabs } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { View, StyleSheet, Platform } from 'react-native';
+import { Colors } from '../../src/constants/theme';
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#E31837',
-        tabBarInactiveTintColor: '#999999',
+        tabBarActiveTintColor: Colors.primary,
+        tabBarInactiveTintColor: Colors.textSecondary,
         tabBarStyle: styles.tabBar,
         headerShown: false,
         tabBarLabelStyle: styles.tabBarLabel,
@@ -16,13 +17,15 @@ export default function TabLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: 'Home',
+          title: 'Patrika',
           tabBarIcon: ({ color, focused }) => (
-            <MaterialCommunityIcons 
-              name={focused ? 'home' : 'home-outline'} 
-              size={24} 
-              color={color} 
-            />
+            <View style={[styles.iconContainer, focused && styles.activeIconPill]}>
+              <MaterialCommunityIcons 
+                name={focused ? 'castle' : 'castle'} 
+                size={22} 
+                color={focused ? Colors.primary : Colors.textSecondary} 
+              />
+            </View>
           ),
         }}
       />
@@ -31,11 +34,13 @@ export default function TabLayout() {
         options={{
           title: 'Search',
           tabBarIcon: ({ color, focused }) => (
-            <MaterialCommunityIcons 
-              name={focused ? 'magnify' : 'magnify'} 
-              size={24} 
-              color={color} 
-            />
+            <View style={[styles.iconContainer, focused && styles.activeIconPill]}>
+              <MaterialCommunityIcons 
+                name="magnify" 
+                size={22} 
+                color={focused ? Colors.primary : Colors.textSecondary} 
+              />
+            </View>
           ),
         }}
       />
@@ -44,11 +49,11 @@ export default function TabLayout() {
         options={{
           title: 'Chats',
           tabBarIcon: ({ color, focused }) => (
-            <View>
+            <View style={[styles.iconContainer, focused && styles.activeIconPill]}>
               <MaterialCommunityIcons 
                 name={focused ? 'chat' : 'chat-outline'} 
-                size={24} 
-                color={color} 
+                size={22} 
+                color={focused ? Colors.primary : Colors.textSecondary} 
               />
               <View style={styles.badge} />
             </View>
@@ -58,13 +63,15 @@ export default function TabLayout() {
       <Tabs.Screen
         name="shortlist"
         options={{
-          title: 'Shortlist',
+          title: 'Matches',
           tabBarIcon: ({ color, focused }) => (
-            <MaterialCommunityIcons 
-              name={focused ? 'heart' : 'heart-outline'} 
-              size={24} 
-              color={color} 
-            />
+            <View style={[styles.iconContainer, focused && styles.activeIconPill]}>
+              <MaterialCommunityIcons 
+                name={focused ? 'heart' : 'heart-outline'} 
+                size={22} 
+                color={focused ? Colors.primary : Colors.textSecondary} 
+              />
+            </View>
           ),
         }}
       />
@@ -73,11 +80,13 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
-            <MaterialCommunityIcons 
-              name={focused ? 'account' : 'account-outline'} 
-              size={24} 
-              color={color} 
-            />
+            <View style={[styles.iconContainer, focused && styles.activeIconPill]}>
+              <MaterialCommunityIcons 
+                name={focused ? 'account' : 'account-outline'} 
+                size={22} 
+                color={focused ? Colors.primary : Colors.textSecondary} 
+              />
+            </View>
           ),
         }}
       />
@@ -87,30 +96,42 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: '#FFFFFF',
-    height: 60,
-    paddingBottom: Platform.OS === 'ios' ? 20 : 8,
+    backgroundColor: '#FFFDF9',
+    height: Platform.OS === 'ios' ? 74 : 64,
+    paddingBottom: Platform.OS === 'ios' ? 20 : 10,
     paddingTop: 8,
-    borderTopWidth: 0,
-    elevation: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    borderTopWidth: 1,
+    borderColor: '#E8DFD3',
+    elevation: 12,
+    shadowColor: '#6B0000',
+    shadowOffset: { width: 0, height: -3 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
   },
   tabBarLabel: {
-    fontSize: 12,
-    fontWeight: '500',
+    fontSize: 11,
+    fontWeight: '700',
+    marginTop: 2,
+  },
+  iconContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 4,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  activeIconPill: {
+    backgroundColor: '#FCD04B', // Royal Gold Active Pill (Matching Reference Image 3)
   },
   badge: {
     position: 'absolute',
-    top: -2,
-    right: -4,
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: '#E31837',
+    top: 2,
+    right: 12,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#6B0000',
     borderWidth: 1,
-    borderColor: '#FFF',
+    borderColor: '#FFFDF9',
   },
 });
