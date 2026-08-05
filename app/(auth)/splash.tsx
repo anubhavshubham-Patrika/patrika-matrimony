@@ -50,7 +50,7 @@ export default function SplashScreen() {
       >
         {/* Patrika Ribbon Logo */}
         <View style={styles.logoContainer}>
-          <PatrikaRibbonLogo size={70} />
+          <PatrikaRibbonLogo size={140} />
         </View>
 
         {/* Headlines matching second screenshot */}
