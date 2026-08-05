@@ -3,10 +3,10 @@ import { Tabs } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { View, StyleSheet, Platform, Text } from 'react-native';
 
-const PRIMARY_RED = '#6B0000';
-const INACTIVE_COLOR = '#5C4A3E'; // Dark warm brown - clear contrast on cream background
-const PARCHMENT_BG = '#FFFDF9';
-const ACTIVE_BG = '#FFF0F2'; // Soft Royal Crimson Tint Pill
+const PRIMARY_RED = '#E91E63';
+const INACTIVE_COLOR = '#8C7A7C';
+const PARCHMENT_BG = '#FFFFFF';
+const ACTIVE_BG = '#FFF0F3'; // Soft Rose Red Tint Pill
 
 export default function TabLayout() {
   return (
@@ -37,11 +37,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="search"
         options={{
-          title: 'Search',
+          title: 'Matches',
           tabBarIcon: ({ focused }) => (
             <View style={[styles.iconBox, focused && styles.activeIconBox]}>
               <MaterialCommunityIcons 
-                name="magnify" 
+                name={focused ? 'cards-heart' : 'cards-heart-outline'} 
                 size={24} 
                 color={focused ? PRIMARY_RED : INACTIVE_COLOR} 
               />
@@ -68,7 +68,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="shortlist"
         options={{
-          title: 'Matches',
+          title: 'Shortlist',
           tabBarIcon: ({ focused }) => (
             <View style={[styles.iconBox, focused && styles.activeIconBox]}>
               <MaterialCommunityIcons 
@@ -106,11 +106,11 @@ const styles = StyleSheet.create({
     paddingBottom: Platform.OS === 'ios' ? 26 : 10,
     paddingTop: 8,
     borderTopWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#EFE6DD',
     elevation: 12,
-    shadowColor: '#6B0000',
+    shadowColor: '#2C1A1D',
     shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.08,
     shadowRadius: 8,
   },
   tabBarItem: {
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   activeIconBox: {
     backgroundColor: ACTIVE_BG,
     borderWidth: 1,
-    borderColor: '#F3D6DA',
+    borderColor: '#F8D7DA',
   },
   badgeDot: {
     position: 'absolute',
