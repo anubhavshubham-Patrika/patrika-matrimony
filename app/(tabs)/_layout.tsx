@@ -22,11 +22,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: 'Patrika',
+          title: 'Home',
           tabBarIcon: ({ focused }) => (
             <View style={[styles.iconBox, focused && styles.activeIconBox]}>
               <MaterialCommunityIcons 
-                name={focused ? 'castle' : 'castle'} 
+                name={focused ? 'home' : 'home-outline'} 
                 size={24} 
                 color={focused ? PRIMARY_RED : INACTIVE_COLOR} 
               />
