@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
@@ -12,40 +12,26 @@ export default function Step13() {
   const lang = state.language || 'en';
   const t = Translations[lang];
 
-  const [ageMin, setAgeMin] = useState('21');
-  const [ageMax, setAgeMax] = useState('32');
-  const [maritalStatus, setMaritalStatus] = useState<string[]>(['Never Married']);
-  const [motherTongue, setMotherTongue] = useState('Hindi');
-  const [religion, setReligion] = useState('Hindu');
-  const [caste, setCaste] = useState('Rajput');
-  const [location, setLocation] = useState('Rajasthan');
-  const [diet, setDiet] = useState('Vegetarian');
-  const [horoscope, setHoroscope] = useState('Doesn\'t matter');
+  const [prefAgeMin, setPrefAgeMin] = useState(21);
+  const [prefAgeMax, setPrefAgeMax] = useState(32);
 
-  const toggleMaritalStatus = (status: string) => {
-    if (maritalStatus.includes(status)) {
-      setMaritalStatus(maritalStatus.filter((s) => s !== status));
-    } else {
-      setMaritalStatus([...maritalStatus, status]);
-    }
-  };
+  const preferredReligions = ['Hindu', 'Jain', 'Sikh', 'Any'];
+  const [selectedReligion, setSelectedReligion] = useState('Hindu');
 
-  const handleNext = () => {
+  const preferredCastes = ['Rajput', 'Agarwal', 'Brahmin', 'Marwari', 'Jain', 'Any'];
+  const [selectedCaste, setSelectedCaste] = useState('Rajput');
+
+  const preferredDiets = ['Vegetarian', 'Jain', 'Eggetarian', 'Any'];
+  const [selectedDiet, setSelectedDiet] = useState('Vegetarian');
+
+  const handleFinish = () => {
     dispatch({
       type: 'UPDATE_ONBOARDING',
       payload: {
-        partnerPreferences: {
-          ageMin: parseInt(ageMin) || 21,
-          ageMax: parseInt(ageMax) || 32,
-          maritalStatus,
-          motherTongue,
-          religion,
-          caste,
-          location,
-          diet,
-          horoscope,
-        },
-      } as any,
+        religion: selectedReligion,
+        caste: selectedCaste,
+        diet: selectedDiet,
+      },
     });
     router.push('/(auth)/onboarding/welcome');
   };
@@ -55,7 +41,7 @@ export default function Step13() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#111111" />
+          <Ionicons name="arrow-back" size={24} color="#200D08" />
         </TouchableOpacity>
         <View style={styles.headerTitleRow}>
           <PatrikaRibbonLogo size={26} />
@@ -66,80 +52,75 @@ export default function Step13() {
 
       {/* Progress Bar */}
       <View style={styles.progressTrack}>
-        <View style={[styles.progressBar, { width: '100%' }]} />
+        <View style={[styles.progressBar, { width: `${(13 / 13) * 100}%` }]} />
       </View>
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>{t.step13Title}</Text>
+        <Text style={styles.subtitle}>Set desired age, caste & location criteria</Text>
 
-        {/* Age Range */}
+        {/* Preferred Age Range */}
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldLabel}>{t.preferredAge}</Text>
-          <View style={styles.row}>
-            <TextInput
-              style={[styles.input, styles.halfInput]}
-              value={ageMin}
-              onChangeText={setAgeMin}
-              keyboardType="numeric"
-              placeholder="Min"
-              placeholderTextColor="#999999"
-            />
-            <Text style={styles.dash}>to</Text>
-            <TextInput
-              style={[styles.input, styles.halfInput]}
-              value={ageMax}
-              onChangeText={setAgeMax}
-              keyboardType="numeric"
-              placeholder="Max"
-              placeholderTextColor="#999999"
-            />
+          <View style={styles.rangeBox}>
+            <Text style={styles.rangeText}>{prefAgeMin} yrs - {prefAgeMax} yrs</Text>
           </View>
         </View>
 
-        {/* Marital Status */}
+        {/* Preferred Religion */}
         <View style={styles.fieldGroup}>
-          <Text style={styles.fieldLabel}>{t.maritalStatus}</Text>
+          <Text style={styles.fieldLabel}>Preferred Religion</Text>
           <View style={styles.chipGrid}>
-            {['Never Married', 'Divorced', 'Widowed', 'Separated'].map((status) => {
-              const isSel = maritalStatus.includes(status);
+            {preferredReligions.map((r) => {
+              const isSel = selectedReligion === r;
               return (
                 <TouchableOpacity
-                  key={status}
-                  style={[styles.chip, isSel && styles.chipSelected]}
-                  onPress={() => toggleMaritalStatus(status)}
+                  key={r}
+                  style={[styles.chipGridItem, isSel && styles.chipGridItemSelected]}
+                  onPress={() => setSelectedReligion(r)}
                   activeOpacity={0.8}
                 >
-                  <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{status}</Text>
+                  <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{r}</Text>
                 </TouchableOpacity>
               );
             })}
           </View>
         </View>
 
-        {/* Community & Location Preferences */}
+        {/* Preferred Caste */}
         <View style={styles.fieldGroup}>
-          <Text style={styles.fieldLabel}>Cultural Preferences</Text>
-          <TextInput style={styles.input} placeholder="Mother Tongue (e.g. Hindi, Marwari)" value={motherTongue} onChangeText={setMotherTongue} placeholderTextColor="#999999" />
-          <TextInput style={[styles.input, { marginTop: 10 }]} placeholder="Religion (e.g. Hindu)" value={religion} onChangeText={setReligion} placeholderTextColor="#999999" />
-          <TextInput style={[styles.input, { marginTop: 10 }]} placeholder="Caste (e.g. Rajput, Agarwal)" value={caste} onChangeText={setCaste} placeholderTextColor="#999999" />
-          <TextInput style={[styles.input, { marginTop: 10 }]} placeholder="Location (State/City)" value={location} onChangeText={setLocation} placeholderTextColor="#999999" />
-          <TextInput style={[styles.input, { marginTop: 10 }]} placeholder="Diet Preference (e.g. Vegetarian)" value={diet} onChangeText={setDiet} placeholderTextColor="#999999" />
-        </View>
-
-        {/* Horoscope Required */}
-        <View style={styles.fieldGroup}>
-          <Text style={styles.fieldLabel}>Horoscope Required?</Text>
-          <View style={styles.row}>
-            {['Yes', 'No', 'Doesn\'t matter'].map((opt) => {
-              const isSel = horoscope === opt;
+          <Text style={styles.fieldLabel}>Preferred Caste / Community</Text>
+          <View style={styles.chipGrid}>
+            {preferredCastes.map((c) => {
+              const isSel = selectedCaste === c;
               return (
                 <TouchableOpacity
-                  key={opt}
-                  style={[styles.toggleBtn, isSel && styles.toggleBtnSelected]}
-                  onPress={() => setHoroscope(opt)}
+                  key={c}
+                  style={[styles.chipGridItem, isSel && styles.chipGridItemSelected]}
+                  onPress={() => setSelectedCaste(c)}
                   activeOpacity={0.8}
                 >
-                  <Text style={[styles.toggleText, isSel && styles.toggleTextSelected]}>{opt}</Text>
+                  <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{c}</Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
+
+        {/* Preferred Diet */}
+        <View style={styles.fieldGroup}>
+          <Text style={styles.fieldLabel}>Preferred Diet</Text>
+          <View style={styles.chipGrid}>
+            {preferredDiets.map((d) => {
+              const isSel = selectedDiet === d;
+              return (
+                <TouchableOpacity
+                  key={d}
+                  style={[styles.chipGridItem, isSel && styles.chipGridItemSelected]}
+                  onPress={() => setSelectedDiet(d)}
+                  activeOpacity={0.8}
+                >
+                  <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{d}</Text>
                 </TouchableOpacity>
               );
             })}
@@ -149,8 +130,8 @@ export default function Step13() {
 
       {/* Footer CTA */}
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.nextBtn} onPress={handleNext} activeOpacity={0.88}>
-          <Text style={styles.nextBtnText}>{t.saveAndContinue}</Text>
+        <TouchableOpacity style={styles.nextBtn} onPress={handleFinish} activeOpacity={0.88}>
+          <Text style={styles.nextBtnText}>Complete Profile Setup ✨</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -160,7 +141,7 @@ export default function Step13() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FAF6F0',
   },
   header: {
     flexDirection: 'row',
@@ -168,6 +149,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 12,
+    backgroundColor: '#FFFDF9',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2D7C7',
   },
   backBtn: {
     padding: 4,
@@ -180,21 +164,21 @@ const styles = StyleSheet.create({
   headerBrand: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#E31837',
+    color: '#6B0000',
   },
   stepIndicator: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#666666',
+    color: '#8C7B6B',
   },
   progressTrack: {
     height: 4,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#E8DFD3',
     width: '100%',
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
   },
   content: {
     paddingHorizontal: 24,
@@ -204,8 +188,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: '800',
-    color: '#111111',
+    color: '#200D08',
     letterSpacing: -0.5,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#665544',
+    marginTop: 6,
     marginBottom: 24,
   },
   fieldGroup: {
@@ -214,100 +203,69 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#111111',
+    color: '#200D08',
     marginBottom: 10,
   },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  halfInput: {
-    flex: 1,
-    textAlign: 'center',
-  },
-  dash: {
-    fontSize: 15,
-    color: '#666666',
-  },
-  input: {
-    backgroundColor: '#FAFAFA',
+  rangeBox: {
+    backgroundColor: '#FFFDF9',
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#E2D7C7',
     borderRadius: 16,
     paddingHorizontal: 16,
     paddingVertical: 14,
+    alignItems: 'center',
+  },
+  rangeText: {
     fontSize: 16,
-    color: '#111111',
+    fontWeight: '800',
+    color: '#6B0000',
   },
   chipGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 8,
   },
-  chip: {
+  chipGridItem: {
     paddingVertical: 10,
-    paddingHorizontal: 16,
+    paddingHorizontal: 14,
     borderRadius: 20,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#F5EFE6',
     borderWidth: 1,
-    borderColor: 'transparent',
+    borderColor: '#E2D7C7',
   },
-  chipSelected: {
+  chipGridItemSelected: {
     backgroundColor: '#FFF5F6',
-    borderColor: '#E31837',
+    borderColor: '#6B0000',
   },
   chipText: {
     fontSize: 14,
-    color: '#555555',
+    color: '#200D08',
     fontWeight: '500',
   },
   chipTextSelected: {
-    color: '#E31837',
-    fontWeight: '700',
-  },
-  toggleBtn: {
-    flex: 1,
-    paddingVertical: 12,
-    alignItems: 'center',
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    backgroundColor: '#FFFFFF',
-  },
-  toggleBtnSelected: {
-    borderColor: '#E31837',
-    backgroundColor: '#FFF5F6',
-  },
-  toggleText: {
-    fontSize: 13,
-    color: '#666666',
-    fontWeight: '500',
-  },
-  toggleTextSelected: {
-    color: '#E31837',
+    color: '#6B0000',
     fontWeight: '700',
   },
   footer: {
     paddingHorizontal: 24,
     paddingVertical: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFDF9',
     borderTopWidth: 1,
-    borderColor: '#F2F2F7',
+    borderColor: '#E2D7C7',
   },
   nextBtn: {
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
     paddingVertical: 16,
     borderRadius: 28,
     alignItems: 'center',
-    shadowColor: '#E31837',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 4,
   },
   nextBtnText: {
-    color: '#FFFFFF',
+    color: '#FFFDF9',
     fontSize: 17,
     fontWeight: '700',
   },

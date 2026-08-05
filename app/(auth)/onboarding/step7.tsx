@@ -12,10 +12,10 @@ export default function Step7() {
   const lang = state.language || 'en';
   const t = Translations[lang];
 
-  const statuses = ['Middle Class', 'Upper Middle Class', 'Rich / Affluent', 'High Net Worth (HNW)'];
+  const familyStatuses = ['Middle Class', 'Upper Middle Class', 'Rich / Affluent', 'High Networth Family'];
 
   const [familyStatus, setFamilyStatus] = useState(state.onboardingData?.familyStatus || 'Upper Middle Class');
-  const [ancestralOrigin, setAncestralOrigin] = useState(state.onboardingData?.ancestralOrigin || '');
+  const [ancestralOrigin, setAncestralOrigin] = useState(state.onboardingData?.ancestralOrigin || 'Jaipur');
   const [aboutMe, setAboutMe] = useState(state.onboardingData?.aboutMe || '');
   const [aboutFamily, setAboutFamily] = useState(state.onboardingData?.aboutFamily || '');
 
@@ -32,7 +32,7 @@ export default function Step7() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#111111" />
+          <Ionicons name="arrow-back" size={24} color="#200D08" />
         </TouchableOpacity>
         <View style={styles.headerTitleRow}>
           <PatrikaRibbonLogo size={26} />
@@ -53,61 +53,63 @@ export default function Step7() {
         {/* Family Status */}
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldLabel}>{t.familyStatus}</Text>
-          <View style={styles.chipGrid}>
-            {statuses.map((status) => {
-              const isSel = familyStatus === status;
+          <View style={styles.radioGrid}>
+            {familyStatuses.map((fs) => {
+              const isSel = familyStatus === fs;
               return (
                 <TouchableOpacity
-                  key={status}
-                  style={[styles.chip, isSel && styles.chipSelected]}
-                  onPress={() => setFamilyStatus(status)}
+                  key={fs}
+                  style={[styles.radioCard, isSel && styles.radioCardSelected]}
+                  onPress={() => setFamilyStatus(fs)}
                   activeOpacity={0.8}
                 >
-                  <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{status}</Text>
+                  <Text style={[styles.radioCardText, isSel && styles.radioCardTextSelected]}>{fs}</Text>
+                  <View style={[styles.radioDotOuter, isSel && styles.radioDotOuterSelected]}>
+                    {isSel && <View style={styles.radioDotInner} />}
+                  </View>
                 </TouchableOpacity>
               );
             })}
           </View>
         </View>
 
-        {/* Ancestral Origin Input */}
+        {/* Ancestral Origin */}
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldLabel}>{t.ancestralOrigin}</Text>
           <TextInput
             style={styles.input}
-            placeholder="e.g. Sikar / Jodhpur / Jaipur"
+            placeholder="e.g. Jodhpur / Udaipur / Shekhawati"
             value={ancestralOrigin}
             onChangeText={setAncestralOrigin}
-            placeholderTextColor="#999999"
+            placeholderTextColor="#8C7B6B"
           />
         </View>
 
-        {/* About Me */}
+        {/* About Candidate */}
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldLabel}>{t.aboutMe}</Text>
           <TextInput
             style={[styles.input, styles.textArea]}
-            placeholder="Describe your background, personality, goals & values..."
-            multiline
-            numberOfLines={4}
-            maxLength={250}
+            placeholder="Write 2-3 sentences about your personality, values and aspirations..."
             value={aboutMe}
             onChangeText={setAboutMe}
-            placeholderTextColor="#999999"
+            multiline
+            numberOfLines={4}
+            placeholderTextColor="#8C7B6B"
           />
         </View>
 
         {/* About Family */}
         <View style={styles.fieldGroup}>
-          <Text style={styles.fieldLabel}>{t.aboutFamily}</Text>
+          <Text style={styles.fieldLabel}>{t.aboutFamily} (Optional)</Text>
           <TextInput
             style={[styles.input, styles.textArea]}
-            placeholder="Describe your family background, values, parents' occupation..."
-            multiline
-            numberOfLines={4}
+            placeholder="Describe your family background, values and roots..."
             value={aboutFamily}
             onChangeText={setAboutFamily}
-            placeholderTextColor="#999999"
+            multiline
+            numberOfLines={3}
+            placeholderTextColor="#8C7B6B"
           />
         </View>
       </ScrollView>
@@ -125,7 +127,7 @@ export default function Step7() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FAF6F0',
   },
   header: {
     flexDirection: 'row',
@@ -133,6 +135,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 12,
+    backgroundColor: '#FFFDF9',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2D7C7',
   },
   backBtn: {
     padding: 4,
@@ -145,21 +150,21 @@ const styles = StyleSheet.create({
   headerBrand: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#E31837',
+    color: '#6B0000',
   },
   stepIndicator: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#666666',
+    color: '#8C7B6B',
   },
   progressTrack: {
     height: 4,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#E8DFD3',
     width: '100%',
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
   },
   content: {
     paddingHorizontal: 24,
@@ -169,12 +174,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: '800',
-    color: '#111111',
+    color: '#200D08',
     letterSpacing: -0.5,
   },
   subtitle: {
     fontSize: 14,
-    color: '#666666',
+    color: '#665544',
     marginTop: 6,
     marginBottom: 24,
   },
@@ -184,44 +189,63 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#111111',
+    color: '#200D08',
     marginBottom: 10,
   },
-  chipGrid: {
+  radioGrid: {
+    gap: 10,
+  },
+  radioCard: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  chip: {
-    paddingVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 14,
     paddingHorizontal: 16,
-    borderRadius: 20,
-    backgroundColor: '#F2F2F7',
+    borderRadius: 14,
     borderWidth: 1,
-    borderColor: 'transparent',
+    borderColor: '#E2D7C7',
+    backgroundColor: '#FFFDF9',
   },
-  chipSelected: {
+  radioCardSelected: {
+    borderColor: '#6B0000',
     backgroundColor: '#FFF5F6',
-    borderColor: '#E31837',
   },
-  chipText: {
-    fontSize: 14,
-    color: '#555555',
+  radioCardText: {
+    fontSize: 15,
     fontWeight: '500',
+    color: '#200D08',
   },
-  chipTextSelected: {
-    color: '#E31837',
+  radioCardTextSelected: {
+    color: '#6B0000',
     fontWeight: '700',
   },
+  radioDotOuter: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#E2D7C7',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  radioDotOuterSelected: {
+    borderColor: '#6B0000',
+  },
+  radioDotInner: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#6B0000',
+  },
   input: {
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#FFFDF9',
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#E2D7C7',
     borderRadius: 16,
     paddingHorizontal: 16,
     paddingVertical: 14,
     fontSize: 16,
-    color: '#111111',
+    color: '#200D08',
   },
   textArea: {
     height: 100,
@@ -230,23 +254,23 @@ const styles = StyleSheet.create({
   footer: {
     paddingHorizontal: 24,
     paddingVertical: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFDF9',
     borderTopWidth: 1,
-    borderColor: '#F2F2F7',
+    borderColor: '#E2D7C7',
   },
   nextBtn: {
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
     paddingVertical: 16,
     borderRadius: 28,
     alignItems: 'center',
-    shadowColor: '#E31837',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 4,
   },
   nextBtnText: {
-    color: '#FFFFFF',
+    color: '#FFFDF9',
     fontSize: 17,
     fontWeight: '700',
   },

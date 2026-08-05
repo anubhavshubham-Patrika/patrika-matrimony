@@ -12,25 +12,31 @@ export default function Step8() {
   const lang = state.language || 'en';
   const t = Translations[lang];
 
-  const hobbiesList = ['Running', 'Reading', 'Music', 'Movies', 'Travel', 'Cooking', 'Photography', 'Cricket', 'Yoga', 'Dancing', 'Painting', 'Gaming', 'Gardening', 'Fitness'];
+  const diets = ['Vegetarian', 'Jain', 'Eggetarian', 'Non-Vegetarian'];
+  const hobbiesList = [
+    'Reading', 'Music', 'Travel', 'Cooking', 'Fitness / Yoga', 'Cricket',
+    'Movies / Series', 'Photography', 'Dancing', 'Painting', 'Gardening', 'Writing'
+  ];
 
-  const [hobbies, setHobbies] = useState<string[]>(state.onboardingData?.hobbies || ['Reading', 'Travel']);
   const [diet, setDiet] = useState(state.onboardingData?.diet || 'Vegetarian');
   const [smoking, setSmoking] = useState(state.onboardingData?.smoking || 'No');
   const [drinking, setDrinking] = useState(state.onboardingData?.drinking || 'No');
+  const [selectedHobbies, setSelectedHobbies] = useState<string[]>(
+    state.onboardingData?.hobbies || ['Reading', 'Travel', 'Cooking']
+  );
 
-  const toggleHobby = (hobby: string) => {
-    if (hobbies.includes(hobby)) {
-      setHobbies(hobbies.filter((h) => h !== hobby));
+  const toggleHobby = (h: string) => {
+    if (selectedHobbies.includes(h)) {
+      setSelectedHobbies(selectedHobbies.filter((item) => item !== h));
     } else {
-      setHobbies([...hobbies, hobby]);
+      setSelectedHobbies([...selectedHobbies, h]);
     }
   };
 
   const handleNext = () => {
     dispatch({
       type: 'UPDATE_ONBOARDING',
-      payload: { hobbies, diet, smoking, drinking },
+      payload: { diet, smoking, drinking, hobbies: selectedHobbies },
     });
     router.push('/(auth)/onboarding/step9');
   };
@@ -40,7 +46,7 @@ export default function Step8() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#111111" />
+          <Ionicons name="arrow-back" size={24} color="#200D08" />
         </TouchableOpacity>
         <View style={styles.headerTitleRow}>
           <PatrikaRibbonLogo size={26} />
@@ -56,17 +62,18 @@ export default function Step8() {
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>{t.step8Title}</Text>
+        <Text style={styles.subtitle}>Select diet, lifestyle & personal interests</Text>
 
-        {/* Diet */}
+        {/* Diet Selection */}
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldLabel}>{t.diet}</Text>
           <View style={styles.chipGrid}>
-            {['Vegetarian', 'Non-Vegetarian', 'Eggetarian', 'Jain'].map((d) => {
+            {diets.map((d) => {
               const isSel = diet === d;
               return (
                 <TouchableOpacity
                   key={d}
-                  style={[styles.chip, isSel && styles.chipSelected]}
+                  style={[styles.chipGridItem, isSel && styles.chipGridItemSelected]}
                   onPress={() => setDiet(d)}
                   activeOpacity={0.8}
                 >
@@ -80,17 +87,17 @@ export default function Step8() {
         {/* Smoking */}
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldLabel}>{t.smoking}</Text>
-          <View style={styles.row}>
-            {['No', 'Yes', 'Occasionally'].map((s) => {
+          <View style={styles.toggleRow}>
+            {['No', 'Occasionally', 'Yes'].map((s) => {
               const isSel = smoking === s;
               return (
                 <TouchableOpacity
                   key={s}
-                  style={[styles.toggleBtn, isSel && styles.toggleBtnSelected]}
+                  style={[styles.togglePill, isSel && styles.togglePillSelected]}
                   onPress={() => setSmoking(s)}
                   activeOpacity={0.8}
                 >
-                  <Text style={[styles.toggleText, isSel && styles.toggleTextSelected]}>{s}</Text>
+                  <Text style={[styles.togglePillText, isSel && styles.togglePillTextSelected]}>{s}</Text>
                 </TouchableOpacity>
               );
             })}
@@ -100,17 +107,17 @@ export default function Step8() {
         {/* Drinking */}
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldLabel}>{t.drinking}</Text>
-          <View style={styles.row}>
-            {['No', 'Yes', 'Occasionally'].map((d) => {
+          <View style={styles.toggleRow}>
+            {['No', 'Occasionally', 'Yes'].map((d) => {
               const isSel = drinking === d;
               return (
                 <TouchableOpacity
                   key={d}
-                  style={[styles.toggleBtn, isSel && styles.toggleBtnSelected]}
+                  style={[styles.togglePill, isSel && styles.togglePillSelected]}
                   onPress={() => setDrinking(d)}
                   activeOpacity={0.8}
                 >
-                  <Text style={[styles.toggleText, isSel && styles.toggleTextSelected]}>{d}</Text>
+                  <Text style={[styles.togglePillText, isSel && styles.togglePillTextSelected]}>{d}</Text>
                 </TouchableOpacity>
               );
             })}
@@ -122,11 +129,11 @@ export default function Step8() {
           <Text style={styles.fieldLabel}>{t.hobbies}</Text>
           <View style={styles.chipGrid}>
             {hobbiesList.map((h) => {
-              const isSel = hobbies.includes(h);
+              const isSel = selectedHobbies.includes(h);
               return (
                 <TouchableOpacity
                   key={h}
-                  style={[styles.chip, isSel && styles.chipSelected]}
+                  style={[styles.chipGridItem, isSel && styles.chipGridItemSelected]}
                   onPress={() => toggleHobby(h)}
                   activeOpacity={0.8}
                 >
@@ -151,7 +158,7 @@ export default function Step8() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FAF6F0',
   },
   header: {
     flexDirection: 'row',
@@ -159,6 +166,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 12,
+    backgroundColor: '#FFFDF9',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2D7C7',
   },
   backBtn: {
     padding: 4,
@@ -171,21 +181,21 @@ const styles = StyleSheet.create({
   headerBrand: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#E31837',
+    color: '#6B0000',
   },
   stepIndicator: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#666666',
+    color: '#8C7B6B',
   },
   progressTrack: {
     height: 4,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#E8DFD3',
     width: '100%',
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
   },
   content: {
     paddingHorizontal: 24,
@@ -195,8 +205,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: '800',
-    color: '#111111',
+    color: '#200D08',
     letterSpacing: -0.5,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#665544',
+    marginTop: 6,
     marginBottom: 24,
   },
   fieldGroup: {
@@ -205,7 +220,7 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#111111',
+    color: '#200D08',
     marginBottom: 10,
   },
   chipGrid: {
@@ -213,73 +228,73 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 8,
   },
-  chip: {
+  chipGridItem: {
     paddingVertical: 10,
-    paddingHorizontal: 16,
+    paddingHorizontal: 14,
     borderRadius: 20,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#F5EFE6',
     borderWidth: 1,
-    borderColor: 'transparent',
+    borderColor: '#E2D7C7',
   },
-  chipSelected: {
+  chipGridItemSelected: {
     backgroundColor: '#FFF5F6',
-    borderColor: '#E31837',
+    borderColor: '#6B0000',
   },
   chipText: {
     fontSize: 14,
-    color: '#555555',
+    color: '#200D08',
     fontWeight: '500',
   },
   chipTextSelected: {
-    color: '#E31837',
+    color: '#6B0000',
     fontWeight: '700',
   },
-  row: {
+  toggleRow: {
     flexDirection: 'row',
     gap: 10,
   },
-  toggleBtn: {
+  togglePill: {
     flex: 1,
     paddingVertical: 12,
     alignItems: 'center',
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
-    backgroundColor: '#FFFFFF',
+    borderColor: '#E2D7C7',
+    backgroundColor: '#FFFDF9',
   },
-  toggleBtnSelected: {
-    borderColor: '#E31837',
+  togglePillSelected: {
+    borderColor: '#6B0000',
     backgroundColor: '#FFF5F6',
   },
-  toggleText: {
+  togglePillText: {
     fontSize: 14,
-    color: '#666666',
+    color: '#665544',
     fontWeight: '500',
   },
-  toggleTextSelected: {
-    color: '#E31837',
+  togglePillTextSelected: {
+    color: '#6B0000',
     fontWeight: '700',
   },
   footer: {
     paddingHorizontal: 24,
     paddingVertical: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFDF9',
     borderTopWidth: 1,
-    borderColor: '#F2F2F7',
+    borderColor: '#E2D7C7',
   },
   nextBtn: {
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
     paddingVertical: 16,
     borderRadius: 28,
     alignItems: 'center',
-    shadowColor: '#E31837',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 4,
   },
   nextBtnText: {
-    color: '#FFFFFF',
+    color: '#FFFDF9',
     fontSize: 17,
     fontWeight: '700',
   },

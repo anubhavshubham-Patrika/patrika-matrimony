@@ -63,7 +63,7 @@ export default function Step3() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#111111" />
+          <Ionicons name="arrow-back" size={24} color="#200D08" />
         </TouchableOpacity>
         <View style={styles.headerTitleRow}>
           <PatrikaRibbonLogo size={26} />
@@ -97,7 +97,7 @@ export default function Step3() {
                   <MaterialCommunityIcons
                     name={g === 'Male' ? 'gender-male' : 'gender-female'}
                     size={24}
-                    color={isSel ? '#E31837' : '#666666'}
+                    color={isSel ? '#6B0000' : '#8C7B6B'}
                   />
                   <Text style={[styles.genderText, isSel && styles.genderTextSelected]}>{g}</Text>
                 </TouchableOpacity>
@@ -115,7 +115,7 @@ export default function Step3() {
             activeOpacity={0.8}
           >
             <View style={styles.pickerTriggerLeft}>
-              <Ionicons name="calendar-outline" size={22} color="#E31837" style={{ marginRight: 10 }} />
+              <Ionicons name="calendar-outline" size={22} color="#6B0000" style={{ marginRight: 10 }} />
               <Text style={styles.pickerValueText}>{formattedDob}</Text>
             </View>
             <Text style={styles.ageBadge}>{calculatedAge} yrs old</Text>
@@ -131,10 +131,10 @@ export default function Step3() {
             activeOpacity={0.8}
           >
             <View style={styles.pickerTriggerLeft}>
-              <MaterialCommunityIcons name="ruler" size={22} color="#E31837" style={{ marginRight: 10 }} />
+              <MaterialCommunityIcons name="ruler" size={22} color="#6B0000" style={{ marginRight: 10 }} />
               <Text style={styles.pickerValueText}>{formattedHeight}</Text>
             </View>
-            <Ionicons name="chevron-down" size={20} color="#666666" />
+            <Ionicons name="chevron-down" size={20} color="#8C7B6B" />
           </TouchableOpacity>
         </View>
 
@@ -189,7 +189,7 @@ export default function Step3() {
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Select Date of Birth</Text>
               <TouchableOpacity onPress={() => setShowDobModal(false)}>
-                <Ionicons name="close" size={24} color="#111111" />
+                <Ionicons name="close" size={24} color="#200D08" />
               </TouchableOpacity>
             </View>
 
@@ -257,7 +257,7 @@ export default function Step3() {
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Select Height (Feet & Inches)</Text>
               <TouchableOpacity onPress={() => setShowHeightModal(false)}>
-                <Ionicons name="close" size={24} color="#111111" />
+                <Ionicons name="close" size={24} color="#200D08" />
               </TouchableOpacity>
             </View>
 
@@ -315,7 +315,7 @@ export default function Step3() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FAF6F0',
   },
   header: {
     flexDirection: 'row',
@@ -323,6 +323,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 12,
+    backgroundColor: '#FFFDF9',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2D7C7',
   },
   backBtn: {
     padding: 4,
@@ -335,21 +338,21 @@ const styles = StyleSheet.create({
   headerBrand: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#E31837',
+    color: '#6B0000',
   },
   stepIndicator: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#666666',
+    color: '#8C7B6B',
   },
   progressTrack: {
     height: 4,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#E8DFD3',
     width: '100%',
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
   },
   content: {
     paddingHorizontal: 24,
@@ -359,12 +362,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: '800',
-    color: '#111111',
+    color: '#200D08',
     letterSpacing: -0.5,
   },
   subtitle: {
     fontSize: 14,
-    color: '#666666',
+    color: '#665544',
     marginTop: 6,
     marginBottom: 24,
   },
@@ -374,7 +377,7 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#111111',
+    color: '#200D08',
     marginBottom: 10,
   },
   genderRow: {
@@ -387,32 +390,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 14,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFDF9',
     borderRadius: 16,
     borderWidth: 1.5,
-    borderColor: '#EFEFEF',
+    borderColor: '#E2D7C7',
     gap: 8,
   },
   genderCardSelected: {
-    borderColor: '#E31837',
+    borderColor: '#6B0000',
     backgroundColor: '#FFF5F6',
   },
   genderText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#666666',
+    color: '#665544',
   },
   genderTextSelected: {
-    color: '#E31837',
+    color: '#6B0000',
     fontWeight: '800',
   },
   pickerTriggerCard: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#FFFDF9',
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#E2D7C7',
     borderRadius: 16,
     paddingHorizontal: 16,
     paddingVertical: 14,
@@ -424,11 +427,13 @@ const styles = StyleSheet.create({
   pickerValueText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#111111',
+    color: '#200D08',
   },
   ageBadge: {
-    backgroundColor: '#FFEBF0',
-    color: '#E31837',
+    backgroundColor: '#FFF9E6',
+    borderWidth: 1,
+    borderColor: '#786C10',
+    color: '#786C10',
     fontSize: 12,
     fontWeight: '700',
     paddingHorizontal: 10,
@@ -445,20 +450,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
-    backgroundColor: '#FFFFFF',
+    borderColor: '#E2D7C7',
+    backgroundColor: '#FFFDF9',
   },
   togglePillSelected: {
-    borderColor: '#E31837',
+    borderColor: '#6B0000',
     backgroundColor: '#FFF5F6',
   },
   togglePillText: {
     fontSize: 14,
-    color: '#666666',
+    color: '#665544',
     fontWeight: '500',
   },
   togglePillTextSelected: {
-    color: '#E31837',
+    color: '#6B0000',
     fontWeight: '700',
   },
   radioGrid: {
@@ -472,20 +477,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: '#EFEFEF',
-    backgroundColor: '#FFFFFF',
+    borderColor: '#E2D7C7',
+    backgroundColor: '#FFFDF9',
   },
   radioCardSelected: {
-    borderColor: '#E31837',
+    borderColor: '#6B0000',
     backgroundColor: '#FFF5F6',
   },
   radioCardText: {
     fontSize: 15,
     fontWeight: '500',
-    color: '#333333',
+    color: '#200D08',
   },
   radioCardTextSelected: {
-    color: '#E31837',
+    color: '#6B0000',
     fontWeight: '700',
   },
   radioDotOuter: {
@@ -493,28 +498,28 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: '#D0D0D0',
+    borderColor: '#E2D7C7',
     alignItems: 'center',
     justifyContent: 'center',
   },
   radioDotOuterSelected: {
-    borderColor: '#E31837',
+    borderColor: '#6B0000',
   },
   radioDotInner: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
   },
 
   // Modal styles
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(32,13,8,0.6)',
     justifyContent: 'flex-end',
   },
   modalContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFDF9',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     padding: 20,
@@ -528,7 +533,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#111111',
+    color: '#200D08',
   },
   datePickerColumns: {
     flexDirection: 'row',
@@ -542,7 +547,7 @@ const styles = StyleSheet.create({
   colHeader: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#666666',
+    color: '#665544',
     textAlign: 'center',
     marginBottom: 6,
   },
@@ -562,47 +567,47 @@ const styles = StyleSheet.create({
     marginVertical: 2,
   },
   pickerItemSelected: {
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
   },
   pickerItemText: {
     fontSize: 15,
-    color: '#333333',
+    color: '#200D08',
   },
   pickerItemTextSelected: {
-    color: '#FFFFFF',
+    color: '#FFFDF9',
     fontWeight: '700',
   },
   modalDoneBtn: {
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
     paddingVertical: 14,
     borderRadius: 24,
     alignItems: 'center',
   },
   modalDoneBtnText: {
-    color: '#FFFFFF',
+    color: '#FFFDF9',
     fontSize: 16,
     fontWeight: '700',
   },
   footer: {
     paddingHorizontal: 24,
     paddingVertical: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFDF9',
     borderTopWidth: 1,
-    borderColor: '#F2F2F7',
+    borderColor: '#E2D7C7',
   },
   nextBtn: {
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
     paddingVertical: 16,
     borderRadius: 28,
     alignItems: 'center',
-    shadowColor: '#E31837',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 4,
   },
   nextBtnText: {
-    color: '#FFFFFF',
+    color: '#FFFDF9',
     fontSize: 17,
     fontWeight: '700',
   },

@@ -12,13 +12,14 @@ export default function Step10() {
   const lang = state.language || 'en';
   const t = Translations[lang];
 
-  const [collegeName, setCollegeName] = useState(state.onboardingData?.collegeName || '');
-  const [organizationName, setOrganizationName] = useState(state.onboardingData?.organizationName || '');
+  const [collegeName, setCollegeName] = useState(state.onboardingData?.collegeName || 'MNIT Jaipur');
+  const [organizationName, setOrganizationName] = useState(state.onboardingData?.organizationName || 'Infosys');
+  const [jobTitle, setJobTitle] = useState(state.onboardingData?.occupation || 'Software Engineer');
 
   const handleNext = () => {
     dispatch({
       type: 'UPDATE_ONBOARDING',
-      payload: { collegeName, organizationName },
+      payload: { collegeName, organizationName, occupation: jobTitle },
     });
     router.push('/(auth)/onboarding/step11');
   };
@@ -28,7 +29,7 @@ export default function Step10() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#111111" />
+          <Ionicons name="arrow-back" size={24} color="#200D08" />
         </TouchableOpacity>
         <View style={styles.headerTitleRow}>
           <PatrikaRibbonLogo size={26} />
@@ -44,28 +45,41 @@ export default function Step10() {
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>{t.step10Title}</Text>
+        <Text style={styles.subtitle}>Enter college & current organization details</Text>
 
-        {/* College / University Name */}
+        {/* College Name */}
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldLabel}>{t.collegeName}</Text>
           <TextInput
             style={styles.input}
-            placeholder="e.g. IIT Delhi / MNIT Jaipur / BITS Pilani"
+            placeholder="e.g. MNIT Jaipur / IIT Delhi / BITS Pilani"
             value={collegeName}
             onChangeText={setCollegeName}
-            placeholderTextColor="#999999"
+            placeholderTextColor="#8C7B6B"
           />
         </View>
 
-        {/* Organization / Company Name */}
+        {/* Organization Name */}
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldLabel}>{t.companyName}</Text>
           <TextInput
             style={styles.input}
-            placeholder="e.g. Google / Infosys / SMS Hospital / Govt of Rajasthan"
+            placeholder="e.g. Infosys / TCS / Govt of Rajasthan"
             value={organizationName}
             onChangeText={setOrganizationName}
-            placeholderTextColor="#999999"
+            placeholderTextColor="#8C7B6B"
+          />
+        </View>
+
+        {/* Current Job Title */}
+        <View style={styles.fieldGroup}>
+          <Text style={styles.fieldLabel}>{t.jobTitle}</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="e.g. Senior Software Engineer / Assistant Manager"
+            value={jobTitle}
+            onChangeText={setJobTitle}
+            placeholderTextColor="#8C7B6B"
           />
         </View>
       </ScrollView>
@@ -83,7 +97,7 @@ export default function Step10() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FAF6F0',
   },
   header: {
     flexDirection: 'row',
@@ -91,6 +105,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 12,
+    backgroundColor: '#FFFDF9',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2D7C7',
   },
   backBtn: {
     padding: 4,
@@ -103,21 +120,21 @@ const styles = StyleSheet.create({
   headerBrand: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#E31837',
+    color: '#6B0000',
   },
   stepIndicator: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#666666',
+    color: '#8C7B6B',
   },
   progressTrack: {
     height: 4,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#E8DFD3',
     width: '100%',
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
   },
   content: {
     paddingHorizontal: 24,
@@ -127,8 +144,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: '800',
-    color: '#111111',
+    color: '#200D08',
     letterSpacing: -0.5,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#665544',
+    marginTop: 6,
     marginBottom: 24,
   },
   fieldGroup: {
@@ -137,39 +159,39 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#111111',
+    color: '#200D08',
     marginBottom: 10,
   },
   input: {
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#FFFDF9',
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#E2D7C7',
     borderRadius: 16,
     paddingHorizontal: 16,
     paddingVertical: 14,
     fontSize: 16,
-    color: '#111111',
+    color: '#200D08',
   },
   footer: {
     paddingHorizontal: 24,
     paddingVertical: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFDF9',
     borderTopWidth: 1,
-    borderColor: '#F2F2F7',
+    borderColor: '#E2D7C7',
   },
   nextBtn: {
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
     paddingVertical: 16,
     borderRadius: 28,
     alignItems: 'center',
-    shadowColor: '#E31837',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 4,
   },
   nextBtnText: {
-    color: '#FFFFFF',
+    color: '#FFFDF9',
     fontSize: 17,
     fontWeight: '700',
   },

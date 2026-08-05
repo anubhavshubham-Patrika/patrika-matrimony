@@ -70,7 +70,7 @@ export default function Step2() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#111111" />
+          <Ionicons name="arrow-back" size={24} color="#200D08" />
         </TouchableOpacity>
         <View style={styles.headerTitleRow}>
           <PatrikaRibbonLogo size={26} />
@@ -91,17 +91,17 @@ export default function Step2() {
 
         {/* Search Bar */}
         <View style={styles.searchBox}>
-          <Ionicons name="search-outline" size={20} color="#666666" style={{ marginRight: 8 }} />
+          <Ionicons name="search-outline" size={20} color="#8C7B6B" style={{ marginRight: 8 }} />
           <TextInput
             style={styles.searchInput}
             placeholder={t.searchLanguage}
             value={searchQuery}
             onChangeText={setSearchQuery}
-            placeholderTextColor="#999999"
+            placeholderTextColor="#8C7B6B"
           />
           {searchQuery.length > 0 && (
             <TouchableOpacity onPress={() => setSearchQuery('')}>
-              <Ionicons name="close-circle" size={18} color="#999999" />
+              <Ionicons name="close-circle" size={18} color="#8C7B6B" />
             </TouchableOpacity>
           )}
         </View>
@@ -110,7 +110,7 @@ export default function Step2() {
         <View style={styles.selectedCounterRow}>
           <Text style={styles.selectedCounterText}>
             Selected ({selectedLanguages.length}):{' '}
-            <Text style={{ color: '#E31837', fontWeight: '700' }}>{selectedLanguages.join(', ')}</Text>
+            <Text style={{ color: '#6B0000', fontWeight: '700' }}>{selectedLanguages.join(', ')}</Text>
           </Text>
         </View>
 
@@ -133,7 +133,7 @@ export default function Step2() {
                   <Text style={[styles.listText, isSelected && styles.listTextSelected]}>{item}</Text>
 
                   <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
-                    {isSelected && <MaterialCommunityIcons name="check" size={16} color="#FFFFFF" />}
+                    {isSelected && <MaterialCommunityIcons name="check" size={16} color="#FFFDF9" />}
                   </View>
                 </TouchableOpacity>
               );
@@ -160,7 +160,7 @@ export default function Step2() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FAF6F0',
   },
   header: {
     flexDirection: 'row',
@@ -168,6 +168,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 12,
+    backgroundColor: '#FFFDF9',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2D7C7',
   },
   backBtn: {
     padding: 4,
@@ -180,21 +183,21 @@ const styles = StyleSheet.create({
   headerBrand: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#E31837',
+    color: '#6B0000',
   },
   stepIndicator: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#666666',
+    color: '#8C7B6B',
   },
   progressTrack: {
     height: 4,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#E8DFD3',
     width: '100%',
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
   },
   content: {
     flex: 1,
@@ -204,19 +207,21 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: '800',
-    color: '#111111',
+    color: '#200D08',
     letterSpacing: -0.5,
   },
   subtitle: {
     fontSize: 14,
-    color: '#666666',
+    color: '#665544',
     marginTop: 6,
     marginBottom: 16,
   },
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#F4EEE5',
+    borderWidth: 1,
+    borderColor: '#E2D7C7',
     borderRadius: 14,
     paddingHorizontal: 14,
     paddingVertical: 10,
@@ -225,23 +230,23 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 15,
-    color: '#111111',
+    color: '#200D08',
   },
   selectedCounterRow: {
     marginBottom: 12,
   },
   selectedCounterText: {
     fontSize: 13,
-    color: '#666666',
+    color: '#665544',
   },
   listScrollView: {
     flex: 1,
   },
   listCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFDF9',
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#EFEFEF',
+    borderColor: '#E2D7C7',
     overflow: 'hidden',
     marginBottom: 20,
   },
@@ -252,7 +257,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderColor: '#F2F2F7',
+    borderColor: '#E8DFD3',
   },
   listItemSelected: {
     backgroundColor: '#FFF5F6',
@@ -260,10 +265,10 @@ const styles = StyleSheet.create({
   listText: {
     fontSize: 15,
     fontWeight: '500',
-    color: '#333333',
+    color: '#200D08',
   },
   listTextSelected: {
-    color: '#E31837',
+    color: '#6B0000',
     fontWeight: '700',
   },
   checkbox: {
@@ -271,39 +276,39 @@ const styles = StyleSheet.create({
     height: 22,
     borderRadius: 6,
     borderWidth: 2,
-    borderColor: '#D0D0D0',
+    borderColor: '#E2D7C7',
     alignItems: 'center',
     justifyContent: 'center',
   },
   checkboxSelected: {
-    backgroundColor: '#E31837',
-    borderColor: '#E31837',
+    backgroundColor: '#6B0000',
+    borderColor: '#6B0000',
   },
   footer: {
     paddingHorizontal: 24,
     paddingVertical: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFDF9',
     borderTopWidth: 1,
-    borderColor: '#F2F2F7',
+    borderColor: '#E2D7C7',
   },
   nextBtn: {
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
     paddingVertical: 16,
     borderRadius: 28,
     alignItems: 'center',
-    shadowColor: '#E31837',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 4,
   },
   nextBtnDisabled: {
-    backgroundColor: '#F5A6B1',
+    backgroundColor: '#E2D7C7',
     shadowOpacity: 0,
     elevation: 0,
   },
   nextBtnText: {
-    color: '#FFFFFF',
+    color: '#FFFDF9',
     fontSize: 17,
     fontWeight: '700',
   },

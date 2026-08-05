@@ -48,7 +48,7 @@ export default function Step5() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#111111" />
+          <Ionicons name="arrow-back" size={24} color="#200D08" />
         </TouchableOpacity>
         <View style={styles.headerTitleRow}>
           <PatrikaRibbonLogo size={26} />
@@ -75,7 +75,7 @@ export default function Step5() {
             activeOpacity={0.8}
           >
             <Text style={styles.dropdownValueText}>{country || t.selectCountry}</Text>
-            <Ionicons name="chevron-down" size={20} color="#666666" />
+            <Ionicons name="chevron-down" size={20} color="#8C7B6B" />
           </TouchableOpacity>
         </View>
 
@@ -88,7 +88,7 @@ export default function Step5() {
             activeOpacity={0.8}
           >
             <Text style={styles.dropdownValueText}>{residentState || t.selectState}</Text>
-            <Ionicons name="chevron-down" size={20} color="#666666" />
+            <Ionicons name="chevron-down" size={20} color="#8C7B6B" />
           </TouchableOpacity>
         </View>
 
@@ -101,7 +101,7 @@ export default function Step5() {
             activeOpacity={0.8}
           >
             <Text style={styles.dropdownValueText}>{residentCity || t.selectCity}</Text>
-            <Ionicons name="chevron-down" size={20} color="#666666" />
+            <Ionicons name="chevron-down" size={20} color="#8C7B6B" />
           </TouchableOpacity>
 
           {/* Popular Cities Suggestion Chips */}
@@ -131,7 +131,7 @@ export default function Step5() {
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Select Country</Text>
               <TouchableOpacity onPress={() => setShowCountryModal(false)}>
-                <Ionicons name="close" size={24} color="#111111" />
+                <Ionicons name="close" size={24} color="#200D08" />
               </TouchableOpacity>
             </View>
 
@@ -146,7 +146,7 @@ export default function Step5() {
                   }}
                 >
                   <Text style={[styles.modalOptionText, country === c && styles.modalOptionTextSelected]}>{c}</Text>
-                  {country === c && <Ionicons name="checkmark" size={20} color="#E31837" />}
+                  {country === c && <Ionicons name="checkmark" size={20} color="#6B0000" />}
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -161,7 +161,7 @@ export default function Step5() {
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Select State</Text>
               <TouchableOpacity onPress={() => setShowStateModal(false)}>
-                <Ionicons name="close" size={24} color="#111111" />
+                <Ionicons name="close" size={24} color="#200D08" />
               </TouchableOpacity>
             </View>
 
@@ -176,7 +176,7 @@ export default function Step5() {
                   }}
                 >
                   <Text style={[styles.modalOptionText, residentState === s && styles.modalOptionTextSelected]}>{s}</Text>
-                  {residentState === s && <Ionicons name="checkmark" size={20} color="#E31837" />}
+                  {residentState === s && <Ionicons name="checkmark" size={20} color="#6B0000" />}
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -191,18 +191,18 @@ export default function Step5() {
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Select City</Text>
               <TouchableOpacity onPress={() => setShowCityModal(false)}>
-                <Ionicons name="close" size={24} color="#111111" />
+                <Ionicons name="close" size={24} color="#200D08" />
               </TouchableOpacity>
             </View>
 
             <View style={styles.searchBox}>
-              <Ionicons name="search-outline" size={18} color="#666666" style={{ marginRight: 8 }} />
+              <Ionicons name="search-outline" size={18} color="#8C7B6B" style={{ marginRight: 8 }} />
               <TextInput
                 style={styles.searchInput}
                 placeholder="Type or search city..."
                 value={citySearch}
                 onChangeText={setCitySearch}
-                placeholderTextColor="#999999"
+                placeholderTextColor="#8C7B6B"
               />
             </View>
 
@@ -219,7 +219,7 @@ export default function Step5() {
                     }}
                   >
                     <Text style={[styles.modalOptionText, residentCity === c && styles.modalOptionTextSelected]}>{c}</Text>
-                    {residentCity === c && <Ionicons name="checkmark" size={20} color="#E31837" />}
+                    {residentCity === c && <Ionicons name="checkmark" size={20} color="#6B0000" />}
                   </TouchableOpacity>
                 ))}
               {citySearch.length > 0 && (
@@ -230,7 +230,7 @@ export default function Step5() {
                     setShowCityModal(false);
                   }}
                 >
-                  <Text style={{ color: '#E31837', fontWeight: '700' }}>Use "{citySearch}"</Text>
+                  <Text style={{ color: '#6B0000', fontWeight: '700' }}>Use "{citySearch}"</Text>
                 </TouchableOpacity>
               )}
             </ScrollView>
@@ -251,7 +251,7 @@ export default function Step5() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FAF6F0',
   },
   header: {
     flexDirection: 'row',
@@ -259,6 +259,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 12,
+    backgroundColor: '#FFFDF9',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2D7C7',
   },
   backBtn: {
     padding: 4,
@@ -271,21 +274,21 @@ const styles = StyleSheet.create({
   headerBrand: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#E31837',
+    color: '#6B0000',
   },
   stepIndicator: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#666666',
+    color: '#8C7B6B',
   },
   progressTrack: {
     height: 4,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#E8DFD3',
     width: '100%',
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
   },
   content: {
     paddingHorizontal: 24,
@@ -295,12 +298,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: '800',
-    color: '#111111',
+    color: '#200D08',
     letterSpacing: -0.5,
   },
   subtitle: {
     fontSize: 14,
-    color: '#666666',
+    color: '#665544',
     marginTop: 6,
     marginBottom: 24,
   },
@@ -310,16 +313,16 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#111111',
+    color: '#200D08',
     marginBottom: 10,
   },
   dropdownTrigger: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#FFFDF9',
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#E2D7C7',
     borderRadius: 16,
     paddingHorizontal: 16,
     paddingVertical: 14,
@@ -327,12 +330,12 @@ const styles = StyleSheet.create({
   dropdownValueText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#111111',
+    color: '#200D08',
   },
   popularTitle: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#666666',
+    color: '#665544',
     marginTop: 14,
     marginBottom: 10,
   },
@@ -345,32 +348,32 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 14,
     borderRadius: 16,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#F5EFE6',
     borderWidth: 1,
-    borderColor: 'transparent',
+    borderColor: '#E2D7C7',
   },
   smallChipSelected: {
     backgroundColor: '#FFF5F6',
-    borderColor: '#E31837',
+    borderColor: '#6B0000',
   },
   smallChipText: {
     fontSize: 13,
-    color: '#555555',
+    color: '#200D08',
     fontWeight: '500',
   },
   smallChipTextSelected: {
-    color: '#E31837',
+    color: '#6B0000',
     fontWeight: '700',
   },
 
   // Modal styles
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(32,13,8,0.6)',
     justifyContent: 'flex-end',
   },
   modalContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFDF9',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     padding: 20,
@@ -384,12 +387,14 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#111111',
+    color: '#200D08',
   },
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#F4EEE5',
+    borderWidth: 1,
+    borderColor: '#E2D7C7',
     borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 10,
@@ -398,7 +403,7 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 14,
-    color: '#111111',
+    color: '#200D08',
   },
   modalOptionItem: {
     flexDirection: 'row',
@@ -407,39 +412,39 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 12,
     borderBottomWidth: 1,
-    borderColor: '#F2F2F7',
+    borderColor: '#E8DFD3',
   },
   modalOptionSelected: {
     backgroundColor: '#FFF5F6',
   },
   modalOptionText: {
     fontSize: 15,
-    color: '#333333',
+    color: '#200D08',
   },
   modalOptionTextSelected: {
-    color: '#E31837',
+    color: '#6B0000',
     fontWeight: '700',
   },
   footer: {
     paddingHorizontal: 24,
     paddingVertical: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFDF9',
     borderTopWidth: 1,
-    borderColor: '#F2F2F7',
+    borderColor: '#E2D7C7',
   },
   nextBtn: {
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
     paddingVertical: 16,
     borderRadius: 28,
     alignItems: 'center',
-    shadowColor: '#E31837',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 4,
   },
   nextBtnText: {
-    color: '#FFFFFF',
+    color: '#FFFDF9',
     fontSize: 17,
     fontWeight: '700',
   },

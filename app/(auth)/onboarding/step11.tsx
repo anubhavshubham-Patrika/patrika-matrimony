@@ -12,9 +12,9 @@ export default function Step11() {
   const lang = state.language || 'en';
   const t = Translations[lang];
 
-  const [fullName, setFullName] = useState(state.onboardingData?.name || '');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState(state.onboardingData?.name || 'Arjun Singh');
+  const [emailAddress, setEmailAddress] = useState('arjun.singh@example.com');
+  const [password, setPassword] = useState('pass1234');
   const [showPassword, setShowPassword] = useState(false);
 
   const handleNext = () => {
@@ -30,7 +30,7 @@ export default function Step11() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#111111" />
+          <Ionicons name="arrow-back" size={24} color="#200D08" />
         </TouchableOpacity>
         <View style={styles.headerTitleRow}>
           <PatrikaRibbonLogo size={26} />
@@ -46,11 +46,7 @@ export default function Step11() {
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>{t.step11Title}</Text>
-
-        <View style={styles.noticeBox}>
-          <Ionicons name="checkmark-circle" size={20} color="#27AE60" />
-          <Text style={styles.noticeText}>Mobile number OTP verified</Text>
-        </View>
+        <Text style={styles.subtitle}>Enter candidate name & account details</Text>
 
         {/* Full Name */}
         <View style={styles.fieldGroup}>
@@ -60,7 +56,7 @@ export default function Step11() {
             placeholder="e.g. Arjun Singh Rathore"
             value={fullName}
             onChangeText={setFullName}
-            placeholderTextColor="#999999"
+            placeholderTextColor="#8C7B6B"
           />
         </View>
 
@@ -70,28 +66,28 @@ export default function Step11() {
           <TextInput
             style={styles.input}
             placeholder="e.g. arjun@example.com"
+            value={emailAddress}
+            onChangeText={setEmailAddress}
             keyboardType="email-address"
             autoCapitalize="none"
-            value={email}
-            onChangeText={setEmail}
-            placeholderTextColor="#999999"
+            placeholderTextColor="#8C7B6B"
           />
         </View>
 
         {/* Password */}
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldLabel}>{t.password}</Text>
-          <View style={styles.passwordContainer}>
+          <View style={styles.passwordBox}>
             <TextInput
               style={styles.passwordInput}
-              placeholder="Create a password"
-              secureTextEntry={!showPassword}
+              placeholder="Create account password"
               value={password}
               onChangeText={setPassword}
-              placeholderTextColor="#999999"
+              secureTextEntry={!showPassword}
+              placeholderTextColor="#8C7B6B"
             />
-            <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeBtn}>
-              <Ionicons name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={22} color="#666666" />
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+              <Ionicons name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={20} color="#8C7B6B" />
             </TouchableOpacity>
           </View>
         </View>
@@ -110,7 +106,7 @@ export default function Step11() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FAF6F0',
   },
   header: {
     flexDirection: 'row',
@@ -118,6 +114,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 12,
+    backgroundColor: '#FFFDF9',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2D7C7',
   },
   backBtn: {
     padding: 4,
@@ -130,21 +129,21 @@ const styles = StyleSheet.create({
   headerBrand: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#E31837',
+    color: '#6B0000',
   },
   stepIndicator: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#666666',
+    color: '#8C7B6B',
   },
   progressTrack: {
     height: 4,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#E8DFD3',
     width: '100%',
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
   },
   content: {
     paddingHorizontal: 24,
@@ -154,23 +153,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: '800',
-    color: '#111111',
+    color: '#200D08',
     letterSpacing: -0.5,
-    marginBottom: 20,
   },
-  noticeBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#E8F8F5',
-    padding: 14,
-    borderRadius: 14,
-    marginBottom: 24,
-  },
-  noticeText: {
-    marginLeft: 8,
-    color: '#27AE60',
-    fontWeight: '700',
+  subtitle: {
     fontSize: 14,
+    color: '#665544',
+    marginTop: 6,
+    marginBottom: 24,
   },
   fieldGroup: {
     marginBottom: 22,
@@ -178,57 +168,54 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#111111',
+    color: '#200D08',
     marginBottom: 10,
   },
   input: {
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#FFFDF9',
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#E2D7C7',
     borderRadius: 16,
     paddingHorizontal: 16,
     paddingVertical: 14,
     fontSize: 16,
-    color: '#111111',
+    color: '#200D08',
   },
-  passwordContainer: {
+  passwordBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#FFFDF9',
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#E2D7C7',
     borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
   passwordInput: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
     fontSize: 16,
-    color: '#111111',
-  },
-  eyeBtn: {
-    padding: 14,
+    color: '#200D08',
   },
   footer: {
     paddingHorizontal: 24,
     paddingVertical: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFDF9',
     borderTopWidth: 1,
-    borderColor: '#F2F2F7',
+    borderColor: '#E2D7C7',
   },
   nextBtn: {
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
     paddingVertical: 16,
     borderRadius: 28,
     alignItems: 'center',
-    shadowColor: '#E31837',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 4,
   },
   nextBtnText: {
-    color: '#FFFFFF',
+    color: '#FFFDF9',
     fontSize: 17,
     fontWeight: '700',
   },

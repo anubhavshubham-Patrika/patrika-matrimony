@@ -62,7 +62,7 @@ export default function Step4() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#111111" />
+          <Ionicons name="arrow-back" size={24} color="#200D08" />
         </TouchableOpacity>
         <View style={styles.headerTitleRow}>
           <PatrikaRibbonLogo size={26} />
@@ -89,7 +89,7 @@ export default function Step4() {
             activeOpacity={0.8}
           >
             <Text style={styles.dropdownValueText}>{religion || t.selectReligion}</Text>
-            <Ionicons name="chevron-down" size={20} color="#666666" />
+            <Ionicons name="chevron-down" size={20} color="#8C7B6B" />
           </TouchableOpacity>
         </View>
 
@@ -102,7 +102,7 @@ export default function Step4() {
             activeOpacity={0.8}
           >
             <Text style={styles.dropdownValueText}>{caste || t.selectCaste}</Text>
-            <Ionicons name="chevron-down" size={20} color="#666666" />
+            <Ionicons name="chevron-down" size={20} color="#8C7B6B" />
           </TouchableOpacity>
         </View>
 
@@ -114,7 +114,7 @@ export default function Step4() {
             placeholder="e.g. Rathore / Shekhawat / Garg"
             value={subCaste}
             onChangeText={setSubCaste}
-            placeholderTextColor="#999999"
+            placeholderTextColor="#8C7B6B"
           />
         </View>
 
@@ -127,7 +127,7 @@ export default function Step4() {
               placeholder="e.g. Bhardwaj / Kashyap / Vatsa"
               value={gotra}
               onChangeText={setGotra}
-              placeholderTextColor="#999999"
+              placeholderTextColor="#8C7B6B"
             />
           </View>
         )}
@@ -163,7 +163,7 @@ export default function Step4() {
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Select Religion</Text>
               <TouchableOpacity onPress={() => setShowReligionModal(false)}>
-                <Ionicons name="close" size={24} color="#111111" />
+                <Ionicons name="close" size={24} color="#200D08" />
               </TouchableOpacity>
             </View>
 
@@ -179,7 +179,7 @@ export default function Step4() {
                   }}
                 >
                   <Text style={[styles.modalOptionText, religion === r && styles.modalOptionTextSelected]}>{r}</Text>
-                  {religion === r && <Ionicons name="checkmark" size={20} color="#E31837" />}
+                  {religion === r && <Ionicons name="checkmark" size={20} color="#6B0000" />}
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -194,18 +194,18 @@ export default function Step4() {
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Select Caste / Community</Text>
               <TouchableOpacity onPress={() => setShowCasteModal(false)}>
-                <Ionicons name="close" size={24} color="#111111" />
+                <Ionicons name="close" size={24} color="#200D08" />
               </TouchableOpacity>
             </View>
 
             <View style={styles.searchBox}>
-              <Ionicons name="search-outline" size={18} color="#666666" style={{ marginRight: 8 }} />
+              <Ionicons name="search-outline" size={18} color="#8C7B6B" style={{ marginRight: 8 }} />
               <TextInput
                 style={styles.searchInput}
                 placeholder="Search caste..."
                 value={casteSearch}
                 onChangeText={setCasteSearch}
-                placeholderTextColor="#999999"
+                placeholderTextColor="#8C7B6B"
               />
             </View>
 
@@ -220,7 +220,7 @@ export default function Step4() {
                   }}
                 >
                   <Text style={[styles.modalOptionText, caste === c && styles.modalOptionTextSelected]}>{c}</Text>
-                  {caste === c && <Ionicons name="checkmark" size={20} color="#E31837" />}
+                  {caste === c && <Ionicons name="checkmark" size={20} color="#6B0000" />}
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -241,7 +241,7 @@ export default function Step4() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FAF6F0',
   },
   header: {
     flexDirection: 'row',
@@ -249,6 +249,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 12,
+    backgroundColor: '#FFFDF9',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2D7C7',
   },
   backBtn: {
     padding: 4,
@@ -261,21 +264,21 @@ const styles = StyleSheet.create({
   headerBrand: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#E31837',
+    color: '#6B0000',
   },
   stepIndicator: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#666666',
+    color: '#8C7B6B',
   },
   progressTrack: {
     height: 4,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#E8DFD3',
     width: '100%',
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
   },
   content: {
     paddingHorizontal: 24,
@@ -285,12 +288,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: '800',
-    color: '#111111',
+    color: '#200D08',
     letterSpacing: -0.5,
   },
   subtitle: {
     fontSize: 14,
-    color: '#666666',
+    color: '#665544',
     marginTop: 6,
     marginBottom: 24,
   },
@@ -300,16 +303,16 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#111111',
+    color: '#200D08',
     marginBottom: 10,
   },
   dropdownTrigger: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#FFFDF9',
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#E2D7C7',
     borderRadius: 16,
     paddingHorizontal: 16,
     paddingVertical: 14,
@@ -317,17 +320,17 @@ const styles = StyleSheet.create({
   dropdownValueText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#111111',
+    color: '#200D08',
   },
   input: {
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#FFFDF9',
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#E2D7C7',
     borderRadius: 16,
     paddingHorizontal: 16,
     paddingVertical: 14,
     fontSize: 16,
-    color: '#111111',
+    color: '#200D08',
   },
   radioGrid: {
     gap: 10,
@@ -340,20 +343,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: '#EFEFEF',
-    backgroundColor: '#FFFFFF',
+    borderColor: '#E2D7C7',
+    backgroundColor: '#FFFDF9',
   },
   radioCardSelected: {
-    borderColor: '#E31837',
+    borderColor: '#6B0000',
     backgroundColor: '#FFF5F6',
   },
   radioCardText: {
     fontSize: 15,
     fontWeight: '500',
-    color: '#333333',
+    color: '#200D08',
   },
   radioCardTextSelected: {
-    color: '#E31837',
+    color: '#6B0000',
     fontWeight: '700',
   },
   radioDotOuter: {
@@ -361,28 +364,28 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: '#D0D0D0',
+    borderColor: '#E2D7C7',
     alignItems: 'center',
     justifyContent: 'center',
   },
   radioDotOuterSelected: {
-    borderColor: '#E31837',
+    borderColor: '#6B0000',
   },
   radioDotInner: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
   },
 
   // Modal styles
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(32,13,8,0.6)',
     justifyContent: 'flex-end',
   },
   modalContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFDF9',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     padding: 20,
@@ -396,12 +399,14 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#111111',
+    color: '#200D08',
   },
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#F4EEE5',
+    borderWidth: 1,
+    borderColor: '#E2D7C7',
     borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 10,
@@ -410,7 +415,7 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 14,
-    color: '#111111',
+    color: '#200D08',
   },
   modalOptionItem: {
     flexDirection: 'row',
@@ -419,39 +424,39 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 12,
     borderBottomWidth: 1,
-    borderColor: '#F2F2F7',
+    borderColor: '#E8DFD3',
   },
   modalOptionSelected: {
     backgroundColor: '#FFF5F6',
   },
   modalOptionText: {
     fontSize: 15,
-    color: '#333333',
+    color: '#200D08',
   },
   modalOptionTextSelected: {
-    color: '#E31837',
+    color: '#6B0000',
     fontWeight: '700',
   },
   footer: {
     paddingHorizontal: 24,
     paddingVertical: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFDF9',
     borderTopWidth: 1,
-    borderColor: '#F2F2F7',
+    borderColor: '#E2D7C7',
   },
   nextBtn: {
-    backgroundColor: '#E31837',
+    backgroundColor: '#6B0000',
     paddingVertical: 16,
     borderRadius: 28,
     alignItems: 'center',
-    shadowColor: '#E31837',
+    shadowColor: '#6B0000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 4,
   },
   nextBtnText: {
-    color: '#FFFFFF',
+    color: '#FFFDF9',
     fontSize: 17,
     fontWeight: '700',
   },
