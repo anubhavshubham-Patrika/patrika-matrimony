@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { 
   View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, 
-  Modal, ScrollView, SafeAreaView, Platform, Image, Dimensions 
+  Modal, ScrollView, SafeAreaView, Platform, Image, Dimensions, Animated, PanResponder 
 } from 'react-native';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -26,6 +26,9 @@ export default function SearchScreen() {
   const [cardIndex, setCardIndex] = useState(0);
   const [historyStack, setHistoryStack] = useState<number[]>([]);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Animated position for swipe gesture
+  const position = useRef(new Animated.ValueXY()).current;
 
   const isShortlisted = (id: string) => state.shortlistedProfiles.includes(id);
   const isInterestSent = (id: string) => state.sentInterests.includes(id);
@@ -93,6 +96,89 @@ export default function SearchScreen() {
     setCardIndex(lastIndex);
     showToast('Brought back previous card 🔄');
   };
+
+  // PanResponder for touch drag & swipe gestures
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderMove: (evt, gestureState) => {
+        position.setValue({ x: gestureState.dx, y: gestureState.dy });
+      },
+      onPanResponderRelease: (evt, gestureState) => {
+        if (gestureState.dx > 120) {
+          // Swiped Right -> Interested
+          Animated.timing(position, {
+            toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy },
+            duration: 250,
+            useNativeDriver: false,
+          }).start(() => {
+            position.setValue({ x: 0, y: 0 });
+            handleNextCard('interest');
+          });
+        } else if (gestureState.dx < -120) {
+          // Swiped Left -> Skip / Pass
+          Animated.timing(position, {
+            toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy },
+            duration: 250,
+            useNativeDriver: false,
+          }).start(() => {
+            position.setValue({ x: 0, y: 0 });
+            handleNextCard('skip');
+          });
+        } else if (gestureState.dy < -120) {
+          // Swiped Up -> Shortlist
+          Animated.timing(position, {
+            toValue: { x: gestureState.dx, y: -600 },
+            duration: 250,
+            useNativeDriver: false,
+          }).start(() => {
+            position.setValue({ x: 0, y: 0 });
+            handleNextCard('shortlist');
+          });
+        } else {
+          // Snap back to center
+          Animated.spring(position, {
+            toValue: { x: 0, y: 0 },
+            friction: 6,
+            useNativeDriver: false,
+          }).start();
+        }
+      },
+    })
+  ).current;
+
+  // Rotation and Stamp Opacities
+  const rotate = position.x.interpolate({
+    inputRange: [-SCREEN_WIDTH, 0, SCREEN_WIDTH],
+    outputRange: ['-15deg', '0deg', '15deg'],
+    extrapolate: 'clamp',
+  });
+
+  const rotateAndTranslate = {
+    transform: [
+      { rotate },
+      ...position.getTranslateTransform(),
+    ],
+  };
+
+  const likeOpacity = position.x.interpolate({
+    inputRange: [10, SCREEN_WIDTH / 4],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+  });
+
+  const passOpacity = position.x.interpolate({
+    inputRange: [-SCREEN_WIDTH / 4, -10],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
+
+  const starOpacity = position.y.interpolate({
+    inputRange: [-120, -10],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
 
   const currentProfile = filteredProfiles[cardIndex];
   const nextProfile = filteredProfiles[cardIndex + 1];
@@ -224,6 +310,12 @@ export default function SearchScreen() {
       {/* VIEW MODE 1: SWIPE MATCH DECK */}
       {viewMode === 'swipe' ? (
         <View style={styles.swipeDeckArea}>
+          {/* Swipe Tip Hint Banner */}
+          <View style={styles.swipeTipBanner}>
+            <Ionicons name="swap-horizontal" size={14} color="#E91E63" />
+            <Text style={styles.swipeTipText}>👈 Swipe Left to Pass • Swipe Right to Express Interest 👉</Text>
+          </View>
+
           {currentProfile ? (
             <View style={styles.cardStackContainer}>
               {/* Underneath Card Preview (3D depth stack effect) */}
@@ -233,13 +325,27 @@ export default function SearchScreen() {
                 </View>
               )}
 
-              {/* Main Active Card */}
-              <TouchableOpacity 
-                style={styles.mainCard} 
-                activeOpacity={0.95}
-                onPress={() => router.push(`/profile/${currentProfile.profileId}`)}
+              {/* Main Swipable Card */}
+              <Animated.View 
+                {...panResponder.panHandlers}
+                style={[styles.mainCard, rotateAndTranslate]}
               >
                 <Image source={{ uri: currentProfile.profilePhotoURL }} style={styles.cardMainPhoto} />
+
+                {/* LIKE STAMP OVERLAY */}
+                <Animated.View style={[styles.stampContainer, styles.likeStampContainer, { opacity: likeOpacity }]}>
+                  <Text style={styles.likeStampText}>INTERESTED 💕</Text>
+                </Animated.View>
+
+                {/* PASS STAMP OVERLAY */}
+                <Animated.View style={[styles.stampContainer, styles.passStampContainer, { opacity: passOpacity }]}>
+                  <Text style={styles.passStampText}>PASSED ✕</Text>
+                </Animated.View>
+
+                {/* SHORTLIST STAMP OVERLAY */}
+                <Animated.View style={[styles.stampContainer, styles.starStampContainer, { opacity: starOpacity }]}>
+                  <Text style={styles.starStampText}>SHORTLISTED ⭐</Text>
+                </Animated.View>
 
                 {/* Top Overlay Badges */}
                 <View style={styles.cardTopBadgeRow}>
@@ -254,7 +360,11 @@ export default function SearchScreen() {
                 </View>
 
                 {/* Bottom Overlay Gradient Info Box */}
-                <View style={styles.cardInfoGradient}>
+                <TouchableOpacity 
+                  activeOpacity={0.95}
+                  onPress={() => router.push(`/profile/${currentProfile.profileId}`)}
+                  style={styles.cardInfoGradient}
+                >
                   <View style={styles.nameRow}>
                     <Text style={styles.cardNameText}>
                       {currentProfile.name}, {currentProfile.age}
@@ -288,8 +398,8 @@ export default function SearchScreen() {
                       </View>
                     )}
                   </View>
-                </View>
-              </TouchableOpacity>
+                </TouchableOpacity>
+              </Animated.View>
 
               {/* Bottom Swipe Controls Action Bar */}
               <View style={styles.swipeControlsRow}>
@@ -582,9 +692,28 @@ const styles = StyleSheet.create({
   swipeDeckArea: {
     flex: 1,
     paddingHorizontal: 16,
-    paddingTop: 12,
+    paddingTop: 4,
     paddingBottom: 16,
     justifyContent: 'center',
+  },
+  swipeTipBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    marginBottom: 8,
+    backgroundColor: '#FFF0F3',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 14,
+    alignSelf: 'center',
+    borderWidth: 1,
+    borderColor: '#FFD6DF',
+  },
+  swipeTipText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#E91E63',
   },
   cardStackContainer: {
     flex: 1,
@@ -627,6 +756,55 @@ const styles = StyleSheet.create({
     height: '100%',
     position: 'absolute',
   },
+
+  /* Stamp Overlays */
+  stampContainer: {
+    position: 'absolute',
+    zIndex: 99,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 12,
+    borderWidth: 3,
+  },
+  likeStampContainer: {
+    top: 50,
+    left: 20,
+    borderColor: '#27AE60',
+    backgroundColor: 'rgba(39, 174, 96, 0.25)',
+    transform: [{ rotate: '-15deg' }],
+  },
+  likeStampText: {
+    color: '#27AE60',
+    fontSize: 20,
+    fontWeight: '900',
+    letterSpacing: 1,
+  },
+  passStampContainer: {
+    top: 50,
+    right: 20,
+    borderColor: '#E74C3C',
+    backgroundColor: 'rgba(231, 76, 60, 0.25)',
+    transform: [{ rotate: '15deg' }],
+  },
+  passStampText: {
+    color: '#E74C3C',
+    fontSize: 20,
+    fontWeight: '900',
+    letterSpacing: 1,
+  },
+  starStampContainer: {
+    bottom: 180,
+    alignSelf: 'center',
+    borderColor: '#D4AF37',
+    backgroundColor: 'rgba(212, 175, 55, 0.25)',
+  },
+  starStampText: {
+    color: '#FFD700',
+    fontSize: 20,
+    fontWeight: '900',
+    letterSpacing: 1,
+  },
+
   cardTopBadgeRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
