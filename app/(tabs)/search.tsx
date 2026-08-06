@@ -272,7 +272,7 @@ export default function SearchScreen() {
             )}
           </View>
           <TouchableOpacity style={styles.filterBtn} onPress={() => setIsFilterVisible(true)}>
-            <Ionicons name="options-outline" size={22} color="#E91E63" />
+            <Ionicons name="options-outline" size={22} color="#E31E25" />
             {activeFiltersCount > 0 && (
               <View style={styles.filterBadge}>
                 <Text style={styles.filterBadgeText}>{activeFiltersCount}</Text>
@@ -312,7 +312,7 @@ export default function SearchScreen() {
         <View style={styles.swipeDeckArea}>
           {/* Swipe Tip Hint Banner */}
           <View style={styles.swipeTipBanner}>
-            <Ionicons name="swap-horizontal" size={14} color="#E91E63" />
+            <Ionicons name="swap-horizontal" size={14} color="#E31E25" />
             <Text style={styles.swipeTipText}>👈 Swipe Left to Pass • Swipe Right to Express Interest 👉</Text>
           </View>
 
@@ -446,7 +446,7 @@ export default function SearchScreen() {
             /* Empty Card Stack Screen */
             <View style={styles.deckEmptyContainer}>
               <View style={styles.emptyIconCircle}>
-                <Ionicons name="sparkles" size={56} color="#E91E63" />
+                <Ionicons name="sparkles" size={56} color="#E31E25" />
               </View>
               <Text style={styles.emptyTitle}>All Matches Viewed! 🎉</Text>
               <Text style={styles.emptySub}>
@@ -583,7 +583,7 @@ const styles = StyleSheet.create({
   headerBrandTitle: {
     fontSize: 20,
     fontWeight: '800',
-    color: '#E91E63',
+    color: '#E31E25',
     fontFamily: 'serif',
   },
   modeSwitcher: {
@@ -603,7 +603,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   modeTabBtnActive: {
-    backgroundColor: '#E91E63',
+    backgroundColor: '#E31E25',
   },
   modeTabText: {
     fontSize: 12,
@@ -633,7 +633,7 @@ const styles = StyleSheet.create({
     borderRadius: 14, 
     backgroundColor: '#FFF0F3', 
     borderWidth: 1, 
-    borderColor: '#E91E63', 
+    borderColor: '#E31E25', 
     justifyContent: 'center', 
     alignItems: 'center' 
   },
@@ -641,7 +641,7 @@ const styles = StyleSheet.create({
     position: 'absolute', 
     top: -4, 
     right: -4, 
-    backgroundColor: '#E91E63', 
+    backgroundColor: '#E31E25', 
     borderRadius: 10, 
     minWidth: 18, 
     height: 18, 
@@ -662,7 +662,7 @@ const styles = StyleSheet.create({
     borderWidth: 1, 
     borderColor: '#EFE6DD' 
   },
-  quickChipActive: { backgroundColor: '#E91E63', borderColor: '#E91E63' },
+  quickChipActive: { backgroundColor: '#E31E25', borderColor: '#E31E25' },
   quickChipText: { color: '#5A4A4D', fontSize: 12, fontWeight: '600' },
   quickChipTextActive: { color: '#FFFFFF', fontWeight: '800' },
 
@@ -713,7 +713,7 @@ const styles = StyleSheet.create({
   swipeTipText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#E91E63',
+    color: '#E31E25',
   },
   cardStackContainer: {
     flex: 1,
@@ -931,19 +931,19 @@ const styles = StyleSheet.create({
   actionControlPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#E91E63',
+    backgroundColor: '#E31E25',
     paddingHorizontal: 22,
     paddingVertical: 14,
     borderRadius: 28,
     gap: 8,
-    shadowColor: '#E91E63',
+    shadowColor: '#E31E25',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 5,
   },
   interestBtnAction: {
-    backgroundColor: '#E91E63',
+    backgroundColor: '#E31E25',
   },
   interestBtnText: {
     color: '#FFFFFF',
@@ -993,12 +993,12 @@ const styles = StyleSheet.create({
   resetDeckBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#E91E63',
+    backgroundColor: '#E31E25',
     paddingHorizontal: 24,
     paddingVertical: 14,
     borderRadius: 28,
     marginBottom: 12,
-    shadowColor: '#E91E63',
+    shadowColor: '#E31E25',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
@@ -1014,7 +1014,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
   },
   switchToListBtnText: {
-    color: '#E91E63',
+    color: '#E31E25',
     fontSize: 14,
     fontWeight: '700',
   },
@@ -1031,16 +1031,16 @@ const styles = StyleSheet.create({
   modalContainer: { flex: 1, backgroundColor: '#FFF4F6' },
   modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 16, borderBottomWidth: 1, borderBottomColor: '#EFE6DD', backgroundColor: '#FFFFFF' },
   modalTitle: { fontSize: 18, fontWeight: '800', color: '#2C1A1D', fontFamily: 'serif' },
-  resetText: { fontSize: 15, color: '#E91E63', fontWeight: '700' },
+  resetText: { fontSize: 15, color: '#E31E25', fontWeight: '700' },
   modalContent: { flex: 1, padding: 16 },
   filterSection: { marginBottom: 24 },
   filterTitle: { fontSize: 15, fontWeight: '800', color: '#2C1A1D', marginBottom: 12 },
   filterOptions: { flexDirection: 'row', flexWrap: 'wrap' },
   filterChip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 18, backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#EFE6DD', marginRight: 8, marginBottom: 8 },
-  filterChipSelected: { backgroundColor: '#FFF0F3', borderColor: '#E91E63' },
+  filterChipSelected: { backgroundColor: '#FFF0F3', borderColor: '#E31E25' },
   filterChipText: { fontSize: 13, color: '#5A4A4D' },
-  filterChipTextSelected: { color: '#E91E63', fontWeight: '800' },
+  filterChipTextSelected: { color: '#E31E25', fontWeight: '800' },
   modalFooter: { padding: 16, borderTopWidth: 1, borderTopColor: '#EFE6DD', backgroundColor: '#FFFFFF' },
-  applyBtn: { backgroundColor: '#E91E63', borderRadius: 28, paddingVertical: 14, alignItems: 'center' },
+  applyBtn: { backgroundColor: '#E31E25', borderRadius: 28, paddingVertical: 14, alignItems: 'center' },
   applyBtnText: { color: '#FFF', fontSize: 16, fontWeight: '800' }
 });

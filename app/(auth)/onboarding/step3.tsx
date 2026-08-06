@@ -112,7 +112,7 @@ export default function Step3() {
                       <MaterialCommunityIcons
                         name={g === 'Male' ? 'gender-male' : 'gender-female'}
                         size={24}
-                        color={isSel ? '#E91E63' : '#8C7A7C'}
+                        color={isSel ? '#E31E25' : '#8C7A7C'}
                       />
                       <Text style={[styles.genderText, isSel && styles.genderTextSelected]}>{g}</Text>
                     </TouchableOpacity>
@@ -130,7 +130,7 @@ export default function Step3() {
                 activeOpacity={0.85}
               >
                 <View style={styles.pickerTriggerLeft}>
-                  <Ionicons name="calendar-outline" size={22} color="#E91E63" style={{ marginRight: 10 }} />
+                  <Ionicons name="calendar-outline" size={22} color="#E31E25" style={{ marginRight: 10 }} />
                   <Text style={styles.pickerValueText}>{formattedDob}</Text>
                 </View>
                 <View style={styles.ageBadge}>
@@ -148,7 +148,7 @@ export default function Step3() {
                 activeOpacity={0.85}
               >
                 <View style={styles.pickerTriggerLeft}>
-                  <MaterialCommunityIcons name="ruler" size={22} color="#E91E63" style={{ marginRight: 10 }} />
+                  <MaterialCommunityIcons name="ruler" size={22} color="#E31E25" style={{ marginRight: 10 }} />
                   <Text style={styles.pickerValueText}>{formattedHeight}</Text>
                 </View>
                 <Ionicons name="chevron-down" size={20} color="#8C7A7C" />

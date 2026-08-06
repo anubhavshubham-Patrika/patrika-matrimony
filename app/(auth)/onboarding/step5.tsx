@@ -161,7 +161,7 @@ export default function Step5() {
                   }}
                 >
                   <Text style={[styles.modalOptionText, country === c && styles.modalOptionTextSelected]}>{c}</Text>
-                  {country === c && <Ionicons name="checkmark" size={20} color="#E91E63" />}
+                  {country === c && <Ionicons name="checkmark" size={20} color="#E31E25" />}
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -191,7 +191,7 @@ export default function Step5() {
                   }}
                 >
                   <Text style={[styles.modalOptionText, residentState === s && styles.modalOptionTextSelected]}>{s}</Text>
-                  {residentState === s && <Ionicons name="checkmark" size={20} color="#E91E63" />}
+                  {residentState === s && <Ionicons name="checkmark" size={20} color="#E31E25" />}
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -234,7 +234,7 @@ export default function Step5() {
                     }}
                   >
                     <Text style={[styles.modalOptionText, residentCity === c && styles.modalOptionTextSelected]}>{c}</Text>
-                    {residentCity === c && <Ionicons name="checkmark" size={20} color="#E91E63" />}
+                    {residentCity === c && <Ionicons name="checkmark" size={20} color="#E31E25" />}
                   </TouchableOpacity>
                 ))}
               {citySearch.length > 0 && (
@@ -245,7 +245,7 @@ export default function Step5() {
                     setShowCityModal(false);
                   }}
                 >
-                  <Text style={{ color: '#E91E63', fontWeight: '800' }}>Use "{citySearch}"</Text>
+                  <Text style={{ color: '#E31E25', fontWeight: '800' }}>Use "{citySearch}"</Text>
                 </TouchableOpacity>
               )}
             </ScrollView>

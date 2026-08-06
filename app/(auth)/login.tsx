@@ -80,7 +80,7 @@ export default function LoginScreen() {
                 <Switch
                   value={isParent}
                   onValueChange={setIsParent}
-                  trackColor={{ false: '#EFE6DD', true: '#C2185B' }}
+                  trackColor={{ false: '#EFE6DD', true: '#E31E25' }}
                   thumbColor="#FFFFFF"
                 />
               </View>
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#C2185B',
+    color: '#E31E25',
     fontFamily: 'serif',
   },
   container: {
@@ -177,12 +177,12 @@ const styles = StyleSheet.create({
   },
   tabsContainer: {
     flexDirection: 'row',
-    backgroundColor: '#FAF5F7',
+    backgroundColor: '#FFF0F1',
     borderRadius: 24,
     padding: 4,
     marginBottom: 24,
     borderWidth: 1,
-    borderColor: '#EFE6DD',
+    borderColor: '#FCD4D7',
   },
   tab: {
     flex: 1,
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   activeTab: {
-    backgroundColor: '#C2185B',
+    backgroundColor: '#E31E25',
   },
   tabText: {
     fontSize: 14,
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     borderColor: '#EFE6DD',
     borderRadius: 14,
     marginBottom: 20,
-    backgroundColor: '#FAF5F7',
+    backgroundColor: '#FFF0F1',
   },
   countryCode: {
     paddingHorizontal: 16,
@@ -244,11 +244,11 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   primaryButton: {
-    backgroundColor: '#C2185B',
+    backgroundColor: '#E31E25',
     paddingVertical: 16,
     borderRadius: 28,
     alignItems: 'center',
-    shadowColor: '#C2185B',
+    shadowColor: '#E31E25',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.3,
     shadowRadius: 10,
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     fontSize: 16,
     color: '#2C1A1D',
-    backgroundColor: '#FAF5F7',
+    backgroundColor: '#FFF0F1',
   },
   passwordContainer: {
     flexDirection: 'row',
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#EFE6DD',
     borderRadius: 14,
-    backgroundColor: '#FAF5F7',
+    backgroundColor: '#FFF0F1',
     marginBottom: 12,
   },
   passwordInput: {
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   forgotPasswordText: {
-    color: '#C2185B',
+    color: '#E31E25',
     fontSize: 14,
     fontWeight: '800',
   },

@@ -99,7 +99,7 @@ export default function Step2() {
             <View style={styles.selectedCounterRow}>
               <Text style={styles.selectedCounterText}>
                 Selected ({selectedLanguages.length}):{' '}
-                <Text style={{ color: '#E91E63', fontWeight: '800' }}>{selectedLanguages.join(', ')}</Text>
+                <Text style={{ color: '#E31E25', fontWeight: '800' }}>{selectedLanguages.join(', ')}</Text>
               </Text>
             </View>
 

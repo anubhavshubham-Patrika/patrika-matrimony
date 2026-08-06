@@ -9,7 +9,7 @@ import { useApp } from '../../src/context/AppContext';
 import profilesData from '../../src/data/profiles.json';
 import interestsData from '../../src/data/interests.json';
 
-const PRIMARY = '#E91E63';
+const PRIMARY = '#E31E25';
 const GOLD = '#C5A059';
 
 export default function ShortlistScreen() {
@@ -99,7 +99,7 @@ export default function ShortlistScreen() {
         <View style={styles.statusBadge}>
           <Text style={[styles.statusText,
             item.status === 'Accepted' && { color: '#27AE60' },
-            item.status === 'Declined' && { color: '#E91E63' },
+            item.status === 'Declined' && { color: '#E31E25' },
             item.status === 'InterestSent' && { color: '#C5A059' },
           ]}>
             {item.status === 'InterestSent' ? 'Pending' : item.status}

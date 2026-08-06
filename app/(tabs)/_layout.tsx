@@ -3,7 +3,7 @@ import { Tabs } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { View, StyleSheet, Platform, Text } from 'react-native';
 
-const PRIMARY_RED = '#E91E63';
+const PRIMARY_RED = '#E31E25';
 const INACTIVE_COLOR = '#8C7A7C';
 const PARCHMENT_BG = '#FFFFFF';
 const ACTIVE_BG = '#FFF0F3'; // Soft Rose Red Tint Pill

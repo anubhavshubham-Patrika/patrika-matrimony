@@ -84,7 +84,7 @@ export default function Step1() {
                       <MaterialCommunityIcons
                         name={item.iconName as any}
                         size={28}
-                        color={isSelected ? '#E91E63' : '#8C7A7C'}
+                        color={isSelected ? '#E31E25' : '#8C7A7C'}
                       />
                     </View>
                     <Text style={[styles.cardLabel, isSelected && styles.cardLabelSelected]}>
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   headerBrand: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#E91E63',
+    color: '#E31E25',
     fontFamily: 'serif',
   },
   stepIndicator: {

@@ -194,7 +194,7 @@ export default function Step4() {
                   }}
                 >
                   <Text style={[styles.modalOptionText, religion === r && styles.modalOptionTextSelected]}>{r}</Text>
-                  {religion === r && <Ionicons name="checkmark" size={20} color="#E91E63" />}
+                  {religion === r && <Ionicons name="checkmark" size={20} color="#E31E25" />}
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -235,7 +235,7 @@ export default function Step4() {
                   }}
                 >
                   <Text style={[styles.modalOptionText, caste === c && styles.modalOptionTextSelected]}>{c}</Text>
-                  {caste === c && <Ionicons name="checkmark" size={20} color="#E91E63" />}
+                  {caste === c && <Ionicons name="checkmark" size={20} color="#E31E25" />}
                 </TouchableOpacity>
               ))}
             </ScrollView>

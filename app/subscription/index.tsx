@@ -9,7 +9,7 @@ import { useApp } from '../../src/context/AppContext';
 import subscriptionsData from '../../src/data/subscriptions.json';
 import PatrikaRibbonLogo from '../../src/components/PatrikaRibbonLogo';
 
-const MAGENTA = '#C2185B';
+const MAGENTA = '#E31E25';
 const GOLD = '#D4AF37';
 const PURPLE = '#8E24AA';
 const ROSE = '#D81B60';
@@ -109,7 +109,7 @@ const PLANS: PlanDefinition[] = [
     durationText: '₹9,999 / 1 year',
     icon: 'star-face',
     color: ROSE,
-    headerBg: '#C2185B',
+    headerBg: '#E31E25',
     btnBg: '#D81B60',
     features: [
       'Everything in Platinum',
@@ -159,7 +159,7 @@ export default function SubscriptionScreen() {
         <View style={styles.topHeaderBanner}>
           <View style={styles.headerTopBar}>
             <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-              <Ionicons name="arrow-back" size={22} color="#C2185B" />
+              <Ionicons name="arrow-back" size={22} color="#E31E25" />
             </TouchableOpacity>
 
             <View style={styles.headerBrandRow}>
@@ -226,7 +226,7 @@ export default function SubscriptionScreen() {
                 <View style={styles.planCardBody}>
                   {plan.features.map((feat, idx) => (
                     <View key={`f-${idx}`} style={styles.featureRow}>
-                      <Ionicons name="checkmark-circle" size={18} color="#C2185B" style={styles.featureIcon} />
+                      <Ionicons name="checkmark-circle" size={18} color="#E31E25" style={styles.featureIcon} />
                       <Text style={styles.featureText}>{feat}</Text>
                     </View>
                   ))}

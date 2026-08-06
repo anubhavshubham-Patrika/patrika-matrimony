@@ -41,15 +41,15 @@ export default function WelcomeScreen() {
 
             <View style={styles.tipsContainer}>
               <View style={styles.tipRow}>
-                <Ionicons name="checkmark-circle" size={20} color="#E91E63" style={styles.tipIcon} />
+                <Ionicons name="checkmark-circle" size={20} color="#E31E25" style={styles.tipIcon} />
                 <Text style={styles.tipText}>Complete verification to get 5x more responses</Text>
               </View>
               <View style={styles.tipRow}>
-                <Ionicons name="checkmark-circle" size={20} color="#E91E63" style={styles.tipIcon} />
+                <Ionicons name="checkmark-circle" size={20} color="#E31E25" style={styles.tipIcon} />
                 <Text style={styles.tipText}>Explore matches based on your preferences</Text>
               </View>
               <View style={styles.tipRow}>
-                <Ionicons name="checkmark-circle" size={20} color="#E91E63" style={styles.tipIcon} />
+                <Ionicons name="checkmark-circle" size={20} color="#E31E25" style={styles.tipIcon} />
                 <Text style={styles.tipText}>Link your Rajasthan Patrika newspaper ad</Text>
               </View>
             </View>
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   cardHeaderBanner: {
-    backgroundColor: '#E91E63',
+    backgroundColor: '#E31E25',
     paddingHorizontal: 20,
     paddingVertical: 24,
     alignItems: 'center',
@@ -145,11 +145,11 @@ const styles = StyleSheet.create({
     borderColor: '#EFE6DD',
   },
   btn: {
-    backgroundColor: '#E91E63',
+    backgroundColor: '#E31E25',
     paddingVertical: 16,
     borderRadius: 14,
     alignItems: 'center',
-    shadowColor: '#E91E63',
+    shadowColor: '#E31E25',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,

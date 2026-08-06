@@ -66,7 +66,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <Ionicons
               name={isInterestSent ? 'heart' : 'heart-outline'}
               size={20}
-              color={isInterestSent ? '#E91E63' : '#8C7A7C'}
+              color={isInterestSent ? '#E31E25' : '#8C7A7C'}
             />
           </TouchableOpacity>
         </View>

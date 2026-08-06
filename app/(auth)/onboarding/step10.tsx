@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   headerBrand: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#E91E63',
+    color: '#E31E25',
     fontFamily: 'serif',
   },
   stepIndicator: {
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#E91E63',
+    backgroundColor: '#E31E25',
     borderRadius: 3,
   },
   progressPercentText: {
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   cardHeaderBanner: {
-    backgroundColor: '#E91E63',
+    backgroundColor: '#E31E25',
     paddingHorizontal: 20,
     paddingVertical: 16,
   },

@@ -123,7 +123,7 @@ export default function ProfileTab() {
         </View>
 
         <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
-          <Ionicons name="log-out-outline" size={24} color="#E91E63" />
+          <Ionicons name="log-out-outline" size={24} color="#E31E25" />
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
         
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     borderRadius: 44,
     marginBottom: 12,
     borderWidth: 2.5,
-    borderColor: '#E91E63',
+    borderColor: '#E31E25',
   },
   userName: {
     fontSize: 22,
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     color: '#C5A059',
   },
   upgradeBtn: {
-    backgroundColor: '#E91E63',
+    backgroundColor: '#E31E25',
     paddingHorizontal: 32,
     paddingVertical: 12,
     borderRadius: 24,
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
   progressPercent: {
     fontSize: 14,
     fontWeight: '800',
-    color: '#E91E63',
+    color: '#E31E25',
   },
   progressBarBg: {
     height: 6,
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
   },
   progressBarFill: {
     height: 6,
-    backgroundColor: '#E91E63',
+    backgroundColor: '#E31E25',
     borderRadius: 3,
   },
   progressHint: {

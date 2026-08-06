@@ -108,7 +108,7 @@ const ProfileDetailScreen = () => {
 
   const renderSectionHeader = (title: string, icon: keyof typeof Ionicons.glyphMap) => (
     <View style={styles.sectionHeader}>
-      <Ionicons name={icon} size={20} color="#E91E63" style={styles.sectionIcon} />
+      <Ionicons name={icon} size={20} color="#E31E25" style={styles.sectionIcon} />
       <Text style={styles.sectionTitle}>{title}</Text>
     </View>
   );
@@ -116,7 +116,7 @@ const ProfileDetailScreen = () => {
   const renderDetailRow = (icon: keyof typeof MaterialCommunityIcons.glyphMap, label: string, value: string) => (
     <View style={styles.detailRow}>
       <View style={styles.detailLabelContainer}>
-        <MaterialCommunityIcons name={icon} size={18} color="#C2185B" style={styles.detailIcon} />
+        <MaterialCommunityIcons name={icon} size={18} color="#E31E25" style={styles.detailIcon} />
         <Text style={styles.detailLabel}>{label}</Text>
       </View>
       <Text style={styles.detailValue}>{value || 'Not Specified'}</Text>
@@ -213,7 +213,7 @@ const ProfileDetailScreen = () => {
             onPress={() => setIsShortlisted(!isShortlisted)}
           >
             <View style={[styles.actionIconCircle, isShortlisted && styles.actionIconCircleActive]}>
-              <Ionicons name={isShortlisted ? "heart" : "heart-outline"} size={22} color={isShortlisted ? "#FFFFFF" : "#E91E63"} />
+              <Ionicons name={isShortlisted ? "heart" : "heart-outline"} size={22} color={isShortlisted ? "#FFFFFF" : "#E31E25"} />
             </View>
             <Text style={styles.actionBtnText}>Shortlist</Text>
           </TouchableOpacity>
@@ -223,7 +223,7 @@ const ProfileDetailScreen = () => {
             onPress={() => setInterestSent(!interestSent)}
           >
             <View style={[styles.actionIconCircle, interestSent && styles.actionIconCircleInterest]}>
-              <MaterialCommunityIcons name="handshake" size={22} color={interestSent ? "#FFFFFF" : "#E91E63"} />
+              <MaterialCommunityIcons name="handshake" size={22} color={interestSent ? "#FFFFFF" : "#E31E25"} />
             </View>
             <Text style={styles.actionBtnText}>{interestSent ? 'Sent' : 'Interest'}</Text>
           </TouchableOpacity>
@@ -233,8 +233,8 @@ const ProfileDetailScreen = () => {
             onPress={() => handleLockedAction('Messaging')}
           >
             <View style={styles.actionIconCircle}>
-              <Ionicons name="chatbubble" size={20} color={isFreePlan ? "#8C7A7C" : "#E91E63"} />
-              {isFreePlan && <Ionicons name="lock-closed" size={12} color="#E91E63" style={styles.lockIcon} />}
+              <Ionicons name="chatbubble" size={20} color={isFreePlan ? "#8C7A7C" : "#E31E25"} />
+              {isFreePlan && <Ionicons name="lock-closed" size={12} color="#E31E25" style={styles.lockIcon} />}
             </View>
             <Text style={styles.actionBtnText}>Message</Text>
           </TouchableOpacity>
@@ -244,8 +244,8 @@ const ProfileDetailScreen = () => {
             onPress={() => handleLockedAction('Calling')}
           >
             <View style={styles.actionIconCircle}>
-              <Ionicons name="call" size={20} color={isFreePlan ? "#8C7A7C" : "#E91E63"} />
-              {isFreePlan && <Ionicons name="lock-closed" size={12} color="#E91E63" style={styles.lockIcon} />}
+              <Ionicons name="call" size={20} color={isFreePlan ? "#8C7A7C" : "#E31E25"} />
+              {isFreePlan && <Ionicons name="lock-closed" size={12} color="#E31E25" style={styles.lockIcon} />}
             </View>
             <Text style={styles.actionBtnText}>Call</Text>
           </TouchableOpacity>
@@ -317,7 +317,7 @@ const ProfileDetailScreen = () => {
             activeOpacity={0.7}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Ionicons name="star" size={20} color="#E91E63" style={styles.sectionIcon} />
+              <Ionicons name="star" size={20} color="#E31E25" style={styles.sectionIcon} />
               <Text style={styles.sectionTitle}>Horoscope Details</Text>
             </View>
             <Ionicons name={isHoroscopeExpanded ? "chevron-up" : "chevron-down"} size={20} color="#5A4A4D" />
@@ -372,7 +372,7 @@ const ProfileDetailScreen = () => {
           style={[styles.footerBtn, interestSent && styles.footerBtnActive]} 
           onPress={() => setInterestSent(!interestSent)}
         >
-          <MaterialCommunityIcons name={interestSent ? "check-circle" : "handshake"} size={20} color="#E91E63" />
+          <MaterialCommunityIcons name={interestSent ? "check-circle" : "handshake"} size={20} color="#E31E25" />
           <Text style={styles.footerBtnText}>
             {interestSent ? 'Interest Sent' : 'Send Interest'}
           </Text>
@@ -384,7 +384,7 @@ const ProfileDetailScreen = () => {
           style={styles.footerBtn}
           onPress={() => handleLockedAction('Messaging')}
         >
-          <Ionicons name="chatbubble-ellipses-outline" size={20} color="#E91E63" />
+          <Ionicons name="chatbubble-ellipses-outline" size={20} color="#E31E25" />
           <Text style={styles.footerBtnText}>Message</Text>
         </TouchableOpacity>
       </View>
@@ -547,7 +547,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   activeDot: {
-    backgroundColor: '#C2185B',
+    backgroundColor: '#E31E25',
     width: 20,
   },
   basicInfoCard: {
@@ -585,7 +585,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   matchText: {
-    color: '#C2185B',
+    color: '#E31E25',
     fontSize: 11,
     fontWeight: '800',
   },
@@ -662,12 +662,12 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   actionIconCircleActive: {
-    backgroundColor: '#C2185B',
-    borderColor: '#C2185B',
+    backgroundColor: '#E31E25',
+    borderColor: '#E31E25',
   },
   actionIconCircleInterest: {
-    backgroundColor: '#C2185B',
-    borderColor: '#C2185B',
+    backgroundColor: '#E31E25',
+    borderColor: '#E31E25',
   },
   actionBtnText: {
     fontSize: 12,
@@ -762,7 +762,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   hobbyText: {
-    color: '#C2185B',
+    color: '#E31E25',
     fontSize: 14,
     fontWeight: '700',
   },
@@ -808,7 +808,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     fontSize: 16,
     fontWeight: '800',
-    color: '#C2185B',
+    color: '#E31E25',
   },
   footerDivider: {
     width: 1,
@@ -852,7 +852,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   bottomSheetBtn: {
-    backgroundColor: '#C2185B',
+    backgroundColor: '#E31E25',
     paddingVertical: 14,
     paddingHorizontal: 32,
     borderRadius: 24,
@@ -930,7 +930,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   stripThumbActive: {
-    borderColor: '#C2185B',
+    borderColor: '#E31E25',
   },
   stripThumbImage: {
     width: '100%',

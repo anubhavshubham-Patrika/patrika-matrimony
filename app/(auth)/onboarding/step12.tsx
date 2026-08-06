@@ -75,7 +75,7 @@ export default function Step12() {
             {/* Selfie Verification Badge */}
             <View style={styles.verificationCard}>
               <View style={styles.verifHeaderRow}>
-                <Ionicons name="shield-checkmark-outline" size={22} color="#E91E63" />
+                <Ionicons name="shield-checkmark-outline" size={22} color="#E31E25" />
                 <Text style={styles.verifTitle}>Selfie Verification</Text>
               </View>
               <Text style={styles.verifDesc}>Verified profiles receive 5x more interest responses from serious family members.</Text>
@@ -83,7 +83,7 @@ export default function Step12() {
                 style={[styles.selfieBtn, isSelfieVerified && styles.selfieBtnVerified]}
                 onPress={() => setIsSelfieVerified(!isSelfieVerified)}
               >
-                <Ionicons name={isSelfieVerified ? 'checkmark-circle' : 'camera'} size={20} color={isSelfieVerified ? '#27AE60' : '#E91E63'} />
+                <Ionicons name={isSelfieVerified ? 'checkmark-circle' : 'camera'} size={20} color={isSelfieVerified ? '#27AE60' : '#E31E25'} />
                 <Text style={[styles.selfieBtnText, isSelfieVerified && { color: '#27AE60' }]}>
                   {isSelfieVerified ? 'Selfie Verified ✓' : 'Take Verification Selfie'}
                 </Text>
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   headerBrand: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#E91E63',
+    color: '#E31E25',
     fontFamily: 'serif',
   },
   stepIndicator: {
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#E91E63',
+    backgroundColor: '#E31E25',
     borderRadius: 3,
   },
   progressPercentText: {
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   cardHeaderBanner: {
-    backgroundColor: '#E91E63',
+    backgroundColor: '#E31E25',
     paddingHorizontal: 20,
     paddingVertical: 16,
   },
@@ -226,13 +226,13 @@ const styles = StyleSheet.create({
     height: 130,
     borderRadius: 65,
     borderWidth: 3,
-    borderColor: '#E91E63',
+    borderColor: '#E31E25',
     marginBottom: 12,
   },
   changePhotoBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#E91E63',
+    backgroundColor: '#E31E25',
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 20,
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#FFF0F3',
     borderWidth: 1,
-    borderColor: '#E91E63',
+    borderColor: '#E31E25',
     paddingVertical: 12,
     borderRadius: 12,
     gap: 8,

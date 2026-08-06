@@ -104,7 +104,7 @@ export default function HomeScreen() {
           {/* Quick Match Floating Filter Card */}
           <View style={styles.searchCard}>
             <View style={styles.searchCardHeader}>
-              <Ionicons name="search-outline" size={16} color="#C2185B" style={{ marginRight: 6 }} />
+              <Ionicons name="search-outline" size={16} color="#E31E25" style={{ marginRight: 6 }} />
               <Text style={styles.searchCardTitle}>Refine your search</Text>
             </View>
 
@@ -118,7 +118,7 @@ export default function HomeScreen() {
                 <Text style={styles.filterLabel}>Age Range</Text>
                 <View style={styles.filterDropdown}>
                   <Text style={styles.filterValue}>{ageRange}</Text>
-                  <Ionicons name="chevron-down" size={16} color="#C2185B" />
+                  <Ionicons name="chevron-down" size={16} color="#E31E25" />
                 </View>
               </TouchableOpacity>
 
@@ -131,7 +131,7 @@ export default function HomeScreen() {
                 <Text style={styles.filterLabel}>Location</Text>
                 <View style={styles.filterDropdown}>
                   <Text style={styles.filterValue} numberOfLines={1}>{location}</Text>
-                  <Ionicons name="chevron-down" size={16} color="#C2185B" />
+                  <Ionicons name="chevron-down" size={16} color="#E31E25" />
                 </View>
               </TouchableOpacity>
 
@@ -144,7 +144,7 @@ export default function HomeScreen() {
                 <Text style={styles.filterLabel}>Community</Text>
                 <View style={styles.filterDropdown}>
                   <Text style={styles.filterValue} numberOfLines={1}>{community}</Text>
-                  <Ionicons name="chevron-down" size={16} color="#C2185B" />
+                  <Ionicons name="chevron-down" size={16} color="#E31E25" />
                 </View>
               </TouchableOpacity>
 
@@ -157,7 +157,7 @@ export default function HomeScreen() {
                 <Text style={styles.filterLabel}>Profession</Text>
                 <View style={styles.filterDropdown}>
                   <Text style={styles.filterValue} numberOfLines={1}>{profession}</Text>
-                  <Ionicons name="chevron-down" size={16} color="#C2185B" />
+                  <Ionicons name="chevron-down" size={16} color="#E31E25" />
                 </View>
               </TouchableOpacity>
             </View>
@@ -203,7 +203,7 @@ export default function HomeScreen() {
         {/* AI-Selected for You Section */}
         <View style={styles.aiContainer}>
           <View style={styles.aiHeader}>
-            <Ionicons name="sparkles" size={20} color="#C2185B" style={{ marginRight: 6 }} />
+            <Ionicons name="sparkles" size={20} color="#E31E25" style={{ marginRight: 6 }} />
             <Text style={styles.aiTitle}>AI-Selected for You</Text>
           </View>
           <Text style={styles.aiSubtitle}>Deeper compatibility analysis based on your preferences and values</Text>
@@ -286,7 +286,7 @@ export default function HomeScreen() {
         <View style={styles.trustContainer}>
           <View style={styles.trustItem}>
             <View style={styles.trustIconBox}>
-              <MaterialCommunityIcons name="shield-check-outline" size={24} color="#C2185B" />
+              <MaterialCommunityIcons name="shield-check-outline" size={24} color="#E31E25" />
             </View>
             <View style={styles.trustTextCol}>
               <Text style={styles.trustTitle}>Verified Profiles</Text>
@@ -296,7 +296,7 @@ export default function HomeScreen() {
 
           <View style={styles.trustItem}>
             <View style={styles.trustIconBox}>
-              <MaterialCommunityIcons name="lock-outline" size={24} color="#C2185B" />
+              <MaterialCommunityIcons name="lock-outline" size={24} color="#E31E25" />
             </View>
             <View style={styles.trustTextCol}>
               <Text style={styles.trustTitle}>Privacy First</Text>
@@ -306,7 +306,7 @@ export default function HomeScreen() {
 
           <View style={styles.trustItem}>
             <View style={styles.trustIconBox}>
-              <MaterialCommunityIcons name="account-group-outline" size={24} color="#C2185B" />
+              <MaterialCommunityIcons name="account-group-outline" size={24} color="#E31E25" />
             </View>
             <View style={styles.trustTextCol}>
               <Text style={styles.trustTitle}>Serious Members</Text>
@@ -352,7 +352,7 @@ export default function HomeScreen() {
                     }}
                   >
                     <Text style={[styles.modalOptionText, isSelected && styles.modalOptionTextSelected]}>{opt}</Text>
-                    {isSelected && <Ionicons name="checkmark" size={20} color="#C2185B" />}
+                    {isSelected && <Ionicons name="checkmark" size={20} color="#E31E25" />}
                   </TouchableOpacity>
                 );
               })}
@@ -388,7 +388,7 @@ const styles = StyleSheet.create({
   logoText: {
     fontSize: 20,
     fontWeight: '800',
-    color: '#C2185B',
+    color: '#E31E25',
     fontFamily: 'serif',
   },
   headerIcons: {
@@ -403,7 +403,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -4,
     right: -6,
-    backgroundColor: '#C2185B',
+    backgroundColor: '#E31E25',
     borderRadius: 10,
     minWidth: 18,
     height: 18,
@@ -492,11 +492,11 @@ const styles = StyleSheet.create({
     color: '#2C1A1D',
   },
   startMatchingBtn: {
-    backgroundColor: '#C2185B',
+    backgroundColor: '#E31E25',
     borderRadius: 20,
     paddingVertical: 15,
     alignItems: 'center',
-    shadowColor: '#C2185B',
+    shadowColor: '#E31E25',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
@@ -523,7 +523,7 @@ const styles = StyleSheet.create({
   },
   viewAllText: {
     fontSize: 13,
-    color: '#C2185B',
+    color: '#E31E25',
     fontWeight: '800',
   },
   listContainer: {
@@ -590,7 +590,7 @@ const styles = StyleSheet.create({
   aiBadgeTagText: {
     fontSize: 9,
     fontWeight: '800',
-    color: '#C2185B',
+    color: '#E31E25',
     textAlign: 'center',
   },
   aiName: {
@@ -653,7 +653,7 @@ const styles = StyleSheet.create({
   readMoreBtnText: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#C2185B',
+    color: '#E31E25',
   },
 
   // Why Trust Us Section
@@ -734,7 +734,7 @@ const styles = StyleSheet.create({
     color: '#2C1A1D',
   },
   modalOptionTextSelected: {
-    color: '#C2185B',
+    color: '#E31E25',
     fontWeight: '800',
   },
 

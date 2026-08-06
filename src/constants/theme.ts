@@ -1,63 +1,63 @@
 // src/constants/theme.ts
 export const Colors = {
-  // Deep Royal Crimson & Vibrant Rose (from reference screenshots 1-5)
-  primary: '#E91E63',          // Vibrant Rose Red (from Matrimony Onboarding)
-  primaryDark: '#D81B60',
-  primaryCrimson: '#6B0000',   // Deep Royal Crimson
-  primaryLight: '#FF4081',
+  // Official Patrika News Red (#E31E25)
+  primary: '#E31E25',          // Official Patrika News Crimson Red
+  primaryDark: '#C2141A',
+  primaryCrimson: '#E31E25',   // Patrika Crimson Red
+  primaryLight: '#FF3B42',
   
-  // Royal Gold, Amber & Taupe (from reference screenshots 4 & 5)
-  gold: '#C5A059',             // Warm Gold Accent
-  goldDark: '#786C10',
-  goldLight: '#E5B869',
-  taupe: '#A67C52',            // Warm Taupe
-  taupeBg: '#ECE3D8',          // AI-Selected Section Background (Screenshot 5)
-  taupeCard: '#E6DCCF',
+  // Gold, Amber & Taupe Accents
+  gold: '#D4AF37',             // Royal Gold Accent
+  goldDark: '#B38F24',
+  goldLight: '#F5D77F',
+  taupe: '#A67C52',
+  taupeBg: '#FFF0F1',
+  taupeCard: '#FFE4E6',
   
-  // Backgrounds & Surface (from reference screenshots 2-5)
-  background: '#F9F6F0',       // Warm Parchment Feed Background (Screenshots 4 & 5)
-  onboardingBg: '#FFF4F6',     // Soft Pastel Pink Onboarding Background (Screenshot 2)
-  roseBg: '#FF7597',           // Vibrant Pink Background (Screenshot 3)
+  // Backgrounds & Surface
+  background: '#FFF9F6',       // Soft Warm Cream Background
+  onboardingBg: '#FFF0F1',     // Soft Patrika Tint Onboarding Background
+  roseBg: '#E31E25',
   surface: '#FFFFFF',
-  surfaceVariant: '#F5EFE6',
+  surfaceVariant: '#FFF0F1',
   cardBg: '#FFFFFF',
   
-  // High-Contrast Indian Typography Colors
-  text: '#2C1A1D',             // Deep Dark Brown/Red Headline Text
-  textSecondary: '#5A4A4D',    // Warm Subtitle Text
+  // High-Contrast Typography Colors
+  text: '#2C1A1D',             // Deep Dark Brown Headline Text
+  textSecondary: '#5A4A4D',    // Subtitle Text
   textMuted: '#8C7A7C',
   textOnPrimary: '#FFFFFF',
-  textGold: '#C5A059',
+  textGold: '#D4AF37',
   
   // Callouts & Badges
   success: '#27AE60',
-  successLight: '#E8F8F5',     // Green Profile Activity Callout (Screenshot 2)
+  successLight: '#E8F8F5',
   successText: '#1E8449',
   warning: '#F39C12',
-  error: '#E91E63',
+  error: '#E31E25',
   info: '#3498DB',
   
   // Borders & Dividers
   border: '#EFE6DD',
-  borderLight: '#F5EFE6',
-  divider: '#E5DBD0',
+  borderLight: '#FFF0F1',
+  divider: '#EFE6DD',
   
-  cardShadow: 'rgba(44,26,29,0.08)',
+  cardShadow: 'rgba(227,30,37,0.12)',
   overlay: 'rgba(44,26,29,0.6)',
   overlayLight: 'rgba(44,26,29,0.3)',
   
   badge: {
-    verified: '#C5A059',
-    premium: '#E91E63',
-    newspaper: '#6B0000',
+    verified: '#D4AF37',
+    premium: '#E31E25',
+    newspaper: '#E31E25',
     new: '#9C27B0',
   },
   
   gradient: {
-    primary: ['#E91E63', '#C2185B'],
-    rose: ['#FF5E83', '#E91E63'],
-    ribbon: ['#8B0000', '#6B0000', '#4A0000'],
-    gold: ['#E5B869', '#C5A059'],
+    primary: ['#E31E25', '#C2141A'],
+    rose: ['#FF3B42', '#E31E25'],
+    ribbon: ['#E31E25', '#C2141A'],
+    gold: ['#F5D77F', '#D4AF37'],
     dark: ['#2C1A1D', '#1A0E10'],
   },
 };
@@ -113,21 +113,21 @@ export const BorderRadius = {
 
 export const Shadow = {
   sm: {
-    shadowColor: '#2C1A1D',
+    shadowColor: '#E31E25',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.04,
     shadowRadius: 4,
     elevation: 2,
   },
   md: {
-    shadowColor: '#2C1A1D',
+    shadowColor: '#E31E25',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
     elevation: 4,
   },
   lg: {
-    shadowColor: '#2C1A1D',
+    shadowColor: '#E31E25',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.12,
     shadowRadius: 14,

@@ -86,7 +86,7 @@ export default function SplashScreen() {
 
           {/* 100% Verified Profiles Pill */}
           <View style={styles.verifiedPill}>
-            <Ionicons name="shield-checkmark-outline" size={16} color="#C2185B" style={{ marginRight: 6 }} />
+            <Ionicons name="shield-checkmark-outline" size={16} color="#E31E25" style={{ marginRight: 6 }} />
             <Text style={styles.verifiedPillText}>100% Verified Profiles</Text>
           </View>
         </Animated.View>
@@ -146,30 +146,30 @@ const styles = StyleSheet.create({
     height: 270,
     borderRadius: 135,
     borderWidth: 1,
-    borderColor: '#FFDCE3',
+    borderColor: '#FCD4D7',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255, 224, 230, 0.25)',
+    backgroundColor: 'rgba(253, 212, 215, 0.25)',
   },
   ringOuter2: {
     width: 216,
     height: 216,
     borderRadius: 108,
     borderWidth: 1,
-    borderColor: '#FFC8D3',
+    borderColor: '#FBAAB0',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255, 210, 220, 0.25)',
+    backgroundColor: 'rgba(251, 170, 176, 0.25)',
   },
   ringOuter1: {
     width: 162,
     height: 162,
     borderRadius: 81,
     borderWidth: 1,
-    borderColor: '#FFAEC0',
+    borderColor: '#F87F87',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255, 190, 205, 0.25)',
+    backgroundColor: 'rgba(248, 127, 135, 0.25)',
   },
   centerLogoCircle: {
     width: 120,
@@ -178,9 +178,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#C2185B',
+    shadowColor: '#E31E25',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.18,
+    shadowOpacity: 0.2,
     shadowRadius: 12,
     elevation: 6,
   },
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   brandTitleLine1: {
     fontSize: 44,
     fontWeight: '800',
-    color: '#C2185B',
+    color: '#E31E25',
     fontFamily: 'serif',
     textAlign: 'center',
     lineHeight: 50,
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   brandTitleLine2: {
     fontSize: 44,
     fontWeight: '800',
-    color: '#C2185B',
+    color: '#E31E25',
     fontFamily: 'serif',
     textAlign: 'center',
     lineHeight: 50,
@@ -221,9 +221,9 @@ const styles = StyleSheet.create({
   verifiedPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF0F3',
+    backgroundColor: '#FFF0F1',
     borderWidth: 1,
-    borderColor: '#FFD6DF',
+    borderColor: '#FCD4D7',
     borderRadius: 24,
     paddingHorizontal: 18,
     paddingVertical: 9,
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
   verifiedPillText: {
     fontSize: 14,
     fontWeight: '800',
-    color: '#6B1B30',
+    color: '#E31E25',
   },
 
   /* Bottom Action Bar */
@@ -243,12 +243,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   letsStartBtn: {
-    backgroundColor: '#C2185B',
+    backgroundColor: '#E31E25',
     borderRadius: 30,
     paddingVertical: 18,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#C2185B',
+    shadowColor: '#E31E25',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.35,
     shadowRadius: 12,
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   loginBoldText: {
-    color: '#C2185B',
+    color: '#E31E25',
     fontWeight: '800',
   },
 });

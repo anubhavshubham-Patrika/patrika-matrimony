@@ -7,7 +7,7 @@ import chatsData from '../../src/data/chats.json';
 import profilesData from '../../src/data/profiles.json';
 
 const MY_PROFILE_ID = 'P001';
-const PRIMARY = '#E91E63';
+const PRIMARY = '#E31E25';
 
 export default function ChatsScreen() {
   const router = useRouter();
@@ -98,7 +98,7 @@ export default function ChatsScreen() {
           <MaterialCommunityIcons
             name={item.type === 'Incoming' ? 'phone-incoming' : item.type === 'Missed' ? 'phone-missed' : 'phone-outgoing'}
             size={14}
-            color={item.type === 'Incoming' ? '#27AE60' : item.type === 'Missed' ? '#E91E63' : '#C5A059'}
+            color={item.type === 'Incoming' ? '#27AE60' : item.type === 'Missed' ? '#E31E25' : '#C5A059'}
           />
           <Text style={styles.callTypeText}>
             {item.type} call • {item.duration}
