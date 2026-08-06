@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, SafeAreaView, Platform, StatusBar, Image } from 'react-native';
+import { 
+  View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, 
+  SafeAreaView, Platform, StatusBar, Image, Modal 
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { useApp } from '../../src/context/AppContext';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -16,6 +19,14 @@ export default function HomeScreen() {
   const [community, setCommunity] = useState('Any');
   const [profession, setProfession] = useState('Any');
 
+  // Filter Modals state
+  const [activeModal, setActiveModal] = useState<'age' | 'location' | 'community' | 'profession' | null>(null);
+
+  const ageOptions = ['18 - 25', '25 - 35', '35 - 45', '45+', 'Any'];
+  const locationOptions = ['Jaipur', 'Jodhpur', 'Udaipur', 'Kota', 'Ajmer', 'Delhi NCR', 'Mumbai', 'Bengaluru', 'Any'];
+  const communityOptions = ['Rajput', 'Agarwal', 'Brahmin', 'Marwari', 'Jain', 'Sindhi', 'Sikh', 'Muslim', 'Any'];
+  const professionOptions = ['Engineering / IT', 'Medical / Healthcare', 'Government / Public', 'Business / Self-Employed', 'Finance / Banking', 'Civil Services', 'Any'];
+
   const isShortlisted = (id: string) => state.shortlistedProfiles.includes(id);
   const isInterestSent = (id: string) => state.sentInterests.includes(id);
 
@@ -23,12 +34,18 @@ export default function HomeScreen() {
   const handleInterest = (id: string) => dispatch({ type: 'SEND_INTEREST', payload: id });
   const handleShortlist = (id: string) => dispatch({ type: 'TOGGLE_SHORTLIST', payload: id });
 
+  const handleStartMatching = () => {
+    router.push({
+      pathname: '/(tabs)/search',
+      params: { ageRange, location, community, profession },
+    });
+  };
+
   // Filter profiles for sections
   const featuredProfiles = profiles.slice(0, 10);
   const verifiedProfiles = profiles.filter((p) => p.isVerified).slice(0, 8);
-  const nearbyProfiles = profiles.filter((p) => p.residentState === 'Rajasthan').slice(0, 8);
 
-  // AI-Selected Compatible Profiles (Matching Screenshot 5)
+  // AI-Selected Compatible Profiles
   const aiSelectedProfiles = [
     {
       id: profiles[1]?.profileId || 'P002',
@@ -79,63 +96,84 @@ export default function HomeScreen() {
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         
-        {/* Hero Title Section (Matching Screenshots 4 & 5) */}
+        {/* Hero Title Section */}
         <View style={styles.heroSection}>
           <Text style={styles.heroTitle}>Find someone who{'\n'}truly understands you</Text>
           <Text style={styles.heroSubtitle}>Where meaningful connections begin</Text>
 
-          {/* Quick Match Floating Filter Card (Matching Screenshot 4) */}
+          {/* Quick Match Floating Filter Card */}
           <View style={styles.searchCard}>
             <View style={styles.searchCardHeader}>
-              <Ionicons name="search-outline" size={16} color="#5A4A4D" style={{ marginRight: 6 }} />
+              <Ionicons name="search-outline" size={16} color="#C2185B" style={{ marginRight: 6 }} />
               <Text style={styles.searchCardTitle}>Refine your search</Text>
             </View>
 
             <View style={styles.filterGrid}>
-              <View style={styles.filterBox}>
+              {/* Age Range Picker Box */}
+              <TouchableOpacity 
+                style={styles.filterBox} 
+                onPress={() => setActiveModal('age')}
+                activeOpacity={0.85}
+              >
                 <Text style={styles.filterLabel}>Age Range</Text>
                 <View style={styles.filterDropdown}>
-                  <Text style={styles.filterValue}>25 - 35</Text>
-                  <Ionicons name="chevron-down" size={16} color="#5A4A4D" />
+                  <Text style={styles.filterValue}>{ageRange}</Text>
+                  <Ionicons name="chevron-down" size={16} color="#C2185B" />
                 </View>
-              </View>
+              </TouchableOpacity>
 
-              <View style={styles.filterBox}>
+              {/* Location Picker Box */}
+              <TouchableOpacity 
+                style={styles.filterBox} 
+                onPress={() => setActiveModal('location')}
+                activeOpacity={0.85}
+              >
                 <Text style={styles.filterLabel}>Location</Text>
                 <View style={styles.filterDropdown}>
-                  <Text style={styles.filterValue}>Jaipur</Text>
-                  <Ionicons name="chevron-down" size={16} color="#5A4A4D" />
+                  <Text style={styles.filterValue} numberOfLines={1}>{location}</Text>
+                  <Ionicons name="chevron-down" size={16} color="#C2185B" />
                 </View>
-              </View>
+              </TouchableOpacity>
 
-              <View style={styles.filterBox}>
+              {/* Community Picker Box */}
+              <TouchableOpacity 
+                style={styles.filterBox} 
+                onPress={() => setActiveModal('community')}
+                activeOpacity={0.85}
+              >
                 <Text style={styles.filterLabel}>Community</Text>
                 <View style={styles.filterDropdown}>
-                  <Text style={styles.filterValue}>Any</Text>
-                  <Ionicons name="chevron-down" size={16} color="#5A4A4D" />
+                  <Text style={styles.filterValue} numberOfLines={1}>{community}</Text>
+                  <Ionicons name="chevron-down" size={16} color="#C2185B" />
                 </View>
-              </View>
+              </TouchableOpacity>
 
-              <View style={styles.filterBox}>
+              {/* Profession Picker Box */}
+              <TouchableOpacity 
+                style={styles.filterBox} 
+                onPress={() => setActiveModal('profession')}
+                activeOpacity={0.85}
+              >
                 <Text style={styles.filterLabel}>Profession</Text>
                 <View style={styles.filterDropdown}>
-                  <Text style={styles.filterValue}>Any</Text>
-                  <Ionicons name="chevron-down" size={16} color="#5A4A4D" />
+                  <Text style={styles.filterValue} numberOfLines={1}>{profession}</Text>
+                  <Ionicons name="chevron-down" size={16} color="#C2185B" />
                 </View>
-              </View>
+              </TouchableOpacity>
             </View>
 
+            {/* Start Matching Button */}
             <TouchableOpacity 
               style={styles.startMatchingBtn} 
-              onPress={() => router.push('/(tabs)/search')}
+              onPress={handleStartMatching}
               activeOpacity={0.88}
             >
-              <Text style={styles.startMatchingBtnText}>Start Matching</Text>
+              <Text style={styles.startMatchingBtnText}>Start Matching →</Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* Featured Matches Section (Matching Screenshot 4) */}
+        {/* Featured Matches Section */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Featured Matches</Text>
           <TouchableOpacity onPress={() => router.push('/(tabs)/search')}>
@@ -162,10 +200,10 @@ export default function HomeScreen() {
           contentContainerStyle={styles.listContainer}
         />
 
-        {/* AI-Selected for You Section (Matching Screenshot 5) */}
+        {/* AI-Selected for You Section */}
         <View style={styles.aiContainer}>
           <View style={styles.aiHeader}>
-            <Ionicons name="sparkles" size={20} color="#A67C52" style={{ marginRight: 6 }} />
+            <Ionicons name="sparkles" size={20} color="#C2185B" style={{ marginRight: 6 }} />
             <Text style={styles.aiTitle}>AI-Selected for You</Text>
           </View>
           <Text style={styles.aiSubtitle}>Deeper compatibility analysis based on your preferences and values</Text>
@@ -189,7 +227,7 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* Royal Verified Matches Section */}
+        {/* Verified Profiles Section */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Verified Profiles</Text>
           <TouchableOpacity onPress={() => router.push('/(tabs)/search')}>
@@ -216,7 +254,7 @@ export default function HomeScreen() {
           contentContainerStyle={styles.listContainer}
         />
 
-        {/* Success Stories Section (Matching Screenshot 5) */}
+        {/* Success Stories Section */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Success Stories</Text>
         </View>
@@ -240,7 +278,7 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Why Trust Us Section (Matching Screenshot 5) */}
+        {/* Why Trust Us Section */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Why Trust Us</Text>
         </View>
@@ -248,7 +286,7 @@ export default function HomeScreen() {
         <View style={styles.trustContainer}>
           <View style={styles.trustItem}>
             <View style={styles.trustIconBox}>
-              <MaterialCommunityIcons name="shield-check-outline" size={24} color="#A67C52" />
+              <MaterialCommunityIcons name="shield-check-outline" size={24} color="#C2185B" />
             </View>
             <View style={styles.trustTextCol}>
               <Text style={styles.trustTitle}>Verified Profiles</Text>
@@ -258,7 +296,7 @@ export default function HomeScreen() {
 
           <View style={styles.trustItem}>
             <View style={styles.trustIconBox}>
-              <MaterialCommunityIcons name="lock-outline" size={24} color="#A67C52" />
+              <MaterialCommunityIcons name="lock-outline" size={24} color="#C2185B" />
             </View>
             <View style={styles.trustTextCol}>
               <Text style={styles.trustTitle}>Privacy First</Text>
@@ -268,7 +306,7 @@ export default function HomeScreen() {
 
           <View style={styles.trustItem}>
             <View style={styles.trustIconBox}>
-              <MaterialCommunityIcons name="account-group-outline" size={24} color="#A67C52" />
+              <MaterialCommunityIcons name="account-group-outline" size={24} color="#C2185B" />
             </View>
             <View style={styles.trustTextCol}>
               <Text style={styles.trustTitle}>Serious Members</Text>
@@ -279,6 +317,49 @@ export default function HomeScreen() {
 
         <View style={styles.bottomPadding} />
       </ScrollView>
+
+      {/* Filter Selection Modals */}
+      <Modal visible={activeModal !== null} transparent animationType="slide">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>
+                Select {activeModal === 'age' ? 'Age Range' : activeModal === 'location' ? 'Location' : activeModal === 'community' ? 'Community' : 'Profession'}
+              </Text>
+              <TouchableOpacity onPress={() => setActiveModal(null)}>
+                <Ionicons name="close" size={24} color="#2C1A1D" />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView style={{ maxHeight: 320 }}>
+              {(activeModal === 'age' ? ageOptions : activeModal === 'location' ? locationOptions : activeModal === 'community' ? communityOptions : professionOptions).map((opt) => {
+                const isSelected = 
+                  (activeModal === 'age' && ageRange === opt) ||
+                  (activeModal === 'location' && location === opt) ||
+                  (activeModal === 'community' && community === opt) ||
+                  (activeModal === 'profession' && profession === opt);
+                
+                return (
+                  <TouchableOpacity
+                    key={opt}
+                    style={[styles.modalOptionItem, isSelected && styles.modalOptionSelected]}
+                    onPress={() => {
+                      if (activeModal === 'age') setAgeRange(opt);
+                      if (activeModal === 'location') setLocation(opt);
+                      if (activeModal === 'community') setCommunity(opt);
+                      if (activeModal === 'profession') setProfession(opt);
+                      setActiveModal(null);
+                    }}
+                  >
+                    <Text style={[styles.modalOptionText, isSelected && styles.modalOptionTextSelected]}>{opt}</Text>
+                    {isSelected && <Ionicons name="checkmark" size={20} color="#C2185B" />}
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -286,7 +367,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F9F6F0',
+    backgroundColor: '#FFF9F6',
     paddingTop: Platform.OS === 'android' ? (StatusBar.currentHeight ?? 0) : 0,
   },
   header: {
@@ -307,7 +388,7 @@ const styles = StyleSheet.create({
   logoText: {
     fontSize: 20,
     fontWeight: '800',
-    color: '#2C1A1D',
+    color: '#C2185B',
     fontFamily: 'serif',
   },
   headerIcons: {
@@ -322,7 +403,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -4,
     right: -6,
-    backgroundColor: '#E91E63',
+    backgroundColor: '#C2185B',
     borderRadius: 10,
     minWidth: 18,
     height: 18,
@@ -376,7 +457,7 @@ const styles = StyleSheet.create({
   },
   searchCardTitle: {
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: '800',
     color: '#2C1A1D',
   },
   filterGrid: {
@@ -390,7 +471,7 @@ const styles = StyleSheet.create({
   },
   filterLabel: {
     fontSize: 11,
-    fontWeight: '600',
+    fontWeight: '700',
     color: '#8C7A7C',
     marginBottom: 4,
   },
@@ -398,10 +479,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#F9F6F0',
+    backgroundColor: '#FAF5F7',
     borderWidth: 1,
     borderColor: '#EFE6DD',
-    borderRadius: 12,
+    borderRadius: 14,
     paddingHorizontal: 12,
     paddingVertical: 10,
   },
@@ -411,14 +492,19 @@ const styles = StyleSheet.create({
     color: '#2C1A1D',
   },
   startMatchingBtn: {
-    backgroundColor: '#A67C52',
-    borderRadius: 14,
-    paddingVertical: 14,
+    backgroundColor: '#C2185B',
+    borderRadius: 20,
+    paddingVertical: 15,
     alignItems: 'center',
+    shadowColor: '#C2185B',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
   },
   startMatchingBtnText: {
     color: '#FFFFFF',
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '800',
   },
   sectionHeader: {
@@ -437,24 +523,24 @@ const styles = StyleSheet.create({
   },
   viewAllText: {
     fontSize: 13,
-    color: '#A67C52',
-    fontWeight: '700',
+    color: '#C2185B',
+    fontWeight: '800',
   },
   listContainer: {
     paddingLeft: 8,
     paddingRight: 16,
   },
 
-  // AI-Selected Section (Matching Screenshot 5)
+  // AI-Selected Section
   aiContainer: {
-    backgroundColor: '#ECE3D8',
+    backgroundColor: '#FFF0F3',
     marginHorizontal: 16,
     marginTop: 24,
     marginBottom: 10,
     padding: 20,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#E2D7C7',
+    borderColor: '#FFD6DF',
   },
   aiHeader: {
     flexDirection: 'row',
@@ -494,7 +580,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   aiBadgeTag: {
-    backgroundColor: '#F7F2EC',
+    backgroundColor: '#FFF0F3',
     paddingHorizontal: 6,
     paddingVertical: 3,
     borderRadius: 6,
@@ -503,8 +589,8 @@ const styles = StyleSheet.create({
   },
   aiBadgeTagText: {
     fontSize: 9,
-    fontWeight: '700',
-    color: '#A67C52',
+    fontWeight: '800',
+    color: '#C2185B',
     textAlign: 'center',
   },
   aiName: {
@@ -518,7 +604,7 @@ const styles = StyleSheet.create({
     color: '#8C7A7C',
   },
 
-  // Success Stories (Matching Screenshot 5)
+  // Success Stories
   storyCard: {
     backgroundColor: '#FFFFFF',
     marginHorizontal: 16,
@@ -557,18 +643,20 @@ const styles = StyleSheet.create({
     color: '#8C7A7C',
   },
   readMoreBtn: {
-    backgroundColor: '#F5EFE6',
+    backgroundColor: '#FAF5F7',
     paddingVertical: 10,
     borderRadius: 12,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#EFE6DD',
   },
   readMoreBtnText: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#5A4A4D',
+    color: '#C2185B',
   },
 
-  // Why Trust Us Section (Matching Screenshot 5)
+  // Why Trust Us Section
   trustContainer: {
     backgroundColor: '#FFFFFF',
     marginHorizontal: 16,
@@ -587,7 +675,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 14,
-    backgroundColor: '#F5EFE6',
+    backgroundColor: '#FFF0F3',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -603,6 +691,51 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#8C7A7C',
     marginTop: 2,
+  },
+
+  // Modal styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(44,26,29,0.6)',
+    justifyContent: 'flex-end',
+  },
+  modalContainer: {
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    padding: 20,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#2C1A1D',
+    fontFamily: 'serif',
+  },
+  modalOptionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    borderBottomWidth: 1,
+    borderColor: '#EFE6DD',
+  },
+  modalOptionSelected: {
+    backgroundColor: '#FFF0F3',
+  },
+  modalOptionText: {
+    fontSize: 15,
+    color: '#2C1A1D',
+  },
+  modalOptionTextSelected: {
+    color: '#C2185B',
+    fontWeight: '800',
   },
 
   bottomPadding: {

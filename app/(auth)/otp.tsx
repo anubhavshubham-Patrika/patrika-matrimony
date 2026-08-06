@@ -64,7 +64,7 @@ export default function OTPScreen() {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#200D08" />
+          <Ionicons name="arrow-back" size={24} color="#2C1A1D" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Verification</Text>
         <View style={{ width: 40 }} />
@@ -80,7 +80,7 @@ export default function OTPScreen() {
               <TextInput
                 key={index}
                 ref={(ref) => { inputRefs.current[index] = ref; }}
-                style={styles.otpInput}
+                style={[styles.otpInput, digit !== '' && styles.otpInputFilled]}
                 keyboardType="number-pad"
                 maxLength={1}
                 value={digit}
@@ -118,7 +118,7 @@ export default function OTPScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FAF6F0',
+    backgroundColor: '#FFF9F6',
   },
   header: {
     flexDirection: 'row',
@@ -126,9 +126,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#FFFDF9',
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: '#E2D7C7',
+    borderBottomColor: '#EFE6DD',
   },
   backButton: {
     padding: 8,
@@ -136,7 +136,8 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#6B0000',
+    color: '#C2185B',
+    fontFamily: 'serif',
   },
   container: {
     flex: 1,
@@ -150,12 +151,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '800',
-    color: '#200D08',
+    color: '#2C1A1D',
+    fontFamily: 'serif',
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 15,
-    color: '#665544',
+    color: '#5A4A4D',
     marginBottom: 40,
   },
   otpContainer: {
@@ -165,54 +167,53 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   otpInput: {
-    width: 48,
-    height: 58,
-    backgroundColor: '#FFFDF9',
+    width: 46,
+    height: 56,
+    backgroundColor: '#FAF5F7',
     borderWidth: 1.5,
-    borderColor: '#E2D7C7',
-    borderRadius: 12,
+    borderColor: '#EFE6DD',
+    borderRadius: 14,
     fontSize: 24,
     fontWeight: '800',
-    color: '#200D08',
+    color: '#2C1A1D',
     textAlign: 'center',
-    shadowColor: '#6B0000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
+  },
+  otpInputFilled: {
+    borderColor: '#C2185B',
+    backgroundColor: '#FFF0F3',
   },
   resendContainer: {
     alignItems: 'center',
   },
   timerText: {
     fontSize: 15,
-    color: '#665544',
+    color: '#5A4A4D',
   },
   resendButtonText: {
     fontSize: 15,
     fontWeight: '800',
-    color: '#6B0000',
+    color: '#C2185B',
   },
   primaryButton: {
-    backgroundColor: '#6B0000',
+    backgroundColor: '#C2185B',
     paddingVertical: 16,
     borderRadius: 28,
     alignItems: 'center',
     marginBottom: 20,
-    shadowColor: '#6B0000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowColor: '#C2185B',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 5,
   },
   disabledButton: {
-    backgroundColor: '#E2D7C7',
+    backgroundColor: '#EFE6DD',
     shadowOpacity: 0,
     elevation: 0,
   },
   primaryButtonText: {
     color: '#FFFFFF',
     fontSize: 17,
-    fontWeight: '700',
+    fontWeight: '800',
   },
 });
