@@ -1,13 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { 
-  View, Text, StyleSheet, TouchableOpacity, Animated, SafeAreaView, Image, ScrollView 
+  View, Text, StyleSheet, TouchableOpacity, Animated, SafeAreaView, ScrollView 
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { useApp } from '../../src/context/AppContext';
 import { Translations } from '../../src/constants/translations';
 import PatrikaRibbonLogo from '../../src/components/PatrikaRibbonLogo';
-import LanguageToggle from '../../src/components/LanguageToggle';
 
 export default function SplashScreen() {
   const router = useRouter();
@@ -16,19 +15,19 @@ export default function SplashScreen() {
   const t = Translations[lang];
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const translateYAnim = useRef(new Animated.Value(24)).current;
-  const scaleAnim = useRef(new Animated.Value(0.95)).current;
+  const translateYAnim = useRef(new Animated.Value(20)).current;
+  const scaleAnim = useRef(new Animated.Value(0.94)).current;
 
   useEffect(() => {
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 900,
+        duration: 800,
         useNativeDriver: true,
       }),
       Animated.timing(translateYAnim, {
         toValue: 0,
-        duration: 900,
+        duration: 800,
         useNativeDriver: true,
       }),
       Animated.spring(scaleAnim, {
@@ -42,83 +41,60 @@ export default function SplashScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Top Navigation Bar with Language Toggle */}
-      <View style={styles.topHeader}>
-        <View style={styles.patrikaBadgeRow}>
-          <Ionicons name="newspaper-outline" size={16} color="#E91E63" />
-          <Text style={styles.patrikaBadgeText}>Rajasthan Patrika Initiative</Text>
-        </View>
-        <LanguageToggle />
-      </View>
-
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        {/* Hero Arch Card Container */}
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent} 
+        showsVerticalScrollIndicator={false}
+        bounces={false}
+      >
         <Animated.View 
           style={[
-            styles.heroContainer, 
-            { 
-              opacity: fadeAnim, 
-              transform: [{ translateY: translateYAnim }, { scale: scaleAnim }] 
+            styles.mainWrapper,
+            {
+              opacity: fadeAnim,
+              transform: [{ translateY: translateYAnim }, { scale: scaleAnim }],
             }
           ]}
         >
-          {/* Arched Hero Image */}
-          <View style={styles.heroImageWrapper}>
-            <Image
-              source={{ uri: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&auto=format&fit=crop&q=80' }}
-              style={styles.heroImage}
-              resizeMode="cover"
-            />
-            {/* Soft Gradient Overlay */}
-            <View style={styles.heroOverlayGradient} />
-            
-            {/* Top-Right Verified Seal Badge */}
-            <View style={styles.verifiedSealBadge}>
-              <Ionicons name="shield-checkmark" size={14} color="#1E8449" />
-              <Text style={styles.verifiedSealText}>100% Verified Profiles</Text>
+          {/* Concentric Ring Circles with Center Logo */}
+          <View style={styles.concentricRingsContainer}>
+            {/* Outer Ring 3 */}
+            <View style={styles.ringOuter3}>
+              {/* Ring 2 */}
+              <View style={styles.ringOuter2}>
+                {/* Ring 1 */}
+                <View style={styles.ringOuter1}>
+                  {/* Center White Circle Logo Badge */}
+                  <View style={styles.centerLogoCircle}>
+                    <PatrikaRibbonLogo size={74} rounded />
+                  </View>
+                </View>
+              </View>
             </View>
           </View>
 
-          {/* Floating Logo Badge over Hero Image */}
-          <View style={styles.floatingLogoContainer}>
-            <PatrikaRibbonLogo size={90} rounded />
-          </View>
-        </Animated.View>
+          {/* Subtitle WELCOME TO */}
+          <Text style={styles.welcomeText}>W E L C O M E   T O</Text>
 
-        {/* Headlines Section */}
-        <Animated.View 
-          style={[
-            styles.textSection,
-            { opacity: fadeAnim, transform: [{ translateY: translateYAnim }] }
-          ]}
-        >
-          <Text style={styles.welcomeTitle}>{t.welcomeTo || 'Welcome to'}</Text>
-          <Text style={styles.brandTitle}>Patrika Matrimony</Text>
-          <Text style={styles.subtitle}>
-            {t.trustedMatchesSub || 'Trusted matches from Rajasthan Patrika • Preserving Heritage & Uniting Souls'}
+          {/* Headline Title */}
+          <Text style={styles.brandTitleLine1}>Patrika</Text>
+          <Text style={styles.brandTitleLine2}>Matrimony</Text>
+
+          {/* Tagline */}
+          <Text style={styles.taglineText}>
+            {t.trustedMatchesSub || 'Trusted matches, rooted in Rajasthan'}
           </Text>
 
-          {/* Trust Metrics Pill Row */}
-          <View style={styles.trustPillRow}>
-            <View style={styles.trustPill}>
-              <MaterialCommunityIcons name="newspaper-variant" size={14} color="#E91E63" />
-              <Text style={styles.trustPillText}>Patrika Ads Linked</Text>
-            </View>
-            <View style={styles.trustPill}>
-              <Ionicons name="heart" size={14} color="#E91E63" />
-              <Text style={styles.trustPillText}>10k+ Matched Couples</Text>
-            </View>
-            <View style={styles.trustPill}>
-              <Ionicons name="star" size={14} color="#D4AF37" />
-              <Text style={styles.trustPillText}>Rajasthani Communities</Text>
-            </View>
+          {/* 100% Verified Profiles Pill */}
+          <View style={styles.verifiedPill}>
+            <Ionicons name="shield-checkmark-outline" size={16} color="#C2185B" style={{ marginRight: 6 }} />
+            <Text style={styles.verifiedPillText}>100% Verified Profiles</Text>
           </View>
         </Animated.View>
       </ScrollView>
 
-      {/* Bottom Floating Action Card */}
-      <View style={styles.bottomCard}>
-        {/* Let's Start Primary CTA Button */}
+      {/* Bottom CTA Bar */}
+      <Animated.View style={[styles.bottomBar, { opacity: fadeAnim }]}>
+        {/* Primary CTA Button */}
         <TouchableOpacity
           style={styles.letsStartBtn}
           onPress={() => router.push('/(auth)/onboarding/step1')}
@@ -129,16 +105,15 @@ export default function SplashScreen() {
 
         {/* Already have an account? Login */}
         <TouchableOpacity
-          style={styles.loginLinkContainer}
+          style={styles.loginContainer}
           onPress={() => router.push('/(auth)/login')}
           activeOpacity={0.7}
         >
-          <Text style={styles.loginLinkText}>
-            {t.alreadyHaveAccount || 'Already have an account?'}{' '}
-            <Text style={styles.loginBoldText}>{t.login || 'Login'}</Text>
+          <Text style={styles.loginText}>
+            Already have an account? <Text style={styles.loginBoldText}>Login</Text>
           </Text>
         </TouchableOpacity>
-      </View>
+      </Animated.View>
     </SafeAreaView>
   );
 }
@@ -146,201 +121,156 @@ export default function SplashScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF4F6',
-  },
-  topHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EFE6DD',
-  },
-  patrikaBadgeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFF0F3',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 14,
-    gap: 6,
-    borderWidth: 1,
-    borderColor: '#F8D7DA',
-  },
-  patrikaBadgeText: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#E91E63',
+    backgroundColor: '#FFF9F6',
   },
   scrollContent: {
-    paddingHorizontal: 20,
-    paddingTop: 16,
+    flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 24,
+    paddingTop: 30,
     paddingBottom: 20,
-    alignItems: 'center',
   },
-  heroContainer: {
-    width: '100%',
+  mainWrapper: {
     alignItems: 'center',
-    marginBottom: 24,
-  },
-  heroImageWrapper: {
     width: '100%',
-    height: 260,
-    borderRadius: 24,
-    overflow: 'hidden',
+  },
+  /* Concentric Rings Visual */
+  concentricRingsContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
+  },
+  ringOuter3: {
+    width: 270,
+    height: 270,
+    borderRadius: 135,
     borderWidth: 1,
-    borderColor: '#EFE6DD',
-    position: 'relative',
-    shadowColor: '#2C1A1D',
+    borderColor: '#FFDCE3',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255, 224, 230, 0.25)',
+  },
+  ringOuter2: {
+    width: 216,
+    height: 216,
+    borderRadius: 108,
+    borderWidth: 1,
+    borderColor: '#FFC8D3',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255, 210, 220, 0.25)',
+  },
+  ringOuter1: {
+    width: 162,
+    height: 162,
+    borderRadius: 81,
+    borderWidth: 1,
+    borderColor: '#FFAEC0',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255, 190, 205, 0.25)',
+  },
+  centerLogoCircle: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#C2185B',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.12,
+    shadowOpacity: 0.18,
     shadowRadius: 12,
     elevation: 6,
   },
-  heroImage: {
-    width: '100%',
-    height: '100%',
-  },
-  heroOverlayGradient: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(44, 26, 29, 0.15)',
-  },
-  verifiedSealBadge: {
-    position: 'absolute',
-    top: 14,
-    right: 14,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-    gap: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  verifiedSealText: {
-    fontSize: 11,
-    fontWeight: '800',
-    color: '#1E8449',
-  },
-  floatingLogoContainer: {
-    marginTop: -45,
-    zIndex: 20,
-    borderWidth: 4,
-    borderColor: '#FFFFFF',
-    borderRadius: 49,
-    shadowColor: '#E91E63',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 6,
-  },
-  textSection: {
-    alignItems: 'center',
-    width: '100%',
-  },
-  welcomeTitle: {
-    fontSize: 24,
-    fontWeight: '800',
-    color: '#2C1A1D',
-    fontFamily: 'serif',
-    textAlign: 'center',
-    marginBottom: 2,
-  },
-  brandTitle: {
-    fontSize: 34,
-    fontWeight: '800',
-    color: '#E91E63',
-    fontFamily: 'serif',
-    textAlign: 'center',
-    letterSpacing: -0.5,
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#5A4A4D',
-    fontWeight: '500',
-    textAlign: 'center',
-    lineHeight: 20,
-    marginBottom: 18,
-    paddingHorizontal: 12,
-  },
-  trustPillRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    gap: 8,
-  },
-  trustPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    gap: 6,
-  },
-  trustPillText: {
-    fontSize: 12,
+
+  welcomeText: {
+    fontSize: 13,
     fontWeight: '700',
-    color: '#2C1A1D',
+    color: '#6A4D54',
+    letterSpacing: 4,
+    marginTop: 24,
+    marginBottom: 8,
+    textAlign: 'center',
   },
-  bottomCard: {
-    backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    paddingHorizontal: 24,
-    paddingTop: 20,
-    paddingBottom: 28,
-    borderTopWidth: 1,
-    borderTopColor: '#EFE6DD',
-    shadowColor: '#2C1A1D',
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-    elevation: 6,
+  brandTitleLine1: {
+    fontSize: 44,
+    fontWeight: '800',
+    color: '#C2185B',
+    fontFamily: 'serif',
+    textAlign: 'center',
+    lineHeight: 50,
+  },
+  brandTitleLine2: {
+    fontSize: 44,
+    fontWeight: '800',
+    color: '#C2185B',
+    fontFamily: 'serif',
+    textAlign: 'center',
+    lineHeight: 50,
+    marginBottom: 16,
+  },
+  taglineText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#6A565C',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  verifiedPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF0F3',
+    borderWidth: 1,
+    borderColor: '#FFD6DF',
+    borderRadius: 24,
+    paddingHorizontal: 18,
+    paddingVertical: 9,
+  },
+  verifiedPillText: {
+    fontSize: 14,
+    fontWeight: '800',
+    color: '#6B1B30',
+  },
+
+  /* Bottom Action Bar */
+  bottomBar: {
+    width: '100%',
+    paddingHorizontal: 28,
+    paddingBottom: 32,
+    paddingTop: 10,
+    backgroundColor: 'transparent',
   },
   letsStartBtn: {
-    backgroundColor: '#E91E63',
-    borderRadius: 16,
-    paddingVertical: 16,
+    backgroundColor: '#C2185B',
+    borderRadius: 30,
+    paddingVertical: 18,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#E91E63',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
-    marginBottom: 14,
+    shadowColor: '#C2185B',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.35,
+    shadowRadius: 12,
+    elevation: 6,
+    marginBottom: 16,
   },
   letsStartText: {
     color: '#FFFFFF',
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: '800',
   },
-  loginLinkContainer: {
+  loginContainer: {
     alignItems: 'center',
     paddingVertical: 4,
   },
-  loginLinkText: {
-    color: '#5A4A4D',
+  loginText: {
     fontSize: 14,
-    fontWeight: '600',
+    color: '#5C4A50',
+    fontWeight: '500',
   },
   loginBoldText: {
-    color: '#E91E63',
+    color: '#C2185B',
     fontWeight: '800',
   },
 });
