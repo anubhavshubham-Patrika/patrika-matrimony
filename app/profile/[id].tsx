@@ -21,6 +21,18 @@ const { width } = Dimensions.get('window');
 
 type Profile = any; 
 
+const defaultMalePhotos = [
+  'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&auto=format&fit=crop&q=80'
+];
+
+const defaultFemalePhotos = [
+  'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&auto=format&fit=crop&q=80'
+];
+
 const ProfileDetailScreen = () => {
   const { id } = useLocalSearchParams();
   const router = useRouter();
@@ -57,15 +69,23 @@ const ProfileDetailScreen = () => {
     );
   }
 
-  const photos = [profile.profilePhotoURL, ...(profile.galleryPhotoURLs || [])].filter(Boolean);
-  const currentPhoto = photos[currentPhotoIndex];
+  const rawPhotos = [profile.profilePhotoURL, ...(profile.galleryPhotoURLs || [])].filter(Boolean);
+  const fallbackList = profile.gender === 'Female' ? defaultFemalePhotos : defaultMalePhotos;
+  const photos = rawPhotos.length > 0 ? rawPhotos : fallbackList;
+  const currentPhoto = photos[currentPhotoIndex] || fallbackList[0];
   
   const isFreePlan = state.currentPlan === 'Free';
 
   const handlePhotoTap = () => {
-    if (photos.length > 1) {
-      setCurrentPhotoIndex((prev) => (prev + 1) % photos.length);
-    }
+    setGalleryFullscreenVisible(true);
+  };
+
+  const handleNextPhoto = () => {
+    setCurrentPhotoIndex((prev) => (prev + 1) % photos.length);
+  };
+
+  const handlePrevPhoto = () => {
+    setCurrentPhotoIndex((prev) => (prev - 1 + photos.length) % photos.length);
   };
 
   const handleLockedAction = (actionName: string) => {
@@ -96,7 +116,7 @@ const ProfileDetailScreen = () => {
   const renderDetailRow = (icon: keyof typeof MaterialCommunityIcons.glyphMap, label: string, value: string) => (
     <View style={styles.detailRow}>
       <View style={styles.detailLabelContainer}>
-        <MaterialCommunityIcons name={icon} size={18} color="#C5A059" style={styles.detailIcon} />
+        <MaterialCommunityIcons name={icon} size={18} color="#C2185B" style={styles.detailIcon} />
         <Text style={styles.detailLabel}>{label}</Text>
       </View>
       <Text style={styles.detailValue}>{value || 'Not Specified'}</Text>
@@ -110,25 +130,32 @@ const ProfileDetailScreen = () => {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 80 }}>
         {/* 1. Hero Photo Section */}
         <View style={styles.heroContainer}>
-          <TouchableOpacity activeOpacity={0.9} onPress={handlePhotoTap}>
+          <TouchableOpacity activeOpacity={0.92} onPress={handlePhotoTap} style={styles.heroImageTouchable}>
             <Image source={{ uri: currentPhoto }} style={styles.heroImage} />
             <View style={styles.heroOverlay} />
+
+            {/* Tap to View Fullscreen Hint Badge */}
+            <View style={styles.zoomHintBadge}>
+              <Ionicons name="expand" size={14} color="#FFFFFF" />
+              <Text style={styles.zoomHintText}>Tap to View Photos ({photos.length})</Text>
+            </View>
           </TouchableOpacity>
           
           <View style={styles.heroTopBar}>
             <TouchableOpacity style={styles.iconButton} onPress={() => router.back()}>
               <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.iconButton}>
-              <Ionicons name="share-social" size={24} color="#FFFFFF" />
+            <TouchableOpacity style={styles.iconButton} onPress={handlePhotoTap}>
+              <Ionicons name="images-outline" size={22} color="#FFFFFF" />
             </TouchableOpacity>
           </View>
 
           {photos.length > 1 && (
             <View style={styles.paginationDots}>
               {photos.map((_, idx) => (
-                <View 
+                <TouchableOpacity 
                   key={idx} 
+                  onPress={() => setCurrentPhotoIndex(idx)}
                   style={[styles.dot, currentPhotoIndex === idx && styles.activeDot]} 
                 />
               ))}
@@ -142,14 +169,14 @@ const ProfileDetailScreen = () => {
             <Text style={styles.nameText}>{profile.name}, {profile.age}</Text>
             {profile.matchScore && (
               <View style={styles.matchBadge}>
-                <Text style={styles.matchText}>• {profile.matchScore}% Match</Text>
+                <Text style={styles.matchText}>{profile.matchScore}% Match</Text>
               </View>
             )}
           </View>
           
           <View style={styles.locationRow}>
             <Ionicons name="location-outline" size={16} color="#8C7A7C" />
-            <Text style={styles.locationText}>{profile.residentCity}, {profile.residentState}</Text>
+            <Text style={styles.locationText}>{profile.residentCity}, {profile.residentState} • {profile.occupation}</Text>
           </View>
           
           <View style={styles.chipsRow}>
@@ -159,21 +186,23 @@ const ProfileDetailScreen = () => {
             <View style={styles.chip}>
               <Text style={styles.chipText}>{profile.caste}</Text>
             </View>
+            {profile.motherTongue && (
+              <View style={styles.chip}>
+                <Text style={styles.chipText}>{profile.motherTongue}</Text>
+              </View>
+            )}
           </View>
 
           <View style={styles.verificationRow}>
-            {profile.verifications?.mobile && (
-              <TouchableOpacity onPress={() => showVerificationInfo('Mobile')} style={styles.verificationBadge}>
-                <Ionicons name="phone-portrait" size={12} color="#1E8449" />
-                <Text style={styles.verificationText}>Mobile Verified</Text>
-              </TouchableOpacity>
-            )}
-            {profile.isVerified && (
-              <TouchableOpacity onPress={() => showVerificationInfo('Govt ID')} style={styles.verificationBadge}>
-                <Ionicons name="shield-checkmark" size={12} color="#1E8449" />
-                <Text style={styles.verificationText}>Selfie & Govt ID</Text>
-              </TouchableOpacity>
-            )}
+            <TouchableOpacity onPress={() => showVerificationInfo('Mobile')} style={styles.verificationBadge}>
+              <Ionicons name="phone-portrait" size={12} color="#1E8449" />
+              <Text style={styles.verificationText}>Mobile Verified</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => showVerificationInfo('Govt ID')} style={styles.verificationBadge}>
+              <Ionicons name="shield-checkmark" size={12} color="#1E8449" />
+              <Text style={styles.verificationText}>Selfie & Govt ID</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -323,7 +352,11 @@ const ProfileDetailScreen = () => {
             {renderSectionHeader('Photos Gallery', 'images')}
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.galleryScroll}>
               {photos.map((photoUrl: string, index: number) => (
-                <TouchableOpacity key={index} onPress={() => { setCurrentPhotoIndex(index); setGalleryFullscreenVisible(true); }}>
+                <TouchableOpacity 
+                  key={index} 
+                  onPress={() => { setCurrentPhotoIndex(index); setGalleryFullscreenVisible(true); }}
+                  activeOpacity={0.85}
+                >
                   <Image source={{ uri: photoUrl }} style={styles.galleryThumb} />
                 </TouchableOpacity>
               ))}
@@ -339,7 +372,7 @@ const ProfileDetailScreen = () => {
           style={[styles.footerBtn, interestSent && styles.footerBtnActive]} 
           onPress={() => setInterestSent(!interestSent)}
         >
-          <MaterialCommunityIcons name={interestSent ? "check-circle" : "handshake"} size={20} color={interestSent ? "#E91E63" : "#E91E63"} />
+          <MaterialCommunityIcons name={interestSent ? "check-circle" : "handshake"} size={20} color="#E91E63" />
           <Text style={styles.footerBtnText}>
             {interestSent ? 'Interest Sent' : 'Send Interest'}
           </Text>
@@ -374,14 +407,58 @@ const ProfileDetailScreen = () => {
         </View>
       </Modal>
 
-      {/* Fullscreen Gallery */}
+      {/* Fullscreen Interactive Photo Viewer Modal */}
       <Modal visible={galleryFullscreenVisible} transparent animationType="slide">
-        <View style={styles.fullScreenGallery}>
-          <TouchableOpacity style={styles.closeGalleryBtn} onPress={() => setGalleryFullscreenVisible(false)}>
-            <Ionicons name="close" size={30} color="#FFFFFF" />
-          </TouchableOpacity>
-          <Image source={{ uri: photos[currentPhotoIndex] }} style={styles.fullScreenImage} resizeMode="contain" />
-        </View>
+        <SafeAreaView style={styles.fullScreenGallery}>
+          {/* Top Bar with Close and Photo Counter */}
+          <View style={styles.fullScreenHeader}>
+            <TouchableOpacity style={styles.closeGalleryBtn} onPress={() => setGalleryFullscreenVisible(false)}>
+              <Ionicons name="close" size={28} color="#FFFFFF" />
+            </TouchableOpacity>
+            <Text style={styles.fullScreenCounter}>
+              Photo {currentPhotoIndex + 1} of {photos.length}
+            </Text>
+            <View style={{ width: 40 }} />
+          </View>
+
+          {/* Main Fullscreen Photo View with Navigation Arrows */}
+          <View style={styles.fullScreenImageWrapper}>
+            {photos.length > 1 && (
+              <TouchableOpacity style={styles.navArrowLeft} onPress={handlePrevPhoto}>
+                <Ionicons name="chevron-back" size={28} color="#FFFFFF" />
+              </TouchableOpacity>
+            )}
+
+            <Image 
+              source={{ uri: photos[currentPhotoIndex] }} 
+              style={styles.fullScreenImage} 
+              resizeMode="contain" 
+            />
+
+            {photos.length > 1 && (
+              <TouchableOpacity style={styles.navArrowRight} onPress={handleNextPhoto}>
+                <Ionicons name="chevron-forward" size={28} color="#FFFFFF" />
+              </TouchableOpacity>
+            )}
+          </View>
+
+          {/* Bottom Thumbnail Strip */}
+          {photos.length > 1 && (
+            <View style={styles.thumbnailStrip}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {photos.map((url: string, idx: number) => (
+                  <TouchableOpacity
+                    key={idx}
+                    onPress={() => setCurrentPhotoIndex(idx)}
+                    style={[styles.stripThumbWrapper, currentPhotoIndex === idx && styles.stripThumbActive]}
+                  >
+                    <Image source={{ uri: url }} style={styles.stripThumbImage} />
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+          )}
+        </SafeAreaView>
       </Modal>
 
     </SafeAreaView>
@@ -391,18 +468,23 @@ const ProfileDetailScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9F6F0',
+    backgroundColor: '#FFF9F6',
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F9F6F0',
+    backgroundColor: '#FFF9F6',
   },
   heroContainer: {
     width: '100%',
-    height: 380,
+    height: 400,
     position: 'relative',
+    backgroundColor: '#2C1A1D',
+  },
+  heroImageTouchable: {
+    width: '100%',
+    height: '100%',
   },
   heroImage: {
     width: '100%',
@@ -411,8 +493,26 @@ const styles = StyleSheet.create({
   },
   heroOverlay: {
     ...StyleSheet.absoluteFill,
-    backgroundColor: 'rgba(44,26,29,0.25)',
-    top: 200,
+    backgroundColor: 'rgba(44,26,29,0.22)',
+  },
+  zoomHintBadge: {
+    position: 'absolute',
+    bottom: 24,
+    right: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(44, 26, 29, 0.75)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    gap: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  zoomHintText: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '700',
   },
   heroTopBar: {
     position: 'absolute',
@@ -421,12 +521,13 @@ const styles = StyleSheet.create({
     right: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    zIndex: 10,
   },
   iconButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(44,26,29,0.5)',
+    backgroundColor: 'rgba(44,26,29,0.6)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -446,14 +547,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   activeDot: {
-    backgroundColor: '#E91E63',
+    backgroundColor: '#C2185B',
     width: 20,
   },
   basicInfoCard: {
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    marginTop: -20,
+    marginTop: -16,
     padding: 20,
     borderWidth: 1,
     borderColor: '#EFE6DD',
@@ -476,15 +577,17 @@ const styles = StyleSheet.create({
     fontFamily: 'serif',
   },
   matchBadge: {
-    backgroundColor: 'rgba(70,50,40,0.65)',
+    backgroundColor: '#FFF0F3',
+    borderWidth: 1,
+    borderColor: '#FFD6DF',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
   },
   matchText: {
-    color: '#FFFFFF',
+    color: '#C2185B',
     fontSize: 11,
-    fontWeight: '700',
+    fontWeight: '800',
   },
   locationRow: {
     flexDirection: 'row',
@@ -559,12 +662,12 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   actionIconCircleActive: {
-    backgroundColor: '#E91E63',
-    borderColor: '#E91E63',
+    backgroundColor: '#C2185B',
+    borderColor: '#C2185B',
   },
   actionIconCircleInterest: {
-    backgroundColor: '#E91E63',
-    borderColor: '#E91E63',
+    backgroundColor: '#C2185B',
+    borderColor: '#C2185B',
   },
   actionBtnText: {
     fontSize: 12,
@@ -575,7 +678,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -2,
     right: -2,
-    backgroundColor: '#F9F6F0',
+    backgroundColor: '#FFF9F6',
     borderRadius: 10,
     padding: 2,
   },
@@ -651,7 +754,7 @@ const styles = StyleSheet.create({
   hobbyChip: {
     backgroundColor: '#FFF0F3',
     borderWidth: 1,
-    borderColor: '#E91E63',
+    borderColor: '#FFD6DF',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
@@ -659,7 +762,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   hobbyText: {
-    color: '#E91E63',
+    color: '#C2185B',
     fontSize: 14,
     fontWeight: '700',
   },
@@ -705,7 +808,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     fontSize: 16,
     fontWeight: '800',
-    color: '#E91E63',
+    color: '#C2185B',
   },
   footerDivider: {
     width: 1,
@@ -749,7 +852,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   bottomSheetBtn: {
-    backgroundColor: '#E91E63',
+    backgroundColor: '#C2185B',
     paddingVertical: 14,
     paddingHorizontal: 32,
     borderRadius: 24,
@@ -759,21 +862,79 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '800',
   },
+
+  /* Fullscreen Photo Viewer Modal */
   fullScreenGallery: {
     flex: 1,
-    backgroundColor: '#100604',
-    justifyContent: 'center',
+    backgroundColor: '#0D0608',
+  },
+  fullScreenHeader: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
   closeGalleryBtn: {
-    position: 'absolute',
-    top: 50,
-    right: 20,
-    zIndex: 10,
+    padding: 6,
+  },
+  fullScreenCounter: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: '700',
+  },
+  fullScreenImageWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
   },
   fullScreenImage: {
     width: width,
-    height: width * 1.3,
+    height: '100%',
+  },
+  navArrowLeft: {
+    position: 'absolute',
+    left: 12,
+    zIndex: 20,
+    backgroundColor: 'rgba(44, 26, 29, 0.65)',
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  navArrowRight: {
+    position: 'absolute',
+    right: 12,
+    zIndex: 20,
+    backgroundColor: 'rgba(44, 26, 29, 0.65)',
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  thumbnailStrip: {
+    paddingVertical: 16,
+    paddingHorizontal: 12,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  stripThumbWrapper: {
+    width: 60,
+    height: 60,
+    borderRadius: 10,
+    marginRight: 10,
+    overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  stripThumbActive: {
+    borderColor: '#C2185B',
+  },
+  stripThumbImage: {
+    width: '100%',
+    height: '100%',
   },
 });
 
