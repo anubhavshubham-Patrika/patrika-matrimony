@@ -1,128 +1,151 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Platform, Switch } from 'react-native';
+import { 
+  View, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView, 
+  KeyboardAvoidingView, Platform, ScrollView 
+} from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useApp } from '../../src/context/AppContext';
 import PatrikaRibbonLogo from '../../src/components/PatrikaRibbonLogo';
 
 export default function LoginScreen() {
   const router = useRouter();
-  const [tab, setTab] = useState<'mobile' | 'email'>('mobile');
-  const [mobile, setMobile] = useState('');
-  const [email, setEmail] = useState('');
+  const { state, dispatch } = useApp();
+  const lang = state.language || 'en';
+
+  const [identifier, setIdentifier] = useState(''); // Email or Mobile
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [isParent, setIsParent] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
 
-  const handleSubmit = () => {
+  const toggleLanguage = () => {
+    dispatch({ type: 'SET_LANGUAGE', payload: lang === 'en' ? 'hi' : 'en' });
+  };
+
+  const handleLoginSubmit = () => {
+    // Navigate directly to 6-digit OTP verification screen with params
     router.push({
       pathname: '/(auth)/otp',
-      params: { contact: tab === 'mobile' ? mobile : email },
+      params: { contact: identifier || '+91-9876543210' },
     });
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      {/* Top Header Bar with Language Selector */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#2C1A1D" />
         </TouchableOpacity>
+
         <View style={styles.headerBrandRow}>
           <PatrikaRibbonLogo size={28} />
           <Text style={styles.headerTitle}>Patrika Matrimony</Text>
         </View>
-        <View style={{ width: 40 }} />
+
+        <TouchableOpacity style={styles.langPillBtn} onPress={toggleLanguage} activeOpacity={0.8}>
+          <Ionicons name="globe-outline" size={15} color="#E31E25" style={{ marginRight: 3 }} />
+          <Text style={styles.langPillText}>{lang === 'en' ? 'EN' : 'HI'}</Text>
+        </TouchableOpacity>
       </View>
 
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
-        <View style={styles.topIntro}>
-          <Text style={styles.welcomeTitle}>Welcome Back</Text>
-          <Text style={styles.welcomeSub}>Log in to continue your partner search</Text>
-        </View>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+        style={styles.flexOne}
+      >
+        <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+          {/* Welcome Headline */}
+          <View style={styles.topIntro}>
+            <Text style={styles.welcomeTitle}>Connect & Match</Text>
+            <Text style={styles.welcomeSub}>Enter your email or mobile to log in or create an account</Text>
+          </View>
 
-        {/* Tab Switcher */}
-        <View style={styles.tabsContainer}>
-          <TouchableOpacity 
-            style={[styles.tab, tab === 'mobile' && styles.activeTab]} 
-            onPress={() => setTab('mobile')}
-            activeOpacity={0.85}
-          >
-            <Text style={[styles.tabText, tab === 'mobile' && styles.activeTabText]}>Mobile OTP</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.tab, tab === 'email' && styles.activeTab]} 
-            onPress={() => setTab('email')}
-            activeOpacity={0.85}
-          >
-            <Text style={[styles.tabText, tab === 'email' && styles.activeTabText]}>Email & Password</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.formContainer}>
-          {tab === 'mobile' ? (
-            <View style={styles.mobileForm}>
-              <View style={styles.inputGroup}>
-                <View style={styles.countryCode}>
-                  <Text style={styles.countryCodeText}>+91</Text>
-                </View>
-                <TextInput
-                  style={styles.mobileInput}
-                  placeholder="Enter 10-digit mobile number"
-                  keyboardType="phone-pad"
-                  maxLength={10}
-                  value={mobile}
-                  onChangeText={setMobile}
-                  placeholderTextColor="#8C7A7C"
-                />
-              </View>
-
-              <View style={styles.parentToggleContainer}>
-                <Text style={styles.parentToggleText}>I am a Parent/Relative creating profile for family</Text>
-                <Switch
-                  value={isParent}
-                  onValueChange={setIsParent}
-                  trackColor={{ false: '#EFE6DD', true: '#E31E25' }}
-                  thumbColor="#FFFFFF"
-                />
-              </View>
-
-              <TouchableOpacity style={styles.primaryButton} onPress={handleSubmit} activeOpacity={0.88}>
-                <Text style={styles.primaryButtonText}>Get OTP →</Text>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <View style={styles.emailForm}>
+          {/* Unified Login / Sign Up Form */}
+          <View style={styles.formContainer}>
+            {/* Field 1: Email or Mobile */}
+            <Text style={styles.inputLabel}>Email Address or Mobile Number</Text>
+            <View style={styles.inputWrapper}>
+              <MaterialCommunityIcons name="email-outline" size={20} color="#8C7A7C" style={styles.inputIcon} />
               <TextInput
-                style={styles.input}
-                placeholder="Email Address"
+                style={styles.inputField}
+                placeholder="Enter email or 10-digit mobile"
                 keyboardType="email-address"
                 autoCapitalize="none"
-                value={email}
-                onChangeText={setEmail}
+                value={identifier}
+                onChangeText={setIdentifier}
                 placeholderTextColor="#8C7A7C"
               />
-              <View style={styles.passwordContainer}>
-                <TextInput
-                  style={styles.passwordInput}
-                  placeholder="Password"
-                  secureTextEntry={!showPassword}
-                  value={password}
-                  onChangeText={setPassword}
-                  placeholderTextColor="#8C7A7C"
-                />
-                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-                  <Ionicons name={showPassword ? "eye-off-outline" : "eye-outline"} size={22} color="#8C7A7C" />
-                </TouchableOpacity>
-              </View>
-              <TouchableOpacity style={styles.forgotPassword}>
-                <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-              </TouchableOpacity>
+            </View>
 
-              <TouchableOpacity style={styles.primaryButton} onPress={handleSubmit} activeOpacity={0.88}>
-                <Text style={styles.primaryButtonText}>Login →</Text>
+            {/* Field 2: Password */}
+            <Text style={styles.inputLabel}>Password</Text>
+            <View style={styles.inputWrapper}>
+              <MaterialCommunityIcons name="lock-outline" size={20} color="#8C7A7C" style={styles.inputIcon} />
+              <TextInput
+                style={styles.inputField}
+                placeholder="Enter your password"
+                secureTextEntry={!showPassword}
+                value={password}
+                onChangeText={setPassword}
+                placeholderTextColor="#8C7A7C"
+              />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIconBtn}>
+                <Ionicons name={showPassword ? "eye-off-outline" : "eye-outline"} size={20} color="#8C7A7C" />
               </TouchableOpacity>
             </View>
-          )}
-        </View>
+
+            {/* Remember Me & Forgot Password Row */}
+            <View style={styles.rememberRow}>
+              <TouchableOpacity 
+                style={styles.checkboxContainer} 
+                onPress={() => setRememberMe(!rememberMe)}
+                activeOpacity={0.8}
+              >
+                <View style={[styles.customCheckbox, rememberMe && styles.customCheckboxChecked]}>
+                  {rememberMe && <Ionicons name="checkmark" size={14} color="#FFFFFF" />}
+                </View>
+                <Text style={styles.rememberText}>Remember me</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity activeOpacity={0.7}>
+                <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Primary Action Button */}
+            <TouchableOpacity style={styles.primaryButton} onPress={handleLoginSubmit} activeOpacity={0.88}>
+              <Text style={styles.primaryButtonText}>Log In / Sign Up →</Text>
+            </TouchableOpacity>
+
+            {/* Divider OR */}
+            <View style={styles.dividerRow}>
+              <View style={styles.dividerLine} />
+              <Text style={styles.dividerText}>or continue with</Text>
+              <View style={styles.dividerLine} />
+            </View>
+
+            {/* Social Buttons Row (Inspiration Screenshots 1, 3, 5) */}
+            <View style={styles.socialRow}>
+              <TouchableOpacity style={styles.socialBtn} activeOpacity={0.85}>
+                <Ionicons name="logo-google" size={20} color="#EA4335" style={{ marginRight: 8 }} />
+                <Text style={styles.socialBtnText}>Google</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.socialBtn} activeOpacity={0.85}>
+                <Ionicons name="logo-apple" size={20} color="#000000" style={{ marginRight: 8 }} />
+                <Text style={styles.socialBtnText}>Apple</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Bottom Create Profile Prompt */}
+            <View style={styles.createAccountRow}>
+              <Text style={styles.createAccountText}>Don't have an account? </Text>
+              <TouchableOpacity onPress={() => router.push('/(auth)/onboarding/step1')}>
+                <Text style={styles.createAccountBold}>Create Profile</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -132,6 +155,9 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: '#FFF9F6',
+  },
+  flexOne: {
+    flex: 1,
   },
   header: {
     flexDirection: 'row',
@@ -144,7 +170,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#EFE6DD',
   },
   backButton: {
-    padding: 6,
+    padding: 4,
   },
   headerBrandRow: {
     flexDirection: 'row',
@@ -157,9 +183,24 @@ const styles = StyleSheet.create({
     color: '#E31E25',
     fontFamily: 'serif',
   },
-  container: {
-    flex: 1,
+  langPillBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF0F1',
+    borderWidth: 1,
+    borderColor: '#FCD4D7',
+    borderRadius: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  langPillText: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: '#E31E25',
+  },
+  scrollContent: {
     padding: 24,
+    paddingBottom: 40,
   },
   topIntro: {
     marginBottom: 24,
@@ -173,75 +214,79 @@ const styles = StyleSheet.create({
   welcomeSub: {
     fontSize: 14,
     color: '#5A4A4D',
-    marginTop: 4,
-  },
-  tabsContainer: {
-    flexDirection: 'row',
-    backgroundColor: '#FFF0F1',
-    borderRadius: 24,
-    padding: 4,
-    marginBottom: 24,
-    borderWidth: 1,
-    borderColor: '#FCD4D7',
-  },
-  tab: {
-    flex: 1,
-    paddingVertical: 11,
-    alignItems: 'center',
-    borderRadius: 20,
-  },
-  activeTab: {
-    backgroundColor: '#E31E25',
-  },
-  tabText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#5A4A4D',
-  },
-  activeTabText: {
-    color: '#FFFFFF',
-    fontWeight: '800',
+    marginTop: 6,
+    lineHeight: 20,
   },
   formContainer: {
-    backgroundColor: 'transparent',
+    width: '100%',
   },
-  mobileForm: {},
-  inputGroup: {
+  inputLabel: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#2C1A1D',
+    marginBottom: 6,
+  },
+  inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
     borderColor: '#EFE6DD',
     borderRadius: 14,
-    marginBottom: 20,
-    backgroundColor: '#FFF0F1',
+    paddingHorizontal: 14,
+    marginBottom: 18,
+    shadowColor: '#2C1A1D',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.03,
+    shadowRadius: 4,
+    elevation: 1,
   },
-  countryCode: {
-    paddingHorizontal: 16,
-    borderRightWidth: 1,
-    borderRightColor: '#EFE6DD',
+  inputIcon: {
+    marginRight: 10,
   },
-  countryCodeText: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: '#2C1A1D',
-  },
-  mobileInput: {
+  inputField: {
     flex: 1,
-    padding: 14,
-    fontSize: 16,
+    paddingVertical: 14,
+    fontSize: 15,
     color: '#2C1A1D',
   },
-  parentToggleContainer: {
+  eyeIconBtn: {
+    padding: 8,
+  },
+  rememberRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 28,
+    marginBottom: 24,
   },
-  parentToggleText: {
-    flex: 1,
-    fontSize: 14,
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  customCheckbox: {
+    width: 18,
+    height: 18,
+    borderRadius: 5,
+    borderWidth: 1.5,
+    borderColor: '#8C7A7C',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 8,
+    backgroundColor: '#FFFFFF',
+  },
+  customCheckboxChecked: {
+    backgroundColor: '#E31E25',
+    borderColor: '#E31E25',
+  },
+  rememberText: {
+    fontSize: 13,
     color: '#5A4A4D',
-    marginRight: 12,
+    fontWeight: '500',
+  },
+  forgotPasswordText: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: '#E31E25',
   },
   primaryButton: {
     backgroundColor: '#E31E25',
@@ -253,48 +298,62 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 10,
     elevation: 5,
+    marginBottom: 24,
   },
   primaryButtonText: {
     color: '#FFFFFF',
     fontSize: 17,
     fontWeight: '800',
   },
-  emailForm: {},
-  input: {
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    borderRadius: 14,
-    padding: 14,
-    marginBottom: 16,
-    fontSize: 16,
-    color: '#2C1A1D',
-    backgroundColor: '#FFF0F1',
-  },
-  passwordContainer: {
+  dividerRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 20,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#EFE6DD',
+  },
+  dividerText: {
+    fontSize: 12,
+    color: '#8C7A7C',
+    marginHorizontal: 12,
+    fontWeight: '600',
+  },
+  socialRow: {
+    flexDirection: 'row',
+    gap: 12,
+    marginBottom: 28,
+  },
+  socialBtn: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#EFE6DD',
-    borderRadius: 14,
-    backgroundColor: '#FFF0F1',
-    marginBottom: 12,
+    borderRadius: 20,
+    paddingVertical: 12,
   },
-  passwordInput: {
-    flex: 1,
-    padding: 14,
-    fontSize: 16,
+  socialBtnText: {
+    fontSize: 14,
+    fontWeight: '700',
     color: '#2C1A1D',
   },
-  eyeIcon: {
-    padding: 14,
+  createAccountRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  forgotPassword: {
-    alignSelf: 'flex-end',
-    marginBottom: 24,
+  createAccountText: {
+    fontSize: 14,
+    color: '#5A4A4D',
   },
-  forgotPasswordText: {
-    color: '#E31E25',
+  createAccountBold: {
     fontSize: 14,
     fontWeight: '800',
+    color: '#E31E25',
   },
 });

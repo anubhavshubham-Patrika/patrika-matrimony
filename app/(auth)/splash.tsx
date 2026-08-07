@@ -10,7 +10,7 @@ import PatrikaRibbonLogo from '../../src/components/PatrikaRibbonLogo';
 
 export default function SplashScreen() {
   const router = useRouter();
-  const { state } = useApp();
+  const { state, dispatch } = useApp();
   const lang = state.language || 'en';
   const t = Translations[lang];
 
@@ -39,8 +39,26 @@ export default function SplashScreen() {
     ]).start();
   }, [fadeAnim, translateYAnim, scaleAnim]);
 
+  const toggleLanguage = () => {
+    dispatch({ type: 'SET_LANGUAGE', payload: lang === 'en' ? 'hi' : 'en' });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
+      {/* Top Header Bar with Language Selector (Inspiration Screenshot 1) */}
+      <View style={styles.topHeaderBar}>
+        <View style={{ flex: 1 }} />
+        <TouchableOpacity 
+          style={styles.langPillBtn} 
+          onPress={toggleLanguage}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="globe-outline" size={16} color="#E31E25" style={{ marginRight: 4 }} />
+          <Text style={styles.langPillText}>{lang === 'en' ? 'English' : 'हिंदी'}</Text>
+          <Ionicons name="chevron-down" size={14} color="#E31E25" style={{ marginLeft: 2 }} />
+        </TouchableOpacity>
+      </View>
+
       <ScrollView 
         contentContainerStyle={styles.scrollContent} 
         showsVerticalScrollIndicator={false}
@@ -123,12 +141,35 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF9F6',
   },
+  topHeaderBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    paddingBottom: 6,
+    zIndex: 10,
+  },
+  langPillBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF0F1',
+    borderWidth: 1,
+    borderColor: '#FCD4D7',
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  langPillText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#E31E25',
+  },
   scrollContent: {
     flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 24,
-    paddingTop: 30,
+    paddingTop: 10,
     paddingBottom: 20,
   },
   mainWrapper: {
@@ -142,9 +183,9 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   ringOuter3: {
-    width: 270,
-    height: 270,
-    borderRadius: 135,
+    width: 260,
+    height: 260,
+    borderRadius: 130,
     borderWidth: 1,
     borderColor: '#FCD4D7',
     alignItems: 'center',
@@ -152,9 +193,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(253, 212, 215, 0.25)',
   },
   ringOuter2: {
-    width: 216,
-    height: 216,
-    borderRadius: 108,
+    width: 208,
+    height: 208,
+    borderRadius: 104,
     borderWidth: 1,
     borderColor: '#FBAAB0',
     alignItems: 'center',
@@ -162,9 +203,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(251, 170, 176, 0.25)',
   },
   ringOuter1: {
-    width: 162,
-    height: 162,
-    borderRadius: 81,
+    width: 156,
+    height: 156,
+    borderRadius: 78,
     borderWidth: 1,
     borderColor: '#F87F87',
     alignItems: 'center',
@@ -172,9 +213,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(248, 127, 135, 0.25)',
   },
   centerLogoCircle: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: 114,
+    height: 114,
+    borderRadius: 57,
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
@@ -190,33 +231,33 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#6A4D54',
     letterSpacing: 4,
-    marginTop: 24,
+    marginTop: 20,
     marginBottom: 8,
     textAlign: 'center',
   },
   brandTitleLine1: {
-    fontSize: 44,
+    fontSize: 42,
     fontWeight: '800',
     color: '#E31E25',
     fontFamily: 'serif',
     textAlign: 'center',
-    lineHeight: 50,
+    lineHeight: 48,
   },
   brandTitleLine2: {
-    fontSize: 44,
+    fontSize: 42,
     fontWeight: '800',
     color: '#E31E25',
     fontFamily: 'serif',
     textAlign: 'center',
-    lineHeight: 50,
-    marginBottom: 16,
+    lineHeight: 48,
+    marginBottom: 14,
   },
   taglineText: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '500',
     color: '#6A565C',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 18,
   },
   verifiedPill: {
     flexDirection: 'row',

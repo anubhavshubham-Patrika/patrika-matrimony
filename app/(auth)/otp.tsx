@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
+import { 
+  View, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Platform 
+} from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../src/context/AppContext';
-import PatrikaRibbonLogo from '../../src/components/PatrikaRibbonLogo';
 
 export default function OtpScreen() {
   const router = useRouter();
@@ -55,25 +56,42 @@ export default function OtpScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      {/* Top Header Navigation (Inspiration Screenshots 1 & 3) */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+        <TouchableOpacity onPress={() => router.back()} style={styles.headerBtn}>
           <Ionicons name="arrow-back" size={24} color="#2C1A1D" />
         </TouchableOpacity>
-        <View style={styles.headerBrandRow}>
-          <PatrikaRibbonLogo size={28} />
-          <Text style={styles.headerTitle}>OTP Verification</Text>
-        </View>
-        <View style={{ width: 40 }} />
+        <Text style={styles.headerTitle}>Verification</Text>
+        <TouchableOpacity onPress={() => router.replace('/(auth)/login')} style={styles.headerBtn}>
+          <Ionicons name="close" size={24} color="#2C1A1D" />
+        </TouchableOpacity>
       </View>
 
-      <View style={styles.container}>
-        <View style={styles.topInfo}>
-          <Text style={styles.title}>Enter Verification Code</Text>
-          <Text style={styles.subtitle}>We have sent a 6-digit OTP code to</Text>
-          <Text style={styles.contactText}>{contact}</Text>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}
+      >
+        {/* Central Verification Icon Circle Badge (Inspiration Screenshots 1 & 3) */}
+        <View style={styles.badgeWrapper}>
+          <View style={styles.outerGlowCircle}>
+            <View style={styles.innerRedBadge}>
+              <MaterialCommunityIcons name="card-account-details-outline" size={36} color="#FFFFFF" />
+            </View>
+          </View>
         </View>
 
-        <View style={styles.otpContainer}>
+        {/* Title & Subtitle */}
+        <View style={styles.textContainer}>
+          <Text style={styles.mainTitle}>Verification Code</Text>
+          <Text style={styles.subTitle}>You have to fill the 6-digit OTP for account verification sent to</Text>
+          
+          <View style={styles.contactBadge}>
+            <Text style={styles.contactText}>{contact}</Text>
+          </View>
+        </View>
+
+        {/* 6 Digit OTP Input Boxes (Inspiration Screenshots 1 & 3) */}
+        <View style={styles.otpRow}>
           {otp.map((digit, index) => (
             <TextInput
               key={index}
@@ -92,20 +110,22 @@ export default function OtpScreen() {
           ))}
         </View>
 
+        {/* Resend Code Section */}
         <View style={styles.resendContainer}>
           {timer > 0 ? (
-            <Text style={styles.timerText}>Resend OTP in <Text style={styles.timerBold}>{timer}s</Text></Text>
+            <Text style={styles.timerText}>Didn't receive code? Resend in <Text style={styles.timerBold}>{timer}s</Text></Text>
           ) : (
-            <TouchableOpacity onPress={() => setTimer(30)}>
-              <Text style={styles.resendText}>Resend OTP</Text>
+            <TouchableOpacity style={styles.resendPillBtn} onPress={() => setTimer(30)}>
+              <Text style={styles.resendPillText}>Send Code Again</Text>
             </TouchableOpacity>
           )}
         </View>
 
-        <TouchableOpacity style={styles.verifyButton} onPress={handleVerify} activeOpacity={0.88}>
-          <Text style={styles.verifyButtonText}>Verify & Continue →</Text>
+        {/* Primary Action Button */}
+        <TouchableOpacity style={styles.submitBtn} onPress={handleVerify} activeOpacity={0.88}>
+          <Text style={styles.submitBtnText}>Submit & Continue →</Text>
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -125,53 +145,90 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#EFE6DD',
   },
-  backButton: {
-    padding: 6,
-  },
-  headerBrandRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  headerBtn: {
+    padding: 4,
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#E31E25',
+    color: '#2C1A1D',
     fontFamily: 'serif',
   },
   container: {
     flex: 1,
-    padding: 24,
-    justifyContent: 'flex-start',
+    paddingHorizontal: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  topInfo: {
-    marginBottom: 32,
+  /* Central Badge Circle */
+  badgeWrapper: {
+    alignItems: 'center',
+    marginBottom: 20,
   },
-  title: {
-    fontSize: 26,
+  outerGlowCircle: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    backgroundColor: '#FFF0F1',
+    borderWidth: 1,
+    borderColor: '#FCD4D7',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  innerRedBadge: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: '#E31E25',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#E31E25',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  textContainer: {
+    alignItems: 'center',
+    marginBottom: 28,
+    paddingHorizontal: 10,
+  },
+  mainTitle: {
+    fontSize: 24,
     fontWeight: '800',
     color: '#2C1A1D',
     fontFamily: 'serif',
+    marginBottom: 6,
   },
-  subtitle: {
+  subTitle: {
     fontSize: 14,
     color: '#5A4A4D',
-    marginTop: 6,
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 10,
+  },
+  contactBadge: {
+    backgroundColor: '#FFF0F1',
+    borderWidth: 1,
+    borderColor: '#FCD4D7',
+    borderRadius: 16,
+    paddingHorizontal: 14,
+    paddingVertical: 5,
   },
   contactText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '800',
     color: '#E31E25',
-    marginTop: 2,
   },
-  otpContainer: {
+  otpRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 32,
+    justifyContent: 'center',
+    gap: 8,
+    marginBottom: 28,
   },
   otpBox: {
-    width: 48,
-    height: 56,
+    width: 46,
+    height: 54,
     borderWidth: 1.5,
     borderColor: '#EFE6DD',
     borderRadius: 14,
@@ -179,33 +236,43 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '800',
     color: '#2C1A1D',
-    backgroundColor: '#FFF0F1',
+    backgroundColor: '#FFFFFF',
   },
   otpBoxFilled: {
     borderColor: '#E31E25',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFF0F1',
   },
   otpBoxActive: {
     borderColor: '#E31E25',
+    borderWidth: 2,
   },
   resendContainer: {
     alignItems: 'center',
     marginBottom: 32,
   },
   timerText: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#5A4A4D',
   },
   timerBold: {
     fontWeight: '800',
     color: '#E31E25',
   },
-  resendText: {
-    fontSize: 14,
+  resendPillBtn: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#EFE6DD',
+    borderRadius: 20,
+    paddingHorizontal: 18,
+    paddingVertical: 8,
+  },
+  resendPillText: {
+    fontSize: 13,
     fontWeight: '800',
     color: '#E31E25',
   },
-  verifyButton: {
+  submitBtn: {
+    width: '100%',
     backgroundColor: '#E31E25',
     paddingVertical: 16,
     borderRadius: 28,
@@ -216,7 +283,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5,
   },
-  verifyButtonText: {
+  submitBtnText: {
     color: '#FFFFFF',
     fontSize: 17,
     fontWeight: '800',

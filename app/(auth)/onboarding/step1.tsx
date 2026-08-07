@@ -44,7 +44,7 @@ export default function Step1() {
         <Text style={styles.stepIndicator}>Step 1 of 13</Text>
       </View>
 
-      {/* Progress Bar & Percentage (Matching Screenshot 2) */}
+      {/* Progress Bar & Percentage */}
       <View style={styles.progressContainer}>
         <View style={styles.progressTrack}>
           <View style={[styles.progressBar, { width: `${(1 / 13) * 100}%` }]} />
@@ -54,16 +54,16 @@ export default function Step1() {
 
       {/* Main Content Scroll View */}
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Floating White Card Container (Matching Screenshot 2) */}
+        {/* Floating White Card Container */}
         <View style={styles.formCard}>
-          {/* Card Accent Header */}
+          {/* Card Accent Header Banner */}
           <View style={styles.cardHeaderBanner}>
             <Text style={styles.cardHeaderTitle}>{t.step1Title}</Text>
             <Text style={styles.cardHeaderSubtitle}>{t.step1Subtitle}</Text>
           </View>
 
           <View style={styles.cardBody}>
-            {/* Green Live Activity Callout Pill (Matching Screenshot 2) */}
+            {/* Live Activity Callout Pill */}
             <View style={styles.liveCalloutPill}>
               <Ionicons name="trending-up" size={16} color="#1E8449" style={{ marginRight: 6 }} />
               <Text style={styles.liveCalloutText}>127 verified profiles joined in the last 3 days!</Text>
@@ -98,7 +98,7 @@ export default function Step1() {
         </View>
       </ScrollView>
 
-      {/* Footer Navigation (Matching Screenshot 2: Previous & Continue Button) */}
+      {/* Footer Navigation */}
       <View style={styles.footer}>
         <TouchableOpacity style={styles.prevBtn} onPress={() => router.back()}>
           <Text style={styles.prevBtnText}>← Previous</Text>
@@ -119,7 +119,7 @@ export default function Step1() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF4F6', // Soft Pastel Pink Onboarding Background (Matching Screenshot 2)
+    backgroundColor: '#FFF9F6',
   },
   header: {
     flexDirection: 'row',
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#E91E63',
+    backgroundColor: '#E31E25',
     borderRadius: 3,
   },
   progressPercentText: {
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   cardHeaderBanner: {
-    backgroundColor: '#E91E63',
+    backgroundColor: '#E31E25',
     paddingHorizontal: 20,
     paddingVertical: 18,
   },
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
   },
   cardItem: {
     width: '48%',
-    backgroundColor: '#FAF5F7',
+    backgroundColor: '#FFF0F1',
     paddingVertical: 18,
     paddingHorizontal: 10,
     borderRadius: 16,
@@ -247,8 +247,8 @@ const styles = StyleSheet.create({
     borderColor: '#EFE6DD',
   },
   cardItemSelected: {
-    borderColor: '#E91E63',
-    backgroundColor: '#FFF0F3',
+    borderColor: '#E31E25',
+    backgroundColor: '#FFF0F1',
   },
   iconCircle: {
     width: 52,
@@ -262,8 +262,8 @@ const styles = StyleSheet.create({
     borderColor: '#EFE6DD',
   },
   iconCircleSelected: {
-    backgroundColor: '#FFE4E9',
-    borderColor: '#E91E63',
+    backgroundColor: '#FFE4E6',
+    borderColor: '#E31E25',
   },
   cardLabel: {
     fontSize: 15,
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     color: '#2C1A1D',
   },
   cardLabelSelected: {
-    color: '#E91E63',
+    color: '#E31E25',
     fontWeight: '800',
   },
   footer: {
@@ -296,11 +296,11 @@ const styles = StyleSheet.create({
     color: '#5A4A4D',
   },
   nextBtn: {
-    backgroundColor: '#E91E63',
+    backgroundColor: '#E31E25',
     paddingVertical: 14,
     paddingHorizontal: 24,
     borderRadius: 14,
-    shadowColor: '#E91E63',
+    shadowColor: '#E31E25',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
