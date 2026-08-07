@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, TextInput } from 'react-native';
+import { 
+  View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, TextInput, Modal 
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
@@ -15,6 +17,23 @@ export default function Step10() {
   const [collegeName, setCollegeName] = useState(state.onboardingData?.collegeName || 'MNIT Jaipur');
   const [organizationName, setOrganizationName] = useState(state.onboardingData?.organizationName || 'TCS');
   const [designation, setDesignation] = useState(state.onboardingData?.occupation || 'Senior Software Engineer');
+  const [annualIncome, setAnnualIncome] = useState(state.onboardingData?.annualIncomeRange || '₹10 - ₹15 Lakhs');
+
+  const [showIncomeModal, setShowIncomeModal] = useState(false);
+
+  const incomeOptions = [
+    'Below ₹2 Lakhs',
+    '₹2 - ₹3 Lakhs',
+    '₹3 - ₹5 Lakhs',
+    '₹5 - ₹7 Lakhs',
+    '₹7 - ₹10 Lakhs',
+    '₹10 - ₹15 Lakhs',
+    '₹15 - ₹20 Lakhs',
+    '₹20 - ₹30 Lakhs',
+    '₹30 - ₹50 Lakhs',
+    '₹50 Lakhs - ₹1 Crore',
+    '₹1 Crore+',
+  ];
 
   const handleNext = () => {
     dispatch({
@@ -23,6 +42,7 @@ export default function Step10() {
         collegeName,
         organizationName,
         occupation: designation,
+        annualIncomeRange: annualIncome,
       },
     });
     router.push('/(auth)/onboarding/step11');
@@ -50,7 +70,7 @@ export default function Step10() {
 
             <View style={styles.headerTitleBox}>
               <Text style={styles.questionTitle}>{t.step10Title}</Text>
-              <Text style={styles.questionSubtitle}>Enter education, company & designation details</Text>
+              <Text style={styles.questionSubtitle}>Enter education, work & income details</Text>
             </View>
 
             {/* College Name */}
@@ -91,9 +111,50 @@ export default function Step10() {
                 placeholderTextColor="#8C9E9B"
               />
             </View>
+
+            {/* Annual Income Dropdown Trigger */}
+            <Text style={styles.sectionHeaderLabel}>Annual Income (Per Annum)</Text>
+            <TouchableOpacity
+              style={styles.dropdownGlassTrigger}
+              onPress={() => setShowIncomeModal(true)}
+              activeOpacity={0.88}
+            >
+              <View style={styles.dropdownTriggerLeft}>
+                <MaterialCommunityIcons name="cash-multiple" size={22} color="#0D9488" style={{ marginRight: 10 }} />
+                <Text style={styles.dropdownValueText}>{annualIncome}</Text>
+              </View>
+              <Ionicons name="chevron-down" size={20} color="#8C9E9B" />
+            </TouchableOpacity>
           </View>
           <View style={{ height: 20 }} />
         </ScrollView>
+
+        {/* Annual Income Dropdown Modal */}
+        <Modal visible={showIncomeModal} animationType="slide" transparent>
+          <View style={styles.modalBackdrop}>
+            <View style={styles.modalGlassCard}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Select Annual Income (P.A.)</Text>
+                <TouchableOpacity onPress={() => setShowIncomeModal(false)}>
+                  <Ionicons name="close" size={24} color="#0F2E2B" />
+                </TouchableOpacity>
+              </View>
+
+              <ScrollView style={{ maxHeight: 360 }} showsVerticalScrollIndicator={false}>
+                {incomeOptions.map((inc) => (
+                  <TouchableOpacity
+                    key={inc}
+                    style={styles.modalOptionItem}
+                    onPress={() => { setAnnualIncome(inc); setShowIncomeModal(false); }}
+                  >
+                    <Text style={[styles.modalOptionText, annualIncome === inc && styles.modalOptionTextSelected]}>{inc}</Text>
+                    {annualIncome === inc && <Ionicons name="checkmark" size={20} color="#0D9488" />}
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+          </View>
+        </Modal>
 
         <View style={styles.footerContainer}>
           <View style={styles.progressRow}>
@@ -221,6 +282,70 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     fontSize: 15,
     color: '#0F2E2B',
+  },
+
+  dropdownGlassTrigger: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(15, 46, 43, 0.12)',
+    borderRadius: 18,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    marginBottom: 10,
+  },
+  dropdownTriggerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dropdownValueText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#0F2E2B',
+  },
+
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'flex-end',
+  },
+  modalGlassCard: {
+    backgroundColor: '#F3FAF8',
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    padding: 20,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.9)',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#0F2E2B',
+    fontFamily: 'serif',
+  },
+  modalOptionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(15, 46, 43, 0.08)',
+  },
+  modalOptionText: {
+    fontSize: 16,
+    color: '#4A6B66',
+  },
+  modalOptionTextSelected: {
+    color: '#0D9488',
+    fontWeight: '800',
   },
 
   footerContainer: {
