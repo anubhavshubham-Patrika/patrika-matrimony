@@ -13,7 +13,12 @@ export default function Step11() {
   const t = Translations[lang];
 
   const [fullName, setFullName] = useState(state.onboardingData?.name || 'Arjun Singh');
+  const [mobile, setMobile] = useState(state.currentUser?.mobile || '+91-9876543210');
   const [email, setEmail] = useState(state.currentUser?.email || 'arjun@example.com');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleNext = () => {
     dispatch({
@@ -47,7 +52,7 @@ export default function Step11() {
 
             <View style={styles.headerTitleBox}>
               <Text style={styles.questionTitle}>{t.step11Title}</Text>
-              <Text style={styles.questionSubtitle}>Enter candidate full name & email</Text>
+              <Text style={styles.questionSubtitle}>Enter candidate details, contact & account password</Text>
             </View>
 
             {/* Candidate Full Name */}
@@ -63,6 +68,20 @@ export default function Step11() {
               />
             </View>
 
+            {/* Phone Number */}
+            <Text style={styles.sectionHeaderLabel}>Phone Number</Text>
+            <View style={styles.glassInputWrapper}>
+              <MaterialCommunityIcons name="phone-outline" size={20} color="#0D9488" style={{ marginRight: 10 }} />
+              <TextInput
+                style={styles.inputField}
+                placeholder="Enter 10-digit mobile number"
+                keyboardType="phone-pad"
+                value={mobile}
+                onChangeText={setMobile}
+                placeholderTextColor="#8C9E9B"
+              />
+            </View>
+
             {/* Email Address */}
             <Text style={styles.sectionHeaderLabel}>Contact Email Address</Text>
             <View style={styles.glassInputWrapper}>
@@ -71,10 +90,45 @@ export default function Step11() {
                 style={styles.inputField}
                 placeholder="Enter email address"
                 keyboardType="email-address"
+                autoCapitalize="none"
                 value={email}
                 onChangeText={setEmail}
                 placeholderTextColor="#8C9E9B"
               />
+            </View>
+
+            {/* Account Password */}
+            <Text style={styles.sectionHeaderLabel}>Account Password</Text>
+            <View style={styles.glassInputWrapper}>
+              <MaterialCommunityIcons name="lock-outline" size={20} color="#0D9488" style={{ marginRight: 10 }} />
+              <TextInput
+                style={styles.inputField}
+                placeholder="Create password (min 6 characters)"
+                secureTextEntry={!showPassword}
+                value={password}
+                onChangeText={setPassword}
+                placeholderTextColor="#8C9E9B"
+              />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={{ padding: 4 }}>
+                <Ionicons name={showPassword ? "eye-off-outline" : "eye-outline"} size={20} color="#0D9488" />
+              </TouchableOpacity>
+            </View>
+
+            {/* Confirm Password */}
+            <Text style={styles.sectionHeaderLabel}>Confirm Password</Text>
+            <View style={styles.glassInputWrapper}>
+              <MaterialCommunityIcons name="lock-check-outline" size={20} color="#0D9488" style={{ marginRight: 10 }} />
+              <TextInput
+                style={styles.inputField}
+                placeholder="Re-enter password"
+                secureTextEntry={!showConfirmPassword}
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                placeholderTextColor="#8C9E9B"
+              />
+              <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)} style={{ padding: 4 }}>
+                <Ionicons name={showConfirmPassword ? "eye-off-outline" : "eye-outline"} size={20} color="#0D9488" />
+              </TouchableOpacity>
             </View>
           </View>
           <View style={{ height: 20 }} />
