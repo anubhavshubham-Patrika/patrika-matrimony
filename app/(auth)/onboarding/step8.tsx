@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
 import { Translations } from '../../../src/constants/translations';
-import AnimatedGlassBackground from '../../../src/components/AnimatedGlassBackground';
+import MintGlassBackground from '../../../src/components/MintGlassBackground';
 
 export default function Step8() {
   const router = useRouter();
@@ -12,38 +12,20 @@ export default function Step8() {
   const lang = state.language || 'en';
   const t = Translations[lang];
 
-  const [selectedHobbies, setSelectedHobbies] = useState<string[]>(
-    state.onboardingData?.hobbies?.length ? state.onboardingData.hobbies : ['Reading', 'Travel', 'Music']
-  );
   const [diet, setDiet] = useState(state.onboardingData?.diet || 'Vegetarian');
   const [smoking, setSmoking] = useState(state.onboardingData?.smoking || 'No');
   const [drinking, setDrinking] = useState(state.onboardingData?.drinking || 'No');
+  const [hobbies, setHobbies] = useState<string[]>(state.onboardingData?.hobbies || ['Reading', 'Travel', 'Music']);
 
-  const hobbyOptions = [
-    { id: 'Running', label: 'Running', icon: 'run' },
-    { id: 'Reading', label: 'Reading', icon: 'book-open-variant' },
-    { id: 'Music', label: 'Music', icon: 'music' },
-    { id: 'Movies', label: 'Movies', icon: 'filmstrip' },
-    { id: 'Travel', label: 'Travel', icon: 'airplane' },
-    { id: 'Cooking', label: 'Cooking', icon: 'silverware-fork-knife' },
-    { id: 'Photography', label: 'Photography', icon: 'camera' },
-    { id: 'Cricket', label: 'Cricket', icon: 'cricket' },
-    { id: 'Yoga', label: 'Yoga', icon: 'yoga' },
-    { id: 'Dancing', label: 'Dancing', icon: 'human-female-dance' },
-  ];
+  const diets = ['Vegetarian', 'Jain', 'Eggetarian', 'Non-Vegetarian'];
+  const optionsYN = ['No', 'Yes'];
+  const allHobbies = ['Running', 'Reading', 'Music', 'Movies', 'Travel', 'Cooking', 'Photography', 'Cricket', 'Yoga', 'Dancing', 'Painting', 'Gaming'];
 
-  const dietOptions = [
-    { id: 'Vegetarian', label: 'Vegetarian', icon: 'leaf' },
-    { id: 'Jain', label: 'Jain Vegetarian', icon: 'flower' },
-    { id: 'Eggetarian', label: 'Eggetarian', icon: 'egg' },
-    { id: 'Non-Vegetarian', label: 'Non-Vegetarian', icon: 'food-drumstick' },
-  ];
-
-  const toggleHobby = (hobbyId: string) => {
-    if (selectedHobbies.includes(hobbyId)) {
-      setSelectedHobbies(selectedHobbies.filter((h) => h !== hobbyId));
+  const toggleHobby = (h: string) => {
+    if (hobbies.includes(h)) {
+      setHobbies(hobbies.filter((item) => item !== h));
     } else {
-      setSelectedHobbies([...selectedHobbies, hobbyId]);
+      setHobbies([...hobbies, h]);
     }
   };
 
@@ -51,21 +33,21 @@ export default function Step8() {
     dispatch({
       type: 'UPDATE_ONBOARDING',
       payload: {
-        hobbies: selectedHobbies,
         diet,
         smoking,
         drinking,
+        hobbies,
       },
     });
     router.push('/(auth)/onboarding/step9');
   };
 
   return (
-    <AnimatedGlassBackground>
+    <MintGlassBackground>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.topHeader}>
           <TouchableOpacity onPress={() => router.back()} style={styles.blurBackBtn} activeOpacity={0.8}>
-            <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
+            <Ionicons name="chevron-back" size={22} color="#0F2E2B" />
           </TouchableOpacity>
           <View style={styles.stepPillBadge}>
             <Text style={styles.stepPillText}>Step 8 of 13</Text>
@@ -76,91 +58,72 @@ export default function Step8() {
           <View style={styles.glassCardContainer}>
             <View style={styles.badgeWrapper}>
               <View style={styles.glowingVectorCircle}>
-                <MaterialCommunityIcons name="palette-outline" size={32} color="#FFFFFF" />
+                <MaterialCommunityIcons name="silverware-fork-knife" size={30} color="#FFFFFF" />
               </View>
             </View>
 
             <View style={styles.headerTitleBox}>
               <Text style={styles.questionTitle}>{t.step8Title}</Text>
-              <Text style={styles.questionSubtitle}>Select your lifestyle preferences and hobbies</Text>
+              <Text style={styles.questionSubtitle}>Select your lifestyle habits & hobbies</Text>
             </View>
 
-            {/* Hobbies Selection */}
-            <Text style={styles.sectionHeaderLabel}>Hobbies & Interests (Select multiple)</Text>
-            <View style={styles.hobbiesGrid}>
-              {hobbyOptions.map((item) => {
-                const isSel = selectedHobbies.includes(item.id);
-                return (
-                  <TouchableOpacity
-                    key={item.id}
-                    style={[styles.hobbyGlassChip, isSel && styles.hobbyGlassChipSelected]}
-                    onPress={() => toggleHobby(item.id)}
-                    activeOpacity={0.85}
-                  >
-                    <MaterialCommunityIcons name={item.icon as any} size={18} color={isSel ? '#FFFFFF' : '#FF85A1'} style={{ marginRight: 6 }} />
-                    <Text style={[styles.hobbyChipText, isSel && styles.hobbyChipTextSelected]}>{item.label}</Text>
-                    {isSel && <Ionicons name="checkmark" size={14} color="#FFFFFF" style={{ marginLeft: 4 }} />}
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-
-            {/* Diet Options */}
+            {/* Diet */}
             <Text style={styles.sectionHeaderLabel}>Dietary Habits</Text>
-            <View style={styles.dietGrid}>
-              {dietOptions.map((item) => {
-                const isSel = diet === item.id;
+            <View style={styles.chipsWrapRow}>
+              {diets.map((d) => (
+                <TouchableOpacity
+                  key={d}
+                  style={[styles.glassChip, diet === d && styles.glassChipSelected]}
+                  onPress={() => setDiet(d)}
+                >
+                  <Text style={[styles.glassChipText, diet === d && styles.glassChipTextSelected]}>{d}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {/* Smoking */}
+            <Text style={styles.sectionHeaderLabel}>Smoking Habits</Text>
+            <View style={styles.chipsWrapRow}>
+              {optionsYN.map((s) => (
+                <TouchableOpacity
+                  key={s}
+                  style={[styles.glassChip, smoking === s && styles.glassChipSelected]}
+                  onPress={() => setSmoking(s)}
+                >
+                  <Text style={[styles.glassChipText, smoking === s && styles.glassChipTextSelected]}>{s}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {/* Drinking */}
+            <Text style={styles.sectionHeaderLabel}>Drinking Habits</Text>
+            <View style={styles.chipsWrapRow}>
+              {optionsYN.map((dr) => (
+                <TouchableOpacity
+                  key={dr}
+                  style={[styles.glassChip, drinking === dr && styles.glassChipSelected]}
+                  onPress={() => setDrinking(dr)}
+                >
+                  <Text style={[styles.glassChipText, drinking === dr && styles.glassChipTextSelected]}>{dr}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {/* Hobbies Grid */}
+            <Text style={styles.sectionHeaderLabel}>Hobbies & Interests (Select multiple)</Text>
+            <View style={styles.chipsWrapRow}>
+              {allHobbies.map((h) => {
+                const isSel = hobbies.includes(h);
                 return (
                   <TouchableOpacity
-                    key={item.id}
-                    style={[styles.optionCardRow, isSel && styles.optionCardRowSelected]}
-                    onPress={() => setDiet(item.id)}
-                    activeOpacity={0.88}
+                    key={h}
+                    style={[styles.glassChip, isSel && styles.glassChipSelected]}
+                    onPress={() => toggleHobby(h)}
                   >
-                    <View style={[styles.iconCircleBadge, isSel && styles.iconCircleBadgeSelected]}>
-                      <MaterialCommunityIcons name={item.icon as any} size={20} color={isSel ? '#FFFFFF' : '#FF85A1'} />
-                    </View>
-                    <Text style={[styles.optionLabel, isSel && styles.optionLabelSelected]}>{item.label}</Text>
-                    <View style={[styles.radioOuterCircle, isSel && styles.radioOuterCircleSelected]}>
-                      {isSel && <Ionicons name="checkmark" size={14} color="#FFFFFF" />}
-                    </View>
+                    <Text style={[styles.glassChipText, isSel && styles.glassChipTextSelected]}>{h}</Text>
                   </TouchableOpacity>
                 );
               })}
-            </View>
-
-            {/* Smoking & Drinking Toggles */}
-            <Text style={styles.sectionHeaderLabel}>Smoking & Drinking</Text>
-            <View style={styles.toggleRowContainer}>
-              <View style={styles.toggleItem}>
-                <Text style={styles.toggleLabel}>Smoking</Text>
-                <View style={styles.toggleBtnGroup}>
-                  {(['No', 'Yes'] as const).map((opt) => (
-                    <TouchableOpacity
-                      key={opt}
-                      style={[styles.toggleBtn, smoking === opt && styles.toggleBtnActive]}
-                      onPress={() => setSmoking(opt)}
-                    >
-                      <Text style={[styles.toggleBtnText, smoking === opt && styles.toggleBtnTextActive]}>{opt}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </View>
-
-              <View style={styles.toggleItem}>
-                <Text style={styles.toggleLabel}>Drinking</Text>
-                <View style={styles.toggleBtnGroup}>
-                  {(['No', 'Yes'] as const).map((opt) => (
-                    <TouchableOpacity
-                      key={opt}
-                      style={[styles.toggleBtn, drinking === opt && styles.toggleBtnActive]}
-                      onPress={() => setDrinking(opt)}
-                    >
-                      <Text style={[styles.toggleBtnText, drinking === opt && styles.toggleBtnTextActive]}>{opt}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </View>
             </View>
           </View>
           <View style={{ height: 20 }} />
@@ -179,7 +142,7 @@ export default function Step8() {
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-    </AnimatedGlassBackground>
+    </MintGlassBackground>
   );
 }
 
@@ -198,22 +161,22 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.95)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   stepPillBadge: {
-    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderRadius: 16,
     paddingHorizontal: 12,
     paddingVertical: 5,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.95)',
   },
   stepPillText: {
-    color: '#FFFFFF',
+    color: '#0F2E2B',
     fontSize: 12,
     fontWeight: '700',
   },
@@ -223,35 +186,33 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   glassCardContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.16)',
+    borderColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 28,
     padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.3,
-    shadowRadius: 20,
-    elevation: 6,
+    shadowColor: '#0F2E2B',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    elevation: 4,
   },
   badgeWrapper: {
     alignItems: 'center',
     marginBottom: 12,
   },
   glowingVectorCircle: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#E31E25',
+    width: 58,
+    height: 58,
+    borderRadius: 29,
+    backgroundColor: '#0F2E2B',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#E31E25',
+    shadowColor: '#0F2E2B',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.6,
-    shadowRadius: 14,
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
     elevation: 6,
-    borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
   },
   headerTitleBox: {
     alignItems: 'center',
@@ -260,147 +221,49 @@ const styles = StyleSheet.create({
   questionTitle: {
     fontSize: 22,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
     fontFamily: 'serif',
     textAlign: 'center',
     marginBottom: 4,
   },
   questionSubtitle: {
     fontSize: 13,
-    color: '#BDA6B2',
+    color: '#4A6B66',
     textAlign: 'center',
     lineHeight: 18,
   },
   sectionHeaderLabel: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
     marginTop: 14,
     marginBottom: 8,
   },
 
-  hobbiesGrid: {
+  chipsWrapRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 8,
     marginBottom: 10,
   },
-  hobbyGlassChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.14)',
-    borderRadius: 20,
-    paddingHorizontal: 14,
-    paddingVertical: 9,
+  glassChip: {
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderWidth: 1,
+    borderColor: 'rgba(15, 46, 43, 0.14)',
+    borderRadius: 14,
+    paddingHorizontal: 12,
+    paddingVertical: 7,
   },
-  hobbyGlassChipSelected: {
-    borderColor: '#E31E25',
-    backgroundColor: 'rgba(227, 30, 37, 0.25)',
+  glassChipSelected: {
+    backgroundColor: '#0F2E2B',
+    borderColor: '#0F2E2B',
   },
-  hobbyChipText: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#BDA6B2',
-  },
-  hobbyChipTextSelected: {
-    color: '#FFFFFF',
-    fontWeight: '800',
-  },
-
-  dietGrid: {
-    gap: 8,
-  },
-  optionCardRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
-    borderRadius: 18,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.12)',
-  },
-  optionCardRowSelected: {
-    borderColor: '#E31E25',
-    backgroundColor: 'rgba(227, 30, 37, 0.18)',
-  },
-  iconCircleBadge: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    backgroundColor: 'rgba(255, 77, 109, 0.15)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  iconCircleBadgeSelected: {
-    backgroundColor: '#E31E25',
-  },
-  optionLabel: {
-    flex: 1,
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#FFFFFF',
-  },
-  optionLabelSelected: {
-    color: '#FFFFFF',
-    fontWeight: '800',
-  },
-  radioOuterCircle: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  radioOuterCircleSelected: {
-    backgroundColor: '#E31E25',
-    borderColor: '#E31E25',
-  },
-
-  toggleRowContainer: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  toggleItem: {
-    flex: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
-    borderRadius: 18,
-    padding: 12,
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.12)',
-  },
-  toggleLabel: {
+  glassChipText: {
     fontSize: 12,
-    fontWeight: '700',
-    color: '#FFFFFF',
-    marginBottom: 8,
-  },
-  toggleBtnGroup: {
-    flexDirection: 'row',
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
-    borderRadius: 12,
-    padding: 3,
-  },
-  toggleBtn: {
-    flex: 1,
-    paddingVertical: 8,
-    alignItems: 'center',
-    borderRadius: 10,
-  },
-  toggleBtnActive: {
-    backgroundColor: '#E31E25',
-  },
-  toggleBtnText: {
-    fontSize: 12,
+    color: '#0F2E2B',
     fontWeight: '600',
-    color: '#BDA6B2',
   },
-  toggleBtnTextActive: {
+  glassChipTextSelected: {
     color: '#FFFFFF',
     fontWeight: '800',
   },
@@ -408,9 +271,9 @@ const styles = StyleSheet.create({
   footerContainer: {
     paddingHorizontal: 20,
     paddingVertical: 14,
-    backgroundColor: 'rgba(18, 7, 14, 0.85)',
+    backgroundColor: 'rgba(235, 247, 245, 0.92)',
     borderTopWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    borderColor: 'rgba(15, 46, 43, 0.1)',
   },
   progressRow: {
     flexDirection: 'row',
@@ -421,33 +284,31 @@ const styles = StyleSheet.create({
   progressTrackBg: {
     flex: 1,
     height: 6,
-    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+    backgroundColor: 'rgba(15, 46, 43, 0.12)',
     borderRadius: 3,
     overflow: 'hidden',
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: '#E31E25',
+    backgroundColor: '#0D9488',
     borderRadius: 3,
   },
   progressText: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#FF4D6D',
+    color: '#0D9488',
   },
   continueBtn: {
-    backgroundColor: '#E31E25',
+    backgroundColor: '#0F2E2B',
     paddingVertical: 16,
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#E31E25',
+    shadowColor: '#0F2E2B',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.25,
     shadowRadius: 12,
     elevation: 6,
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
   },
   continueBtnText: {
     color: '#FFFFFF',

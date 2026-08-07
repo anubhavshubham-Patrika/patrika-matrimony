@@ -5,7 +5,7 @@ import {
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../src/context/AppContext';
-import AnimatedGlassBackground from '../../src/components/AnimatedGlassBackground';
+import MintGlassBackground from '../../src/components/MintGlassBackground';
 
 export default function OtpScreen() {
   const router = useRouter();
@@ -56,15 +56,15 @@ export default function OtpScreen() {
   };
 
   return (
-    <AnimatedGlassBackground>
+    <MintGlassBackground>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} style={styles.headerBtn}>
-            <Ionicons name="arrow-back" size={22} color="#FFFFFF" />
+            <Ionicons name="arrow-back" size={22} color="#0F2E2B" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Verification</Text>
           <TouchableOpacity onPress={() => router.replace('/(auth)/login')} style={styles.headerBtn}>
-            <Ionicons name="close" size={22} color="#FFFFFF" />
+            <Ionicons name="close" size={22} color="#0F2E2B" />
           </TouchableOpacity>
         </View>
 
@@ -77,8 +77,8 @@ export default function OtpScreen() {
             {/* Glowing Shield Emblem */}
             <View style={styles.badgeWrapper}>
               <View style={styles.outerGlowCircle}>
-                <View style={styles.innerRedBadge}>
-                  <MaterialCommunityIcons name="shield-lock-outline" size={36} color="#FFFFFF" />
+                <View style={styles.innerBadge}>
+                  <MaterialCommunityIcons name="shield-lock-outline" size={32} color="#FFFFFF" />
                 </View>
               </View>
             </View>
@@ -131,7 +131,7 @@ export default function OtpScreen() {
           </View>
         </KeyboardAvoidingView>
       </SafeAreaView>
-    </AnimatedGlassBackground>
+    </MintGlassBackground>
   );
 }
 
@@ -149,12 +149,12 @@ const styles = StyleSheet.create({
   headerBtn: {
     padding: 6,
     borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
     fontFamily: 'serif',
   },
   container: {
@@ -165,44 +165,39 @@ const styles = StyleSheet.create({
   },
   glassCard: {
     width: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.16)',
+    borderColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 28,
     padding: 24,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.35,
-    shadowRadius: 20,
-    elevation: 6,
+    shadowColor: '#0F2E2B',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    elevation: 4,
   },
   badgeWrapper: {
     alignItems: 'center',
     marginBottom: 16,
   },
   outerGlowCircle: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: 'rgba(255, 77, 109, 0.15)',
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    backgroundColor: 'rgba(13, 148, 136, 0.12)',
     borderWidth: 1,
-    borderColor: 'rgba(255, 77, 109, 0.3)',
+    borderColor: 'rgba(13, 148, 136, 0.25)',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  innerRedBadge: {
-    width: 58,
-    height: 58,
-    borderRadius: 29,
-    backgroundColor: '#E31E25',
+  innerBadge: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: '#0F2E2B',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#E31E25',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.6,
-    shadowRadius: 12,
-    elevation: 6,
   },
   textContainer: {
     alignItems: 'center',
@@ -211,21 +206,19 @@ const styles = StyleSheet.create({
   mainTitle: {
     fontSize: 24,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
     fontFamily: 'serif',
     marginBottom: 6,
   },
   subTitle: {
     fontSize: 13,
-    color: '#BDA6B2',
+    color: '#4A6B66',
     textAlign: 'center',
     lineHeight: 18,
     marginBottom: 10,
   },
   contactGlassBadge: {
-    backgroundColor: 'rgba(255, 77, 109, 0.15)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 77, 109, 0.35)',
+    backgroundColor: 'rgba(13, 148, 136, 0.12)',
     borderRadius: 16,
     paddingHorizontal: 14,
     paddingVertical: 5,
@@ -233,7 +226,7 @@ const styles = StyleSheet.create({
   contactText: {
     fontSize: 14,
     fontWeight: '800',
-    color: '#FF4D6D',
+    color: '#0D9488',
   },
   otpRow: {
     flexDirection: 'row',
@@ -245,20 +238,20 @@ const styles = StyleSheet.create({
     width: 44,
     height: 52,
     borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.16)',
+    borderColor: 'rgba(15, 46, 43, 0.14)',
     borderRadius: 14,
     textAlign: 'center',
     fontSize: 22,
     fontWeight: '800',
-    color: '#FFFFFF',
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    color: '#0F2E2B',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
   },
   otpBoxFilled: {
-    borderColor: '#E31E25',
-    backgroundColor: 'rgba(227, 30, 37, 0.2)',
+    borderColor: '#0D9488',
+    backgroundColor: 'rgba(13, 148, 136, 0.12)',
   },
   otpBoxActive: {
-    borderColor: '#FF4D6D',
+    borderColor: '#0F2E2B',
     borderWidth: 2,
   },
   resendContainer: {
@@ -267,16 +260,16 @@ const styles = StyleSheet.create({
   },
   timerText: {
     fontSize: 13,
-    color: '#BDA6B2',
+    color: '#4A6B66',
   },
   timerBold: {
     fontWeight: '800',
-    color: '#FF4D6D',
+    color: '#0D9488',
   },
   resendGlassBtn: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    borderColor: 'rgba(15, 46, 43, 0.15)',
     borderRadius: 20,
     paddingHorizontal: 18,
     paddingVertical: 8,
@@ -284,21 +277,19 @@ const styles = StyleSheet.create({
   resendGlassText: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#FF4D6D',
+    color: '#0D9488',
   },
   submitBtn: {
     width: '100%',
-    backgroundColor: '#E31E25',
+    backgroundColor: '#0F2E2B',
     paddingVertical: 16,
     borderRadius: 24,
     alignItems: 'center',
-    shadowColor: '#E31E25',
+    shadowColor: '#0F2E2B',
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.25,
     shadowRadius: 14,
     elevation: 6,
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
   },
   submitBtnText: {
     color: '#FFFFFF',

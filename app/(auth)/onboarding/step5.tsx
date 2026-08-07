@@ -6,7 +6,7 @@ import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
 import { Translations } from '../../../src/constants/translations';
-import AnimatedGlassBackground from '../../../src/components/AnimatedGlassBackground';
+import MintGlassBackground from '../../../src/components/MintGlassBackground';
 
 export default function Step5() {
   const router = useRouter();
@@ -21,9 +21,9 @@ export default function Step5() {
   const [showCountryModal, setShowCountryModal] = useState(false);
   const [showStateModal, setShowStateModal] = useState(false);
 
-  const countries = ['India', 'United States', 'United Kingdom', 'Canada', 'UAE', 'Australia', 'Other'];
-  const indianStates = ['Rajasthan', 'Delhi', 'Maharashtra', 'Karnataka', 'Gujarat', 'Punjab', 'Uttar Pradesh', 'Madhya Pradesh', 'Other'];
-  const popularRajasthanCities = ['Jaipur', 'Jodhpur', 'Udaipur', 'Kota', 'Ajmer', 'Bikaner', 'Sikar', 'Bhilwara'];
+  const countries = ['India', 'USA', 'UK', 'Canada', 'UAE', 'Australia', 'Singapore', 'Other'];
+  const states = ['Rajasthan', 'Delhi', 'Maharashtra', 'Karnataka', 'Gujarat', 'Punjab', 'Uttar Pradesh', 'Other'];
+  const rajasthanCities = ['Jaipur', 'Jodhpur', 'Udaipur', 'Kota', 'Ajmer', 'Bikaner', 'Sikar', 'Bharatpur'];
 
   const handleNext = () => {
     dispatch({
@@ -38,11 +38,11 @@ export default function Step5() {
   };
 
   return (
-    <AnimatedGlassBackground>
+    <MintGlassBackground>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.topHeader}>
           <TouchableOpacity onPress={() => router.back()} style={styles.blurBackBtn} activeOpacity={0.8}>
-            <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
+            <Ionicons name="chevron-back" size={22} color="#0F2E2B" />
           </TouchableOpacity>
           <View style={styles.stepPillBadge}>
             <Text style={styles.stepPillText}>Step 5 of 13</Text>
@@ -53,7 +53,7 @@ export default function Step5() {
           <View style={styles.glassCardContainer}>
             <View style={styles.badgeWrapper}>
               <View style={styles.glowingVectorCircle}>
-                <MaterialCommunityIcons name="map-marker-radius-outline" size={32} color="#FFFFFF" />
+                <MaterialCommunityIcons name="map-marker-radius-outline" size={30} color="#FFFFFF" />
               </View>
             </View>
 
@@ -70,13 +70,13 @@ export default function Step5() {
               activeOpacity={0.88}
             >
               <View style={styles.dropdownTriggerLeft}>
-                <MaterialCommunityIcons name="earth" size={22} color="#FF4D6D" style={{ marginRight: 10 }} />
+                <MaterialCommunityIcons name="earth" size={22} color="#0D9488" style={{ marginRight: 10 }} />
                 <Text style={styles.dropdownValueText}>{country}</Text>
               </View>
-              <Ionicons name="chevron-down" size={20} color="#BDA6B2" />
+              <Ionicons name="chevron-down" size={20} color="#8C9E9B" />
             </TouchableOpacity>
 
-            {/* State Trigger */}
+            {/* Resident State Trigger */}
             <Text style={styles.sectionHeaderLabel}>Resident State</Text>
             <TouchableOpacity
               style={styles.dropdownGlassTrigger}
@@ -84,40 +84,37 @@ export default function Step5() {
               activeOpacity={0.88}
             >
               <View style={styles.dropdownTriggerLeft}>
-                <MaterialCommunityIcons name="map-marker-outline" size={22} color="#FF4D6D" style={{ marginRight: 10 }} />
+                <MaterialCommunityIcons name="map-outline" size={22} color="#0D9488" style={{ marginRight: 10 }} />
                 <Text style={styles.dropdownValueText}>{residentState}</Text>
               </View>
-              <Ionicons name="chevron-down" size={20} color="#BDA6B2" />
+              <Ionicons name="chevron-down" size={20} color="#8C9E9B" />
             </TouchableOpacity>
 
-            {/* City Input & Quick Chips */}
+            {/* Resident City Input */}
             <Text style={styles.sectionHeaderLabel}>Resident City</Text>
             <View style={styles.glassInputWrapper}>
-              <Ionicons name="location-outline" size={20} color="#FF85A1" style={{ marginRight: 10 }} />
+              <Ionicons name="location-outline" size={20} color="#0D9488" style={{ marginRight: 10 }} />
               <TextInput
                 style={styles.inputField}
-                placeholder="Enter city name"
+                placeholder="Enter city (e.g. Jaipur, Jodhpur)"
                 value={residentCity}
                 onChangeText={setResidentCity}
-                placeholderTextColor="#8C7383"
+                placeholderTextColor="#8C9E9B"
               />
             </View>
 
-            <Text style={styles.popularCityLabel}>Popular Rajasthan Cities</Text>
-            <View style={styles.cityChipsRow}>
-              {popularRajasthanCities.map((city) => {
-                const isSel = residentCity === city;
-                return (
-                  <TouchableOpacity
-                    key={city}
-                    style={[styles.cityGlassChip, isSel && styles.cityGlassChipSelected]}
-                    onPress={() => setResidentCity(city)}
-                    activeOpacity={0.85}
-                  >
-                    <Text style={[styles.cityChipText, isSel && styles.cityChipTextSelected]}>{city}</Text>
-                  </TouchableOpacity>
-                );
-              })}
+            {/* Popular Rajasthan City Chips */}
+            <Text style={styles.quickChipsTitle}>Popular Rajasthan Cities</Text>
+            <View style={styles.chipsWrapRow}>
+              {rajasthanCities.map((city) => (
+                <TouchableOpacity
+                  key={city}
+                  style={[styles.cityChip, residentCity === city && styles.cityChipSelected]}
+                  onPress={() => setResidentCity(city)}
+                >
+                  <Text style={[styles.cityChipText, residentCity === city && styles.cityChipTextSelected]}>{city}</Text>
+                </TouchableOpacity>
+              ))}
             </View>
           </View>
           <View style={{ height: 20 }} />
@@ -130,7 +127,7 @@ export default function Step5() {
               <View style={styles.modalHeader}>
                 <Text style={styles.modalTitle}>Select Country</Text>
                 <TouchableOpacity onPress={() => setShowCountryModal(false)}>
-                  <Ionicons name="close" size={24} color="#FFFFFF" />
+                  <Ionicons name="close" size={24} color="#0F2E2B" />
                 </TouchableOpacity>
               </View>
               <ScrollView style={{ maxHeight: 320 }}>
@@ -141,7 +138,7 @@ export default function Step5() {
                     onPress={() => { setCountry(c); setShowCountryModal(false); }}
                   >
                     <Text style={[styles.modalOptionText, country === c && styles.modalOptionTextSelected]}>{c}</Text>
-                    {country === c && <Ionicons name="checkmark" size={20} color="#FF4D6D" />}
+                    {country === c && <Ionicons name="checkmark" size={20} color="#0D9488" />}
                   </TouchableOpacity>
                 ))}
               </ScrollView>
@@ -156,18 +153,18 @@ export default function Step5() {
               <View style={styles.modalHeader}>
                 <Text style={styles.modalTitle}>Select Resident State</Text>
                 <TouchableOpacity onPress={() => setShowStateModal(false)}>
-                  <Ionicons name="close" size={24} color="#FFFFFF" />
+                  <Ionicons name="close" size={24} color="#0F2E2B" />
                 </TouchableOpacity>
               </View>
               <ScrollView style={{ maxHeight: 320 }}>
-                {indianStates.map((s) => (
+                {states.map((s) => (
                   <TouchableOpacity
                     key={s}
                     style={styles.modalOptionItem}
                     onPress={() => { setResidentState(s); setShowStateModal(false); }}
                   >
                     <Text style={[styles.modalOptionText, residentState === s && styles.modalOptionTextSelected]}>{s}</Text>
-                    {residentState === s && <Ionicons name="checkmark" size={20} color="#FF4D6D" />}
+                    {residentState === s && <Ionicons name="checkmark" size={20} color="#0D9488" />}
                   </TouchableOpacity>
                 ))}
               </ScrollView>
@@ -188,7 +185,7 @@ export default function Step5() {
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-    </AnimatedGlassBackground>
+    </MintGlassBackground>
   );
 }
 
@@ -207,22 +204,22 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.95)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   stepPillBadge: {
-    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderRadius: 16,
     paddingHorizontal: 12,
     paddingVertical: 5,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.95)',
   },
   stepPillText: {
-    color: '#FFFFFF',
+    color: '#0F2E2B',
     fontSize: 12,
     fontWeight: '700',
   },
@@ -232,35 +229,33 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   glassCardContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.16)',
+    borderColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 28,
     padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.3,
-    shadowRadius: 20,
-    elevation: 6,
+    shadowColor: '#0F2E2B',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    elevation: 4,
   },
   badgeWrapper: {
     alignItems: 'center',
     marginBottom: 12,
   },
   glowingVectorCircle: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#E31E25',
+    width: 58,
+    height: 58,
+    borderRadius: 29,
+    backgroundColor: '#0F2E2B',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#E31E25',
+    shadowColor: '#0F2E2B',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.6,
-    shadowRadius: 14,
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
     elevation: 6,
-    borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
   },
   headerTitleBox: {
     alignItems: 'center',
@@ -269,21 +264,21 @@ const styles = StyleSheet.create({
   questionTitle: {
     fontSize: 22,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
     fontFamily: 'serif',
     textAlign: 'center',
     marginBottom: 4,
   },
   questionSubtitle: {
     fontSize: 13,
-    color: '#BDA6B2',
+    color: '#4A6B66',
     textAlign: 'center',
     lineHeight: 18,
   },
   sectionHeaderLabel: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
     marginTop: 14,
     marginBottom: 8,
   },
@@ -292,9 +287,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.14)',
+    borderColor: 'rgba(15, 46, 43, 0.12)',
     borderRadius: 18,
     paddingHorizontal: 16,
     paddingVertical: 14,
@@ -307,53 +302,53 @@ const styles = StyleSheet.create({
   dropdownValueText: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
   },
 
   glassInputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.14)',
+    borderColor: 'rgba(15, 46, 43, 0.12)',
     borderRadius: 18,
     paddingHorizontal: 16,
-    marginBottom: 12,
+    marginBottom: 10,
   },
   inputField: {
     flex: 1,
     paddingVertical: 14,
     fontSize: 15,
-    color: '#FFFFFF',
+    color: '#0F2E2B',
   },
 
-  popularCityLabel: {
+  quickChipsTitle: {
     fontSize: 12,
-    fontWeight: '700',
-    color: '#BDA6B2',
+    fontWeight: '800',
+    color: '#0D9488',
+    marginTop: 12,
     marginBottom: 8,
   },
-  cityChipsRow: {
+  chipsWrapRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 8,
-    marginBottom: 10,
   },
-  cityGlassChip: {
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+  cityChip: {
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.14)',
-    borderRadius: 16,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
+    borderColor: 'rgba(15, 46, 43, 0.14)',
+    borderRadius: 14,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
   },
-  cityGlassChipSelected: {
-    backgroundColor: 'rgba(227, 30, 37, 0.25)',
-    borderColor: '#E31E25',
+  cityChipSelected: {
+    backgroundColor: '#0F2E2B',
+    borderColor: '#0F2E2B',
   },
   cityChipText: {
-    fontSize: 13,
-    color: '#BDA6B2',
+    fontSize: 12,
+    color: '#0F2E2B',
     fontWeight: '600',
   },
   cityChipTextSelected: {
@@ -363,16 +358,16 @@ const styles = StyleSheet.create({
 
   modalBackdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.7)',
+    backgroundColor: 'rgba(0,0,0,0.4)',
     justifyContent: 'flex-end',
   },
   modalGlassCard: {
-    backgroundColor: '#1E0D19',
+    backgroundColor: '#F3FAF8',
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
     padding: 20,
     borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.16)',
+    borderColor: 'rgba(255, 255, 255, 0.9)',
   },
   modalHeader: {
     flexDirection: 'row',
@@ -383,7 +378,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
     fontFamily: 'serif',
   },
   modalOptionItem: {
@@ -392,23 +387,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 14,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+    borderBottomColor: 'rgba(15, 46, 43, 0.08)',
   },
   modalOptionText: {
     fontSize: 16,
-    color: '#BDA6B2',
+    color: '#4A6B66',
   },
   modalOptionTextSelected: {
-    color: '#FF4D6D',
+    color: '#0D9488',
     fontWeight: '800',
   },
 
   footerContainer: {
     paddingHorizontal: 20,
     paddingVertical: 14,
-    backgroundColor: 'rgba(18, 7, 14, 0.85)',
+    backgroundColor: 'rgba(235, 247, 245, 0.92)',
     borderTopWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    borderColor: 'rgba(15, 46, 43, 0.1)',
   },
   progressRow: {
     flexDirection: 'row',
@@ -419,33 +414,31 @@ const styles = StyleSheet.create({
   progressTrackBg: {
     flex: 1,
     height: 6,
-    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+    backgroundColor: 'rgba(15, 46, 43, 0.12)',
     borderRadius: 3,
     overflow: 'hidden',
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: '#E31E25',
+    backgroundColor: '#0D9488',
     borderRadius: 3,
   },
   progressText: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#FF4D6D',
+    color: '#0D9488',
   },
   continueBtn: {
-    backgroundColor: '#E31E25',
+    backgroundColor: '#0F2E2B',
     paddingVertical: 16,
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#E31E25',
+    shadowColor: '#0F2E2B',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.25,
     shadowRadius: 12,
     elevation: 6,
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
   },
   continueBtnText: {
     color: '#FFFFFF',

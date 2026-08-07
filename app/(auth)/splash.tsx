@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useApp } from '../../src/context/AppContext';
 import { Translations } from '../../src/constants/translations';
 import PatrikaRibbonLogo from '../../src/components/PatrikaRibbonLogo';
-import AnimatedGlassBackground from '../../src/components/AnimatedGlassBackground';
+import MintGlassBackground from '../../src/components/MintGlassBackground';
 
 export default function SplashScreen() {
   const router = useRouter();
@@ -45,7 +45,7 @@ export default function SplashScreen() {
   };
 
   return (
-    <AnimatedGlassBackground>
+    <MintGlassBackground>
       <SafeAreaView style={styles.safeArea}>
         {/* Top Header Bar with Glass Language Selector */}
         <View style={styles.topHeaderBar}>
@@ -55,9 +55,9 @@ export default function SplashScreen() {
             onPress={toggleLanguage}
             activeOpacity={0.8}
           >
-            <Ionicons name="globe-outline" size={16} color="#FF4D6D" style={{ marginRight: 5 }} />
+            <Ionicons name="globe-outline" size={16} color="#0D9488" style={{ marginRight: 5 }} />
             <Text style={styles.langGlassText}>{lang === 'en' ? 'English' : 'हिंदी'}</Text>
-            <Ionicons name="chevron-down" size={14} color="#FF4D6D" style={{ marginLeft: 3 }} />
+            <Ionicons name="chevron-down" size={14} color="#0D9488" style={{ marginLeft: 3 }} />
           </TouchableOpacity>
         </View>
 
@@ -102,7 +102,7 @@ export default function SplashScreen() {
 
             {/* 100% Verified Profiles Glass Pill */}
             <View style={styles.verifiedGlassPill}>
-              <Ionicons name="shield-checkmark-outline" size={16} color="#FF4D6D" style={{ marginRight: 6 }} />
+              <Ionicons name="shield-checkmark-outline" size={16} color="#0D9488" style={{ marginRight: 6 }} />
               <Text style={styles.verifiedPillText}>100% Verified Profiles</Text>
             </View>
           </Animated.View>
@@ -129,7 +129,7 @@ export default function SplashScreen() {
           </TouchableOpacity>
         </Animated.View>
       </SafeAreaView>
-    </AnimatedGlassBackground>
+    </MintGlassBackground>
   );
 }
 
@@ -148,9 +148,9 @@ const styles = StyleSheet.create({
   langGlassBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.18)',
+    borderColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 20,
     paddingHorizontal: 14,
     paddingVertical: 7,
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   langGlassText: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
   },
   scrollContent: {
     flexGrow: 1,
@@ -168,21 +168,22 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 20,
   },
-  /* Glassmorphic Container Card (Matching Reference Screenshot) */
+
+  /* Glassmorphic Container Card */
   glassCardWrapper: {
     alignItems: 'center',
     width: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.16)',
+    borderColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 28,
     paddingVertical: 32,
     paddingHorizontal: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.35,
-    shadowRadius: 20,
-    elevation: 8,
+    shadowColor: '#0F2E2B',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.1,
+    shadowRadius: 16,
+    elevation: 4,
   },
   concentricRingsContainer: {
     alignItems: 'center',
@@ -194,30 +195,30 @@ const styles = StyleSheet.create({
     height: 240,
     borderRadius: 120,
     borderWidth: 1,
-    borderColor: 'rgba(255, 77, 109, 0.25)',
+    borderColor: 'rgba(13, 148, 136, 0.15)',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255, 77, 109, 0.06)',
+    backgroundColor: 'rgba(13, 148, 136, 0.04)',
   },
   ringOuter2: {
     width: 190,
     height: 190,
     borderRadius: 95,
     borderWidth: 1,
-    borderColor: 'rgba(227, 30, 37, 0.35)',
+    borderColor: 'rgba(13, 148, 136, 0.25)',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(227, 30, 37, 0.08)',
+    backgroundColor: 'rgba(13, 148, 136, 0.06)',
   },
   ringOuter1: {
     width: 140,
     height: 140,
     borderRadius: 70,
     borderWidth: 1,
-    borderColor: 'rgba(255, 77, 109, 0.45)',
+    borderColor: 'rgba(13, 148, 136, 0.35)',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255, 77, 109, 0.1)',
+    backgroundColor: 'rgba(13, 148, 136, 0.08)',
   },
   centerLogoCircle: {
     width: 106,
@@ -226,17 +227,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#FF4D6D',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.4,
-    shadowRadius: 16,
-    elevation: 8,
+    shadowColor: '#0F2E2B',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 6,
   },
 
   welcomeText: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#FF85A1',
+    color: '#0D9488',
     letterSpacing: 4,
     marginTop: 22,
     marginBottom: 8,
@@ -245,7 +246,7 @@ const styles = StyleSheet.create({
   brandTitleLine1: {
     fontSize: 42,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
     fontFamily: 'serif',
     textAlign: 'center',
     lineHeight: 46,
@@ -262,16 +263,16 @@ const styles = StyleSheet.create({
   taglineText: {
     fontSize: 15,
     fontWeight: '500',
-    color: '#BDA6B2',
+    color: '#4A6B66',
     textAlign: 'center',
     marginBottom: 20,
   },
   verifiedGlassPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 77, 109, 0.15)',
+    backgroundColor: 'rgba(13, 148, 136, 0.12)',
     borderWidth: 1,
-    borderColor: 'rgba(255, 77, 109, 0.35)',
+    borderColor: 'rgba(13, 148, 136, 0.25)',
     borderRadius: 24,
     paddingHorizontal: 18,
     paddingVertical: 9,
@@ -279,7 +280,7 @@ const styles = StyleSheet.create({
   verifiedPillText: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
   },
 
   bottomBar: {
@@ -289,18 +290,16 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   letsStartBtn: {
-    backgroundColor: '#E31E25',
+    backgroundColor: '#0F2E2B',
     borderRadius: 28,
     paddingVertical: 18,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#E31E25',
+    shadowColor: '#0F2E2B',
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.45,
+    shadowOpacity: 0.25,
     shadowRadius: 14,
-    elevation: 8,
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+    elevation: 6,
     marginBottom: 16,
   },
   letsStartText: {
@@ -314,11 +313,11 @@ const styles = StyleSheet.create({
   },
   loginText: {
     fontSize: 14,
-    color: '#BDA6B2',
+    color: '#4A6B66',
     fontWeight: '500',
   },
   loginBoldText: {
-    color: '#FF4D6D',
+    color: '#0D9488',
     fontWeight: '800',
   },
 });

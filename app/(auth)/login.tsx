@@ -7,7 +7,7 @@ import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../src/context/AppContext';
 import PatrikaRibbonLogo from '../../src/components/PatrikaRibbonLogo';
-import AnimatedGlassBackground from '../../src/components/AnimatedGlassBackground';
+import MintGlassBackground from '../../src/components/MintGlassBackground';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -31,12 +31,12 @@ export default function LoginScreen() {
   };
 
   return (
-    <AnimatedGlassBackground>
+    <MintGlassBackground>
       <SafeAreaView style={styles.safeArea}>
         {/* Top Header Bar */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-            <Ionicons name="arrow-back" size={22} color="#FFFFFF" />
+            <Ionicons name="arrow-back" size={22} color="#0F2E2B" />
           </TouchableOpacity>
 
           <View style={styles.headerBrandRow}>
@@ -45,7 +45,7 @@ export default function LoginScreen() {
           </View>
 
           <TouchableOpacity style={styles.langPillBtn} onPress={toggleLanguage} activeOpacity={0.8}>
-            <Ionicons name="globe-outline" size={14} color="#FF4D6D" style={{ marginRight: 3 }} />
+            <Ionicons name="globe-outline" size={14} color="#0D9488" style={{ marginRight: 3 }} />
             <Text style={styles.langPillText}>{lang === 'en' ? 'EN' : 'HI'}</Text>
           </TouchableOpacity>
         </View>
@@ -55,12 +55,12 @@ export default function LoginScreen() {
           style={styles.flexOne}
         >
           <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-            {/* Glassmorphic Container Card (Matching Reference Screenshot) */}
+            {/* Glassmorphic Container Card */}
             <View style={styles.glassCardContainer}>
-              {/* Glowing Vector Icon Emblem Badge (Inspiration Reference Screenshot) */}
+              {/* Glowing Vector Icon Emblem Badge */}
               <View style={styles.topVectorEmblemWrapper}>
                 <View style={styles.glowingVectorCircle}>
-                  <MaterialCommunityIcons name="heart-flash" size={36} color="#FFFFFF" />
+                  <MaterialCommunityIcons name="heart-flash" size={32} color="#FFFFFF" />
                 </View>
               </View>
 
@@ -75,7 +75,7 @@ export default function LoginScreen() {
                 {/* Field 1: Email or Mobile */}
                 <Text style={styles.inputLabel}>Email or Phone Number</Text>
                 <View style={styles.glassInputWrapper}>
-                  <MaterialCommunityIcons name="email-outline" size={20} color="#FF85A1" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="email-outline" size={20} color="#0D9488" style={styles.inputIcon} />
                   <TextInput
                     style={styles.inputField}
                     placeholder="Enter your email or phone"
@@ -83,24 +83,24 @@ export default function LoginScreen() {
                     autoCapitalize="none"
                     value={identifier}
                     onChangeText={setIdentifier}
-                    placeholderTextColor="#8C7383"
+                    placeholderTextColor="#8C9E9B"
                   />
                 </View>
 
                 {/* Field 2: Password */}
                 <Text style={styles.inputLabel}>Password</Text>
                 <View style={styles.glassInputWrapper}>
-                  <MaterialCommunityIcons name="lock-outline" size={20} color="#FF85A1" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="lock-outline" size={20} color="#0D9488" style={styles.inputIcon} />
                   <TextInput
                     style={styles.inputField}
                     placeholder="Enter password"
                     secureTextEntry={!showPassword}
                     value={password}
                     onChangeText={setPassword}
-                    placeholderTextColor="#8C7383"
+                    placeholderTextColor="#8C9E9B"
                   />
                   <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIconBtn}>
-                    <Ionicons name={showPassword ? "eye-off-outline" : "eye-outline"} size={20} color="#FF85A1" />
+                    <Ionicons name={showPassword ? "eye-off-outline" : "eye-outline"} size={20} color="#0D9488" />
                   </TouchableOpacity>
                 </View>
 
@@ -122,7 +122,7 @@ export default function LoginScreen() {
                   </TouchableOpacity>
                 </View>
 
-                {/* Primary Action Button (Matching Reference Screenshot) */}
+                {/* Primary Action Button */}
                 <TouchableOpacity style={styles.primaryButton} onPress={handleLoginSubmit} activeOpacity={0.88}>
                   <Text style={styles.primaryButtonText}>Log In</Text>
                 </TouchableOpacity>
@@ -134,7 +134,7 @@ export default function LoginScreen() {
                   <View style={styles.dividerLine} />
                 </View>
 
-                {/* Glass Social Buttons Row (Inspiration Reference Screenshot) */}
+                {/* Glass Social Buttons Row */}
                 <View style={styles.socialRow}>
                   <TouchableOpacity style={styles.socialGlassBtn} activeOpacity={0.85}>
                     <Ionicons name="logo-google" size={18} color="#EA4335" style={{ marginRight: 6 }} />
@@ -142,7 +142,7 @@ export default function LoginScreen() {
                   </TouchableOpacity>
 
                   <TouchableOpacity style={styles.socialGlassBtn} activeOpacity={0.85}>
-                    <Ionicons name="logo-apple" size={18} color="#FFFFFF" style={{ marginRight: 6 }} />
+                    <Ionicons name="logo-apple" size={18} color="#0F2E2B" style={{ marginRight: 6 }} />
                     <Text style={styles.socialBtnText}>Apple</Text>
                   </TouchableOpacity>
                 </View>
@@ -159,7 +159,7 @@ export default function LoginScreen() {
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
-    </AnimatedGlassBackground>
+    </MintGlassBackground>
   );
 }
 
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   backButton: {
     padding: 6,
     borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
   },
   headerBrandRow: {
     flexDirection: 'row',
@@ -190,15 +190,15 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
     fontFamily: 'serif',
   },
   langPillBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 16,
     paddingHorizontal: 10,
     paddingVertical: 5,
@@ -206,43 +206,40 @@ const styles = StyleSheet.create({
   langPillText: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
   },
   scrollContent: {
     padding: 20,
     paddingBottom: 40,
   },
-  /* Glassmorphic Container Card (Matching Screenshot) */
   glassCardContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.16)',
+    borderColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 28,
     padding: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.3,
-    shadowRadius: 20,
-    elevation: 6,
+    shadowColor: '#0F2E2B',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    elevation: 4,
   },
   topVectorEmblemWrapper: {
     alignItems: 'center',
     marginBottom: 16,
   },
   glowingVectorCircle: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: '#E31E25',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#0F2E2B',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#E31E25',
+    shadowColor: '#0F2E2B',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.6,
-    shadowRadius: 14,
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
     elevation: 6,
-    borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
   },
   topIntro: {
     alignItems: 'center',
@@ -251,13 +248,13 @@ const styles = StyleSheet.create({
   welcomeTitle: {
     fontSize: 26,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
     fontFamily: 'serif',
     textAlign: 'center',
   },
   welcomeSub: {
     fontSize: 13,
-    color: '#BDA6B2',
+    color: '#4A6B66',
     marginTop: 6,
     textAlign: 'center',
     lineHeight: 18,
@@ -268,15 +265,15 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
     marginBottom: 8,
   },
   glassInputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.07)',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.14)',
+    borderColor: 'rgba(15, 46, 43, 0.12)',
     borderRadius: 18,
     paddingHorizontal: 16,
     marginBottom: 18,
@@ -288,7 +285,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 14,
     fontSize: 15,
-    color: '#FFFFFF',
+    color: '#0F2E2B',
   },
   eyeIconBtn: {
     padding: 8,
@@ -308,39 +305,37 @@ const styles = StyleSheet.create({
     height: 18,
     borderRadius: 9,
     borderWidth: 1.5,
-    borderColor: '#BDA6B2',
+    borderColor: '#8C9E9B',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 8,
     backgroundColor: 'transparent',
   },
   customCheckboxChecked: {
-    backgroundColor: '#E31E25',
-    borderColor: '#E31E25',
+    backgroundColor: '#0F2E2B',
+    borderColor: '#0F2E2B',
   },
   rememberText: {
     fontSize: 13,
-    color: '#BDA6B2',
+    color: '#4A6B66',
     fontWeight: '500',
   },
   forgotPasswordText: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#FF4D6D',
+    color: '#0D9488',
     textDecorationLine: 'underline',
   },
   primaryButton: {
-    backgroundColor: '#E31E25',
+    backgroundColor: '#0F2E2B',
     paddingVertical: 16,
     borderRadius: 24,
     alignItems: 'center',
-    shadowColor: '#E31E25',
+    shadowColor: '#0F2E2B',
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.25,
     shadowRadius: 14,
     elevation: 6,
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
     marginBottom: 20,
   },
   primaryButtonText: {
@@ -356,11 +351,11 @@ const styles = StyleSheet.create({
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+    backgroundColor: 'rgba(15, 46, 43, 0.12)',
   },
   dividerText: {
     fontSize: 12,
-    color: '#8C7383',
+    color: '#8C9E9B',
     marginHorizontal: 12,
     fontWeight: '600',
   },
@@ -374,16 +369,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.16)',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(15, 46, 43, 0.12)',
     borderRadius: 20,
     paddingVertical: 12,
   },
   socialBtnText: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
   },
   createAccountRow: {
     flexDirection: 'row',
@@ -392,12 +387,12 @@ const styles = StyleSheet.create({
   },
   createAccountText: {
     fontSize: 13,
-    color: '#BDA6B2',
+    color: '#4A6B66',
   },
   createAccountBold: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#FF4D6D',
+    color: '#0D9488',
     textDecorationLine: 'underline',
   },
 });

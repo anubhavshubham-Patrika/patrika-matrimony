@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
 import { Translations } from '../../../src/constants/translations';
-import AnimatedGlassBackground from '../../../src/components/AnimatedGlassBackground';
+import MintGlassBackground from '../../../src/components/MintGlassBackground';
 
 export default function Step13() {
   const router = useRouter();
@@ -12,28 +12,31 @@ export default function Step13() {
   const lang = state.language || 'en';
   const t = Translations[lang];
 
-  const [minAge, setMinAge] = useState('22');
-  const [maxAge, setMaxAge] = useState('32');
-  const [religionPref, setReligionPref] = useState('Hindu');
-  const [castePref, setCastePref] = useState('Rajput');
+  const [prefAge, setPrefAge] = useState('22 - 30 Yrs');
+  const [prefReligion, setPrefReligion] = useState('Hindu');
+  const [prefCaste, setPrefCaste] = useState('Rajput');
+  const [prefLocation, setPrefLocation] = useState('Rajasthan');
 
-  const handleNext = () => {
+  const ageRanges = ['20 - 25 Yrs', '22 - 30 Yrs', '25 - 35 Yrs', '30 - 40 Yrs', 'Doesn\'t matter'];
+
+  const handleFinish = () => {
     dispatch({
       type: 'UPDATE_ONBOARDING',
       payload: {
-        caste: castePref,
-        religion: religionPref,
+        residentState: prefLocation,
+        religion: prefReligion,
+        caste: prefCaste,
       },
     });
     router.push('/(auth)/onboarding/welcome');
   };
 
   return (
-    <AnimatedGlassBackground>
+    <MintGlassBackground>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.topHeader}>
           <TouchableOpacity onPress={() => router.back()} style={styles.blurBackBtn} activeOpacity={0.8}>
-            <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
+            <Ionicons name="chevron-back" size={22} color="#0F2E2B" />
           </TouchableOpacity>
           <View style={styles.stepPillBadge}>
             <Text style={styles.stepPillText}>Step 13 of 13</Text>
@@ -44,48 +47,56 @@ export default function Step13() {
           <View style={styles.glassCardContainer}>
             <View style={styles.badgeWrapper}>
               <View style={styles.glowingVectorCircle}>
-                <MaterialCommunityIcons name="target-account" size={32} color="#FFFFFF" />
+                <MaterialCommunityIcons name="heart-cog-outline" size={30} color="#FFFFFF" />
               </View>
             </View>
 
             <View style={styles.headerTitleBox}>
               <Text style={styles.questionTitle}>{t.step13Title}</Text>
-              <Text style={styles.questionSubtitle}>Define partner age, religion and community preferences</Text>
+              <Text style={styles.questionSubtitle}>Select desired partner preferences</Text>
             </View>
 
             {/* Preferred Age Range */}
             <Text style={styles.sectionHeaderLabel}>Preferred Age Range</Text>
-            <View style={styles.agePillRow}>
-              <View style={styles.ageGlassBox}>
-                <Text style={styles.agePillSub}>Min Age</Text>
-                <Text style={styles.agePillValue}>{minAge} Years</Text>
-              </View>
-              <Text style={styles.ageToText}>to</Text>
-              <View style={styles.ageGlassBox}>
-                <Text style={styles.agePillSub}>Max Age</Text>
-                <Text style={styles.agePillValue}>{maxAge} Years</Text>
-              </View>
+            <View style={styles.chipsWrapRow}>
+              {ageRanges.map((range) => (
+                <TouchableOpacity
+                  key={range}
+                  style={[styles.glassChip, prefAge === range && styles.glassChipSelected]}
+                  onPress={() => setPrefAge(range)}
+                >
+                  <Text style={[styles.glassChipText, prefAge === range && styles.glassChipTextSelected]}>{range}</Text>
+                </TouchableOpacity>
+              ))}
             </View>
 
             {/* Preferred Religion */}
             <Text style={styles.sectionHeaderLabel}>Preferred Religion</Text>
-            <TouchableOpacity style={styles.dropdownGlassTrigger} activeOpacity={0.88}>
-              <View style={styles.dropdownTriggerLeft}>
-                <MaterialCommunityIcons name="flower" size={22} color="#FF4D6D" style={{ marginRight: 10 }} />
-                <Text style={styles.dropdownValueText}>{religionPref}</Text>
-              </View>
-              <Ionicons name="chevron-down" size={20} color="#BDA6B2" />
-            </TouchableOpacity>
+            <View style={styles.chipsWrapRow}>
+              {['Hindu', 'Jain', 'Sikh', 'Muslim', "Doesn't matter"].map((r) => (
+                <TouchableOpacity
+                  key={r}
+                  style={[styles.glassChip, prefReligion === r && styles.glassChipSelected]}
+                  onPress={() => setPrefReligion(r)}
+                >
+                  <Text style={[styles.glassChipText, prefReligion === r && styles.glassChipTextSelected]}>{r}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
 
             {/* Preferred Caste */}
             <Text style={styles.sectionHeaderLabel}>Preferred Caste / Community</Text>
-            <TouchableOpacity style={styles.dropdownGlassTrigger} activeOpacity={0.88}>
-              <View style={styles.dropdownTriggerLeft}>
-                <MaterialCommunityIcons name="account-group" size={22} color="#FF4D6D" style={{ marginRight: 10 }} />
-                <Text style={styles.dropdownValueText}>{castePref}</Text>
-              </View>
-              <Ionicons name="chevron-down" size={20} color="#BDA6B2" />
-            </TouchableOpacity>
+            <View style={styles.chipsWrapRow}>
+              {['Rajput', 'Agarwal', 'Brahmin', 'Marwari', 'Jain', "Doesn't matter"].map((c) => (
+                <TouchableOpacity
+                  key={c}
+                  style={[styles.glassChip, prefCaste === c && styles.glassChipSelected]}
+                  onPress={() => setPrefCaste(c)}
+                >
+                  <Text style={[styles.glassChipText, prefCaste === c && styles.glassChipTextSelected]}>{c}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
           <View style={{ height: 20 }} />
         </ScrollView>
@@ -98,12 +109,12 @@ export default function Step13() {
             <Text style={styles.progressText}>100%</Text>
           </View>
 
-          <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
-            <Text style={styles.continueBtnText}>Complete Profile & View Matches 🎉</Text>
+          <TouchableOpacity style={styles.continueBtn} onPress={handleFinish} activeOpacity={0.88}>
+            <Text style={styles.continueBtnText}>Complete Profile ✨</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-    </AnimatedGlassBackground>
+    </MintGlassBackground>
   );
 }
 
@@ -122,22 +133,22 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.95)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   stepPillBadge: {
-    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderRadius: 16,
     paddingHorizontal: 12,
     paddingVertical: 5,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.95)',
   },
   stepPillText: {
-    color: '#FFFFFF',
+    color: '#0F2E2B',
     fontSize: 12,
     fontWeight: '700',
   },
@@ -147,35 +158,33 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   glassCardContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.16)',
+    borderColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 28,
     padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.3,
-    shadowRadius: 20,
-    elevation: 6,
+    shadowColor: '#0F2E2B',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    elevation: 4,
   },
   badgeWrapper: {
     alignItems: 'center',
     marginBottom: 12,
   },
   glowingVectorCircle: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#E31E25',
+    width: 58,
+    height: 58,
+    borderRadius: 29,
+    backgroundColor: '#0F2E2B',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#E31E25',
+    shadowColor: '#0F2E2B',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.6,
-    shadowRadius: 14,
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
     elevation: 6,
-    borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
   },
   headerTitleBox: {
     alignItems: 'center',
@@ -184,87 +193,59 @@ const styles = StyleSheet.create({
   questionTitle: {
     fontSize: 22,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
     fontFamily: 'serif',
     textAlign: 'center',
     marginBottom: 4,
   },
   questionSubtitle: {
     fontSize: 13,
-    color: '#BDA6B2',
+    color: '#4A6B66',
     textAlign: 'center',
     lineHeight: 18,
   },
   sectionHeaderLabel: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: '#0F2E2B',
     marginTop: 14,
     marginBottom: 8,
   },
 
-  agePillRow: {
+  chipsWrapRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    gap: 8,
     marginBottom: 10,
   },
-  ageGlassBox: {
-    flex: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
-    borderRadius: 18,
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.14)',
-    alignItems: 'center',
+  glassChip: {
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderWidth: 1,
+    borderColor: 'rgba(15, 46, 43, 0.14)',
+    borderRadius: 14,
+    paddingHorizontal: 12,
+    paddingVertical: 7,
   },
-  agePillSub: {
-    fontSize: 11,
-    color: '#BDA6B2',
+  glassChipSelected: {
+    backgroundColor: '#0F2E2B',
+    borderColor: '#0F2E2B',
+  },
+  glassChipText: {
+    fontSize: 12,
+    color: '#0F2E2B',
     fontWeight: '600',
   },
-  agePillValue: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: '#FF4D6D',
-    marginTop: 2,
-  },
-  ageToText: {
-    marginHorizontal: 12,
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#BDA6B2',
-  },
-
-  dropdownGlassTrigger: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.14)',
-    borderRadius: 18,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    marginBottom: 10,
-  },
-  dropdownTriggerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  dropdownValueText: {
-    fontSize: 15,
-    fontWeight: '700',
+  glassChipTextSelected: {
     color: '#FFFFFF',
+    fontWeight: '800',
   },
 
   footerContainer: {
     paddingHorizontal: 20,
     paddingVertical: 14,
-    backgroundColor: 'rgba(18, 7, 14, 0.85)',
+    backgroundColor: 'rgba(235, 247, 245, 0.92)',
     borderTopWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    borderColor: 'rgba(15, 46, 43, 0.1)',
   },
   progressRow: {
     flexDirection: 'row',
@@ -275,33 +256,31 @@ const styles = StyleSheet.create({
   progressTrackBg: {
     flex: 1,
     height: 6,
-    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+    backgroundColor: 'rgba(15, 46, 43, 0.12)',
     borderRadius: 3,
     overflow: 'hidden',
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: '#E31E25',
+    backgroundColor: '#0D9488',
     borderRadius: 3,
   },
   progressText: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#FF4D6D',
+    color: '#0D9488',
   },
   continueBtn: {
-    backgroundColor: '#E31E25',
+    backgroundColor: '#0F2E2B',
     paddingVertical: 16,
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#E31E25',
+    shadowColor: '#0F2E2B',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.25,
     shadowRadius: 12,
     elevation: 6,
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
   },
   continueBtnText: {
     color: '#FFFFFF',
