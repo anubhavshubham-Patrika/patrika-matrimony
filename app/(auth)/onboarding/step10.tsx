@@ -14,6 +14,7 @@ export default function Step10() {
 
   const [collegeName, setCollegeName] = useState(state.onboardingData?.collegeName || 'MNIT Jaipur');
   const [organizationName, setOrganizationName] = useState(state.onboardingData?.organizationName || 'TCS');
+  const [designation, setDesignation] = useState(state.onboardingData?.occupation || 'Senior Software Engineer');
 
   const handleNext = () => {
     dispatch({
@@ -21,6 +22,7 @@ export default function Step10() {
       payload: {
         collegeName,
         organizationName,
+        occupation: designation,
       },
     });
     router.push('/(auth)/onboarding/step11');
@@ -48,7 +50,7 @@ export default function Step10() {
 
             <View style={styles.headerTitleBox}>
               <Text style={styles.questionTitle}>{t.step10Title}</Text>
-              <Text style={styles.questionSubtitle}>Enter education & company details</Text>
+              <Text style={styles.questionSubtitle}>Enter education, company & designation details</Text>
             </View>
 
             {/* College Name */}
@@ -70,9 +72,22 @@ export default function Step10() {
               <MaterialCommunityIcons name="office-building-outline" size={20} color="#0D9488" style={{ marginRight: 10 }} />
               <TextInput
                 style={styles.inputField}
-                placeholder="e.g. Infosys, State Bank of India, Self-Employed"
+                placeholder="e.g. Infosys, TCS, State Bank of India"
                 value={organizationName}
                 onChangeText={setOrganizationName}
+                placeholderTextColor="#8C9E9B"
+              />
+            </View>
+
+            {/* Current Designation */}
+            <Text style={styles.sectionHeaderLabel}>Current Designation / Job Role</Text>
+            <View style={styles.glassInputWrapper}>
+              <MaterialCommunityIcons name="badge-account-outline" size={20} color="#0D9488" style={{ marginRight: 10 }} />
+              <TextInput
+                style={styles.inputField}
+                placeholder="e.g. Senior Software Engineer, Manager"
+                value={designation}
+                onChangeText={setDesignation}
                 placeholderTextColor="#8C9E9B"
               />
             </View>
