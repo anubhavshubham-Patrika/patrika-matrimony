@@ -16,14 +16,24 @@ export default function Step4() {
 
   const [religion, setReligion] = useState(state.onboardingData?.religion || 'Hindu');
   const [caste, setCaste] = useState(state.onboardingData?.caste || 'Rajput');
+  const [subCaste, setSubCaste] = useState(state.onboardingData?.subCaste || 'Rathore');
   const [gotra, setGotra] = useState(state.onboardingData?.gotra || '');
   const [manglikStatus, setManglikStatus] = useState(state.onboardingData?.manglikStatus || 'Non-Manglik');
 
   const [showReligionModal, setShowReligionModal] = useState(false);
   const [showCasteModal, setShowCasteModal] = useState(false);
+  const [showSubCasteModal, setShowSubCasteModal] = useState(false);
 
   const religions = ['Hindu', 'Muslim', 'Sikh', 'Jain', 'Christian', 'Parsi', 'Buddhist', 'Other'];
   const popularCastes = ['Rajput', 'Agarwal', 'Brahmin', 'Marwari', 'Jain', 'Sindhi', 'Jat', 'Gupta', 'Maheshwari', 'Other'];
+  
+  const popularSubCastes = [
+    'Rathore', 'Chauhan', 'Shekhawat', 'Sisodia', 'Kachhwaha', 'Parmar', 'Solanki', 'Bhati',
+    'Garg', 'Bansal', 'Mittal', 'Goyal', 'Kansal', 'Singhal',
+    'Gaur', 'Sharma', 'Vashistha', 'Khandelwal', 'Oswal', 'Jha', 'Mishra',
+    'Other / Don\'t wish to specify'
+  ];
+
   const manglikOptions = ['Non-Manglik', 'Manglik', 'Partial Manglik', "Don't Know"];
 
   const handleNext = () => {
@@ -32,6 +42,7 @@ export default function Step4() {
       payload: {
         religion,
         caste,
+        subCaste,
         gotra,
         manglikStatus,
       },
@@ -61,7 +72,7 @@ export default function Step4() {
 
             <View style={styles.headerTitleBox}>
               <Text style={styles.questionTitle}>{t.step4Title}</Text>
-              <Text style={styles.questionSubtitle}>{t.step4Subtitle}</Text>
+              <Text style={styles.questionSubtitle}>Select religion, caste, sub-caste & gotra</Text>
             </View>
 
             {/* Religion Trigger */}
@@ -88,6 +99,20 @@ export default function Step4() {
               <View style={styles.dropdownTriggerLeft}>
                 <MaterialCommunityIcons name="account-group" size={22} color="#0D9488" style={{ marginRight: 10 }} />
                 <Text style={styles.dropdownValueText}>{caste}</Text>
+              </View>
+              <Ionicons name="chevron-down" size={20} color="#8C9E9B" />
+            </TouchableOpacity>
+
+            {/* Sub-Caste Trigger */}
+            <Text style={styles.sectionHeaderLabel}>Sub-Caste</Text>
+            <TouchableOpacity
+              style={styles.dropdownGlassTrigger}
+              onPress={() => setShowSubCasteModal(true)}
+              activeOpacity={0.88}
+            >
+              <View style={styles.dropdownTriggerLeft}>
+                <MaterialCommunityIcons name="account-multiple-outline" size={22} color="#0D9488" style={{ marginRight: 10 }} />
+                <Text style={styles.dropdownValueText}>{subCaste}</Text>
               </View>
               <Ionicons name="chevron-down" size={20} color="#8C9E9B" />
             </TouchableOpacity>
@@ -174,6 +199,32 @@ export default function Step4() {
                   >
                     <Text style={[styles.modalOptionText, caste === c && styles.modalOptionTextSelected]}>{c}</Text>
                     {caste === c && <Ionicons name="checkmark" size={20} color="#0D9488" />}
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+          </View>
+        </Modal>
+
+        {/* Sub-Caste Modal */}
+        <Modal visible={showSubCasteModal} animationType="slide" transparent>
+          <View style={styles.modalBackdrop}>
+            <View style={styles.modalGlassCard}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Select Sub-Caste</Text>
+                <TouchableOpacity onPress={() => setShowSubCasteModal(false)}>
+                  <Ionicons name="close" size={24} color="#0F2E2B" />
+                </TouchableOpacity>
+              </View>
+              <ScrollView style={{ maxHeight: 340 }}>
+                {popularSubCastes.map((sc) => (
+                  <TouchableOpacity
+                    key={sc}
+                    style={styles.modalOptionItem}
+                    onPress={() => { setSubCaste(sc); setShowSubCasteModal(false); }}
+                  >
+                    <Text style={[styles.modalOptionText, subCaste === sc && styles.modalOptionTextSelected]}>{sc}</Text>
+                    {subCaste === sc && <Ionicons name="checkmark" size={20} color="#0D9488" />}
                   </TouchableOpacity>
                 ))}
               </ScrollView>
