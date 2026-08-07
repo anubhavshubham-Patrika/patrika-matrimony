@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
@@ -14,12 +14,35 @@ export default function Step12() {
 
   const defaultPhoto = 'https://randomuser.me/api/portraits/men/32.jpg';
   const [photoUrl, setPhotoUrl] = useState(state.onboardingData?.profilePhotoURL || defaultPhoto);
+  const [isSelfieVerified, setIsSelfieVerified] = useState(true);
+
+  const handleUploadGalleryImage = () => {
+    Alert.alert(
+      '📷 Upload Image',
+      'Select a photo from your gallery to set as your main profile image.',
+      [
+        { text: 'Choose Demo Photo 1', onPress: () => setPhotoUrl('https://randomuser.me/api/portraits/men/45.jpg') },
+        { text: 'Choose Demo Photo 2', onPress: () => setPhotoUrl('https://randomuser.me/api/portraits/men/68.jpg') },
+        { text: 'Cancel', style: 'cancel' },
+      ]
+    );
+  };
+
+  const handleVerifySelfie = () => {
+    setIsSelfieVerified(true);
+    Alert.alert(
+      '🤳 Selfie Verification Successful!',
+      'Your live selfie has been verified. A green "Govt & Selfie Verified" badge is now added to your profile!',
+      [{ text: 'Great!' }]
+    );
+  };
 
   const handleNext = () => {
     dispatch({
       type: 'UPDATE_ONBOARDING',
       payload: {
         profilePhotoURL: photoUrl,
+        isVerified: isSelfieVerified,
       },
     });
     router.push('/(auth)/onboarding/step13');
@@ -47,21 +70,63 @@ export default function Step12() {
 
             <View style={styles.headerTitleBox}>
               <Text style={styles.questionTitle}>{t.step12Title}</Text>
-              <Text style={styles.questionSubtitle}>Add your profile photo for responses</Text>
+              <Text style={styles.questionSubtitle}>Add your profile photo & verify with selfie</Text>
             </View>
 
             {/* Photo Avatar Preview Frame */}
             <View style={styles.photoFrameContainer}>
               <Image source={{ uri: photoUrl }} style={styles.avatarImage} />
-              <TouchableOpacity style={styles.cameraIconBtn} activeOpacity={0.88}>
+              <TouchableOpacity style={styles.cameraIconBtn} onPress={handleUploadGalleryImage} activeOpacity={0.88}>
                 <Ionicons name="camera" size={20} color="#FFFFFF" />
+              </TouchableOpacity>
+
+              {isSelfieVerified && (
+                <View style={styles.selfieVerifiedBadge}>
+                  <Ionicons name="shield-checkmark" size={14} color="#FFFFFF" style={{ marginRight: 3 }} />
+                  <Text style={styles.selfieVerifiedText}>Verified</Text>
+                </View>
+              )}
+            </View>
+
+            {/* Action Option Buttons Container */}
+            <View style={styles.actionButtonsContainer}>
+              {/* Option 1: Add Image from Gallery */}
+              <TouchableOpacity 
+                style={styles.actionGlassBtn} 
+                onPress={handleUploadGalleryImage}
+                activeOpacity={0.88}
+              >
+                <View style={styles.actionBtnIconBadge}>
+                  <MaterialCommunityIcons name="image-plus" size={20} color="#0D9488" />
+                </View>
+                <View style={styles.actionBtnTextCol}>
+                  <Text style={styles.actionBtnTitle}>Add Profile Image</Text>
+                  <Text style={styles.actionBtnSub}>Upload from phone gallery</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={18} color="#8C9E9B" />
+              </TouchableOpacity>
+
+              {/* Option 2: Verify with Selfie */}
+              <TouchableOpacity 
+                style={[styles.actionGlassBtn, styles.actionGlassBtnPrimary]} 
+                onPress={handleVerifySelfie}
+                activeOpacity={0.88}
+              >
+                <View style={[styles.actionBtnIconBadge, { backgroundColor: '#0D9488' }]}>
+                  <MaterialCommunityIcons name="camera-account" size={20} color="#FFFFFF" />
+                </View>
+                <View style={styles.actionBtnTextCol}>
+                  <Text style={styles.actionBtnTitle}>Verify with Live Selfie</Text>
+                  <Text style={styles.actionBtnSub}>Get 5x more responses & verified badge</Text>
+                </View>
+                <Ionicons name="checkmark-circle" size={20} color="#0D9488" />
               </TouchableOpacity>
             </View>
 
             {/* Photo Tip Pill */}
             <View style={styles.tipGlassPill}>
               <MaterialCommunityIcons name="lightning-bolt" size={16} color="#0D9488" style={{ marginRight: 6 }} />
-              <Text style={styles.tipPillText}>Profiles with photos receive 8x more interest & responses!</Text>
+              <Text style={styles.tipPillText}>Verified profiles with photos get 8x more matches!</Text>
             </View>
           </View>
           <View style={{ height: 20 }} />
@@ -155,7 +220,7 @@ const styles = StyleSheet.create({
   },
   headerTitleBox: {
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 14,
   },
   questionTitle: {
     fontSize: 22,
@@ -174,7 +239,7 @@ const styles = StyleSheet.create({
 
   photoFrameContainer: {
     position: 'relative',
-    marginVertical: 14,
+    marginVertical: 12,
   },
   avatarImage: {
     width: 130,
@@ -196,6 +261,63 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#FFFFFF',
   },
+  selfieVerifiedBadge: {
+    position: 'absolute',
+    top: -4,
+    right: -4,
+    backgroundColor: '#0D9488',
+    borderRadius: 14,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  selfieVerifiedText: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '800',
+  },
+
+  actionButtonsContainer: {
+    width: '100%',
+    gap: 10,
+    marginVertical: 14,
+  },
+  actionGlassBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 20,
+    padding: 12,
+    borderWidth: 1.5,
+    borderColor: 'rgba(15, 46, 43, 0.12)',
+  },
+  actionGlassBtnPrimary: {
+    backgroundColor: 'rgba(13, 148, 136, 0.08)',
+    borderColor: '#0D9488',
+  },
+  actionBtnIconBadge: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: 'rgba(13, 148, 136, 0.12)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  actionBtnTextCol: {
+    flex: 1,
+  },
+  actionBtnTitle: {
+    fontSize: 14,
+    fontWeight: '800',
+    color: '#0F2E2B',
+  },
+  actionBtnSub: {
+    fontSize: 11,
+    color: '#4A6B66',
+    marginTop: 2,
+  },
 
   tipGlassPill: {
     flexDirection: 'row',
@@ -204,7 +326,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     paddingHorizontal: 14,
     paddingVertical: 10,
-    marginTop: 10,
+    marginTop: 4,
   },
   tipPillText: {
     fontSize: 12,
