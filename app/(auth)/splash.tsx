@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { 
-  View, Text, StyleSheet, TouchableOpacity, Animated, SafeAreaView, ScrollView, Image 
+import {
+  View, Text, StyleSheet, TouchableOpacity, Animated,
+  SafeAreaView, ScrollView, Image, ImageBackground
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -9,6 +10,20 @@ import { Translations } from '../../src/constants/translations';
 import PatrikaRibbonLogo from '../../src/components/PatrikaRibbonLogo';
 import MintGlassBackground from '../../src/components/MintGlassBackground';
 
+const FEATURES = [
+  { icon: 'shield-checkmark', label: 'Verified Profiles', sub: '100% trusted & authentic' },
+  { icon: 'search', label: 'Smart Matches', sub: 'AI powered compatibility' },
+  { icon: 'lock-closed', label: 'Privacy First', sub: 'Your data is safe & secure' },
+  { icon: 'heart', label: 'Serious Connections', sub: 'For meaningful relationships' },
+];
+
+const STATS = [
+  { icon: 'people-outline', value: '2L+', label: 'Happy Members' },
+  { icon: 'shield-checkmark-outline', value: '100%', label: 'Verified Profiles' },
+  { icon: 'heart-outline', value: '50K+', label: 'Successful Matches' },
+  { icon: 'trophy-outline', value: '20+', label: 'Years of Trust' },
+];
+
 export default function SplashScreen() {
   const router = useRouter();
   const { state, dispatch } = useApp();
@@ -16,138 +31,128 @@ export default function SplashScreen() {
   const t = Translations[lang];
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const translateYAnim = useRef(new Animated.Value(20)).current;
-  const scaleAnim = useRef(new Animated.Value(0.95)).current;
+  const translateYAnim = useRef(new Animated.Value(24)).current;
+  const scaleAnim = useRef(new Animated.Value(0.96)).current;
 
   useEffect(() => {
     Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 800,
-        useNativeDriver: true,
-      }),
-      Animated.timing(translateYAnim, {
-        toValue: 0,
-        duration: 800,
-        useNativeDriver: true,
-      }),
-      Animated.spring(scaleAnim, {
-        toValue: 1,
-        friction: 8,
-        tension: 40,
-        useNativeDriver: true,
-      }),
+      Animated.timing(fadeAnim, { toValue: 1, duration: 700, useNativeDriver: true }),
+      Animated.timing(translateYAnim, { toValue: 0, duration: 700, useNativeDriver: true }),
+      Animated.spring(scaleAnim, { toValue: 1, friction: 8, tension: 40, useNativeDriver: true }),
     ]).start();
-  }, [fadeAnim, translateYAnim, scaleAnim]);
+  }, []);
 
-  const toggleLanguage = () => {
+  const toggleLanguage = () =>
     dispatch({ type: 'SET_LANGUAGE', payload: lang === 'en' ? 'hi' : 'en' });
-  };
 
   return (
     <MintGlassBackground>
       <SafeAreaView style={styles.safeArea}>
-        {/* Top Header Bar with Glass Language Selector */}
-        <View style={styles.topHeaderBar}>
-          <View style={{ flex: 1 }} />
-          <TouchableOpacity 
-            style={styles.langGlassBtn} 
-            onPress={toggleLanguage}
-            activeOpacity={0.8}
-          >
-            <Ionicons name="globe-outline" size={16} color="#0D9488" style={{ marginRight: 5 }} />
-            <Text style={styles.langGlassText}>{lang === 'en' ? 'English' : 'हिंदी'}</Text>
-            <Ionicons name="chevron-down" size={14} color="#0D9488" style={{ marginLeft: 3 }} />
+
+        {/* ── Top bar: floral left + lang right ── */}
+        <View style={styles.topBar}>
+          {/* Decorative floral corner blobs */}
+          <View style={styles.floralTopLeft}>
+            <Text style={styles.floralEmoji}>🌸</Text>
+            <Text style={[styles.floralEmoji, { fontSize: 26, marginTop: -6, marginLeft: -4 }]}>🌿</Text>
+          </View>
+
+          <TouchableOpacity style={styles.langBtn} onPress={toggleLanguage} activeOpacity={0.8}>
+            <Ionicons name="globe-outline" size={15} color="#0F2E2B" style={{ marginRight: 4 }} />
+            <Text style={styles.langText}>{lang === 'en' ? 'English' : 'हिंदी'}</Text>
+            <Ionicons name="chevron-down" size={13} color="#0F2E2B" style={{ marginLeft: 2 }} />
           </TouchableOpacity>
         </View>
 
-        <ScrollView 
-          contentContainerStyle={styles.scrollContent} 
-          showsVerticalScrollIndicator={false}
-          bounces={false}
-        >
-          <Animated.View 
-            style={[
-              styles.mainContainer,
-              {
-                opacity: fadeAnim,
-                transform: [{ translateY: translateYAnim }, { scale: scaleAnim }],
-              }
-            ]}
-          >
-            {/* 1. TOP ARCHITECTURAL ARCH DOME & LOGO EMBLEM */}
-            <View style={styles.archOuterWrapper}>
-              <View style={styles.archDomeFrame}>
-                <View style={styles.archInnerCircle}>
-                  <PatrikaRibbonLogo size={68} rounded />
+        <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false} bounces={false}>
+          <Animated.View style={[styles.content, { opacity: fadeAnim, transform: [{ translateY: translateYAnim }, { scale: scaleAnim }] }]}>
+
+            {/* ── ARCH EMBLEM ── */}
+            <View style={styles.archWrapper}>
+              {/* Outer concentric faint ring */}
+              <View style={styles.archRingOuter}>
+                <View style={styles.archRingInner}>
+                  {/* Arch dome frame */}
+                  <View style={styles.archDome}>
+                    <View style={styles.archLogoCircle}>
+                      <PatrikaRibbonLogo size={62} rounded />
+                    </View>
+                  </View>
                 </View>
               </View>
             </View>
 
-            {/* 2. HERO TYPOGRAPHY & TITLE */}
-            <Text style={styles.welcomeText}>W E L C O M E   T O</Text>
-            <Text style={styles.brandTitleLine1}>Patrika</Text>
-            <Text style={styles.brandTitleLine2}>Matrimony</Text>
-            <Text style={styles.taglineText}>
-              {t.trustedMatchesSub || 'Trusted matches from Rajasthan Patrika'}
-            </Text>
+            {/* ── HEADLINE ── */}
+            <Text style={styles.welcomeLabel}>W E L C O M E   T O</Text>
+            <Text style={styles.titleLine1}>Patrika</Text>
+            <Text style={styles.titleLine2}>Matrimony</Text>
 
-            {/* 100% Verified Profiles Glass Pill */}
-            <View style={styles.verifiedGlassPill}>
+            {/* Heart divider */}
+            <View style={styles.heartDividerRow}>
+              <View style={styles.dividerLine} />
+              <Ionicons name="heart" size={14} color="#0D9488" style={{ marginHorizontal: 8 }} />
+              <View style={styles.dividerLine} />
+            </View>
+
+            <Text style={styles.tagline}>Trusted matches from Rajasthan Patrika</Text>
+
+            {/* Verified pill */}
+            <View style={styles.verifiedPill}>
               <Ionicons name="shield-checkmark" size={15} color="#0D9488" style={{ marginRight: 6 }} />
               <Text style={styles.verifiedPillText}>100% Verified Profiles</Text>
             </View>
 
-            {/* 3. 4-COLUMN FEATURE CARDS CONTAINER */}
-            <View style={styles.featureGridGlassCard}>
-              {/* Feature 1: Verified Profiles */}
-              <View style={styles.featureCol}>
-                <View style={styles.featureIconBadge}>
-                  <Ionicons name="shield-checkmark" size={18} color="#FFFFFF" />
+            {/* ── FEATURES CARD ── */}
+            <View style={styles.featureCard}>
+              {FEATURES.map((f) => (
+                <View key={f.label} style={styles.featureCol}>
+                  <View style={styles.featureIconCircle}>
+                    <Ionicons name={f.icon as any} size={18} color="#FFFFFF" />
+                  </View>
+                  <Text style={styles.featureTitle}>{f.label}</Text>
+                  <Text style={styles.featureSub}>{f.sub}</Text>
                 </View>
-                <Text style={styles.featureColTitle}>Verified Profiles</Text>
-                <Text style={styles.featureColSub}>100% trusted & authentic</Text>
-              </View>
-
-              {/* Feature 2: Smart Matches */}
-              <View style={styles.featureCol}>
-                <View style={styles.featureIconBadge}>
-                  <Ionicons name="search" size={18} color="#FFFFFF" />
-                </View>
-                <Text style={styles.featureColTitle}>Smart Matches</Text>
-                <Text style={styles.featureColSub}>AI-powered compatibility</Text>
-              </View>
-
-              {/* Feature 3: Privacy First */}
-              <View style={styles.featureCol}>
-                <View style={styles.featureIconBadge}>
-                  <Ionicons name="lock-closed" size={18} color="#FFFFFF" />
-                </View>
-                <Text style={styles.featureColTitle}>Privacy First</Text>
-                <Text style={styles.featureColSub}>Your data is safe & secure</Text>
-              </View>
-
-              {/* Feature 4: Serious Connections */}
-              <View style={styles.featureCol}>
-                <View style={styles.featureIconBadge}>
-                  <Ionicons name="heart" size={18} color="#FFFFFF" />
-                </View>
-                <Text style={styles.featureColTitle}>Serious Connections</Text>
-                <Text style={styles.featureColSub}>For meaningful relationships</Text>
-              </View>
+              ))}
             </View>
 
-            {/* 4. ARCHITECTURAL PALACE SILHOUETTE & WEDDING BANNER */}
-            <View style={styles.palaceBannerContainer}>
-              <Image 
-                source={{ uri: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80' }}
-                style={styles.palaceBannerImage}
-                resizeMode="cover"
-              />
-              <View style={styles.palaceBannerOverlay}>
-                <View style={styles.palaceOverlayPill}>
-                  <MaterialCommunityIcons name="flower-tulip-outline" size={14} color="#0D9488" style={{ marginRight: 4 }} />
-                  <Text style={styles.palaceOverlayText}>Rajasthan Patrika Royal Heritage</Text>
+            {/* ── STATS ROW ── */}
+            <View style={styles.statsCard}>
+              {STATS.map((s, idx) => (
+                <View key={s.label} style={[styles.statCol, idx < STATS.length - 1 && styles.statColBorder]}>
+                  <Ionicons name={s.icon as any} size={20} color="#0D9488" />
+                  <Text style={styles.statValue}>{s.value}</Text>
+                  <Text style={styles.statLabel}>{s.label}</Text>
+                </View>
+              ))}
+            </View>
+
+            {/* ── PALACE SILHOUETTE BANNER ── */}
+            <View style={styles.palaceContainer}>
+              {/* Gradient-like mint tinted background */}
+              <View style={styles.palaceBg}>
+                {/* Flowers left & right */}
+                <Text style={styles.flowerLeft}>🌸</Text>
+                <Text style={styles.flowerRight}>🌸</Text>
+
+                {/* Palace + Couple Illustration using a carefully styled View */}
+                <View style={styles.silhouetteRow}>
+                  {/* Left mini-palace */}
+                  <View style={styles.palaceLeftTower}>
+                    <View style={styles.towerDome} />
+                    <View style={styles.towerBody} />
+                  </View>
+
+                  {/* Centre couple placeholder */}
+                  <View style={styles.coupleCenter}>
+                    <Text style={styles.coupleEmoji}>👫</Text>
+                    <View style={styles.brideVeil} />
+                  </View>
+
+                  {/* Right mini-palace */}
+                  <View style={styles.palaceRightTower}>
+                    <View style={styles.towerDome} />
+                    <View style={styles.towerBody} />
+                  </View>
                 </View>
               </View>
             </View>
@@ -155,277 +160,246 @@ export default function SplashScreen() {
           </Animated.View>
         </ScrollView>
 
-        {/* 5. BOTTOM ACTION FOOTER */}
-        <Animated.View style={[styles.bottomBar, { opacity: fadeAnim }]}>
+        {/* ── FOOTER ── */}
+        <Animated.View style={[styles.footer, { opacity: fadeAnim }]}>
           <TouchableOpacity
-            style={styles.letsStartBtn}
+            style={styles.ctaBtn}
             onPress={() => router.push('/(auth)/onboarding/step1')}
             activeOpacity={0.88}
           >
-            <Text style={styles.letsStartText}>Let's Start →</Text>
+            <Text style={styles.ctaBtnText}>Let's Start   →</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.loginContainer}
-            onPress={() => router.push('/(auth)/login')}
-            activeOpacity={0.7}
-          >
+          <TouchableOpacity onPress={() => router.push('/(auth)/login')} activeOpacity={0.7}>
             <Text style={styles.loginText}>
-              Already have an account? <Text style={styles.loginBoldText}>Login</Text>
+              Already have an account?{' '}<Text style={styles.loginLink}>Login</Text>
             </Text>
           </TouchableOpacity>
+
+          <View style={styles.footerTagRow}>
+            <Ionicons name="lock-closed-outline" size={11} color="#4A6B66" />
+            <Text style={styles.footerTag}>  Secure & Private</Text>
+            <Text style={styles.footerDot}>  ·  </Text>
+            <Ionicons name="people-outline" size={11} color="#4A6B66" />
+            <Text style={styles.footerTag}>  Trusted by Millions</Text>
+            <Text style={styles.footerDot}>  ·  </Text>
+            <Ionicons name="heart" size={11} color="#0D9488" />
+            <Text style={styles.footerTag}>  Made with ❤️ in India</Text>
+          </View>
         </Animated.View>
+
       </SafeAreaView>
     </MintGlassBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
-  topHeaderBar: {
+  safeArea: { flex: 1 },
+
+  /* ── TOP BAR ── */
+  topBar: {
     flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 8,
-    paddingBottom: 4,
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingTop: 6,
+    paddingBottom: 2,
     zIndex: 10,
   },
-  langGlassBtn: {
+  floralTopLeft: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    flexWrap: 'wrap',
+    width: 56,
+  },
+  floralEmoji: { fontSize: 30, opacity: 0.9 },
+  langBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    backgroundColor: 'rgba(255,255,255,0.88)',
     borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.95)',
+    borderColor: 'rgba(255,255,255,0.95)',
     borderRadius: 20,
-    paddingHorizontal: 14,
+    paddingHorizontal: 12,
     paddingVertical: 6,
+    shadowColor: '#0F2E2B',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 2,
+    marginTop: 2,
   },
-  langGlassText: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#0F2E2B',
-  },
-  scrollContent: {
-    flexGrow: 1,
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingTop: 6,
-    paddingBottom: 16,
-  },
-  mainContainer: {
-    width: '100%',
-    alignItems: 'center',
-  },
+  langText: { fontSize: 13, fontWeight: '700', color: '#0F2E2B' },
 
-  /* Arch Dome Frame */
-  archOuterWrapper: {
-    alignItems: 'center',
-    marginVertical: 10,
+  /* ── SCROLL ── */
+  scroll: { paddingHorizontal: 18, paddingTop: 0, paddingBottom: 8, alignItems: 'center' },
+  content: { width: '100%', alignItems: 'center' },
+
+  /* ── ARCH EMBLEM ── */
+  archWrapper: { alignItems: 'center', marginTop: 0, marginBottom: 16 },
+  archRingOuter: {
+    width: 200, height: 200, borderRadius: 100,
+    borderWidth: 1, borderColor: 'rgba(13,148,136,0.15)',
+    backgroundColor: 'rgba(13,148,136,0.04)',
+    alignItems: 'center', justifyContent: 'center',
   },
-  archDomeFrame: {
-    width: 120,
-    height: 140,
-    borderTopLeftRadius: 60,
-    borderTopRightRadius: 60,
-    borderBottomLeftRadius: 28,
-    borderBottomRightRadius: 28,
+  archRingInner: {
+    width: 160, height: 160, borderRadius: 80,
+    borderWidth: 1, borderColor: 'rgba(13,148,136,0.22)',
+    backgroundColor: 'rgba(13,148,136,0.06)',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  archDome: {
+    width: 108, height: 126,
+    borderTopLeftRadius: 54, borderTopRightRadius: 54,
+    borderBottomLeftRadius: 18, borderBottomRightRadius: 18,
     backgroundColor: '#0F2E2B',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: 'rgba(212, 175, 55, 0.6)',
+    borderWidth: 2.5,
+    borderColor: '#D4AF37',
+    alignItems: 'center', justifyContent: 'center',
     shadowColor: '#0F2E2B',
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.28,
     shadowRadius: 14,
-    elevation: 6,
+    elevation: 8,
   },
-  archInnerCircle: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
+  archLogoCircle: {
+    width: 80, height: 80, borderRadius: 40,
     backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'center', justifyContent: 'center',
+    shadowColor: '#0F2E2B',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 4,
   },
 
-  /* Titles */
-  welcomeText: {
-    fontSize: 11,
-    fontWeight: '800',
-    color: '#0D9488',
-    letterSpacing: 4,
-    marginTop: 10,
-    marginBottom: 4,
-    textAlign: 'center',
+  /* ── HEADLINE ── */
+  welcomeLabel: {
+    fontSize: 11, fontWeight: '800', color: '#0D9488',
+    letterSpacing: 4, textAlign: 'center', marginBottom: 4,
   },
-  brandTitleLine1: {
-    fontSize: 34,
-    fontWeight: '800',
-    color: '#0F2E2B',
-    fontFamily: 'serif',
-    textAlign: 'center',
-    lineHeight: 38,
+  titleLine1: {
+    fontSize: 40, fontWeight: '900', color: '#0F2E2B',
+    fontFamily: 'serif', textAlign: 'center', lineHeight: 44,
   },
-  brandTitleLine2: {
-    fontSize: 34,
-    fontWeight: '800',
-    color: '#0F2E2B',
-    fontFamily: 'serif',
-    textAlign: 'center',
-    lineHeight: 38,
-    marginBottom: 6,
-  },
-  taglineText: {
-    fontSize: 13,
-    fontWeight: '500',
-    color: '#4A6B66',
-    textAlign: 'center',
+  titleLine2: {
+    fontSize: 40, fontWeight: '900', color: '#0F2E2B',
+    fontFamily: 'serif', textAlign: 'center', lineHeight: 44,
     marginBottom: 12,
   },
-
-  verifiedGlassPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(13, 148, 136, 0.12)',
-    borderWidth: 1,
-    borderColor: 'rgba(13, 148, 136, 0.25)',
-    borderRadius: 20,
-    paddingHorizontal: 16,
-    paddingVertical: 7,
-    marginBottom: 16,
+  heartDividerRow: {
+    flexDirection: 'row', alignItems: 'center',
+    width: '70%', marginBottom: 8,
   },
-  verifiedPillText: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: '#0F2E2B',
+  dividerLine: {
+    flex: 1, height: 1,
+    backgroundColor: 'rgba(13,148,136,0.25)',
+  },
+  tagline: {
+    fontSize: 14, fontWeight: '500', color: '#4A6B66',
+    textAlign: 'center', marginBottom: 12,
   },
 
-  /* 4-Column Feature Grid */
-  featureGridGlassCard: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.95)',
-    borderRadius: 24,
-    paddingVertical: 16,
-    paddingHorizontal: 10,
-    marginBottom: 16,
+  /* Verified pill */
+  verifiedPill: {
+    flexDirection: 'row', alignItems: 'center',
+    backgroundColor: 'rgba(13,148,136,0.12)',
+    borderWidth: 1, borderColor: 'rgba(13,148,136,0.3)',
+    borderRadius: 20, paddingHorizontal: 16, paddingVertical: 7,
+    marginBottom: 18,
+  },
+  verifiedPillText: { fontSize: 13, fontWeight: '800', color: '#0F2E2B' },
+
+  /* ── FEATURE CARD ── */
+  featureCard: {
+    width: '100%', flexDirection: 'row',
+    backgroundColor: 'rgba(255,255,255,0.88)',
+    borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.95)',
+    borderRadius: 22, paddingVertical: 18, paddingHorizontal: 6,
     shadowColor: '#0F2E2B',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.08,
+    shadowRadius: 14, elevation: 3, marginBottom: 14,
   },
-  featureCol: {
-    flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: 2,
-  },
-  featureIconBadge: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+  featureCol: { flex: 1, alignItems: 'center', paddingHorizontal: 2 },
+  featureIconCircle: {
+    width: 40, height: 40, borderRadius: 20,
     backgroundColor: '#0F2E2B',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'center', justifyContent: 'center',
     marginBottom: 8,
     shadowColor: '#0F2E2B',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.18,
+    shadowRadius: 6, elevation: 3,
   },
-  featureColTitle: {
-    fontSize: 11,
-    fontWeight: '800',
-    color: '#0F2E2B',
-    textAlign: 'center',
-    marginBottom: 3,
-  },
-  featureColSub: {
-    fontSize: 9,
-    color: '#4A6B66',
-    textAlign: 'center',
-    lineHeight: 12,
-  },
+  featureTitle: { fontSize: 11, fontWeight: '800', color: '#0F2E2B', textAlign: 'center', marginBottom: 3 },
+  featureSub: { fontSize: 9, color: '#4A6B66', textAlign: 'center', lineHeight: 13 },
 
-  /* Palace Banner */
-  palaceBannerContainer: {
-    width: '100%',
-    height: 120,
-    borderRadius: 22,
-    overflow: 'hidden',
+  /* ── STATS CARD ── */
+  statsCard: {
+    width: '100%', flexDirection: 'row',
+    backgroundColor: 'rgba(13,148,136,0.08)',
+    borderWidth: 1.5, borderColor: 'rgba(13,148,136,0.18)',
+    borderRadius: 20, paddingVertical: 14, paddingHorizontal: 4,
+    marginBottom: 14,
+  },
+  statCol: { flex: 1, alignItems: 'center', paddingHorizontal: 2 },
+  statColBorder: { borderRightWidth: 1, borderRightColor: 'rgba(13,148,136,0.18)' },
+  statValue: { fontSize: 18, fontWeight: '900', color: '#0F2E2B', marginTop: 4, marginBottom: 2 },
+  statLabel: { fontSize: 9, color: '#4A6B66', textAlign: 'center', fontWeight: '600' },
+
+  /* ── PALACE SILHOUETTE ── */
+  palaceContainer: { width: '100%', marginBottom: 4 },
+  palaceBg: {
+    width: '100%', height: 150,
+    backgroundColor: 'rgba(13,148,136,0.09)',
+    borderRadius: 24, overflow: 'hidden',
+    flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'center',
     position: 'relative',
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.95)',
-    marginBottom: 10,
+    borderWidth: 1, borderColor: 'rgba(13,148,136,0.18)',
   },
-  palaceBannerImage: {
-    width: '100%',
-    height: '100%',
+  flowerLeft: { position: 'absolute', left: 6, bottom: 6, fontSize: 34, opacity: 0.85 },
+  flowerRight: { position: 'absolute', right: 6, bottom: 6, fontSize: 34, opacity: 0.85 },
+  silhouetteRow: {
+    flexDirection: 'row', alignItems: 'flex-end',
+    justifyContent: 'center', paddingBottom: 10, gap: 12,
   },
-  palaceBannerOverlay: {
-    ...StyleSheet.absoluteFill,
-    backgroundColor: 'rgba(15, 46, 43, 0.45)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
+  palaceLeftTower: { alignItems: 'center', opacity: 0.55 },
+  palaceRightTower: { alignItems: 'center', opacity: 0.55 },
+  towerDome: {
+    width: 28, height: 28, borderRadius: 14,
+    backgroundColor: '#0F2E2B', marginBottom: 2,
   },
-  palaceOverlayPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 16,
-    paddingHorizontal: 12,
-    paddingVertical: 5,
+  towerBody: {
+    width: 22, height: 60,
+    backgroundColor: '#0F2E2B',
+    borderTopLeftRadius: 4, borderTopRightRadius: 4,
   },
-  palaceOverlayText: {
-    fontSize: 11,
-    fontWeight: '800',
-    color: '#0F2E2B',
+  coupleCenter: { alignItems: 'center', marginBottom: 6 },
+  coupleEmoji: { fontSize: 58 },
+  brideVeil: {
+    width: 2, height: 32,
+    backgroundColor: 'rgba(13,148,136,0.2)',
+    marginTop: -8,
   },
 
-  /* Footer */
-  bottomBar: {
-    width: '100%',
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-    paddingTop: 6,
-  },
-  letsStartBtn: {
-    backgroundColor: '#0F2E2B',
-    borderRadius: 28,
-    paddingVertical: 17,
+  /* ── FOOTER ── */
+  footer: {
+    width: '100%', paddingHorizontal: 20,
+    paddingBottom: 16, paddingTop: 6,
     alignItems: 'center',
-    justifyContent: 'center',
+  },
+  ctaBtn: {
+    width: '100%', backgroundColor: '#0F2E2B',
+    borderRadius: 30, paddingVertical: 17,
+    alignItems: 'center', justifyContent: 'center',
     shadowColor: '#0F2E2B',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.25,
-    shadowRadius: 14,
-    elevation: 6,
-    marginBottom: 12,
+    shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.28,
+    shadowRadius: 16, elevation: 7, marginBottom: 12,
   },
-  letsStartText: {
-    color: '#FFFFFF',
-    fontSize: 17,
-    fontWeight: '800',
-  },
-  loginContainer: {
-    alignItems: 'center',
-    paddingVertical: 4,
-  },
-  loginText: {
-    fontSize: 13,
-    color: '#4A6B66',
-    fontWeight: '500',
-  },
-  loginBoldText: {
-    color: '#0D9488',
-    fontWeight: '800',
-  },
+  ctaBtnText: { color: '#FFFFFF', fontSize: 18, fontWeight: '900', letterSpacing: 0.5 },
+  loginText: { fontSize: 13, color: '#4A6B66', fontWeight: '500', marginBottom: 10 },
+  loginLink: { color: '#0D9488', fontWeight: '800' },
+  footerTagRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' },
+  footerTag: { fontSize: 10, color: '#4A6B66' },
+  footerDot: { fontSize: 10, color: '#4A6B66' },
 });
