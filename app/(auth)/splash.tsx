@@ -211,7 +211,7 @@ export default function SplashScreen() {
               <LogoArch />
 
               {/* .welcome-label */}
-              <Text style={s.welcomeLabel}>W E L C O M E &nbsp; T O</Text>
+              <Text style={s.welcomeLabel}>W E L C O M E  T O</Text>
 
               {/* h1 */}
               <Text style={s.h1}>{'Patrika\nMatrimony'}</Text>
@@ -286,11 +286,12 @@ export default function SplashScreen() {
         ══════════════════════════════════════════ */}
         <Animated.View style={[s.bottomSection, { opacity: fadeAnim }]}>
           {/* Fade-in gradient overlay from transparent → mint */}
-          <LinearGradient
-            colors={['rgba(255,255,255,0)', 'rgba(238,250,248,0.97)']}
-            style={StyleSheet.absoluteFill}
-            pointerEvents="none"
-          />
+          <View style={StyleSheet.absoluteFill} pointerEvents="none">
+            <LinearGradient
+              colors={['rgba(255,255,255,0)', 'rgba(238,250,248,0.97)']}
+              style={StyleSheet.absoluteFill}
+            />
+          </View>
 
           {/* .start-button */}
           <TouchableOpacity
