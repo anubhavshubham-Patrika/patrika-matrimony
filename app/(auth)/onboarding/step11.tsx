@@ -68,13 +68,13 @@ export default function Step11() {
           />
         </View>
 
-        {/* Email Address */}
-        <Text style={styles.sectionHeaderLabel}>Email Address</Text>
+        {/* Email / Mobile Number */}
+        <Text style={styles.sectionHeaderLabel}>Email / Mobile Number</Text>
         <View style={styles.inputWrapper}>
           <MaterialCommunityIcons name="email-outline" size={20} color="#8C7A7C" style={{ marginRight: 10 }} />
           <TextInput
             style={styles.inputField}
-            placeholder="Enter email address"
+            placeholder="Enter email or 10-digit mobile"
             keyboardType="email-address"
             autoCapitalize="none"
             value={email}

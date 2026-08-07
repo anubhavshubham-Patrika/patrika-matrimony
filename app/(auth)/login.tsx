@@ -57,10 +57,10 @@ export default function LoginScreen() {
           {/* Welcome Headline */}
           <View style={styles.topIntro}>
             <Text style={styles.welcomeTitle}>Connect & Match</Text>
-            <Text style={styles.welcomeSub}>Enter your email or mobile to log in or create an account</Text>
+            <Text style={styles.welcomeSub}>Enter your email or mobile to log in to your account</Text>
           </View>
 
-          {/* Unified Login / Sign Up Form */}
+          {/* Login Form */}
           <View style={styles.formContainer}>
             {/* Field 1: Email or Mobile */}
             <Text style={styles.inputLabel}>Email Address or Mobile Number</Text>
@@ -114,7 +114,7 @@ export default function LoginScreen() {
 
             {/* Primary Action Button */}
             <TouchableOpacity style={styles.primaryButton} onPress={handleLoginSubmit} activeOpacity={0.88}>
-              <Text style={styles.primaryButtonText}>Log In / Sign Up →</Text>
+              <Text style={styles.primaryButtonText}>Log In →</Text>
             </TouchableOpacity>
 
             {/* Divider OR */}
