@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image, Alert } from 'react-native';
+import { 
+  View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image, Alert, Modal, ActivityIndicator 
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
@@ -16,6 +18,11 @@ export default function Step12() {
   const [photoUrl, setPhotoUrl] = useState(state.onboardingData?.profilePhotoURL || defaultPhoto);
   const [isSelfieVerified, setIsSelfieVerified] = useState(true);
 
+  // Camera & Face Match Modal Prototype State
+  const [showCameraModal, setShowCameraModal] = useState(false);
+  const [verifyState, setVerifyState] = useState<'camera' | 'scanning' | 'success'>('camera');
+  const [capturedSelfie, setCapturedSelfie] = useState<string>('https://randomuser.me/api/portraits/men/32.jpg');
+
   const handleUploadGalleryImage = () => {
     Alert.alert(
       '🖼️ Upload Profile Image',
@@ -28,12 +35,28 @@ export default function Step12() {
     );
   };
 
-  const handleVerifySelfie = () => {
-    setIsSelfieVerified(true);
+  const handleOpenSelfieCamera = () => {
+    setVerifyState('camera');
+    setShowCameraModal(true);
+  };
+
+  const handleCaptureSelfie = () => {
+    setCapturedSelfie(photoUrl); // match with uploaded photo
+    setVerifyState('scanning');
+
+    // Simulate AI Facial Scanning & Biometric Matching
+    setTimeout(() => {
+      setVerifyState('success');
+      setIsSelfieVerified(true);
+    }, 2200);
+  };
+
+  const handleFinishSelfieVerification = () => {
+    setShowCameraModal(false);
     Alert.alert(
-      '🤳 Live Selfie Verified!',
-      'Your identity has been verified! A green "Govt ID & Selfie Verified" badge is now live on your profile.',
-      [{ text: 'Awesome! ✨' }]
+      '🎉 100% Face Match Confirmed!',
+      'Selfie matched successfully with your uploaded profile image. Green "Selfie Verified" badge added to your profile!',
+      [{ text: 'Great!' }]
     );
   };
 
@@ -114,7 +137,7 @@ export default function Step12() {
               {/* Box 2: Live Selfie Verification */}
               <TouchableOpacity 
                 style={[styles.emojiCardBox, styles.emojiCardBoxHighlight]} 
-                onPress={handleVerifySelfie}
+                onPress={handleOpenSelfieCamera}
                 activeOpacity={0.88}
               >
                 <View style={[styles.emojiIconCircle, { backgroundColor: '#0D9488' }]}>
@@ -127,9 +150,9 @@ export default function Step12() {
                       <Text style={[styles.accentTagText, { color: '#FFFFFF' }]}>✅ Verified Badge</Text>
                     </View>
                   </View>
-                  <Text style={styles.emojiCardSub}>Instant facial verification for 100% trust score</Text>
+                  <Text style={styles.emojiCardSub}>Open camera, snap selfie & match with photo</Text>
                 </View>
-                <Ionicons name="checkmark-circle" size={22} color="#0D9488" />
+                <Ionicons name="camera-outline" size={22} color="#0D9488" />
               </TouchableOpacity>
             </View>
 
@@ -141,6 +164,92 @@ export default function Step12() {
           </View>
           <View style={{ height: 20 }} />
         </ScrollView>
+
+        {/* INTERACTIVE CAMERA & FACE MATCH VERIFICATION MODAL */}
+        <Modal visible={showCameraModal} animationType="slide" transparent>
+          <View style={styles.modalBackdrop}>
+            <View style={styles.cameraModalCard}>
+              <View style={styles.modalHeader}>
+                <View>
+                  <Text style={styles.modalTitle}>🤳 Live Selfie Verification</Text>
+                  <Text style={styles.modalSubTitle}>AI Facial Biometric Match</Text>
+                </View>
+                <TouchableOpacity onPress={() => setShowCameraModal(false)}>
+                  <Ionicons name="close" size={24} color="#FFFFFF" />
+                </TouchableOpacity>
+              </View>
+
+              {/* CAMERA STATE 1: Live Viewfinder */}
+              {verifyState === 'camera' && (
+                <View style={styles.viewfinderContainer}>
+                  <View style={styles.ovalFaceGuide}>
+                    <View style={styles.scannerLineOverlay} />
+                    <MaterialCommunityIcons name="face-recognition" size={80} color="rgba(255,255,255,0.4)" />
+                  </View>
+                  <Text style={styles.cameraInstructions}>
+                    Align your face inside the circle & tap Capture Selfie
+                  </Text>
+                  <TouchableOpacity 
+                    style={styles.snapSelfieBtn} 
+                    onPress={handleCaptureSelfie}
+                    activeOpacity={0.88}
+                  >
+                    <Ionicons name="camera" size={24} color="#FFFFFF" style={{ marginRight: 8 }} />
+                    <Text style={styles.snapSelfieBtnText}>Snap Selfie & Match</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+
+              {/* CAMERA STATE 2: AI Facial Scanning & Matching */}
+              {verifyState === 'scanning' && (
+                <View style={styles.scanningContainer}>
+                  <Text style={styles.scanningTitle}>Analyzing Facial Biometrics...</Text>
+                  
+                  {/* Side-by-Side Face Comparison */}
+                  <View style={styles.faceMatchRow}>
+                    <View style={styles.faceCol}>
+                      <Image source={{ uri: photoUrl }} style={styles.smallMatchAvatar} />
+                      <Text style={styles.faceColLabel}>Uploaded Photo</Text>
+                    </View>
+
+                    <View style={styles.matchVsCircle}>
+                      <MaterialCommunityIcons name="swap-horizontal" size={20} color="#0D9488" />
+                    </View>
+
+                    <View style={styles.faceCol}>
+                      <Image source={{ uri: capturedSelfie }} style={styles.smallMatchAvatar} />
+                      <Text style={styles.faceColLabel}>Captured Selfie</Text>
+                    </View>
+                  </View>
+
+                  <ActivityIndicator size="large" color="#0D9488" style={{ marginVertical: 16 }} />
+                  <Text style={styles.matchingPercentText}>Matching facial landmarks... 98.4% Accuracy</Text>
+                </View>
+              )}
+
+              {/* CAMERA STATE 3: Success Match Confirmed */}
+              {verifyState === 'success' && (
+                <View style={styles.successContainer}>
+                  <View style={styles.successCheckBadge}>
+                    <Ionicons name="checkmark-done" size={48} color="#FFFFFF" />
+                  </View>
+                  <Text style={styles.successMatchTitle}>100% Face Match Confirmed! 🎉</Text>
+                  <Text style={styles.successMatchSub}>
+                    Your selfie matches your uploaded profile photo perfectly. Green Verified Badge is now active!
+                  </Text>
+
+                  <TouchableOpacity 
+                    style={styles.finishVerifyBtn} 
+                    onPress={handleFinishSelfieVerification}
+                    activeOpacity={0.88}
+                  >
+                    <Text style={styles.finishVerifyBtnText}>Done & Unlock Badge ✨</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          </View>
+        </Modal>
 
         <View style={styles.footerContainer}>
           <View style={styles.progressRow}>
@@ -371,6 +480,167 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#0F2E2B',
     flex: 1,
+  },
+
+  /* Camera Modal Prototype */
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.85)',
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+  },
+  cameraModalCard: {
+    backgroundColor: '#0F2E2B',
+    borderRadius: 28,
+    padding: 20,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    fontFamily: 'serif',
+  },
+  modalSubTitle: {
+    fontSize: 12,
+    color: '#0D9488',
+    fontWeight: '700',
+    marginTop: 2,
+  },
+
+  viewfinderContainer: {
+    alignItems: 'center',
+    paddingVertical: 16,
+  },
+  ovalFaceGuide: {
+    width: 180,
+    height: 220,
+    borderRadius: 90,
+    borderWidth: 3,
+    borderColor: '#0D9488',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(13, 148, 136, 0.1)',
+    position: 'relative',
+    marginBottom: 16,
+    overflow: 'hidden',
+  },
+  scannerLineOverlay: {
+    position: 'absolute',
+    top: 40,
+    width: '100%',
+    height: 2,
+    backgroundColor: '#0D9488',
+  },
+  cameraInstructions: {
+    fontSize: 13,
+    color: '#D2F1EC',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  snapSelfieBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#0D9488',
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    borderRadius: 24,
+  },
+  snapSelfieBtnText: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: '800',
+  },
+
+  scanningContainer: {
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
+  scanningTitle: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    marginBottom: 16,
+  },
+  faceMatchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  faceCol: {
+    alignItems: 'center',
+  },
+  smallMatchAvatar: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    borderWidth: 2,
+    borderColor: '#0D9488',
+    marginBottom: 6,
+  },
+  faceColLabel: {
+    fontSize: 11,
+    color: '#D2F1EC',
+    fontWeight: '700',
+  },
+  matchVsCircle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  matchingPercentText: {
+    fontSize: 13,
+    color: '#0D9488',
+    fontWeight: '700',
+  },
+
+  successContainer: {
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
+  successCheckBadge: {
+    width: 76,
+    height: 76,
+    borderRadius: 38,
+    backgroundColor: '#0D9488',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 14,
+  },
+  successMatchTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  successMatchSub: {
+    fontSize: 13,
+    color: '#D2F1EC',
+    textAlign: 'center',
+    lineHeight: 18,
+    marginBottom: 20,
+  },
+  finishVerifyBtn: {
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    borderRadius: 24,
+  },
+  finishVerifyBtnText: {
+    color: '#0F2E2B',
+    fontSize: 15,
+    fontWeight: '800',
   },
 
   footerContainer: {
