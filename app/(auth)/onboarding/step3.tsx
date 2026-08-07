@@ -17,13 +17,32 @@ export default function Step3() {
   const [gender, setGender] = useState<'Male' | 'Female'>(state.onboardingData?.gender as any || 'Male');
   const [maritalStatus, setMaritalStatus] = useState(state.onboardingData?.maritalStatus || 'Never Married');
   const [height, setHeight] = useState(state.onboardingData?.height || "5'6\"");
+  
+  // Date of Birth state
+  const [dobDay, setDobDay] = useState<number>(15);
+  const [dobMonth, setDobMonth] = useState<number>(5); // 1-12
+  const [dobYear, setDobYear] = useState<number>(1998);
+
   const [showHeightModal, setShowHeightModal] = useState(false);
+  const [showDobModal, setShowDobModal] = useState(false);
 
   const heights = [
     "4'6\"", "4'7\"", "4'8\"", "4'9\"", "4'10\"", "4'11\"",
     "5'0\"", "5'1\"", "5'2\"", "5'3\"", "5'4\"", "5'5\"", "5'6\"", "5'7\"", "5'8\"", "5'9\"", "5'10\"", "5'11\"",
     "6'0\"", "6'1\"", "6'2\"", "6'3\"", "6'4\"", "6'5\"", "6'6\""
   ];
+
+  const months = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+
+  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+  const years = Array.from({ length: 40 }, (_, i) => 2007 - i); // 2007 down to 1968
+
+  const calculatedAge = 2026 - dobYear;
+
+  const formattedDobText = `${dobDay} ${months[dobMonth - 1]} ${dobYear}`;
 
   const maritalOptions = [
     { id: 'Never Married', label: 'Never Married', icon: 'heart-outline' },
@@ -33,13 +52,18 @@ export default function Step3() {
   ];
 
   const handleNext = () => {
+    const monthStr = dobMonth < 10 ? `0${dobMonth}` : `${dobMonth}`;
+    const dayStr = dobDay < 10 ? `0${dobDay}` : `${dobDay}`;
+    const fullDob = `${dobYear}-${monthStr}-${dayStr}`;
+
     dispatch({
       type: 'UPDATE_ONBOARDING',
       payload: {
         gender,
         maritalStatus,
         height,
-        DOB: '1998-05-15',
+        DOB: fullDob,
+        age: calculatedAge,
       },
     });
     router.push('/(auth)/onboarding/step4');
@@ -67,7 +91,7 @@ export default function Step3() {
 
             <View style={styles.headerTitleBox}>
               <Text style={styles.questionTitle}>{t.step3Title}</Text>
-              <Text style={styles.questionSubtitle}>{t.step3Subtitle}</Text>
+              <Text style={styles.questionSubtitle}>Enter gender, date of birth & height</Text>
             </View>
 
             {/* Gender Choice Section */}
@@ -99,6 +123,23 @@ export default function Step3() {
                 );
               })}
             </View>
+
+            {/* Date of Birth Calendar Trigger */}
+            <Text style={styles.sectionHeaderLabel}>Date of Birth</Text>
+            <TouchableOpacity
+              style={styles.dropdownGlassTrigger}
+              onPress={() => setShowDobModal(true)}
+              activeOpacity={0.88}
+            >
+              <View style={styles.dropdownTriggerLeft}>
+                <MaterialCommunityIcons name="calendar-month-outline" size={22} color="#0D9488" style={{ marginRight: 10 }} />
+                <Text style={styles.dropdownValueText}>{formattedDobText}</Text>
+                <View style={styles.ageGlassBadge}>
+                  <Text style={styles.ageBadgeText}>{calculatedAge} Yrs</Text>
+                </View>
+              </View>
+              <Ionicons name="calendar-outline" size={20} color="#8C9E9B" />
+            </TouchableOpacity>
 
             {/* Height Dropdown Trigger */}
             <Text style={styles.sectionHeaderLabel}>Height</Text>
@@ -140,6 +181,82 @@ export default function Step3() {
           </View>
           <View style={{ height: 20 }} />
         </ScrollView>
+
+        {/* Date of Birth Calendar Picker Modal */}
+        <Modal visible={showDobModal} animationType="slide" transparent>
+          <View style={styles.modalBackdrop}>
+            <View style={styles.modalGlassCard}>
+              <View style={styles.modalHeader}>
+                <View>
+                  <Text style={styles.modalTitle}>Select Date of Birth</Text>
+                  <Text style={styles.modalSubTitle}>Age: {calculatedAge} Years</Text>
+                </View>
+                <TouchableOpacity onPress={() => setShowDobModal(false)}>
+                  <Ionicons name="close" size={24} color="#0F2E2B" />
+                </TouchableOpacity>
+              </View>
+
+              {/* 3 Wheel Columns: Day | Month | Year */}
+              <View style={styles.pickerColumnsRow}>
+                {/* Column 1: Day */}
+                <View style={styles.pickerCol}>
+                  <Text style={styles.colHeaderTitle}>Day</Text>
+                  <ScrollView style={{ maxHeight: 200 }} showsVerticalScrollIndicator={false}>
+                    {days.map((d) => (
+                      <TouchableOpacity
+                        key={d}
+                        style={[styles.pickerCell, dobDay === d && styles.pickerCellSelected]}
+                        onPress={() => setDobDay(d)}
+                      >
+                        <Text style={[styles.pickerCellText, dobDay === d && styles.pickerCellTextSelected]}>{d}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+
+                {/* Column 2: Month */}
+                <View style={styles.pickerCol}>
+                  <Text style={styles.colHeaderTitle}>Month</Text>
+                  <ScrollView style={{ maxHeight: 200 }} showsVerticalScrollIndicator={false}>
+                    {months.map((m, idx) => (
+                      <TouchableOpacity
+                        key={m}
+                        style={[styles.pickerCell, dobMonth === (idx + 1) && styles.pickerCellSelected]}
+                        onPress={() => setDobMonth(idx + 1)}
+                      >
+                        <Text style={[styles.pickerCellText, dobMonth === (idx + 1) && styles.pickerCellTextSelected]}>{m}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+
+                {/* Column 3: Year */}
+                <View style={styles.pickerCol}>
+                  <Text style={styles.colHeaderTitle}>Year</Text>
+                  <ScrollView style={{ maxHeight: 200 }} showsVerticalScrollIndicator={false}>
+                    {years.map((y) => (
+                      <TouchableOpacity
+                        key={y}
+                        style={[styles.pickerCell, dobYear === y && styles.pickerCellSelected]}
+                        onPress={() => setDobYear(y)}
+                      >
+                        <Text style={[styles.pickerCellText, dobYear === y && styles.pickerCellTextSelected]}>{y}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+              </View>
+
+              <TouchableOpacity 
+                style={styles.doneGlassBtn} 
+                onPress={() => setShowDobModal(false)}
+                activeOpacity={0.88}
+              >
+                <Text style={styles.doneGlassBtnText}>Confirm Date of Birth</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
 
         {/* Height Selection Modal */}
         <Modal visible={showHeightModal} animationType="slide" transparent>
@@ -341,11 +458,24 @@ const styles = StyleSheet.create({
   dropdownTriggerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
   },
   dropdownValueText: {
     fontSize: 15,
     fontWeight: '700',
     color: '#0F2E2B',
+    marginRight: 8,
+  },
+  ageGlassBadge: {
+    backgroundColor: 'rgba(13, 148, 136, 0.12)',
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  ageBadgeText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#0D9488',
   },
 
   maritalGrid: {
@@ -426,6 +556,66 @@ const styles = StyleSheet.create({
     color: '#0F2E2B',
     fontFamily: 'serif',
   },
+  modalSubTitle: {
+    fontSize: 12,
+    color: '#0D9488',
+    fontWeight: '700',
+    marginTop: 2,
+  },
+
+  pickerColumnsRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 16,
+  },
+  pickerCol: {
+    flex: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    borderRadius: 16,
+    padding: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(15, 46, 43, 0.1)',
+  },
+  colHeaderTitle: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: '#0F2E2B',
+    textAlign: 'center',
+    marginBottom: 6,
+    paddingBottom: 4,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(15, 46, 43, 0.08)',
+  },
+  pickerCell: {
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  pickerCellSelected: {
+    backgroundColor: '#0F2E2B',
+  },
+  pickerCellText: {
+    fontSize: 14,
+    color: '#4A6B66',
+    fontWeight: '600',
+  },
+  pickerCellTextSelected: {
+    color: '#FFFFFF',
+    fontWeight: '800',
+  },
+
+  doneGlassBtn: {
+    backgroundColor: '#0F2E2B',
+    borderRadius: 22,
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  doneGlassBtnText: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: '800',
+  },
+
   modalOptionItem: {
     flexDirection: 'row',
     alignItems: 'center',
