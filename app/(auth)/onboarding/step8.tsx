@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
 import { Translations } from '../../../src/constants/translations';
-import PatrikaRibbonLogo from '../../../src/components/PatrikaRibbonLogo';
 
 export default function Step8() {
   const router = useRouter();
@@ -12,161 +11,175 @@ export default function Step8() {
   const lang = state.language || 'en';
   const t = Translations[lang];
 
-  const diets = ['Vegetarian', 'Jain', 'Eggetarian', 'Non-Vegetarian'];
-  const hobbiesList = [
-    'Reading', 'Music', 'Travel', 'Cooking', 'Fitness / Yoga', 'Cricket',
-    'Movies / Series', 'Photography', 'Dancing', 'Painting', 'Gardening', 'Writing'
-  ];
-
+  const [selectedHobbies, setSelectedHobbies] = useState<string[]>(
+    state.onboardingData?.hobbies?.length ? state.onboardingData.hobbies : ['Reading', 'Travel', 'Music']
+  );
   const [diet, setDiet] = useState(state.onboardingData?.diet || 'Vegetarian');
   const [smoking, setSmoking] = useState(state.onboardingData?.smoking || 'No');
   const [drinking, setDrinking] = useState(state.onboardingData?.drinking || 'No');
-  const [selectedHobbies, setSelectedHobbies] = useState<string[]>(
-    state.onboardingData?.hobbies || ['Reading', 'Travel', 'Cooking']
-  );
 
-  const toggleHobby = (h: string) => {
-    if (selectedHobbies.includes(h)) {
-      setSelectedHobbies(selectedHobbies.filter((item) => item !== h));
+  const hobbyOptions = [
+    { id: 'Running', label: 'Running', icon: 'run' },
+    { id: 'Reading', label: 'Reading', icon: 'book-open-variant' },
+    { id: 'Music', label: 'Music', icon: 'music' },
+    { id: 'Movies', label: 'Movies', icon: 'filmstrip' },
+    { id: 'Travel', label: 'Travel', icon: 'airplane' },
+    { id: 'Cooking', label: 'Cooking', icon: 'silverware-fork-knife' },
+    { id: 'Photography', label: 'Photography', icon: 'camera' },
+    { id: 'Cricket', label: 'Cricket', icon: 'cricket' },
+    { id: 'Yoga', label: 'Yoga', icon: 'yoga' },
+    { id: 'Dancing', label: 'Dancing', icon: 'human-female-dance' },
+  ];
+
+  const dietOptions = [
+    { id: 'Vegetarian', label: 'Vegetarian', icon: 'leaf' },
+    { id: 'Jain', label: 'Jain Vegetarian', icon: 'flower' },
+    { id: 'Eggetarian', label: 'Eggetarian', icon: 'egg' },
+    { id: 'Non-Vegetarian', label: 'Non-Vegetarian', icon: 'food-drumstick' },
+  ];
+
+  const toggleHobby = (hobbyId: string) => {
+    if (selectedHobbies.includes(hobbyId)) {
+      setSelectedHobbies(selectedHobbies.filter((h) => h !== hobbyId));
     } else {
-      setSelectedHobbies([...selectedHobbies, h]);
+      setSelectedHobbies([...selectedHobbies, hobbyId]);
     }
   };
 
   const handleNext = () => {
     dispatch({
       type: 'UPDATE_ONBOARDING',
-      payload: { diet, smoking, drinking, hobbies: selectedHobbies },
+      payload: {
+        hobbies: selectedHobbies,
+        diet,
+        smoking,
+        drinking,
+      },
     });
     router.push('/(auth)/onboarding/step9');
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#2C1A1D" />
-        </TouchableOpacity>
-        <View style={styles.headerTitleRow}>
-          <PatrikaRibbonLogo size={28} />
-          <Text style={styles.headerBrand}>Patrika Matrimony</Text>
+      {/* Hero Banner */}
+      <View style={styles.heroBannerContainer}>
+        <Image
+          source={{ uri: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop' }}
+          style={styles.heroBannerImage}
+          resizeMode="cover"
+        />
+        <View style={styles.heroOverlay} />
+
+        <View style={styles.topNavRow}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.blurBackBtn} activeOpacity={0.8}>
+            <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
+          </TouchableOpacity>
+          <View style={styles.stepPillBadge}>
+            <Text style={styles.stepPillText}>Step 8 of 13</Text>
+          </View>
         </View>
-        <Text style={styles.stepIndicator}>Step 8 of 13</Text>
+
+        <View style={styles.curvedArchMask} />
       </View>
 
-      {/* Progress Bar */}
-      <View style={styles.progressContainer}>
-        <View style={styles.progressTrack}>
-          <View style={[styles.progressBar, { width: `${(8 / 13) * 100}%` }]} />
+      <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
+        <View style={styles.headerTitleBox}>
+          <Text style={styles.questionTitle}>{t.step8Title}</Text>
+          <Text style={styles.questionSubtitle}>Select your lifestyle preferences and hobbies</Text>
         </View>
-        <Text style={styles.progressPercentText}>61% Complete</Text>
-      </View>
 
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.formCard}>
-          <View style={styles.cardHeaderBanner}>
-            <Text style={styles.cardHeaderTitle}>{t.step8Title}</Text>
-            <Text style={styles.cardHeaderSubtitle}>Select diet, lifestyle & personal interests</Text>
+        {/* Hobbies Selection */}
+        <Text style={styles.sectionHeaderLabel}>Hobbies & Interests (Select multiple)</Text>
+        <View style={styles.hobbiesGrid}>
+          {hobbyOptions.map((item) => {
+            const isSel = selectedHobbies.includes(item.id);
+            return (
+              <TouchableOpacity
+                key={item.id}
+                style={[styles.hobbyChipCard, isSel && styles.hobbyChipCardSelected]}
+                onPress={() => toggleHobby(item.id)}
+                activeOpacity={0.85}
+              >
+                <MaterialCommunityIcons name={item.icon as any} size={18} color={isSel ? '#E31E25' : '#8C7A7C'} style={{ marginRight: 6 }} />
+                <Text style={[styles.hobbyChipText, isSel && styles.hobbyChipTextSelected]}>{item.label}</Text>
+                {isSel && <Ionicons name="checkmark" size={14} color="#E31E25" style={{ marginLeft: 4 }} />}
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+
+        {/* Diet Options */}
+        <Text style={styles.sectionHeaderLabel}>Dietary Habits</Text>
+        <View style={styles.dietGrid}>
+          {dietOptions.map((item) => {
+            const isSel = diet === item.id;
+            return (
+              <TouchableOpacity
+                key={item.id}
+                style={[styles.optionCardRow, isSel && styles.optionCardRowSelected]}
+                onPress={() => setDiet(item.id)}
+                activeOpacity={0.88}
+              >
+                <View style={[styles.iconCircleBadge, isSel && styles.iconCircleBadgeSelected]}>
+                  <MaterialCommunityIcons name={item.icon as any} size={20} color={isSel ? '#E31E25' : '#8C7A7C'} />
+                </View>
+                <Text style={[styles.optionLabel, isSel && styles.optionLabelSelected]}>{item.label}</Text>
+                <View style={[styles.radioOuterCircle, isSel && styles.radioOuterCircleSelected]}>
+                  {isSel && <Ionicons name="checkmark" size={14} color="#FFFFFF" />}
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+
+        {/* Smoking & Drinking Toggles */}
+        <Text style={styles.sectionHeaderLabel}>Smoking & Drinking</Text>
+        <View style={styles.toggleRowContainer}>
+          <View style={styles.toggleItem}>
+            <Text style={styles.toggleLabel}>Smoking</Text>
+            <View style={styles.toggleBtnGroup}>
+              {(['No', 'Yes'] as const).map((opt) => (
+                <TouchableOpacity
+                  key={opt}
+                  style={[styles.toggleBtn, smoking === opt && styles.toggleBtnActive]}
+                  onPress={() => setSmoking(opt)}
+                >
+                  <Text style={[styles.toggleBtnText, smoking === opt && styles.toggleBtnTextActive]}>{opt}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
 
-          <View style={styles.cardBody}>
-            {/* Green Live Activity Callout Pill */}
-            <View style={styles.liveCalloutPill}>
-              <Ionicons name="trending-up" size={16} color="#1E8449" style={{ marginRight: 6 }} />
-              <Text style={styles.liveCalloutText}>127 verified profiles joined in the last 3 days!</Text>
-            </View>
-
-            {/* Diet Selection */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.diet}</Text>
-              <View style={styles.chipGrid}>
-                {diets.map((d) => {
-                  const isSel = diet === d;
-                  return (
-                    <TouchableOpacity
-                      key={d}
-                      style={[styles.chipGridItem, isSel && styles.chipGridItemSelected]}
-                      onPress={() => setDiet(d)}
-                      activeOpacity={0.85}
-                    >
-                      <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{d}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-            </View>
-
-            {/* Smoking */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.smoking}</Text>
-              <View style={styles.toggleRow}>
-                {['No', 'Occasionally', 'Yes'].map((s) => {
-                  const isSel = smoking === s;
-                  return (
-                    <TouchableOpacity
-                      key={s}
-                      style={[styles.togglePill, isSel && styles.togglePillSelected]}
-                      onPress={() => setSmoking(s)}
-                      activeOpacity={0.85}
-                    >
-                      <Text style={[styles.togglePillText, isSel && styles.togglePillTextSelected]}>{s}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-            </View>
-
-            {/* Drinking */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.drinking}</Text>
-              <View style={styles.toggleRow}>
-                {['No', 'Occasionally', 'Yes'].map((d) => {
-                  const isSel = drinking === d;
-                  return (
-                    <TouchableOpacity
-                      key={d}
-                      style={[styles.togglePill, isSel && styles.togglePillSelected]}
-                      onPress={() => setDrinking(d)}
-                      activeOpacity={0.85}
-                    >
-                      <Text style={[styles.togglePillText, isSel && styles.togglePillTextSelected]}>{d}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-            </View>
-
-            {/* Hobbies & Interests */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.hobbies}</Text>
-              <View style={styles.chipGrid}>
-                {hobbiesList.map((h) => {
-                  const isSel = selectedHobbies.includes(h);
-                  return (
-                    <TouchableOpacity
-                      key={h}
-                      style={[styles.chipGridItem, isSel && styles.chipGridItemSelected]}
-                      onPress={() => toggleHobby(h)}
-                      activeOpacity={0.85}
-                    >
-                      <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{h}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
+          <View style={styles.toggleItem}>
+            <Text style={styles.toggleLabel}>Drinking</Text>
+            <View style={styles.toggleBtnGroup}>
+              {(['No', 'Yes'] as const).map((opt) => (
+                <TouchableOpacity
+                  key={opt}
+                  style={[styles.toggleBtn, drinking === opt && styles.toggleBtnActive]}
+                  onPress={() => setDrinking(opt)}
+                >
+                  <Text style={[styles.toggleBtnText, drinking === opt && styles.toggleBtnTextActive]}>{opt}</Text>
+                </TouchableOpacity>
+              ))}
             </View>
           </View>
         </View>
+
+        <View style={{ height: 20 }} />
       </ScrollView>
 
-      {/* Footer CTA */}
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.prevBtn} onPress={() => router.back()}>
-          <Text style={styles.prevBtnText}>← Previous</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.nextBtn} onPress={handleNext} activeOpacity={0.88}>
-          <Text style={styles.nextBtnText}>{t.continue} →</Text>
+      {/* Sticky Bottom Navigation Footer */}
+      <View style={styles.footerContainer}>
+        <View style={styles.progressRow}>
+          <View style={styles.progressTrackBg}>
+            <View style={[styles.progressBarFill, { width: `${(8 / 13) * 100}%` }]} />
+          </View>
+          <Text style={styles.progressText}>61%</Text>
+        </View>
+
+        <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
+          <Text style={styles.continueBtnText}>{t.continue} →</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -178,208 +191,257 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF9F6',
   },
-  header: {
+  heroBannerContainer: {
+    height: 180,
+    width: '100%',
+    position: 'relative',
+  },
+  heroBannerImage: {
+    width: '100%',
+    height: '100%',
+  },
+  heroOverlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: 'rgba(44, 26, 29, 0.35)',
+  },
+  topNavRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    zIndex: 10,
+  },
+  blurBackBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stepPillBadge: {
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.25)',
+  },
+  stepPillText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  curvedArchMask: {
+    position: 'absolute',
+    bottom: -1,
+    left: 0,
+    right: 0,
+    height: 24,
+    backgroundColor: '#FFF9F6',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+  },
+
+  contentScroll: {
     paddingHorizontal: 20,
-    paddingVertical: 12,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EFE6DD',
+    paddingTop: 4,
   },
-  backBtn: {
-    padding: 4,
+  headerTitleBox: {
+    marginBottom: 16,
   },
-  headerTitleRow: {
+  questionTitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#2C1A1D',
+    fontFamily: 'serif',
+    marginBottom: 4,
+  },
+  questionSubtitle: {
+    fontSize: 14,
+    color: '#5A4A4D',
+    lineHeight: 20,
+  },
+  sectionHeaderLabel: {
+    fontSize: 14,
+    fontWeight: '800',
+    color: '#2C1A1D',
+    marginTop: 14,
+    marginBottom: 8,
+  },
+
+  hobbiesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 10,
+  },
+  hobbyChipCard: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
+    borderColor: '#EFE6DD',
+    borderRadius: 20,
+    paddingHorizontal: 14,
+    paddingVertical: 9,
+  },
+  hobbyChipCardSelected: {
+    borderColor: '#E31E25',
+    backgroundColor: '#FFF0F1',
+  },
+  hobbyChipText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#2C1A1D',
+  },
+  hobbyChipTextSelected: {
+    color: '#E31E25',
+    fontWeight: '800',
+  },
+
+  dietGrid: {
     gap: 8,
   },
-  headerBrand: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#E31E25',
-    fontFamily: 'serif',
-  },
-  stepIndicator: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#8C7A7C',
-  },
-  progressContainer: {
+  optionCardRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
     backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderWidth: 1.5,
+    borderColor: '#EFE6DD',
+  },
+  optionCardRowSelected: {
+    borderColor: '#E31E25',
+    backgroundColor: '#FFF0F1',
+  },
+  iconCircleBadge: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#FFF9F6',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  iconCircleBadgeSelected: {
+    backgroundColor: '#FFE4E6',
+  },
+  optionLabel: {
+    flex: 1,
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#2C1A1D',
+  },
+  optionLabelSelected: {
+    color: '#E31E25',
+    fontWeight: '800',
+  },
+  radioOuterCircle: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    borderWidth: 2,
+    borderColor: '#A39396',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  radioOuterCircleSelected: {
+    backgroundColor: '#E31E25',
+    borderColor: '#E31E25',
+  },
+
+  toggleRowContainer: {
+    flexDirection: 'row',
     gap: 12,
   },
-  progressTrack: {
+  toggleItem: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 14,
+    borderWidth: 1.5,
+    borderColor: '#EFE6DD',
+  },
+  toggleLabel: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#2C1A1D',
+    marginBottom: 8,
+  },
+  toggleBtnGroup: {
+    flexDirection: 'row',
+    backgroundColor: '#FFF9F6',
+    borderRadius: 12,
+    padding: 3,
+  },
+  toggleBtn: {
+    flex: 1,
+    paddingVertical: 8,
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  toggleBtnActive: {
+    backgroundColor: '#E31E25',
+  },
+  toggleBtnText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#5A4A4D',
+  },
+  toggleBtnTextActive: {
+    color: '#FFFFFF',
+    fontWeight: '800',
+  },
+
+  footerContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    backgroundColor: '#FFFFFF',
+    borderTopWidth: 1,
+    borderColor: '#EFE6DD',
+  },
+  progressRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 12,
+  },
+  progressTrackBg: {
     flex: 1,
     height: 6,
     backgroundColor: '#EFE6DD',
     borderRadius: 3,
     overflow: 'hidden',
   },
-  progressBar: {
+  progressBarFill: {
     height: '100%',
     backgroundColor: '#E31E25',
     borderRadius: 3,
   },
-  progressPercentText: {
+  progressText: {
     fontSize: 12,
-    fontWeight: '700',
-    color: '#5A4A4D',
+    fontWeight: '800',
+    color: '#E31E25',
   },
-  content: {
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 40,
-  },
-  formCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    shadowColor: '#2C1A1D',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
+  continueBtn: {
+    backgroundColor: '#E31E25',
+    paddingVertical: 16,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#E31E25',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
     shadowRadius: 10,
-    elevation: 4,
+    elevation: 5,
   },
-  cardHeaderBanner: {
-    backgroundColor: '#E91E63',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-  },
-  cardHeaderTitle: {
-    fontSize: 20,
-    fontWeight: '800',
+  continueBtnText: {
     color: '#FFFFFF',
-    fontFamily: 'serif',
-  },
-  cardHeaderSubtitle: {
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.85)',
-  },
-  cardBody: {
-    padding: 20,
-  },
-  liveCalloutPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#E8F8F5',
-    borderWidth: 1,
-    borderColor: '#A3E4D7',
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    marginBottom: 20,
-  },
-  liveCalloutText: {
-    fontSize: 13,
-    color: '#1E8449',
-    fontWeight: '700',
-    flex: 1,
-  },
-  fieldGroup: {
-    marginBottom: 20,
-  },
-  fieldLabel: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#2C1A1D',
-    marginBottom: 8,
-  },
-  chipGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  chipGridItem: {
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    borderRadius: 16,
-    backgroundColor: '#FAF5F7',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  chipGridItemSelected: {
-    backgroundColor: '#FFF0F3',
-    borderColor: '#E91E63',
-  },
-  chipText: {
-    fontSize: 13,
-    color: '#2C1A1D',
-    fontWeight: '500',
-  },
-  chipTextSelected: {
-    color: '#E91E63',
-    fontWeight: '800',
-  },
-  toggleRow: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  togglePill: {
-    flex: 1,
-    paddingVertical: 12,
-    alignItems: 'center',
-    borderRadius: 14,
-    borderWidth: 1.5,
-    borderColor: '#EFE6DD',
-    backgroundColor: '#FAF5F7',
-  },
-  togglePillSelected: {
-    borderColor: '#E91E63',
-    backgroundColor: '#FFF0F3',
-  },
-  togglePillText: {
-    fontSize: 14,
-    color: '#5A4A4D',
-    fontWeight: '600',
-  },
-  togglePillTextSelected: {
-    color: '#E91E63',
-    fontWeight: '800',
-  },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    backgroundColor: '#FFFFFF',
-    borderTopWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  prevBtn: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    backgroundColor: '#F5EFE6',
-  },
-  prevBtnText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#5A4A4D',
-  },
-  nextBtn: {
-    backgroundColor: '#E91E63',
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    borderRadius: 14,
-    shadowColor: '#E91E63',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  nextBtnText: {
-    color: '#FFFFFF',
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '800',
   },
 });

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, TextInput } from 'react-native';
+import { 
+  View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image, TextInput, Modal 
+} from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
 import { Translations } from '../../../src/constants/translations';
-import PatrikaRibbonLogo from '../../../src/components/PatrikaRibbonLogo';
 
 export default function Step6() {
   const router = useRouter();
@@ -12,16 +13,18 @@ export default function Step6() {
   const lang = state.language || 'en';
   const t = Translations[lang];
 
-  const educations = ['B.Tech / B.E.', 'MBBS / MD', 'MBA / PGDM', 'B.Com / M.Com', 'B.Sc / M.Sc', 'BCA / MCA', 'CA / CS', 'Law / LLB', 'PhD / Doctorate', '12th Pass', 'Other'];
-  const fields = ['Engineering / Tech', 'Medicine / Healthcare', 'Management / Business', 'Banking / Finance', 'Arts / Humanities', 'Science / Biotech', 'Law / Legal', 'Civil Services / Govt', 'Other'];
-  const employments = ['Private Company', 'Government / PSU', 'Business / Self-Employed', 'Defence / Armed Forces', 'Civil Services', 'Not Working'];
-  const incomes = ['Below 3 Lakhs', '3 - 5 Lakhs', '5 - 10 Lakhs', '10 - 15 Lakhs', '15 - 25 Lakhs', '25 - 50 Lakhs', '50 Lakhs+'];
-
   const [education, setEducation] = useState(state.onboardingData?.education?.degree || 'B.Tech / B.E.');
   const [field, setField] = useState(state.onboardingData?.education?.field || 'Engineering / Tech');
-  const [employmentType, setEmploymentType] = useState(state.onboardingData?.employmentType || 'Private Company');
-  const [occupation, setOccupation] = useState(state.onboardingData?.occupation || '');
-  const [annualIncomeRange, setAnnualIncomeRange] = useState(state.onboardingData?.annualIncomeRange || '10 - 15 Lakhs');
+  const [employmentType, setEmploymentType] = useState(state.onboardingData?.employmentType || 'Private');
+  const [occupation, setOccupation] = useState(state.onboardingData?.occupation || 'Software Engineer');
+  const [annualIncomeRange, setAnnualIncomeRange] = useState(state.onboardingData?.annualIncomeRange || '10-20L');
+
+  const [showEduModal, setShowEduModal] = useState(false);
+  const [showIncomeModal, setShowIncomeModal] = useState(false);
+
+  const educationOptions = ['B.Tech / B.E.', 'MBBS / MD', 'MBA / PGDM', 'B.Com / M.Com', 'B.Sc / M.Sc', 'CA / CS', 'LLB / LLM', 'PhD', '12th Pass', 'Other'];
+  const incomeOptions = ['Below 2L', '2-5L', '5-10L', '10-20L', '20-30L', '30-50L', '50L+'];
+  const employmentTypes = ['Private', 'Govt / Public', 'Business / Self-Employed', 'Defence', 'Civil Services', 'Not Working'];
 
   const handleNext = () => {
     dispatch({
@@ -38,142 +41,161 @@ export default function Step6() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#2C1A1D" />
+      {/* Hero Banner */}
+      <View style={styles.heroBannerContainer}>
+        <Image
+          source={{ uri: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop' }}
+          style={styles.heroBannerImage}
+          resizeMode="cover"
+        />
+        <View style={styles.heroOverlay} />
+
+        <View style={styles.topNavRow}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.blurBackBtn} activeOpacity={0.8}>
+            <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
+          </TouchableOpacity>
+          <View style={styles.stepPillBadge}>
+            <Text style={styles.stepPillText}>Step 6 of 13</Text>
+          </View>
+        </View>
+
+        <View style={styles.curvedArchMask} />
+      </View>
+
+      <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
+        <View style={styles.headerTitleBox}>
+          <Text style={styles.questionTitle}>{t.step6Title}</Text>
+          <Text style={styles.questionSubtitle}>{t.step6Subtitle}</Text>
+        </View>
+
+        {/* Highest Education */}
+        <Text style={styles.sectionHeaderLabel}>Highest Education Degree</Text>
+        <TouchableOpacity
+          style={styles.dropdownTrigger}
+          onPress={() => setShowEduModal(true)}
+          activeOpacity={0.88}
+        >
+          <View style={styles.dropdownTriggerLeft}>
+            <MaterialCommunityIcons name="school-outline" size={22} color="#E31E25" style={{ marginRight: 10 }} />
+            <Text style={styles.dropdownValueText}>{education}</Text>
+          </View>
+          <Ionicons name="chevron-down" size={20} color="#8C7A7C" />
         </TouchableOpacity>
-        <View style={styles.headerTitleRow}>
-          <PatrikaRibbonLogo size={28} />
-          <Text style={styles.headerBrand}>Patrika Matrimony</Text>
-        </View>
-        <Text style={styles.stepIndicator}>Step 6 of 13</Text>
-      </View>
 
-      {/* Progress Bar */}
-      <View style={styles.progressContainer}>
-        <View style={styles.progressTrack}>
-          <View style={[styles.progressBar, { width: `${(6 / 13) * 100}%` }]} />
+        {/* Employment Type */}
+        <Text style={styles.sectionHeaderLabel}>Employment Type</Text>
+        <View style={styles.empGrid}>
+          {employmentTypes.map((type) => {
+            const isSel = employmentType === type;
+            return (
+              <TouchableOpacity
+                key={type}
+                style={[styles.empCard, isSel && styles.empCardSelected]}
+                onPress={() => setEmploymentType(type)}
+                activeOpacity={0.88}
+              >
+                <Text style={[styles.empLabel, isSel && styles.empLabelSelected]}>{type}</Text>
+                <View style={[styles.radioOuterCircle, isSel && styles.radioOuterCircleSelected]}>
+                  {isSel && <Ionicons name="checkmark" size={14} color="#FFFFFF" />}
+                </View>
+              </TouchableOpacity>
+            );
+          })}
         </View>
-        <Text style={styles.progressPercentText}>46% Complete</Text>
-      </View>
 
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.formCard}>
-          <View style={styles.cardHeaderBanner}>
-            <Text style={styles.cardHeaderTitle}>{t.step6Title}</Text>
-            <Text style={styles.cardHeaderSubtitle}>{t.step6Subtitle}</Text>
+        {/* Occupation Field */}
+        <Text style={styles.sectionHeaderLabel}>Occupation / Job Title</Text>
+        <View style={styles.inputWrapper}>
+          <MaterialCommunityIcons name="briefcase-outline" size={20} color="#8C7A7C" style={{ marginRight: 10 }} />
+          <TextInput
+            style={styles.inputField}
+            placeholder="Enter job title (e.g. Senior Software Engineer)"
+            value={occupation}
+            onChangeText={setOccupation}
+            placeholderTextColor="#8C7A7C"
+          />
+        </View>
+
+        {/* Annual Income */}
+        <Text style={styles.sectionHeaderLabel}>Annual Income Range</Text>
+        <TouchableOpacity
+          style={styles.dropdownTrigger}
+          onPress={() => setShowIncomeModal(true)}
+          activeOpacity={0.88}
+        >
+          <View style={styles.dropdownTriggerLeft}>
+            <MaterialCommunityIcons name="currency-inr" size={22} color="#E31E25" style={{ marginRight: 10 }} />
+            <Text style={styles.dropdownValueText}>₹{annualIncomeRange} per annum</Text>
           </View>
+          <Ionicons name="chevron-down" size={20} color="#8C7A7C" />
+        </TouchableOpacity>
 
-          <View style={styles.cardBody}>
-            {/* Green Live Activity Callout Pill */}
-            <View style={styles.liveCalloutPill}>
-              <Ionicons name="trending-up" size={16} color="#1E8449" style={{ marginRight: 6 }} />
-              <Text style={styles.liveCalloutText}>127 verified profiles joined in the last 3 days!</Text>
-            </View>
-
-            {/* Highest Education */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.highestDegree}</Text>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipScroll}>
-                {educations.map((e) => {
-                  const isSel = education === e;
-                  return (
-                    <TouchableOpacity
-                      key={e}
-                      style={[styles.chip, isSel && styles.chipSelected]}
-                      onPress={() => setEducation(e)}
-                      activeOpacity={0.85}
-                    >
-                      <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{e}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
-            </View>
-
-            {/* Field of Study */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.educationField}</Text>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipScroll}>
-                {fields.map((f) => {
-                  const isSel = field === f;
-                  return (
-                    <TouchableOpacity
-                      key={f}
-                      style={[styles.chip, isSel && styles.chipSelected]}
-                      onPress={() => setField(f)}
-                      activeOpacity={0.85}
-                    >
-                      <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{f}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
-            </View>
-
-            {/* Employment Type */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.employmentType}</Text>
-              <View style={styles.chipGrid}>
-                {employments.map((emp) => {
-                  const isSel = employmentType === emp;
-                  return (
-                    <TouchableOpacity
-                      key={emp}
-                      style={[styles.chipGridItem, isSel && styles.chipGridItemSelected]}
-                      onPress={() => setEmploymentType(emp)}
-                      activeOpacity={0.85}
-                    >
-                      <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{emp}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-            </View>
-
-            {/* Occupation Input */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.occupation}</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="e.g. Software Engineer / Senior Doctor / Manager"
-                value={occupation}
-                onChangeText={setOccupation}
-                placeholderTextColor="#8C7A7C"
-              />
-            </View>
-
-            {/* Annual Income */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.annualIncome}</Text>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipScroll}>
-                {incomes.map((inc) => {
-                  const isSel = annualIncomeRange === inc;
-                  return (
-                    <TouchableOpacity
-                      key={inc}
-                      style={[styles.chip, isSel && styles.chipSelected]}
-                      onPress={() => setAnnualIncomeRange(inc)}
-                      activeOpacity={0.85}
-                    >
-                      <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{inc}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
-            </View>
-          </View>
-        </View>
+        <View style={{ height: 20 }} />
       </ScrollView>
 
-      {/* Footer CTA */}
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.prevBtn} onPress={() => router.back()}>
-          <Text style={styles.prevBtnText}>← Previous</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.nextBtn} onPress={handleNext} activeOpacity={0.88}>
-          <Text style={styles.nextBtnText}>{t.continue} →</Text>
+      {/* Education Modal */}
+      <Modal visible={showEduModal} animationType="slide" transparent>
+        <View style={styles.modalBackdrop}>
+          <View style={styles.modalCard}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Select Highest Education</Text>
+              <TouchableOpacity onPress={() => setShowEduModal(false)}>
+                <Ionicons name="close" size={24} color="#2C1A1D" />
+              </TouchableOpacity>
+            </View>
+            <ScrollView style={{ maxHeight: 320 }}>
+              {educationOptions.map((e) => (
+                <TouchableOpacity
+                  key={e}
+                  style={styles.modalOptionItem}
+                  onPress={() => { setEducation(e); setShowEduModal(false); }}
+                >
+                  <Text style={[styles.modalOptionText, education === e && styles.modalOptionTextSelected]}>{e}</Text>
+                  {education === e && <Ionicons name="checkmark" size={20} color="#E31E25" />}
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Income Modal */}
+      <Modal visible={showIncomeModal} animationType="slide" transparent>
+        <View style={styles.modalBackdrop}>
+          <View style={styles.modalCard}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Select Annual Income Range</Text>
+              <TouchableOpacity onPress={() => setShowIncomeModal(false)}>
+                <Ionicons name="close" size={24} color="#2C1A1D" />
+              </TouchableOpacity>
+            </View>
+            <ScrollView style={{ maxHeight: 320 }}>
+              {incomeOptions.map((inc) => (
+                <TouchableOpacity
+                  key={inc}
+                  style={styles.modalOptionItem}
+                  onPress={() => { setAnnualIncomeRange(inc); setShowIncomeModal(false); }}
+                >
+                  <Text style={[styles.modalOptionText, annualIncomeRange === inc && styles.modalOptionTextSelected]}>₹{inc} per annum</Text>
+                  {annualIncomeRange === inc && <Ionicons name="checkmark" size={20} color="#E31E25" />}
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Sticky Bottom Navigation Footer */}
+      <View style={styles.footerContainer}>
+        <View style={styles.progressRow}>
+          <View style={styles.progressTrackBg}>
+            <View style={[styles.progressBarFill, { width: `${(6 / 13) * 100}%` }]} />
+          </View>
+          <Text style={styles.progressText}>46%</Text>
+        </View>
+
+        <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
+          <Text style={styles.continueBtnText}>{t.continue} →</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -185,207 +207,252 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF9F6',
   },
-  header: {
+  heroBannerContainer: {
+    height: 180,
+    width: '100%',
+    position: 'relative',
+  },
+  heroBannerImage: {
+    width: '100%',
+    height: '100%',
+  },
+  heroOverlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: 'rgba(44, 26, 29, 0.35)',
+  },
+  topNavRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    zIndex: 10,
+  },
+  blurBackBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stepPillBadge: {
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.25)',
+  },
+  stepPillText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  curvedArchMask: {
+    position: 'absolute',
+    bottom: -1,
+    left: 0,
+    right: 0,
+    height: 24,
+    backgroundColor: '#FFF9F6',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+  },
+
+  contentScroll: {
     paddingHorizontal: 20,
-    paddingVertical: 12,
+    paddingTop: 4,
+  },
+  headerTitleBox: {
+    marginBottom: 16,
+  },
+  questionTitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#2C1A1D',
+    fontFamily: 'serif',
+    marginBottom: 4,
+  },
+  questionSubtitle: {
+    fontSize: 14,
+    color: '#5A4A4D',
+    lineHeight: 20,
+  },
+  sectionHeaderLabel: {
+    fontSize: 14,
+    fontWeight: '800',
+    color: '#2C1A1D',
+    marginTop: 14,
+    marginBottom: 8,
+  },
+
+  dropdownTrigger: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
+    borderColor: '#EFE6DD',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    marginBottom: 10,
+  },
+  dropdownTriggerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dropdownValueText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#2C1A1D',
+  },
+
+  empGrid: {
+    gap: 8,
+    marginBottom: 6,
+  },
+  empCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderWidth: 1.5,
+    borderColor: '#EFE6DD',
+  },
+  empCardSelected: {
+    borderColor: '#E31E25',
+    backgroundColor: '#FFF0F1',
+  },
+  empLabel: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#2C1A1D',
+  },
+  empLabelSelected: {
+    color: '#E31E25',
+    fontWeight: '800',
+  },
+  radioOuterCircle: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    borderWidth: 2,
+    borderColor: '#A39396',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  radioOuterCircleSelected: {
+    backgroundColor: '#E31E25',
+    borderColor: '#E31E25',
+  },
+
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
+    borderColor: '#EFE6DD',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    marginBottom: 10,
+  },
+  inputField: {
+    flex: 1,
+    paddingVertical: 14,
+    fontSize: 15,
+    color: '#2C1A1D',
+  },
+
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalCard: {
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    padding: 20,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#2C1A1D',
+    fontFamily: 'serif',
+  },
+  modalOptionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 14,
     borderBottomWidth: 1,
     borderBottomColor: '#EFE6DD',
   },
-  backBtn: {
-    padding: 4,
+  modalOptionText: {
+    fontSize: 16,
+    color: '#2C1A1D',
   },
-  headerTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  headerBrand: {
-    fontSize: 18,
-    fontWeight: '800',
+  modalOptionTextSelected: {
     color: '#E31E25',
-    fontFamily: 'serif',
+    fontWeight: '800',
   },
-  stepIndicator: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#8C7A7C',
+
+  footerContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    backgroundColor: '#FFFFFF',
+    borderTopWidth: 1,
+    borderColor: '#EFE6DD',
   },
-  progressContainer: {
+  progressRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: '#FFFFFF',
-    gap: 12,
+    gap: 10,
+    marginBottom: 12,
   },
-  progressTrack: {
+  progressTrackBg: {
     flex: 1,
     height: 6,
     backgroundColor: '#EFE6DD',
     borderRadius: 3,
     overflow: 'hidden',
   },
-  progressBar: {
+  progressBarFill: {
     height: '100%',
     backgroundColor: '#E31E25',
     borderRadius: 3,
   },
-  progressPercentText: {
+  progressText: {
     fontSize: 12,
-    fontWeight: '700',
-    color: '#5A4A4D',
+    fontWeight: '800',
+    color: '#E31E25',
   },
-  content: {
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 40,
-  },
-  formCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    shadowColor: '#2C1A1D',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
+  continueBtn: {
+    backgroundColor: '#E31E25',
+    paddingVertical: 16,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#E31E25',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
     shadowRadius: 10,
-    elevation: 4,
+    elevation: 5,
   },
-  cardHeaderBanner: {
-    backgroundColor: '#E91E63',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-  },
-  cardHeaderTitle: {
-    fontSize: 20,
-    fontWeight: '800',
+  continueBtnText: {
     color: '#FFFFFF',
-    fontFamily: 'serif',
-  },
-  cardHeaderSubtitle: {
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.85)',
-  },
-  cardBody: {
-    padding: 20,
-  },
-  liveCalloutPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#E8F8F5',
-    borderWidth: 1,
-    borderColor: '#A3E4D7',
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    marginBottom: 20,
-  },
-  liveCalloutText: {
-    fontSize: 13,
-    color: '#1E8449',
-    fontWeight: '700',
-    flex: 1,
-  },
-  fieldGroup: {
-    marginBottom: 20,
-  },
-  fieldLabel: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#2C1A1D',
-    marginBottom: 8,
-  },
-  chipScroll: {
-    gap: 8,
-  },
-  chip: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 16,
-    backgroundColor: '#FAF5F7',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  chipSelected: {
-    backgroundColor: '#FFF0F3',
-    borderColor: '#E91E63',
-  },
-  chipGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  chipGridItem: {
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    borderRadius: 16,
-    backgroundColor: '#FAF5F7',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  chipGridItemSelected: {
-    backgroundColor: '#FFF0F3',
-    borderColor: '#E91E63',
-  },
-  chipText: {
-    fontSize: 13,
-    color: '#2C1A1D',
-    fontWeight: '500',
-  },
-  chipTextSelected: {
-    color: '#E91E63',
-    fontWeight: '800',
-  },
-  input: {
-    backgroundColor: '#FAF5F7',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    borderRadius: 14,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 15,
-    color: '#2C1A1D',
-  },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    backgroundColor: '#FFFFFF',
-    borderTopWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  prevBtn: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    backgroundColor: '#F5EFE6',
-  },
-  prevBtnText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#5A4A4D',
-  },
-  nextBtn: {
-    backgroundColor: '#E91E63',
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    borderRadius: 14,
-    shadowColor: '#E91E63',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  nextBtnText: {
-    color: '#FFFFFF',
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '800',
   },
 });

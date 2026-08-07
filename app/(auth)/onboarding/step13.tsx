@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image, Modal } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
 import { Translations } from '../../../src/constants/translations';
-import PatrikaRibbonLogo from '../../../src/components/PatrikaRibbonLogo';
 
 export default function Step13() {
   const router = useRouter();
@@ -12,25 +11,17 @@ export default function Step13() {
   const lang = state.language || 'en';
   const t = Translations[lang];
 
-  const [prefAgeMin, setPrefAgeMin] = useState(21);
-  const [prefAgeMax, setPrefAgeMax] = useState(32);
+  const [minAge, setMinAge] = useState('22');
+  const [maxAge, setMaxAge] = useState('32');
+  const [religionPref, setReligionPref] = useState('Hindu');
+  const [castePref, setCastePref] = useState('Rajput');
 
-  const preferredReligions = ['Hindu', 'Jain', 'Sikh', 'Any'];
-  const [selectedReligion, setSelectedReligion] = useState('Hindu');
-
-  const preferredCastes = ['Rajput', 'Agarwal', 'Brahmin', 'Marwari', 'Jain', 'Any'];
-  const [selectedCaste, setSelectedCaste] = useState('Rajput');
-
-  const preferredDiets = ['Vegetarian', 'Jain', 'Eggetarian', 'Any'];
-  const [selectedDiet, setSelectedDiet] = useState('Vegetarian');
-
-  const handleFinish = () => {
+  const handleNext = () => {
     dispatch({
       type: 'UPDATE_ONBOARDING',
       payload: {
-        religion: selectedReligion,
-        caste: selectedCaste,
-        diet: selectedDiet,
+        caste: castePref,
+        religion: religionPref,
       },
     });
     router.push('/(auth)/onboarding/welcome');
@@ -38,118 +29,81 @@ export default function Step13() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#2C1A1D" />
+      {/* Hero Banner */}
+      <View style={styles.heroBannerContainer}>
+        <Image
+          source={{ uri: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&auto=format&fit=crop' }}
+          style={styles.heroBannerImage}
+          resizeMode="cover"
+        />
+        <View style={styles.heroOverlay} />
+
+        <View style={styles.topNavRow}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.blurBackBtn} activeOpacity={0.8}>
+            <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
+          </TouchableOpacity>
+          <View style={styles.stepPillBadge}>
+            <Text style={styles.stepPillText}>Step 13 of 13</Text>
+          </View>
+        </View>
+
+        <View style={styles.curvedArchMask} />
+      </View>
+
+      <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
+        <View style={styles.headerTitleBox}>
+          <Text style={styles.questionTitle}>{t.step13Title}</Text>
+          <Text style={styles.questionSubtitle}>Define partner age, religion and community preferences</Text>
+        </View>
+
+        {/* Preferred Age Range */}
+        <Text style={styles.sectionHeaderLabel}>Preferred Age Range</Text>
+        <View style={styles.agePillRow}>
+          <View style={styles.agePillBox}>
+            <Text style={styles.agePillSub}>Min Age</Text>
+            <Text style={styles.agePillValue}>{minAge} Years</Text>
+          </View>
+          <Text style={styles.ageToText}>to</Text>
+          <View style={styles.agePillBox}>
+            <Text style={styles.agePillSub}>Max Age</Text>
+            <Text style={styles.agePillValue}>{maxAge} Years</Text>
+          </View>
+        </View>
+
+        {/* Preferred Religion */}
+        <Text style={styles.sectionHeaderLabel}>Preferred Religion</Text>
+        <TouchableOpacity style={styles.dropdownTrigger} activeOpacity={0.88}>
+          <View style={styles.dropdownTriggerLeft}>
+            <MaterialCommunityIcons name="flower" size={22} color="#E31E25" style={{ marginRight: 10 }} />
+            <Text style={styles.dropdownValueText}>{religionPref}</Text>
+          </View>
+          <Ionicons name="chevron-down" size={20} color="#8C7A7C" />
         </TouchableOpacity>
-        <View style={styles.headerTitleRow}>
-          <PatrikaRibbonLogo size={28} />
-          <Text style={styles.headerBrand}>Patrika Matrimony</Text>
-        </View>
-        <Text style={styles.stepIndicator}>Step 13 of 13</Text>
-      </View>
 
-      {/* Progress Bar */}
-      <View style={styles.progressContainer}>
-        <View style={styles.progressTrack}>
-          <View style={[styles.progressBar, { width: `100%` }]} />
-        </View>
-        <Text style={styles.progressPercentText}>100% Complete</Text>
-      </View>
-
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.formCard}>
-          <View style={styles.cardHeaderBanner}>
-            <Text style={styles.cardHeaderTitle}>{t.step13Title}</Text>
-            <Text style={styles.cardHeaderSubtitle}>Set desired age, caste & location criteria</Text>
+        {/* Preferred Caste */}
+        <Text style={styles.sectionHeaderLabel}>Preferred Caste / Community</Text>
+        <TouchableOpacity style={styles.dropdownTrigger} activeOpacity={0.88}>
+          <View style={styles.dropdownTriggerLeft}>
+            <MaterialCommunityIcons name="account-group" size={22} color="#E31E25" style={{ marginRight: 10 }} />
+            <Text style={styles.dropdownValueText}>{castePref}</Text>
           </View>
+          <Ionicons name="chevron-down" size={20} color="#8C7A7C" />
+        </TouchableOpacity>
 
-          <View style={styles.cardBody}>
-            {/* Green Live Activity Callout Pill */}
-            <View style={styles.liveCalloutPill}>
-              <Ionicons name="trending-up" size={16} color="#1E8449" style={{ marginRight: 6 }} />
-              <Text style={styles.liveCalloutText}>127 verified profiles joined in the last 3 days!</Text>
-            </View>
-
-            {/* Preferred Age Range */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.preferredAge}</Text>
-              <View style={styles.rangeBox}>
-                <Text style={styles.rangeText}>{prefAgeMin} yrs - {prefAgeMax} yrs</Text>
-              </View>
-            </View>
-
-            {/* Preferred Religion */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>Preferred Religion</Text>
-              <View style={styles.chipGrid}>
-                {preferredReligions.map((r) => {
-                  const isSel = selectedReligion === r;
-                  return (
-                    <TouchableOpacity
-                      key={r}
-                      style={[styles.chipGridItem, isSel && styles.chipGridItemSelected]}
-                      onPress={() => setSelectedReligion(r)}
-                      activeOpacity={0.85}
-                    >
-                      <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{r}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-            </View>
-
-            {/* Preferred Caste */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>Preferred Caste / Community</Text>
-              <View style={styles.chipGrid}>
-                {preferredCastes.map((c) => {
-                  const isSel = selectedCaste === c;
-                  return (
-                    <TouchableOpacity
-                      key={c}
-                      style={[styles.chipGridItem, isSel && styles.chipGridItemSelected]}
-                      onPress={() => setSelectedCaste(c)}
-                      activeOpacity={0.85}
-                    >
-                      <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{c}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-            </View>
-
-            {/* Preferred Diet */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>Preferred Diet</Text>
-              <View style={styles.chipGrid}>
-                {preferredDiets.map((d) => {
-                  const isSel = selectedDiet === d;
-                  return (
-                    <TouchableOpacity
-                      key={d}
-                      style={[styles.chipGridItem, isSel && styles.chipGridItemSelected]}
-                      onPress={() => setSelectedDiet(d)}
-                      activeOpacity={0.85}
-                    >
-                      <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{d}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-            </View>
-          </View>
-        </View>
+        <View style={{ height: 20 }} />
       </ScrollView>
 
-      {/* Footer CTA */}
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.prevBtn} onPress={() => router.back()}>
-          <Text style={styles.prevBtnText}>← Previous</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.nextBtn} onPress={handleFinish} activeOpacity={0.88}>
-          <Text style={styles.nextBtnText}>Complete Profile Setup ✨</Text>
+      {/* Sticky Bottom Navigation Footer */}
+      <View style={styles.footerContainer}>
+        <View style={styles.progressRow}>
+          <View style={styles.progressTrackBg}>
+            <View style={[styles.progressBarFill, { width: '100%' }]} />
+          </View>
+          <Text style={styles.progressText}>100%</Text>
+        </View>
+
+        <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
+          <Text style={styles.continueBtnText}>Complete Profile & View Matches 🎉</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -161,196 +115,187 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF9F6',
   },
-  header: {
+  heroBannerContainer: {
+    height: 180,
+    width: '100%',
+    position: 'relative',
+  },
+  heroBannerImage: {
+    width: '100%',
+    height: '100%',
+  },
+  heroOverlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: 'rgba(44, 26, 29, 0.35)',
+  },
+  topNavRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    zIndex: 10,
+  },
+  blurBackBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stepPillBadge: {
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.25)',
+  },
+  stepPillText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  curvedArchMask: {
+    position: 'absolute',
+    bottom: -1,
+    left: 0,
+    right: 0,
+    height: 24,
+    backgroundColor: '#FFF9F6',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+  },
+
+  contentScroll: {
     paddingHorizontal: 20,
-    paddingVertical: 12,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EFE6DD',
+    paddingTop: 4,
   },
-  backBtn: {
-    padding: 4,
+  headerTitleBox: {
+    marginBottom: 16,
   },
-  headerTitleRow: {
+  questionTitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#2C1A1D',
+    fontFamily: 'serif',
+    marginBottom: 4,
+  },
+  questionSubtitle: {
+    fontSize: 14,
+    color: '#5A4A4D',
+    lineHeight: 20,
+  },
+  sectionHeaderLabel: {
+    fontSize: 14,
+    fontWeight: '800',
+    color: '#2C1A1D',
+    marginTop: 14,
+    marginBottom: 8,
+  },
+
+  agePillRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    justifyContent: 'space-between',
+    marginBottom: 10,
   },
-  headerBrand: {
-    fontSize: 18,
+  agePillBox: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderWidth: 1.5,
+    borderColor: '#EFE6DD',
+    alignItems: 'center',
+  },
+  agePillSub: {
+    fontSize: 11,
+    color: '#8C7A7C',
+    fontWeight: '600',
+  },
+  agePillValue: {
+    fontSize: 16,
     fontWeight: '800',
     color: '#E31E25',
-    fontFamily: 'serif',
+    marginTop: 2,
   },
-  stepIndicator: {
-    fontSize: 13,
+  ageToText: {
+    marginHorizontal: 12,
+    fontSize: 14,
     fontWeight: '700',
     color: '#8C7A7C',
   },
-  progressContainer: {
+
+  dropdownTrigger: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    justifyContent: 'space-between',
     backgroundColor: '#FFFFFF',
-    gap: 12,
+    borderWidth: 1.5,
+    borderColor: '#EFE6DD',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    marginBottom: 10,
   },
-  progressTrack: {
+  dropdownTriggerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dropdownValueText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#2C1A1D',
+  },
+
+  footerContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    backgroundColor: '#FFFFFF',
+    borderTopWidth: 1,
+    borderColor: '#EFE6DD',
+  },
+  progressRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 12,
+  },
+  progressTrackBg: {
     flex: 1,
     height: 6,
     backgroundColor: '#EFE6DD',
     borderRadius: 3,
     overflow: 'hidden',
   },
-  progressBar: {
+  progressBarFill: {
     height: '100%',
     backgroundColor: '#E31E25',
     borderRadius: 3,
   },
-  progressPercentText: {
+  progressText: {
     fontSize: 12,
-    fontWeight: '700',
-    color: '#5A4A4D',
-  },
-  content: {
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 40,
-  },
-  formCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    shadowColor: '#2C1A1D',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-    elevation: 4,
-  },
-  cardHeaderBanner: {
-    backgroundColor: '#E31E25',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-  },
-  cardHeaderTitle: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: '#FFFFFF',
-    fontFamily: 'serif',
-  },
-  cardHeaderSubtitle: {
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.85)',
-  },
-  cardBody: {
-    padding: 20,
-  },
-  liveCalloutPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#E8F8F5',
-    borderWidth: 1,
-    borderColor: '#A3E4D7',
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    marginBottom: 20,
-  },
-  liveCalloutText: {
-    fontSize: 13,
-    color: '#1E8449',
-    fontWeight: '700',
-    flex: 1,
-  },
-  fieldGroup: {
-    marginBottom: 20,
-  },
-  fieldLabel: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#2C1A1D',
-    marginBottom: 8,
-  },
-  rangeBox: {
-    backgroundColor: '#FAF5F7',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    borderRadius: 14,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  rangeText: {
-    fontSize: 16,
     fontWeight: '800',
     color: '#E31E25',
   },
-  chipGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  chipGridItem: {
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    borderRadius: 16,
-    backgroundColor: '#FAF5F7',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  chipGridItemSelected: {
-    backgroundColor: '#FFF0F3',
-    borderColor: '#E91E63',
-  },
-  chipText: {
-    fontSize: 13,
-    color: '#2C1A1D',
-    fontWeight: '500',
-  },
-  chipTextSelected: {
-    color: '#E91E63',
-    fontWeight: '800',
-  },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
+  continueBtn: {
+    backgroundColor: '#E31E25',
     paddingVertical: 16,
-    backgroundColor: '#FFFFFF',
-    borderTopWidth: 1,
-    borderColor: '#EFE6DD',
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#E31E25',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 5,
   },
-  prevBtn: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    backgroundColor: '#F5EFE6',
-  },
-  prevBtnText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#5A4A4D',
-  },
-  nextBtn: {
-    backgroundColor: '#E91E63',
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    borderRadius: 14,
-    shadowColor: '#E91E63',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  nextBtnText: {
+  continueBtnText: {
     color: '#FFFFFF',
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '800',
   },
 });

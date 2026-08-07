@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image, TextInput, Modal } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
 import { Translations } from '../../../src/constants/translations';
-import PatrikaRibbonLogo from '../../../src/components/PatrikaRibbonLogo';
 
 export default function Step9() {
   const router = useRouter();
   const { state, dispatch } = useApp();
   const lang = state.language || 'en';
   const t = Translations[lang];
+
+  const [timeOfBirth, setTimeOfBirth] = useState(state.onboardingData?.horoscope?.timeOfBirth || '10:30 AM');
+  const [placeOfBirth, setPlaceOfBirth] = useState(state.onboardingData?.horoscope?.placeOfBirth || 'Jaipur');
+  const [star, setStar] = useState(state.onboardingData?.horoscope?.star || 'Rohini');
+
+  const [showStarModal, setShowStarModal] = useState(false);
 
   const nakshatras = [
     'Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashirsha', 'Ardra', 'Punarvasu',
@@ -19,112 +24,125 @@ export default function Step9() {
     'Shravana', 'Dhanishta', 'Shatabhisha', 'Purva Bhadrapada', 'Uttara Bhadrapada', 'Revati'
   ];
 
-  const [timeOfBirth, setTimeOfBirth] = useState(state.onboardingData?.horoscope?.timeOfBirth || '10:30 AM');
-  const [placeOfBirth, setPlaceOfBirth] = useState(state.onboardingData?.horoscope?.placeOfBirth || 'Jaipur');
-  const [star, setStar] = useState(state.onboardingData?.horoscope?.star || 'Rohini');
-
   const handleNext = () => {
     dispatch({
       type: 'UPDATE_ONBOARDING',
-      payload: { horoscope: { timeOfBirth, placeOfBirth, star } },
+      payload: {
+        horoscope: { star, timeOfBirth, placeOfBirth },
+      },
     });
     router.push('/(auth)/onboarding/step10');
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#2C1A1D" />
+      {/* Hero Banner */}
+      <View style={styles.heroBannerContainer}>
+        <Image
+          source={{ uri: 'https://images.unsplash.com/photo-1532968961962-8a0cb3a2d4f5?q=80&w=800&auto=format&fit=crop' }}
+          style={styles.heroBannerImage}
+          resizeMode="cover"
+        />
+        <View style={styles.heroOverlay} />
+
+        <View style={styles.topNavRow}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.blurBackBtn} activeOpacity={0.8}>
+            <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
+          </TouchableOpacity>
+          <View style={styles.stepPillBadge}>
+            <Text style={styles.stepPillText}>Step 9 of 13</Text>
+          </View>
+        </View>
+
+        <View style={styles.curvedArchMask} />
+      </View>
+
+      <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
+        <View style={styles.headerTitleBox}>
+          <Text style={styles.questionTitle}>{t.step9Title}</Text>
+          <Text style={styles.questionSubtitle}>Enter your horoscope details for Guna matching</Text>
+        </View>
+
+        {/* Time of Birth */}
+        <Text style={styles.sectionHeaderLabel}>Time of Birth (Optional)</Text>
+        <View style={styles.inputWrapper}>
+          <Ionicons name="time-outline" size={20} color="#8C7A7C" style={{ marginRight: 10 }} />
+          <TextInput
+            style={styles.inputField}
+            placeholder="Enter time (e.g. 10:30 AM)"
+            value={timeOfBirth}
+            onChangeText={setTimeOfBirth}
+            placeholderTextColor="#8C7A7C"
+          />
+        </View>
+
+        {/* Place of Birth */}
+        <Text style={styles.sectionHeaderLabel}>Place of Birth</Text>
+        <View style={styles.inputWrapper}>
+          <Ionicons name="location-outline" size={20} color="#8C7A7C" style={{ marginRight: 10 }} />
+          <TextInput
+            style={styles.inputField}
+            placeholder="Enter city (e.g. Jaipur, Rajasthan)"
+            value={placeOfBirth}
+            onChangeText={setPlaceOfBirth}
+            placeholderTextColor="#8C7A7C"
+          />
+        </View>
+
+        {/* Star / Nakshatra Trigger */}
+        <Text style={styles.sectionHeaderLabel}>Star / Nakshatra</Text>
+        <TouchableOpacity
+          style={styles.dropdownTrigger}
+          onPress={() => setShowStarModal(true)}
+          activeOpacity={0.88}
+        >
+          <View style={styles.dropdownTriggerLeft}>
+            <MaterialCommunityIcons name="star-face" size={22} color="#E31E25" style={{ marginRight: 10 }} />
+            <Text style={styles.dropdownValueText}>{star}</Text>
+          </View>
+          <Ionicons name="chevron-down" size={20} color="#8C7A7C" />
         </TouchableOpacity>
-        <View style={styles.headerTitleRow}>
-          <PatrikaRibbonLogo size={28} />
-          <Text style={styles.headerBrand}>Patrika Matrimony</Text>
-        </View>
-        <Text style={styles.stepIndicator}>Step 9 of 13</Text>
-      </View>
 
-      {/* Progress Bar */}
-      <View style={styles.progressContainer}>
-        <View style={styles.progressTrack}>
-          <View style={[styles.progressBar, { width: `${(9 / 13) * 100}%` }]} />
-        </View>
-        <Text style={styles.progressPercentText}>69% Complete</Text>
-      </View>
-
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.formCard}>
-          <View style={styles.cardHeaderBanner}>
-            <Text style={styles.cardHeaderTitle}>{t.step9Title}</Text>
-            <Text style={styles.cardHeaderSubtitle}>Enter time, place of birth & nakshatra for Guna Milan</Text>
-          </View>
-
-          <View style={styles.cardBody}>
-            {/* Green Live Activity Callout Pill */}
-            <View style={styles.liveCalloutPill}>
-              <Ionicons name="trending-up" size={16} color="#1E8449" style={{ marginRight: 6 }} />
-              <Text style={styles.liveCalloutText}>127 verified profiles joined in the last 3 days!</Text>
-            </View>
-
-            {/* Time of Birth */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.timeOfBirth}</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="e.g. 10:30 AM"
-                value={timeOfBirth}
-                onChangeText={setTimeOfBirth}
-                placeholderTextColor="#8C7A7C"
-              />
-            </View>
-
-            {/* Place of Birth */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.placeOfBirth}</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="e.g. Jaipur, Rajasthan"
-                value={placeOfBirth}
-                onChangeText={setPlaceOfBirth}
-                placeholderTextColor="#8C7A7C"
-              />
-            </View>
-
-            {/* Star / Nakshatra */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.nakshatra}</Text>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipScroll}>
-                {nakshatras.map((n) => {
-                  const isSel = star === n;
-                  return (
-                    <TouchableOpacity
-                      key={n}
-                      style={[styles.chip, isSel && styles.chipSelected]}
-                      onPress={() => setStar(n)}
-                      activeOpacity={0.85}
-                    >
-                      <Text style={[styles.chipText, isSel && styles.chipTextSelected]}>{n}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
-            </View>
-
-            <TouchableOpacity style={styles.skipBtn} onPress={handleNext}>
-              <Text style={styles.skipBtnText}>{t.skip}</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        <View style={{ height: 20 }} />
       </ScrollView>
 
-      {/* Footer CTA */}
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.prevBtn} onPress={() => router.back()}>
-          <Text style={styles.prevBtnText}>← Previous</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.nextBtn} onPress={handleNext} activeOpacity={0.88}>
-          <Text style={styles.nextBtnText}>{t.continue} →</Text>
+      {/* Nakshatra Modal */}
+      <Modal visible={showStarModal} animationType="slide" transparent>
+        <View style={styles.modalBackdrop}>
+          <View style={styles.modalCard}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Select Nakshatra</Text>
+              <TouchableOpacity onPress={() => setShowStarModal(false)}>
+                <Ionicons name="close" size={24} color="#2C1A1D" />
+              </TouchableOpacity>
+            </View>
+            <ScrollView style={{ maxHeight: 320 }}>
+              {nakshatras.map((n) => (
+                <TouchableOpacity
+                  key={n}
+                  style={styles.modalOptionItem}
+                  onPress={() => { setStar(n); setShowStarModal(false); }}
+                >
+                  <Text style={[styles.modalOptionText, star === n && styles.modalOptionTextSelected]}>{n}</Text>
+                  {star === n && <Ionicons name="checkmark" size={20} color="#E31E25" />}
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Sticky Bottom Navigation Footer */}
+      <View style={styles.footerContainer}>
+        <View style={styles.progressRow}>
+          <View style={styles.progressTrackBg}>
+            <View style={[styles.progressBarFill, { width: `${(9 / 13) * 100}%` }]} />
+          </View>
+          <Text style={styles.progressText}>69%</Text>
+        </View>
+
+        <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
+          <Text style={styles.continueBtnText}>{t.continue} →</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -136,200 +154,210 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF9F6',
   },
-  header: {
+  heroBannerContainer: {
+    height: 180,
+    width: '100%',
+    position: 'relative',
+  },
+  heroBannerImage: {
+    width: '100%',
+    height: '100%',
+  },
+  heroOverlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: 'rgba(44, 26, 29, 0.35)',
+  },
+  topNavRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    zIndex: 10,
+  },
+  blurBackBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stepPillBadge: {
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.25)',
+  },
+  stepPillText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  curvedArchMask: {
+    position: 'absolute',
+    bottom: -1,
+    left: 0,
+    right: 0,
+    height: 24,
+    backgroundColor: '#FFF9F6',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+  },
+
+  contentScroll: {
     paddingHorizontal: 20,
-    paddingVertical: 12,
+    paddingTop: 4,
+  },
+  headerTitleBox: {
+    marginBottom: 16,
+  },
+  questionTitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#2C1A1D',
+    fontFamily: 'serif',
+    marginBottom: 4,
+  },
+  questionSubtitle: {
+    fontSize: 14,
+    color: '#5A4A4D',
+    lineHeight: 20,
+  },
+  sectionHeaderLabel: {
+    fontSize: 14,
+    fontWeight: '800',
+    color: '#2C1A1D',
+    marginTop: 14,
+    marginBottom: 8,
+  },
+
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
+    borderColor: '#EFE6DD',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    marginBottom: 10,
+  },
+  inputField: {
+    flex: 1,
+    paddingVertical: 14,
+    fontSize: 15,
+    color: '#2C1A1D',
+  },
+
+  dropdownTrigger: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
+    borderColor: '#EFE6DD',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    marginBottom: 10,
+  },
+  dropdownTriggerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dropdownValueText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#2C1A1D',
+  },
+
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalCard: {
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    padding: 20,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#2C1A1D',
+    fontFamily: 'serif',
+  },
+  modalOptionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 14,
     borderBottomWidth: 1,
     borderBottomColor: '#EFE6DD',
   },
-  backBtn: {
-    padding: 4,
+  modalOptionText: {
+    fontSize: 16,
+    color: '#2C1A1D',
   },
-  headerTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  headerBrand: {
-    fontSize: 18,
-    fontWeight: '800',
+  modalOptionTextSelected: {
     color: '#E31E25',
-    fontFamily: 'serif',
+    fontWeight: '800',
   },
-  stepIndicator: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#8C7A7C',
+
+  footerContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    backgroundColor: '#FFFFFF',
+    borderTopWidth: 1,
+    borderColor: '#EFE6DD',
   },
-  progressContainer: {
+  progressRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: '#FFFFFF',
-    gap: 12,
+    gap: 10,
+    marginBottom: 12,
   },
-  progressTrack: {
+  progressTrackBg: {
     flex: 1,
     height: 6,
     backgroundColor: '#EFE6DD',
     borderRadius: 3,
     overflow: 'hidden',
   },
-  progressBar: {
+  progressBarFill: {
     height: '100%',
     backgroundColor: '#E31E25',
     borderRadius: 3,
   },
-  progressPercentText: {
+  progressText: {
     fontSize: 12,
-    fontWeight: '700',
-    color: '#5A4A4D',
+    fontWeight: '800',
+    color: '#E31E25',
   },
-  content: {
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 40,
-  },
-  formCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    shadowColor: '#2C1A1D',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-    elevation: 4,
-  },
-  cardHeaderBanner: {
+  continueBtn: {
     backgroundColor: '#E31E25',
-    paddingHorizontal: 20,
     paddingVertical: 16,
-  },
-  cardHeaderTitle: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: '#FFFFFF',
-    fontFamily: 'serif',
-  },
-  cardHeaderSubtitle: {
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.85)',
-  },
-  cardBody: {
-    padding: 20,
-  },
-  liveCalloutPill: {
-    flexDirection: 'row',
+    borderRadius: 28,
     alignItems: 'center',
-    backgroundColor: '#E8F8F5',
-    borderWidth: 1,
-    borderColor: '#A3E4D7',
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    marginBottom: 20,
+    justifyContent: 'center',
+    shadowColor: '#E31E25',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 5,
   },
-  liveCalloutText: {
-    fontSize: 13,
-    color: '#1E8449',
-    fontWeight: '700',
-    flex: 1,
-  },
-  fieldGroup: {
-    marginBottom: 20,
-  },
-  fieldLabel: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#2C1A1D',
-    marginBottom: 8,
-  },
-  input: {
-    backgroundColor: '#FAF5F7',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    borderRadius: 14,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 15,
-    color: '#2C1A1D',
-  },
-  chipScroll: {
-    gap: 8,
-  },
-  chip: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 16,
-    backgroundColor: '#FAF5F7',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  chipSelected: {
-    backgroundColor: '#FFF0F3',
-    borderColor: '#E91E63',
-  },
-  chipText: {
-    fontSize: 13,
-    color: '#2C1A1D',
-    fontWeight: '500',
-  },
-  chipTextSelected: {
-    color: '#E91E63',
-    fontWeight: '800',
-  },
-  skipBtn: {
-    alignSelf: 'center',
-    paddingVertical: 12,
-    marginTop: 10,
-  },
-  skipBtnText: {
-    color: '#E91E63',
-    fontSize: 14,
-    fontWeight: '700',
-  },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    backgroundColor: '#FFFFFF',
-    borderTopWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  prevBtn: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    backgroundColor: '#F5EFE6',
-  },
-  prevBtnText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#5A4A4D',
-  },
-  nextBtn: {
-    backgroundColor: '#E91E63',
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    borderRadius: 14,
-    shadowColor: '#E91E63',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  nextBtnText: {
+  continueBtnText: {
     color: '#FFFFFF',
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '800',
   },
 });

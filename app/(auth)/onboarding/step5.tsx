@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Modal, TextInput } from 'react-native';
+import { 
+  View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image, TextInput, Modal 
+} from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
 import { Translations } from '../../../src/constants/translations';
-import PatrikaRibbonLogo from '../../../src/components/PatrikaRibbonLogo';
 
 export default function Step5() {
   const router = useRouter();
@@ -12,153 +13,135 @@ export default function Step5() {
   const lang = state.language || 'en';
   const t = Translations[lang];
 
-  const countriesList = [
-    'India', 'USA', 'UK', 'Canada', 'UAE', 'Australia', 'Singapore', 'Germany', 'Saudi Arabia', 'Kuwait', 'Qatar', 'New Zealand', 'Other'
-  ];
-
-  const statesList = [
-    'Rajasthan', 'Maharashtra', 'Delhi NCR', 'Punjab', 'Gujarat', 'Uttar Pradesh', 'Madhya Pradesh',
-    'Haryana', 'Karnataka', 'Telangana', 'Tamil Nadu', 'West Bengal', 'Bihar', 'Kerala', 'Assam',
-    'Odisha', 'Himachal Pradesh', 'Uttarakhand', 'Goa', 'Jammu & Kashmir', 'Other'
-  ];
-
-  const popularCities = [
-    'Jaipur', 'Jodhpur', 'Udaipur', 'Kota', 'Ajmer', 'Bikaner', 'Sikar', 'Delhi', 'Mumbai', 'Bengaluru', 'Pune', 'Ahmedabad'
-  ];
-
   const [country, setCountry] = useState(state.onboardingData?.country || 'India');
   const [residentState, setResidentState] = useState(state.onboardingData?.residentState || 'Rajasthan');
   const [residentCity, setResidentCity] = useState(state.onboardingData?.residentCity || 'Jaipur');
 
   const [showCountryModal, setShowCountryModal] = useState(false);
   const [showStateModal, setShowStateModal] = useState(false);
-  const [showCityModal, setShowCityModal] = useState(false);
-  const [citySearch, setCitySearch] = useState('');
+
+  const countries = ['India', 'United States', 'United Kingdom', 'Canada', 'UAE', 'Australia', 'Other'];
+  const indianStates = ['Rajasthan', 'Delhi', 'Maharashtra', 'Karnataka', 'Gujarat', 'Punjab', 'Uttar Pradesh', 'Madhya Pradesh', 'Other'];
+  const popularRajasthanCities = ['Jaipur', 'Jodhpur', 'Udaipur', 'Kota', 'Ajmer', 'Bikaner', 'Sikar', 'Bhilwara'];
 
   const handleNext = () => {
     dispatch({
       type: 'UPDATE_ONBOARDING',
-      payload: { country, residentState, residentCity },
+      payload: {
+        country,
+        residentState,
+        residentCity,
+      },
     });
     router.push('/(auth)/onboarding/step6');
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#2C1A1D" />
+      {/* Hero Banner */}
+      <View style={styles.heroBannerContainer}>
+        <Image
+          source={{ uri: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=800&auto=format&fit=crop' }}
+          style={styles.heroBannerImage}
+          resizeMode="cover"
+        />
+        <View style={styles.heroOverlay} />
+
+        <View style={styles.topNavRow}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.blurBackBtn} activeOpacity={0.8}>
+            <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
+          </TouchableOpacity>
+          <View style={styles.stepPillBadge}>
+            <Text style={styles.stepPillText}>Step 5 of 13</Text>
+          </View>
+        </View>
+
+        <View style={styles.curvedArchMask} />
+      </View>
+
+      <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
+        <View style={styles.headerTitleBox}>
+          <Text style={styles.questionTitle}>{t.step5Title}</Text>
+          <Text style={styles.questionSubtitle}>{t.step5Subtitle}</Text>
+        </View>
+
+        {/* Country Trigger */}
+        <Text style={styles.sectionHeaderLabel}>Country</Text>
+        <TouchableOpacity
+          style={styles.dropdownTrigger}
+          onPress={() => setShowCountryModal(true)}
+          activeOpacity={0.88}
+        >
+          <View style={styles.dropdownTriggerLeft}>
+            <MaterialCommunityIcons name="earth" size={22} color="#E31E25" style={{ marginRight: 10 }} />
+            <Text style={styles.dropdownValueText}>{country}</Text>
+          </View>
+          <Ionicons name="chevron-down" size={20} color="#8C7A7C" />
         </TouchableOpacity>
-        <View style={styles.headerTitleRow}>
-          <PatrikaRibbonLogo size={28} />
-          <Text style={styles.headerBrand}>Patrika Matrimony</Text>
-        </View>
-        <Text style={styles.stepIndicator}>Step 5 of 13</Text>
-      </View>
 
-      {/* Progress Bar */}
-      <View style={styles.progressContainer}>
-        <View style={styles.progressTrack}>
-          <View style={[styles.progressBar, { width: `${(5 / 13) * 100}%` }]} />
-        </View>
-        <Text style={styles.progressPercentText}>38% Complete</Text>
-      </View>
-
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.formCard}>
-          <View style={styles.cardHeaderBanner}>
-            <Text style={styles.cardHeaderTitle}>{t.step5Title}</Text>
-            <Text style={styles.cardHeaderSubtitle}>{t.step5Subtitle}</Text>
+        {/* State Trigger */}
+        <Text style={styles.sectionHeaderLabel}>Resident State</Text>
+        <TouchableOpacity
+          style={styles.dropdownTrigger}
+          onPress={() => setShowStateModal(true)}
+          activeOpacity={0.88}
+        >
+          <View style={styles.dropdownTriggerLeft}>
+            <MaterialCommunityIcons name="map-marker-radius-outline" size={22} color="#E31E25" style={{ marginRight: 10 }} />
+            <Text style={styles.dropdownValueText}>{residentState}</Text>
           </View>
+          <Ionicons name="chevron-down" size={20} color="#8C7A7C" />
+        </TouchableOpacity>
 
-          <View style={styles.cardBody}>
-            {/* Green Live Activity Callout Pill */}
-            <View style={styles.liveCalloutPill}>
-              <Ionicons name="trending-up" size={16} color="#1E8449" style={{ marginRight: 6 }} />
-              <Text style={styles.liveCalloutText}>127 verified profiles joined in the last 3 days!</Text>
-            </View>
-
-            {/* Country Dropdown */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.country}</Text>
-              <TouchableOpacity
-                style={styles.dropdownTrigger}
-                onPress={() => setShowCountryModal(true)}
-                activeOpacity={0.85}
-              >
-                <Text style={styles.dropdownValueText}>{country || t.selectCountry}</Text>
-                <Ionicons name="chevron-down" size={20} color="#8C7A7C" />
-              </TouchableOpacity>
-            </View>
-
-            {/* State Dropdown */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.state}</Text>
-              <TouchableOpacity
-                style={styles.dropdownTrigger}
-                onPress={() => setShowStateModal(true)}
-                activeOpacity={0.85}
-              >
-                <Text style={styles.dropdownValueText}>{residentState || t.selectState}</Text>
-                <Ionicons name="chevron-down" size={20} color="#8C7A7C" />
-              </TouchableOpacity>
-            </View>
-
-            {/* City Input & Dropdown */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.city}</Text>
-              <TouchableOpacity
-                style={styles.dropdownTrigger}
-                onPress={() => setShowCityModal(true)}
-                activeOpacity={0.85}
-              >
-                <Text style={styles.dropdownValueText}>{residentCity || t.selectCity}</Text>
-                <Ionicons name="chevron-down" size={20} color="#8C7A7C" />
-              </TouchableOpacity>
-
-              {/* Popular Cities Suggestion Chips */}
-              <Text style={styles.popularTitle}>{t.popularCities}:</Text>
-              <View style={styles.chipGrid}>
-                {popularCities.map((c) => {
-                  const isSel = residentCity === c;
-                  return (
-                    <TouchableOpacity
-                      key={c}
-                      style={[styles.smallChip, isSel && styles.smallChipSelected]}
-                      onPress={() => setResidentCity(c)}
-                      activeOpacity={0.85}
-                    >
-                      <Text style={[styles.smallChipText, isSel && styles.smallChipTextSelected]}>{c}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-            </View>
-          </View>
+        {/* City Input & Quick Chips */}
+        <Text style={styles.sectionHeaderLabel}>Resident City</Text>
+        <View style={styles.inputWrapper}>
+          <Ionicons name="location-outline" size={20} color="#8C7A7C" style={{ marginRight: 10 }} />
+          <TextInput
+            style={styles.inputField}
+            placeholder="Enter city name"
+            value={residentCity}
+            onChangeText={setResidentCity}
+            placeholderTextColor="#8C7A7C"
+          />
         </View>
+
+        <Text style={styles.popularCityLabel}>Popular Rajasthan Cities</Text>
+        <View style={styles.cityChipsRow}>
+          {popularRajasthanCities.map((city) => {
+            const isSel = residentCity === city;
+            return (
+              <TouchableOpacity
+                key={city}
+                style={[styles.cityChip, isSel && styles.cityChipSelected]}
+                onPress={() => setResidentCity(city)}
+                activeOpacity={0.85}
+              >
+                <Text style={[styles.cityChipText, isSel && styles.cityChipTextSelected]}>{city}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+
+        <View style={{ height: 20 }} />
       </ScrollView>
 
       {/* Country Modal */}
-      <Modal visible={showCountryModal} transparent animationType="slide">
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
+      <Modal visible={showCountryModal} animationType="slide" transparent>
+        <View style={styles.modalBackdrop}>
+          <View style={styles.modalCard}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Select Country</Text>
               <TouchableOpacity onPress={() => setShowCountryModal(false)}>
                 <Ionicons name="close" size={24} color="#2C1A1D" />
               </TouchableOpacity>
             </View>
-
-            <ScrollView style={{ maxHeight: 300 }}>
-              {countriesList.map((c) => (
+            <ScrollView style={{ maxHeight: 320 }}>
+              {countries.map((c) => (
                 <TouchableOpacity
                   key={c}
-                  style={[styles.modalOptionItem, country === c && styles.modalOptionSelected]}
-                  onPress={() => {
-                    setCountry(c);
-                    setShowCountryModal(false);
-                  }}
+                  style={styles.modalOptionItem}
+                  onPress={() => { setCountry(c); setShowCountryModal(false); }}
                 >
                   <Text style={[styles.modalOptionText, country === c && styles.modalOptionTextSelected]}>{c}</Text>
                   {country === c && <Ionicons name="checkmark" size={20} color="#E31E25" />}
@@ -170,25 +153,21 @@ export default function Step5() {
       </Modal>
 
       {/* State Modal */}
-      <Modal visible={showStateModal} transparent animationType="slide">
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
+      <Modal visible={showStateModal} animationType="slide" transparent>
+        <View style={styles.modalBackdrop}>
+          <View style={styles.modalCard}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Select State</Text>
+              <Text style={styles.modalTitle}>Select Resident State</Text>
               <TouchableOpacity onPress={() => setShowStateModal(false)}>
                 <Ionicons name="close" size={24} color="#2C1A1D" />
               </TouchableOpacity>
             </View>
-
             <ScrollView style={{ maxHeight: 320 }}>
-              {statesList.map((s) => (
+              {indianStates.map((s) => (
                 <TouchableOpacity
                   key={s}
-                  style={[styles.modalOptionItem, residentState === s && styles.modalOptionSelected]}
-                  onPress={() => {
-                    setResidentState(s);
-                    setShowStateModal(false);
-                  }}
+                  style={styles.modalOptionItem}
+                  onPress={() => { setResidentState(s); setShowStateModal(false); }}
                 >
                   <Text style={[styles.modalOptionText, residentState === s && styles.modalOptionTextSelected]}>{s}</Text>
                   {residentState === s && <Ionicons name="checkmark" size={20} color="#E31E25" />}
@@ -199,67 +178,17 @@ export default function Step5() {
         </View>
       </Modal>
 
-      {/* City Modal */}
-      <Modal visible={showCityModal} transparent animationType="slide">
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Select City</Text>
-              <TouchableOpacity onPress={() => setShowCityModal(false)}>
-                <Ionicons name="close" size={24} color="#2C1A1D" />
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.searchBox}>
-              <Ionicons name="search-outline" size={18} color="#8C7A7C" style={{ marginRight: 8 }} />
-              <TextInput
-                style={styles.searchInput}
-                placeholder="Type or search city..."
-                value={citySearch}
-                onChangeText={setCitySearch}
-                placeholderTextColor="#8C7A7C"
-              />
-            </View>
-
-            <ScrollView style={{ maxHeight: 320 }}>
-              {popularCities
-                .filter((c) => c.toLowerCase().includes(citySearch.toLowerCase()))
-                .map((c) => (
-                  <TouchableOpacity
-                    key={c}
-                    style={[styles.modalOptionItem, residentCity === c && styles.modalOptionSelected]}
-                    onPress={() => {
-                      setResidentCity(c);
-                      setShowCityModal(false);
-                    }}
-                  >
-                    <Text style={[styles.modalOptionText, residentCity === c && styles.modalOptionTextSelected]}>{c}</Text>
-                    {residentCity === c && <Ionicons name="checkmark" size={20} color="#E31E25" />}
-                  </TouchableOpacity>
-                ))}
-              {citySearch.length > 0 && (
-                <TouchableOpacity
-                  style={styles.modalOptionItem}
-                  onPress={() => {
-                    setResidentCity(citySearch);
-                    setShowCityModal(false);
-                  }}
-                >
-                  <Text style={{ color: '#E31E25', fontWeight: '800' }}>Use "{citySearch}"</Text>
-                </TouchableOpacity>
-              )}
-            </ScrollView>
+      {/* Sticky Bottom Navigation Footer */}
+      <View style={styles.footerContainer}>
+        <View style={styles.progressRow}>
+          <View style={styles.progressTrackBg}>
+            <View style={[styles.progressBarFill, { width: `${(5 / 13) * 100}%` }]} />
           </View>
+          <Text style={styles.progressText}>38%</Text>
         </View>
-      </Modal>
 
-      {/* Footer CTA */}
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.prevBtn} onPress={() => router.back()}>
-          <Text style={styles.prevBtnText}>← Previous</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.nextBtn} onPress={handleNext} activeOpacity={0.88}>
-          <Text style={styles.nextBtnText}>{t.continue} →</Text>
+        <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
+          <Text style={styles.continueBtnText}>{t.continue} →</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -271,178 +200,165 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF9F6',
   },
-  header: {
+  heroBannerContainer: {
+    height: 180,
+    width: '100%',
+    position: 'relative',
+  },
+  heroBannerImage: {
+    width: '100%',
+    height: '100%',
+  },
+  heroOverlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: 'rgba(44, 26, 29, 0.35)',
+  },
+  topNavRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EFE6DD',
-  },
-  backBtn: {
-    padding: 4,
-  },
-  headerTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  headerBrand: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#E91E63',
-    fontFamily: 'serif',
-  },
-  stepIndicator: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#8C7A7C',
-  },
-  progressContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: '#FFFFFF',
-    gap: 12,
-  },
-  progressTrack: {
-    flex: 1,
-    height: 6,
-    backgroundColor: '#EFE6DD',
-    borderRadius: 3,
-    overflow: 'hidden',
-  },
-  progressBar: {
-    height: '100%',
-    backgroundColor: '#E91E63',
-    borderRadius: 3,
-  },
-  progressPercentText: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#5A4A4D',
-  },
-  content: {
     paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 40,
+    paddingTop: 12,
+    zIndex: 10,
   },
-  formCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    shadowColor: '#2C1A1D',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-    elevation: 4,
-  },
-  cardHeaderBanner: {
-    backgroundColor: '#E91E63',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-  },
-  cardHeaderTitle: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: '#FFFFFF',
-    fontFamily: 'serif',
-  },
-  cardHeaderSubtitle: {
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.85)',
-  },
-  cardBody: {
-    padding: 20,
-  },
-  liveCalloutPill: {
-    flexDirection: 'row',
+  blurBackBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
     alignItems: 'center',
-    backgroundColor: '#E8F8F5',
+    justifyContent: 'center',
+  },
+  stepPillBadge: {
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
     borderWidth: 1,
-    borderColor: '#A3E4D7',
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    marginBottom: 20,
+    borderColor: 'rgba(255, 255, 255, 0.25)',
   },
-  liveCalloutText: {
-    fontSize: 13,
-    color: '#1E8449',
+  stepPillText: {
+    color: '#FFFFFF',
+    fontSize: 12,
     fontWeight: '700',
-    flex: 1,
   },
-  fieldGroup: {
-    marginBottom: 20,
+  curvedArchMask: {
+    position: 'absolute',
+    bottom: -1,
+    left: 0,
+    right: 0,
+    height: 24,
+    backgroundColor: '#FFF9F6',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
   },
-  fieldLabel: {
-    fontSize: 14,
-    fontWeight: '700',
+
+  contentScroll: {
+    paddingHorizontal: 20,
+    paddingTop: 4,
+  },
+  headerTitleBox: {
+    marginBottom: 16,
+  },
+  questionTitle: {
+    fontSize: 24,
+    fontWeight: '800',
     color: '#2C1A1D',
+    fontFamily: 'serif',
+    marginBottom: 4,
+  },
+  questionSubtitle: {
+    fontSize: 14,
+    color: '#5A4A4D',
+    lineHeight: 20,
+  },
+  sectionHeaderLabel: {
+    fontSize: 14,
+    fontWeight: '800',
+    color: '#2C1A1D',
+    marginTop: 14,
     marginBottom: 8,
   },
+
   dropdownTrigger: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#FAF5F7',
-    borderWidth: 1,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
     borderColor: '#EFE6DD',
-    borderRadius: 14,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    marginBottom: 10,
+  },
+  dropdownTriggerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   dropdownValueText: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '700',
     color: '#2C1A1D',
   },
-  popularTitle: {
+
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
+    borderColor: '#EFE6DD',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    marginBottom: 12,
+  },
+  inputField: {
+    flex: 1,
+    paddingVertical: 14,
+    fontSize: 15,
+    color: '#2C1A1D',
+  },
+
+  popularCityLabel: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#5A4A4D',
-    marginTop: 12,
+    color: '#8C7A7C',
     marginBottom: 8,
   },
-  chipGrid: {
+  cityChipsRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 8,
+    marginBottom: 10,
   },
-  smallChip: {
-    paddingVertical: 7,
-    paddingHorizontal: 12,
-    borderRadius: 14,
-    backgroundColor: '#FAF5F7',
+  cityChip: {
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#EFE6DD',
+    borderRadius: 16,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
   },
-  smallChipSelected: {
-    backgroundColor: '#FFF0F3',
-    borderColor: '#E91E63',
+  cityChipSelected: {
+    backgroundColor: '#FFF0F1',
+    borderColor: '#E31E25',
   },
-  smallChipText: {
-    fontSize: 12,
-    color: '#2C1A1D',
-    fontWeight: '500',
+  cityChipText: {
+    fontSize: 13,
+    color: '#5A4A4D',
+    fontWeight: '600',
   },
-  smallChipTextSelected: {
-    color: '#E91E63',
+  cityChipTextSelected: {
+    color: '#E31E25',
     fontWeight: '800',
   },
 
-  // Modal styles
-  modalOverlay: {
+  modalBackdrop: {
     flex: 1,
-    backgroundColor: 'rgba(44,26,29,0.6)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'flex-end',
   },
-  modalContainer: {
+  modalCard: {
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
@@ -450,8 +366,8 @@ const styles = StyleSheet.create({
   },
   modalHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 16,
   },
   modalTitle: {
@@ -460,77 +376,68 @@ const styles = StyleSheet.create({
     color: '#2C1A1D',
     fontFamily: 'serif',
   },
-  searchBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FAF5F7',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    borderRadius: 12,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    marginBottom: 14,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 14,
-    color: '#2C1A1D',
-  },
   modalOptionItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 14,
-    paddingHorizontal: 12,
     borderBottomWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  modalOptionSelected: {
-    backgroundColor: '#FFF0F3',
+    borderBottomColor: '#EFE6DD',
   },
   modalOptionText: {
-    fontSize: 15,
+    fontSize: 16,
     color: '#2C1A1D',
   },
   modalOptionTextSelected: {
-    color: '#E91E63',
+    color: '#E31E25',
     fontWeight: '800',
   },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+
+  footerContainer: {
     paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingVertical: 14,
     backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
     borderColor: '#EFE6DD',
   },
-  prevBtn: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    backgroundColor: '#F5EFE6',
+  progressRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 12,
   },
-  prevBtnText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#5A4A4D',
+  progressTrackBg: {
+    flex: 1,
+    height: 6,
+    backgroundColor: '#EFE6DD',
+    borderRadius: 3,
+    overflow: 'hidden',
   },
-  nextBtn: {
-    backgroundColor: '#E91E63',
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    borderRadius: 14,
-    shadowColor: '#E91E63',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
+  progressBarFill: {
+    height: '100%',
+    backgroundColor: '#E31E25',
+    borderRadius: 3,
   },
-  nextBtnText: {
+  progressText: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: '#E31E25',
+  },
+  continueBtn: {
+    backgroundColor: '#E31E25',
+    paddingVertical: 16,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#E31E25',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  continueBtnText: {
     color: '#FFFFFF',
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '800',
   },
 });

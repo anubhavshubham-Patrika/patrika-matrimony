@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
 import { Translations } from '../../../src/constants/translations';
-import PatrikaRibbonLogo from '../../../src/components/PatrikaRibbonLogo';
 
 export default function Step2() {
   const router = useRouter();
@@ -12,139 +11,123 @@ export default function Step2() {
   const lang = state.language || 'en';
   const t = Translations[lang];
 
-  // All 22 official languages of India + Marwari/Rajasthani + English
-  const allLanguages = [
-    'Hindi', 'Marwari / Rajasthani', 'Punjabi', 'Gujarati', 'Marathi',
-    'Bengali', 'Tamil', 'Telugu', 'Kannada', 'Malayalam', 'Odia',
-    'Assamese', 'Urdu', 'Sanskrit', 'Kashmiri', 'Sindhi', 'Konkani',
-    'Nepali', 'Manipuri (Meitei)', 'Bodo', 'Dogri', 'Santhali', 'English'
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>(
+    state.onboardingData?.motherTongue ? [state.onboardingData.motherTongue] : ['Hindi']
+  );
+
+  const popularLanguages = [
+    { id: 'Hindi', label: 'Hindi (हिंदी)', icon: 'translate' },
+    { id: 'Marwari', label: 'Marwari / Rajasthani (मारवाड़ी)', icon: 'crown-outline' },
+    { id: 'Punjabi', label: 'Punjabi (ਪੰਜਾਬੀ)', icon: 'star-outline' },
+    { id: 'Gujarati', label: 'Gujarati (ગુજરાતી)', icon: 'flower-outline' },
+    { id: 'Marathi', label: 'Marathi (मराठी)', icon: 'book-open-outline' },
+    { id: 'Bengali', label: 'Bengali (বাংলা)', icon: 'feather' },
+    { id: 'Tamil', label: 'Tamil (தமிழ்)', icon: 'script-text-outline' },
+    { id: 'Telugu', label: 'Telugu (తెలుగు)', icon: 'music-note-outline' },
+    { id: 'English', label: 'English', icon: 'earth' },
   ];
 
-  const [selectedLanguages, setSelectedLanguages] = useState<string[]>(
-    state.onboardingData?.motherTongue ? state.onboardingData.motherTongue.split(', ') : ['Hindi']
-  );
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const toggleLanguage = (item: string) => {
-    if (selectedLanguages.includes(item)) {
+  const toggleLanguageSelect = (langId: string) => {
+    if (selectedLanguages.includes(langId)) {
       if (selectedLanguages.length > 1) {
-        setSelectedLanguages(selectedLanguages.filter((l) => l !== item));
+        setSelectedLanguages(selectedLanguages.filter((l) => l !== langId));
       }
     } else {
-      setSelectedLanguages([...selectedLanguages, item]);
+      setSelectedLanguages([...selectedLanguages, langId]);
     }
   };
 
-  const filteredLanguages = allLanguages.filter((l) =>
-    l.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   const handleNext = () => {
-    if (selectedLanguages.length === 0) return;
-    const motherTongue = selectedLanguages.join(', ');
-    dispatch({ type: 'UPDATE_ONBOARDING', payload: { motherTongue } });
+    if (!selectedLanguages.length) return;
+    dispatch({ type: 'UPDATE_ONBOARDING', payload: { motherTongue: selectedLanguages.join(', ') } });
     router.push('/(auth)/onboarding/step3');
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#2C1A1D" />
-        </TouchableOpacity>
-        <View style={styles.headerTitleRow}>
-          <PatrikaRibbonLogo size={28} />
-          <Text style={styles.headerBrand}>Patrika Matrimony</Text>
-        </View>
-        <Text style={styles.stepIndicator}>Step 2 of 13</Text>
-      </View>
+      {/* Hero Banner with Curved Arch Mask */}
+      <View style={styles.heroBannerContainer}>
+        <Image
+          source={{ uri: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop' }}
+          style={styles.heroBannerImage}
+          resizeMode="cover"
+        />
+        <View style={styles.heroOverlay} />
 
-      {/* Progress Bar & Percentage */}
-      <View style={styles.progressContainer}>
-        <View style={styles.progressTrack}>
-          <View style={[styles.progressBar, { width: `${(2 / 13) * 100}%` }]} />
-        </View>
-        <Text style={styles.progressPercentText}>15% Complete</Text>
-      </View>
-
-      {/* Main Content */}
-      <View style={styles.content}>
-        <View style={styles.formCard}>
-          {/* Accent Banner */}
-          <View style={styles.cardHeaderBanner}>
-            <Text style={styles.cardHeaderTitle}>{t.step2Title}</Text>
-            <Text style={styles.cardHeaderSubtitle}>{t.step2Subtitle}</Text>
-          </View>
-
-          <View style={styles.cardBody}>
-            {/* Search Box */}
-            <View style={styles.searchBox}>
-              <Ionicons name="search-outline" size={20} color="#8C7A7C" style={{ marginRight: 8 }} />
-              <TextInput
-                style={styles.searchInput}
-                placeholder={t.searchLanguage}
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-                placeholderTextColor="#8C7A7C"
-              />
-              {searchQuery.length > 0 && (
-                <TouchableOpacity onPress={() => setSearchQuery('')}>
-                  <Ionicons name="close-circle" size={18} color="#8C7A7C" />
-                </TouchableOpacity>
-              )}
-            </View>
-
-            {/* Selected Counter Pill */}
-            <View style={styles.selectedCounterRow}>
-              <Text style={styles.selectedCounterText}>
-                Selected ({selectedLanguages.length}):{' '}
-                <Text style={{ color: '#E31E25', fontWeight: '800' }}>{selectedLanguages.join(', ')}</Text>
-              </Text>
-            </View>
-
-            {/* Scrollable Language List */}
-            <ScrollView style={styles.listScrollView} showsVerticalScrollIndicator={false}>
-              <View style={styles.listCard}>
-                {filteredLanguages.map((item, index) => {
-                  const isSelected = selectedLanguages.includes(item);
-                  return (
-                    <TouchableOpacity
-                      key={item}
-                      style={[
-                        styles.listItem,
-                        index === filteredLanguages.length - 1 && { borderBottomWidth: 0 },
-                        isSelected && styles.listItemSelected,
-                      ]}
-                      onPress={() => toggleLanguage(item)}
-                      activeOpacity={0.85}
-                    >
-                      <Text style={[styles.listText, isSelected && styles.listTextSelected]}>{item}</Text>
-
-                      <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
-                        {isSelected && <MaterialCommunityIcons name="check" size={16} color="#FFFFFF" />}
-                      </View>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-            </ScrollView>
+        {/* Floating Top Nav Over Image */}
+        <View style={styles.topNavRow}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.blurBackBtn} activeOpacity={0.8}>
+            <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
+          </TouchableOpacity>
+          <View style={styles.stepPillBadge}>
+            <Text style={styles.stepPillText}>Step 2 of 13</Text>
           </View>
         </View>
+
+        <View style={styles.curvedArchMask} />
       </View>
 
-      {/* Footer Navigation */}
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.prevBtn} onPress={() => router.back()}>
-          <Text style={styles.prevBtnText}>← Previous</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.nextBtn, selectedLanguages.length === 0 && styles.nextBtnDisabled]}
-          onPress={handleNext}
-          disabled={selectedLanguages.length === 0}
-          activeOpacity={0.88}
-        >
-          <Text style={styles.nextBtnText}>{t.continue} →</Text>
+      {/* Main Content Area */}
+      <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
+        <View style={styles.headerTitleBox}>
+          <Text style={styles.questionTitle}>{t.step2Title}</Text>
+          <Text style={styles.questionSubtitle}>{t.step2Subtitle}</Text>
+        </View>
+
+        {/* Selected Languages Counter Pill */}
+        <View style={styles.selectedCounterRow}>
+          <Ionicons name="checkmark-done-circle-outline" size={18} color="#E31E25" style={{ marginRight: 6 }} />
+          <Text style={styles.selectedCounterText}>
+            Selected ({selectedLanguages.length}):{' '}
+            <Text style={{ color: '#E31E25', fontWeight: '800' }}>{selectedLanguages.join(', ')}</Text>
+          </Text>
+        </View>
+
+        {/* Popular Languages Cards List */}
+        <View style={styles.optionsList}>
+          {popularLanguages.map((item) => {
+            const isSelected = selectedLanguages.includes(item.id);
+            return (
+              <TouchableOpacity
+                key={item.id}
+                style={[styles.optionCardRow, isSelected && styles.optionCardRowSelected]}
+                onPress={() => toggleLanguageSelect(item.id)}
+                activeOpacity={0.88}
+              >
+                <View style={[styles.iconCircleBadge, isSelected && styles.iconCircleBadgeSelected]}>
+                  <MaterialCommunityIcons
+                    name={item.icon as any}
+                    size={22}
+                    color={isSelected ? '#E31E25' : '#8C7A7C'}
+                  />
+                </View>
+
+                <Text style={[styles.optionLabel, isSelected && styles.optionLabelSelected]}>
+                  {item.label}
+                </Text>
+
+                <View style={[styles.checkboxSquare, isSelected && styles.checkboxSquareSelected]}>
+                  {isSelected && <Ionicons name="checkmark" size={14} color="#FFFFFF" />}
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+
+        <View style={{ height: 20 }} />
+      </ScrollView>
+
+      {/* Sticky Bottom Navigation Footer */}
+      <View style={styles.footerContainer}>
+        <View style={styles.progressRow}>
+          <View style={styles.progressTrackBg}>
+            <View style={[styles.progressBarFill, { width: `${(2 / 13) * 100}%` }]} />
+          </View>
+          <Text style={styles.progressText}>15%</Text>
+        </View>
+
+        <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
+          <Text style={styles.continueBtnText}>{t.continue} →</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -156,201 +139,200 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF9F6',
   },
-  header: {
+  heroBannerContainer: {
+    height: 180,
+    width: '100%',
+    position: 'relative',
+  },
+  heroBannerImage: {
+    width: '100%',
+    height: '100%',
+  },
+  heroOverlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: 'rgba(44, 26, 29, 0.35)',
+  },
+  topNavRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EFE6DD',
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    zIndex: 10,
   },
-  backBtn: {
-    padding: 4,
-  },
-  headerTitleRow: {
-    flexDirection: 'row',
+  blurBackBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
     alignItems: 'center',
-    gap: 8,
+    justifyContent: 'center',
   },
-  headerBrand: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#E91E63',
-    fontFamily: 'serif',
+  stepPillBadge: {
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.25)',
   },
-  stepIndicator: {
-    fontSize: 13,
+  stepPillText: {
+    color: '#FFFFFF',
+    fontSize: 12,
     fontWeight: '700',
-    color: '#8C7A7C',
   },
-  progressContainer: {
+  curvedArchMask: {
+    position: 'absolute',
+    bottom: -1,
+    left: 0,
+    right: 0,
+    height: 24,
+    backgroundColor: '#FFF9F6',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+  },
+
+  contentScroll: {
+    paddingHorizontal: 20,
+    paddingTop: 4,
+  },
+  headerTitleBox: {
+    marginBottom: 14,
+  },
+  questionTitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#2C1A1D',
+    fontFamily: 'serif',
+    marginBottom: 4,
+  },
+  questionSubtitle: {
+    fontSize: 14,
+    color: '#5A4A4D',
+    lineHeight: 20,
+  },
+  selectedCounterRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    backgroundColor: '#FFF0F1',
+    borderWidth: 1,
+    borderColor: '#FCD4D7',
+    borderRadius: 14,
+    paddingHorizontal: 14,
     paddingVertical: 10,
-    backgroundColor: '#FFFFFF',
-    gap: 12,
+    marginBottom: 16,
   },
-  progressTrack: {
+  selectedCounterText: {
+    fontSize: 13,
+    color: '#2C1A1D',
+    fontWeight: '600',
+  },
+  optionsList: {
+    gap: 10,
+  },
+  optionCardRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderWidth: 1.5,
+    borderColor: '#EFE6DD',
+    shadowColor: '#2C1A1D',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.03,
+    shadowRadius: 5,
+    elevation: 2,
+  },
+  optionCardRowSelected: {
+    borderColor: '#E31E25',
+    backgroundColor: '#FFF0F1',
+  },
+  iconCircleBadge: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    backgroundColor: '#FFF9F6',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+    borderWidth: 1,
+    borderColor: '#EFE6DD',
+  },
+  iconCircleBadgeSelected: {
+    backgroundColor: '#FFE4E6',
+    borderColor: '#E31E25',
+  },
+  optionLabel: {
+    flex: 1,
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#2C1A1D',
+  },
+  optionLabelSelected: {
+    color: '#E31E25',
+    fontWeight: '800',
+  },
+  checkboxSquare: {
+    width: 22,
+    height: 22,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: '#A39396',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  checkboxSquareSelected: {
+    backgroundColor: '#E31E25',
+    borderColor: '#E31E25',
+  },
+
+  footerContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    backgroundColor: '#FFFFFF',
+    borderTopWidth: 1,
+    borderColor: '#EFE6DD',
+  },
+  progressRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 12,
+  },
+  progressTrackBg: {
     flex: 1,
     height: 6,
     backgroundColor: '#EFE6DD',
     borderRadius: 3,
     overflow: 'hidden',
   },
-  progressBar: {
+  progressBarFill: {
     height: '100%',
-    backgroundColor: '#E91E63',
+    backgroundColor: '#E31E25',
     borderRadius: 3,
   },
-  progressPercentText: {
+  progressText: {
     fontSize: 12,
-    fontWeight: '700',
-    color: '#5A4A4D',
+    fontWeight: '800',
+    color: '#E31E25',
   },
-  content: {
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 16,
-  },
-  formCard: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    marginBottom: 16,
-  },
-  cardHeaderBanner: {
-    backgroundColor: '#E91E63',
-    paddingHorizontal: 20,
+  continueBtn: {
+    backgroundColor: '#E31E25',
     paddingVertical: 16,
-  },
-  cardHeaderTitle: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: '#FFFFFF',
-    fontFamily: 'serif',
-  },
-  cardHeaderSubtitle: {
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.85)',
-  },
-  cardBody: {
-    flex: 1,
-    padding: 16,
-  },
-  searchBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FAF5F7',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    borderRadius: 14,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    marginBottom: 10,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 15,
-    color: '#2C1A1D',
-  },
-  selectedCounterRow: {
-    marginBottom: 10,
-  },
-  selectedCounterText: {
-    fontSize: 12,
-    color: '#5A4A4D',
-  },
-  listScrollView: {
-    flex: 1,
-  },
-  listCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    overflow: 'hidden',
-    marginBottom: 10,
-  },
-  listItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  listItemSelected: {
-    backgroundColor: '#FFF0F3',
-  },
-  listText: {
-    fontSize: 15,
-    fontWeight: '500',
-    color: '#2C1A1D',
-  },
-  listTextSelected: {
-    color: '#E91E63',
-    fontWeight: '800',
-  },
-  checkbox: {
-    width: 22,
-    height: 22,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: '#EFE6DD',
+    borderRadius: 28,
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: '#E31E25',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 5,
   },
-  checkboxSelected: {
-    backgroundColor: '#E91E63',
-    borderColor: '#E91E63',
-  },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    backgroundColor: '#FFFFFF',
-    borderTopWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  prevBtn: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    backgroundColor: '#F5EFE6',
-  },
-  prevBtnText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#5A4A4D',
-  },
-  nextBtn: {
-    backgroundColor: '#E91E63',
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    borderRadius: 14,
-    shadowColor: '#E91E63',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  nextBtnDisabled: {
-    backgroundColor: '#EFE6DD',
-    shadowOpacity: 0,
-    elevation: 0,
-  },
-  nextBtnText: {
+  continueBtnText: {
     color: '#FFFFFF',
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '800',
   },
 });

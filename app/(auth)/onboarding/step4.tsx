@@ -1,36 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Modal, TextInput } from 'react-native';
+import { 
+  View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image, TextInput, Modal 
+} from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
 import { Translations } from '../../../src/constants/translations';
-import PatrikaRibbonLogo from '../../../src/components/PatrikaRibbonLogo';
 
 export default function Step4() {
   const router = useRouter();
   const { state, dispatch } = useApp();
   const lang = state.language || 'en';
   const t = Translations[lang];
-
-  const religionsList = [
-    'Hindu', 'Muslim', 'Sikh', 'Jain', 'Christian', 'Buddhist', 'Parsi / Zoroastrian', 'Jewish', 'Bahá\'í', 'Other'
-  ];
-
-  const casteMap: Record<string, string[]> = {
-    Hindu: [
-      'Rajput (Rathore/Chauhan/Sisodia)', 'Agarwal', 'Brahmin (Gaur/Saraswat/Khandelwal)', 'Marwari',
-      'Yadav', 'Jat', 'Gujjar', 'Kayastha', 'Maheshwari', 'Khandelwal', 'Saini', 'Kurmi', 'Khatri',
-      'Meena', 'Maratha', 'Reddy', 'Nair', 'Lingayat', 'Other'
-    ],
-    Jain: ['Jain - Digambar', 'Jain - Svetambar', 'Jain - Agarwal', 'Jain - Oswal', 'Jain - Khandelwal', 'Other'],
-    Sikh: ['Sikh - Jat', 'Sikh - Ramgarhia', 'Sikh - Khatri', 'Sikh - Arora', 'Sikh - Ahluwalia', 'Other'],
-    Muslim: ['Sunni', 'Shia', 'Pathan', 'Syed', 'Sheikh', 'Other'],
-    Christian: ['Roman Catholic', 'Protestant', 'Syrian Christian', 'Other'],
-  };
-
-  const defaultCastes = [
-    'Rajput', 'Agarwal', 'Brahmin', 'Marwari', 'Jain', 'Sindhi', 'Kayastha', 'Yadav', 'Jat', 'Other'
-  ];
 
   const [religion, setReligion] = useState(state.onboardingData?.religion || 'Hindu');
   const [caste, setCaste] = useState(state.onboardingData?.caste || 'Rajput');
@@ -40,158 +21,135 @@ export default function Step4() {
 
   const [showReligionModal, setShowReligionModal] = useState(false);
   const [showCasteModal, setShowCasteModal] = useState(false);
-  const [casteSearch, setCasteSearch] = useState('');
 
-  const currentCasteOptions = casteMap[religion] || defaultCastes;
-  const filteredCastes = currentCasteOptions.filter((c) =>
-    c.toLowerCase().includes(casteSearch.toLowerCase())
-  );
+  const religions = ['Hindu', 'Muslim', 'Sikh', 'Jain', 'Christian', 'Parsi', 'Buddhist', 'Other'];
+  const popularCastes = ['Rajput', 'Agarwal', 'Brahmin', 'Marwari', 'Jain', 'Sindhi', 'Jat', 'Gupta', 'Maheshwari', 'Other'];
+  const manglikOptions = ['Non-Manglik', 'Manglik', 'Partial Manglik', "Don't Know"];
 
   const handleNext = () => {
     dispatch({
       type: 'UPDATE_ONBOARDING',
-      payload: { religion, caste, subCaste, gotra, manglikStatus },
+      payload: {
+        religion,
+        caste,
+        subCaste,
+        gotra,
+        manglikStatus,
+      },
     });
     router.push('/(auth)/onboarding/step5');
   };
 
-  const isHinduJain = ['Hindu', 'Jain'].includes(religion);
-
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#2C1A1D" />
+      {/* Hero Banner */}
+      <View style={styles.heroBannerContainer}>
+        <Image
+          source={{ uri: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=800&auto=format&fit=crop' }}
+          style={styles.heroBannerImage}
+          resizeMode="cover"
+        />
+        <View style={styles.heroOverlay} />
+
+        <View style={styles.topNavRow}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.blurBackBtn} activeOpacity={0.8}>
+            <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
+          </TouchableOpacity>
+          <View style={styles.stepPillBadge}>
+            <Text style={styles.stepPillText}>Step 4 of 13</Text>
+          </View>
+        </View>
+
+        <View style={styles.curvedArchMask} />
+      </View>
+
+      <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
+        <View style={styles.headerTitleBox}>
+          <Text style={styles.questionTitle}>{t.step4Title}</Text>
+          <Text style={styles.questionSubtitle}>{t.step4Subtitle}</Text>
+        </View>
+
+        {/* Religion Selection Trigger */}
+        <Text style={styles.sectionHeaderLabel}>Religion</Text>
+        <TouchableOpacity
+          style={styles.dropdownTrigger}
+          onPress={() => setShowReligionModal(true)}
+          activeOpacity={0.88}
+        >
+          <View style={styles.dropdownTriggerLeft}>
+            <MaterialCommunityIcons name="flower" size={22} color="#E31E25" style={{ marginRight: 10 }} />
+            <Text style={styles.dropdownValueText}>{religion}</Text>
+          </View>
+          <Ionicons name="chevron-down" size={20} color="#8C7A7C" />
         </TouchableOpacity>
-        <View style={styles.headerTitleRow}>
-          <PatrikaRibbonLogo size={28} />
-          <Text style={styles.headerBrand}>Patrika Matrimony</Text>
-        </View>
-        <Text style={styles.stepIndicator}>Step 4 of 13</Text>
-      </View>
 
-      {/* Progress Bar */}
-      <View style={styles.progressContainer}>
-        <View style={styles.progressTrack}>
-          <View style={[styles.progressBar, { width: `${(4 / 13) * 100}%` }]} />
-        </View>
-        <Text style={styles.progressPercentText}>30% Complete</Text>
-      </View>
-
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.formCard}>
-          <View style={styles.cardHeaderBanner}>
-            <Text style={styles.cardHeaderTitle}>{t.step4Title}</Text>
-            <Text style={styles.cardHeaderSubtitle}>{t.step4Subtitle}</Text>
+        {/* Caste Selection Trigger */}
+        <Text style={styles.sectionHeaderLabel}>Caste / Community</Text>
+        <TouchableOpacity
+          style={styles.dropdownTrigger}
+          onPress={() => setShowCasteModal(true)}
+          activeOpacity={0.88}
+        >
+          <View style={styles.dropdownTriggerLeft}>
+            <MaterialCommunityIcons name="account-group" size={22} color="#E31E25" style={{ marginRight: 10 }} />
+            <Text style={styles.dropdownValueText}>{caste}</Text>
           </View>
+          <Ionicons name="chevron-down" size={20} color="#8C7A7C" />
+        </TouchableOpacity>
 
-          <View style={styles.cardBody}>
-            {/* Green Live Activity Callout Pill */}
-            <View style={styles.liveCalloutPill}>
-              <Ionicons name="trending-up" size={16} color="#1E8449" style={{ marginRight: 6 }} />
-              <Text style={styles.liveCalloutText}>127 verified profiles joined in the last 3 days!</Text>
-            </View>
-
-            {/* Religion Selection Dropdown Trigger */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.religion}</Text>
-              <TouchableOpacity
-                style={styles.dropdownTrigger}
-                onPress={() => setShowReligionModal(true)}
-                activeOpacity={0.85}
-              >
-                <Text style={styles.dropdownValueText}>{religion || t.selectReligion}</Text>
-                <Ionicons name="chevron-down" size={20} color="#8C7A7C" />
-              </TouchableOpacity>
-            </View>
-
-            {/* Caste Selection Dropdown Trigger */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.caste}</Text>
-              <TouchableOpacity
-                style={styles.dropdownTrigger}
-                onPress={() => setShowCasteModal(true)}
-                activeOpacity={0.85}
-              >
-                <Text style={styles.dropdownValueText}>{caste || t.selectCaste}</Text>
-                <Ionicons name="chevron-down" size={20} color="#8C7A7C" />
-              </TouchableOpacity>
-            </View>
-
-            {/* Sub-Caste Input */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.subCaste} (Optional)</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="e.g. Rathore / Shekhawat / Garg"
-                value={subCaste}
-                onChangeText={setSubCaste}
-                placeholderTextColor="#8C7A7C"
-              />
-            </View>
-
-            {/* Gotra Input */}
-            {isHinduJain && (
-              <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>{t.gotra} (Optional)</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="e.g. Bhardwaj / Kashyap / Vatsa"
-                  value={gotra}
-                  onChangeText={setGotra}
-                  placeholderTextColor="#8C7A7C"
-                />
-              </View>
-            )}
-
-            {/* Manglik Status */}
-            <View style={styles.fieldGroup}>
-              <Text style={styles.fieldLabel}>{t.manglikStatus}</Text>
-              <View style={styles.radioGrid}>
-                {['Non-Manglik', 'Manglik', 'Partial Manglik', 'Don\'t Know'].map((m) => {
-                  const isSel = manglikStatus === m;
-                  return (
-                    <TouchableOpacity
-                      key={m}
-                      style={[styles.radioCard, isSel && styles.radioCardSelected]}
-                      onPress={() => setManglikStatus(m)}
-                      activeOpacity={0.85}
-                    >
-                      <Text style={[styles.radioCardText, isSel && styles.radioCardTextSelected]}>{m}</Text>
-                      <View style={[styles.radioDotOuter, isSel && styles.radioDotOuterSelected]}>
-                        {isSel && <View style={styles.radioDotInner} />}
-                      </View>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-            </View>
-          </View>
+        {/* Gotra / Sub-caste Text Field */}
+        <Text style={styles.sectionHeaderLabel}>Gotra (Optional)</Text>
+        <View style={styles.inputWrapper}>
+          <MaterialCommunityIcons name="star-outline" size={20} color="#8C7A7C" style={{ marginRight: 10 }} />
+          <TextInput
+            style={styles.inputField}
+            placeholder="Enter your Gotra (e.g. Kashyap, Vashistha)"
+            value={gotra}
+            onChangeText={setGotra}
+            placeholderTextColor="#8C7A7C"
+          />
         </View>
+
+        {/* Manglik Status Options */}
+        <Text style={styles.sectionHeaderLabel}>Manglik Status</Text>
+        <View style={styles.manglikGrid}>
+          {manglikOptions.map((item) => {
+            const isSel = manglikStatus === item;
+            return (
+              <TouchableOpacity
+                key={item}
+                style={[styles.manglikCard, isSel && styles.manglikCardSelected]}
+                onPress={() => setManglikStatus(item)}
+                activeOpacity={0.88}
+              >
+                <Text style={[styles.manglikLabel, isSel && styles.manglikLabelSelected]}>{item}</Text>
+                <View style={[styles.radioOuterCircle, isSel && styles.radioOuterCircleSelected]}>
+                  {isSel && <Ionicons name="checkmark" size={14} color="#FFFFFF" />}
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+
+        <View style={{ height: 20 }} />
       </ScrollView>
 
-      {/* Religion Selection Modal */}
-      <Modal visible={showReligionModal} transparent animationType="slide">
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
+      {/* Religion Modal */}
+      <Modal visible={showReligionModal} animationType="slide" transparent>
+        <View style={styles.modalBackdrop}>
+          <View style={styles.modalCard}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Select Religion</Text>
               <TouchableOpacity onPress={() => setShowReligionModal(false)}>
                 <Ionicons name="close" size={24} color="#2C1A1D" />
               </TouchableOpacity>
             </View>
-
-            <ScrollView style={{ maxHeight: 300 }}>
-              {religionsList.map((r) => (
+            <ScrollView style={{ maxHeight: 320 }}>
+              {religions.map((r) => (
                 <TouchableOpacity
                   key={r}
-                  style={[styles.modalOptionItem, religion === r && styles.modalOptionSelected]}
-                  onPress={() => {
-                    setReligion(r);
-                    setCaste(casteMap[r]?.[0] || 'Other');
-                    setShowReligionModal(false);
-                  }}
+                  style={styles.modalOptionItem}
+                  onPress={() => { setReligion(r); setShowReligionModal(false); }}
                 >
                   <Text style={[styles.modalOptionText, religion === r && styles.modalOptionTextSelected]}>{r}</Text>
                   {religion === r && <Ionicons name="checkmark" size={20} color="#E31E25" />}
@@ -202,37 +160,22 @@ export default function Step4() {
         </View>
       </Modal>
 
-      {/* Caste Selection Modal */}
-      <Modal visible={showCasteModal} transparent animationType="slide">
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
+      {/* Caste Modal */}
+      <Modal visible={showCasteModal} animationType="slide" transparent>
+        <View style={styles.modalBackdrop}>
+          <View style={styles.modalCard}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Select Caste / Community</Text>
               <TouchableOpacity onPress={() => setShowCasteModal(false)}>
                 <Ionicons name="close" size={24} color="#2C1A1D" />
               </TouchableOpacity>
             </View>
-
-            <View style={styles.searchBox}>
-              <Ionicons name="search-outline" size={18} color="#8C7A7C" style={{ marginRight: 8 }} />
-              <TextInput
-                style={styles.searchInput}
-                placeholder="Search caste..."
-                value={casteSearch}
-                onChangeText={setCasteSearch}
-                placeholderTextColor="#8C7A7C"
-              />
-            </View>
-
             <ScrollView style={{ maxHeight: 320 }}>
-              {filteredCastes.map((c) => (
+              {popularCastes.map((c) => (
                 <TouchableOpacity
                   key={c}
-                  style={[styles.modalOptionItem, caste === c && styles.modalOptionSelected]}
-                  onPress={() => {
-                    setCaste(c);
-                    setShowCasteModal(false);
-                  }}
+                  style={styles.modalOptionItem}
+                  onPress={() => { setCaste(c); setShowCasteModal(false); }}
                 >
                   <Text style={[styles.modalOptionText, caste === c && styles.modalOptionTextSelected]}>{c}</Text>
                   {caste === c && <Ionicons name="checkmark" size={20} color="#E31E25" />}
@@ -243,13 +186,17 @@ export default function Step4() {
         </View>
       </Modal>
 
-      {/* Footer CTA */}
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.prevBtn} onPress={() => router.back()}>
-          <Text style={styles.prevBtnText}>← Previous</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.nextBtn} onPress={handleNext} activeOpacity={0.88}>
-          <Text style={styles.nextBtnText}>{t.continue} →</Text>
+      {/* Sticky Bottom Navigation Footer */}
+      <View style={styles.footerContainer}>
+        <View style={styles.progressRow}>
+          <View style={styles.progressTrackBg}>
+            <View style={[styles.progressBarFill, { width: `${(4 / 13) * 100}%` }]} />
+          </View>
+          <Text style={styles.progressText}>31%</Text>
+        </View>
+
+        <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
+          <Text style={styles.continueBtnText}>{t.continue} →</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -261,200 +208,172 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF9F6',
   },
-  header: {
+  heroBannerContainer: {
+    height: 180,
+    width: '100%',
+    position: 'relative',
+  },
+  heroBannerImage: {
+    width: '100%',
+    height: '100%',
+  },
+  heroOverlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: 'rgba(44, 26, 29, 0.35)',
+  },
+  topNavRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EFE6DD',
-  },
-  backBtn: {
-    padding: 4,
-  },
-  headerTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  headerBrand: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#E91E63',
-    fontFamily: 'serif',
-  },
-  stepIndicator: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#8C7A7C',
-  },
-  progressContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: '#FFFFFF',
-    gap: 12,
-  },
-  progressTrack: {
-    flex: 1,
-    height: 6,
-    backgroundColor: '#EFE6DD',
-    borderRadius: 3,
-    overflow: 'hidden',
-  },
-  progressBar: {
-    height: '100%',
-    backgroundColor: '#E91E63',
-    borderRadius: 3,
-  },
-  progressPercentText: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#5A4A4D',
-  },
-  content: {
     paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 40,
+    paddingTop: 12,
+    zIndex: 10,
   },
-  formCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    shadowColor: '#2C1A1D',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-    elevation: 4,
-  },
-  cardHeaderBanner: {
-    backgroundColor: '#E91E63',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-  },
-  cardHeaderTitle: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: '#FFFFFF',
-    fontFamily: 'serif',
-  },
-  cardHeaderSubtitle: {
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.85)',
-  },
-  cardBody: {
-    padding: 20,
-  },
-  liveCalloutPill: {
-    flexDirection: 'row',
+  blurBackBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
     alignItems: 'center',
-    backgroundColor: '#E8F8F5',
+    justifyContent: 'center',
+  },
+  stepPillBadge: {
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
     borderWidth: 1,
-    borderColor: '#A3E4D7',
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    marginBottom: 20,
+    borderColor: 'rgba(255, 255, 255, 0.25)',
   },
-  liveCalloutText: {
-    fontSize: 13,
-    color: '#1E8449',
+  stepPillText: {
+    color: '#FFFFFF',
+    fontSize: 12,
     fontWeight: '700',
-    flex: 1,
   },
-  fieldGroup: {
-    marginBottom: 20,
+  curvedArchMask: {
+    position: 'absolute',
+    bottom: -1,
+    left: 0,
+    right: 0,
+    height: 24,
+    backgroundColor: '#FFF9F6',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
   },
-  fieldLabel: {
-    fontSize: 14,
-    fontWeight: '700',
+
+  contentScroll: {
+    paddingHorizontal: 20,
+    paddingTop: 4,
+  },
+  headerTitleBox: {
+    marginBottom: 16,
+  },
+  questionTitle: {
+    fontSize: 24,
+    fontWeight: '800',
     color: '#2C1A1D',
+    fontFamily: 'serif',
+    marginBottom: 4,
+  },
+  questionSubtitle: {
+    fontSize: 14,
+    color: '#5A4A4D',
+    lineHeight: 20,
+  },
+  sectionHeaderLabel: {
+    fontSize: 14,
+    fontWeight: '800',
+    color: '#2C1A1D',
+    marginTop: 14,
     marginBottom: 8,
   },
+
   dropdownTrigger: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#FAF5F7',
-    borderWidth: 1,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
     borderColor: '#EFE6DD',
-    borderRadius: 14,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    marginBottom: 10,
+  },
+  dropdownTriggerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   dropdownValueText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#2C1A1D',
+  },
+
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
+    borderColor: '#EFE6DD',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    marginBottom: 10,
+  },
+  inputField: {
+    flex: 1,
+    paddingVertical: 14,
+    fontSize: 15,
+    color: '#2C1A1D',
+  },
+
+  manglikGrid: {
+    gap: 10,
+  },
+  manglikCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderWidth: 1.5,
+    borderColor: '#EFE6DD',
+  },
+  manglikCardSelected: {
+    borderColor: '#E31E25',
+    backgroundColor: '#FFF0F1',
+  },
+  manglikLabel: {
     fontSize: 15,
     fontWeight: '700',
     color: '#2C1A1D',
   },
-  input: {
-    backgroundColor: '#FAF5F7',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    borderRadius: 14,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 15,
-    color: '#2C1A1D',
-  },
-  radioGrid: {
-    gap: 10,
-  },
-  radioCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    borderRadius: 14,
-    borderWidth: 1.5,
-    borderColor: '#EFE6DD',
-    backgroundColor: '#FAF5F7',
-  },
-  radioCardSelected: {
-    borderColor: '#E91E63',
-    backgroundColor: '#FFF0F3',
-  },
-  radioCardText: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#2C1A1D',
-  },
-  radioCardTextSelected: {
-    color: '#E91E63',
+  manglikLabelSelected: {
+    color: '#E31E25',
     fontWeight: '800',
   },
-  radioDotOuter: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+  radioOuterCircle: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
     borderWidth: 2,
-    borderColor: '#EFE6DD',
+    borderColor: '#A39396',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  radioDotOuterSelected: {
-    borderColor: '#E91E63',
-  },
-  radioDotInner: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: '#E91E63',
+  radioOuterCircleSelected: {
+    backgroundColor: '#E31E25',
+    borderColor: '#E31E25',
   },
 
-  // Modal styles
-  modalOverlay: {
+  modalBackdrop: {
     flex: 1,
-    backgroundColor: 'rgba(44,26,29,0.6)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'flex-end',
   },
-  modalContainer: {
+  modalCard: {
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
@@ -462,8 +381,8 @@ const styles = StyleSheet.create({
   },
   modalHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 16,
   },
   modalTitle: {
@@ -472,77 +391,68 @@ const styles = StyleSheet.create({
     color: '#2C1A1D',
     fontFamily: 'serif',
   },
-  searchBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FAF5F7',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    borderRadius: 12,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    marginBottom: 14,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 14,
-    color: '#2C1A1D',
-  },
   modalOptionItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 14,
-    paddingHorizontal: 12,
     borderBottomWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  modalOptionSelected: {
-    backgroundColor: '#FFF0F3',
+    borderBottomColor: '#EFE6DD',
   },
   modalOptionText: {
-    fontSize: 15,
+    fontSize: 16,
     color: '#2C1A1D',
   },
   modalOptionTextSelected: {
-    color: '#E91E63',
+    color: '#E31E25',
     fontWeight: '800',
   },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+
+  footerContainer: {
     paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingVertical: 14,
     backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
     borderColor: '#EFE6DD',
   },
-  prevBtn: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    backgroundColor: '#F5EFE6',
+  progressRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 12,
   },
-  prevBtnText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#5A4A4D',
+  progressTrackBg: {
+    flex: 1,
+    height: 6,
+    backgroundColor: '#EFE6DD',
+    borderRadius: 3,
+    overflow: 'hidden',
   },
-  nextBtn: {
-    backgroundColor: '#E91E63',
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    borderRadius: 14,
-    shadowColor: '#E91E63',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
+  progressBarFill: {
+    height: '100%',
+    backgroundColor: '#E31E25',
+    borderRadius: 3,
   },
-  nextBtnText: {
+  progressText: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: '#E31E25',
+  },
+  continueBtn: {
+    backgroundColor: '#E31E25',
+    paddingVertical: 16,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#E31E25',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  continueBtnText: {
     color: '#FFFFFF',
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '800',
   },
 });

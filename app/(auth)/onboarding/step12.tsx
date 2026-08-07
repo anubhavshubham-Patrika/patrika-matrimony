@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
 import { Translations } from '../../../src/constants/translations';
-import PatrikaRibbonLogo from '../../../src/components/PatrikaRibbonLogo';
 
 export default function Step12() {
   const router = useRouter();
@@ -12,94 +11,95 @@ export default function Step12() {
   const lang = state.language || 'en';
   const t = Translations[lang];
 
-  const defaultPhoto = 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&auto=format&fit=crop&q=80';
-  const [profilePhoto, setProfilePhoto] = useState(state.onboardingData?.profilePhotoURL || defaultPhoto);
-  const [isSelfieVerified, setIsSelfieVerified] = useState(false);
+  const [mainPhoto, setMainPhoto] = useState<string | null>(
+    state.onboardingData?.profilePhotoURL || 'https://randomuser.me/api/portraits/men/32.jpg'
+  );
 
   const handleNext = () => {
     dispatch({
       type: 'UPDATE_ONBOARDING',
-      payload: { profilePhotoURL: profilePhoto },
+      payload: {
+        profilePhotoURL: mainPhoto || undefined,
+      },
     });
     router.push('/(auth)/onboarding/step13');
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#2C1A1D" />
-        </TouchableOpacity>
-        <View style={styles.headerTitleRow}>
-          <PatrikaRibbonLogo size={28} />
-          <Text style={styles.headerBrand}>Patrika Matrimony</Text>
-        </View>
-        <Text style={styles.stepIndicator}>Step 12 of 13</Text>
-      </View>
+      {/* Hero Banner */}
+      <View style={styles.heroBannerContainer}>
+        <Image
+          source={{ uri: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop' }}
+          style={styles.heroBannerImage}
+          resizeMode="cover"
+        />
+        <View style={styles.heroOverlay} />
 
-      {/* Progress Bar */}
-      <View style={styles.progressContainer}>
-        <View style={styles.progressTrack}>
-          <View style={[styles.progressBar, { width: `${(12 / 13) * 100}%` }]} />
-        </View>
-        <Text style={styles.progressPercentText}>92% Complete</Text>
-      </View>
-
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.formCard}>
-          <View style={styles.cardHeaderBanner}>
-            <Text style={styles.cardHeaderTitle}>{t.step12Title}</Text>
-            <Text style={styles.cardHeaderSubtitle}>Upload photos & complete selfie verification</Text>
+        <View style={styles.topNavRow}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.blurBackBtn} activeOpacity={0.8}>
+            <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
+          </TouchableOpacity>
+          <View style={styles.stepPillBadge}>
+            <Text style={styles.stepPillText}>Step 12 of 13</Text>
           </View>
+        </View>
 
-          <View style={styles.cardBody}>
-            {/* Green Live Activity Callout Pill */}
-            <View style={styles.liveCalloutPill}>
-              <Ionicons name="trending-up" size={16} color="#1E8449" style={{ marginRight: 6 }} />
-              <Text style={styles.liveCalloutText}>127 verified profiles joined in the last 3 days!</Text>
-            </View>
+        <View style={styles.curvedArchMask} />
+      </View>
 
-            {/* Profile Photo Display */}
+      <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
+        <View style={styles.headerTitleBox}>
+          <Text style={styles.questionTitle}>{t.step12Title}</Text>
+          <Text style={styles.questionSubtitle}>Upload your best profile photo to get 8x more responses</Text>
+        </View>
+
+        {/* Live Callout Pill */}
+        <View style={styles.liveCalloutPill}>
+          <Ionicons name="camera-outline" size={18} color="#E31E25" style={{ marginRight: 6 }} />
+          <Text style={styles.liveCalloutText}>Profiles with photos receive 8x more partner responses!</Text>
+        </View>
+
+        {/* Main Photo Upload Frame */}
+        <View style={styles.photoFrameContainer}>
+          {mainPhoto ? (
             <View style={styles.photoContainer}>
-              <Image source={{ uri: profilePhoto }} style={styles.profileImage} />
+              <Image source={{ uri: mainPhoto }} style={styles.uploadedPhoto} resizeMode="cover" />
               <TouchableOpacity
-                style={styles.changePhotoBtn}
-                onPress={() => setProfilePhoto('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&auto=format&fit=crop&q=80')}
+                style={styles.changePhotoBadge}
+                onPress={() => setMainPhoto('https://randomuser.me/api/portraits/men/32.jpg')}
               >
-                <Ionicons name="camera-outline" size={20} color="#FFFFFF" />
-                <Text style={styles.changePhotoText}>Change Photo</Text>
+                <Ionicons name="camera-reverse" size={16} color="#FFFFFF" />
               </TouchableOpacity>
             </View>
-
-            {/* Selfie Verification Badge */}
-            <View style={styles.verificationCard}>
-              <View style={styles.verifHeaderRow}>
-                <Ionicons name="shield-checkmark-outline" size={22} color="#E31E25" />
-                <Text style={styles.verifTitle}>Selfie Verification</Text>
-              </View>
-              <Text style={styles.verifDesc}>Verified profiles receive 5x more interest responses from serious family members.</Text>
-              <TouchableOpacity
-                style={[styles.selfieBtn, isSelfieVerified && styles.selfieBtnVerified]}
-                onPress={() => setIsSelfieVerified(!isSelfieVerified)}
-              >
-                <Ionicons name={isSelfieVerified ? 'checkmark-circle' : 'camera'} size={20} color={isSelfieVerified ? '#27AE60' : '#E31E25'} />
-                <Text style={[styles.selfieBtnText, isSelfieVerified && { color: '#27AE60' }]}>
-                  {isSelfieVerified ? 'Selfie Verified ✓' : 'Take Verification Selfie'}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          ) : (
+            <TouchableOpacity style={styles.emptyPhotoBox} activeOpacity={0.8}>
+              <Ionicons name="add-circle-outline" size={44} color="#E31E25" />
+              <Text style={styles.emptyPhotoText}>Tap to add main profile photo</Text>
+            </TouchableOpacity>
+          )}
         </View>
+
+        {/* Capture Selfie Verification Button */}
+        <TouchableOpacity style={styles.selfieVerifyBtn} activeOpacity={0.88}>
+          <MaterialCommunityIcons name="shield-account-outline" size={22} color="#E31E25" style={{ marginRight: 8 }} />
+          <Text style={styles.selfieVerifyText}>Capture Selfie for Instant 100% Verification</Text>
+        </TouchableOpacity>
+
+        <View style={{ height: 20 }} />
       </ScrollView>
 
-      {/* Footer CTA */}
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.prevBtn} onPress={() => router.back()}>
-          <Text style={styles.prevBtnText}>← Previous</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.nextBtn} onPress={handleNext} activeOpacity={0.88}>
-          <Text style={styles.nextBtnText}>{t.continue} →</Text>
+      {/* Sticky Bottom Navigation Footer */}
+      <View style={styles.footerContainer}>
+        <View style={styles.progressRow}>
+          <View style={styles.progressTrackBg}>
+            <View style={[styles.progressBarFill, { width: `${(12 / 13) * 100}%` }]} />
+          </View>
+          <Text style={styles.progressText}>92%</Text>
+        </View>
+
+        <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
+          <Text style={styles.continueBtnText}>{t.continue} →</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -111,219 +111,206 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF9F6',
   },
-  header: {
+  heroBannerContainer: {
+    height: 180,
+    width: '100%',
+    position: 'relative',
+  },
+  heroBannerImage: {
+    width: '100%',
+    height: '100%',
+  },
+  heroOverlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: 'rgba(44, 26, 29, 0.35)',
+  },
+  topNavRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EFE6DD',
-  },
-  backBtn: {
-    padding: 4,
-  },
-  headerTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  headerBrand: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#E31E25',
-    fontFamily: 'serif',
-  },
-  stepIndicator: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#8C7A7C',
-  },
-  progressContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: '#FFFFFF',
-    gap: 12,
-  },
-  progressTrack: {
-    flex: 1,
-    height: 6,
-    backgroundColor: '#EFE6DD',
-    borderRadius: 3,
-    overflow: 'hidden',
-  },
-  progressBar: {
-    height: '100%',
-    backgroundColor: '#E31E25',
-    borderRadius: 3,
-  },
-  progressPercentText: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#5A4A4D',
-  },
-  content: {
     paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 40,
+    paddingTop: 12,
+    zIndex: 10,
   },
-  formCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    overflow: 'hidden',
+  blurBackBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stepPillBadge: {
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
     borderWidth: 1,
-    borderColor: '#EFE6DD',
-    shadowColor: '#2C1A1D',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-    elevation: 4,
+    borderColor: 'rgba(255, 255, 255, 0.25)',
   },
-  cardHeaderBanner: {
-    backgroundColor: '#E31E25',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-  },
-  cardHeaderTitle: {
-    fontSize: 20,
-    fontWeight: '800',
+  stepPillText: {
     color: '#FFFFFF',
-    fontFamily: 'serif',
-  },
-  cardHeaderSubtitle: {
     fontSize: 12,
-    color: 'rgba(255,255,255,0.85)',
+    fontWeight: '700',
   },
-  cardBody: {
-    padding: 20,
+  curvedArchMask: {
+    position: 'absolute',
+    bottom: -1,
+    left: 0,
+    right: 0,
+    height: 24,
+    backgroundColor: '#FFF9F6',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
   },
+
+  contentScroll: {
+    paddingHorizontal: 20,
+    paddingTop: 4,
+  },
+  headerTitleBox: {
+    marginBottom: 14,
+  },
+  questionTitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#2C1A1D',
+    fontFamily: 'serif',
+    marginBottom: 4,
+  },
+  questionSubtitle: {
+    fontSize: 14,
+    color: '#5A4A4D',
+    lineHeight: 20,
+  },
+
   liveCalloutPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#E8F8F5',
+    backgroundColor: '#FFF0F1',
     borderWidth: 1,
-    borderColor: '#A3E4D7',
-    borderRadius: 12,
+    borderColor: '#FCD4D7',
+    borderRadius: 14,
     paddingHorizontal: 14,
     paddingVertical: 10,
     marginBottom: 20,
   },
   liveCalloutText: {
     fontSize: 13,
-    color: '#1E8449',
+    color: '#E31E25',
     fontWeight: '700',
     flex: 1,
   },
-  photoContainer: {
+
+  photoFrameContainer: {
     alignItems: 'center',
     marginBottom: 20,
   },
-  profileImage: {
-    width: 130,
-    height: 130,
-    borderRadius: 65,
+  photoContainer: {
+    position: 'relative',
+    width: 140,
+    height: 170,
+    borderRadius: 20,
+    overflow: 'hidden',
     borderWidth: 3,
     borderColor: '#E31E25',
-    marginBottom: 12,
   },
-  changePhotoBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#E31E25',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 20,
-    gap: 6,
-  },
-  changePhotoText: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontWeight: '800',
-  },
-  verificationCard: {
+  uploadedPhoto: {
     width: '100%',
-    backgroundColor: '#FAF5F7',
+    height: '100%',
+  },
+  changePhotoBadge: {
+    position: 'absolute',
+    bottom: 8,
+    right: 8,
+    width: 32,
+    height: 32,
     borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    padding: 16,
-  },
-  verifHeaderRow: {
-    flexDirection: 'row',
+    backgroundColor: '#E31E25',
     alignItems: 'center',
-    gap: 8,
-    marginBottom: 8,
+    justifyContent: 'center',
   },
-  verifTitle: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: '#2C1A1D',
-    fontFamily: 'serif',
+  emptyPhotoBox: {
+    width: 140,
+    height: 170,
+    borderRadius: 20,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 2,
+    borderColor: '#E31E25',
+    borderStyle: 'dashed',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
   },
-  verifDesc: {
-    fontSize: 13,
-    color: '#5A4A4D',
-    lineHeight: 18,
-    marginBottom: 14,
+  emptyPhotoText: {
+    fontSize: 12,
+    color: '#8C7A7C',
+    textAlign: 'center',
+    marginTop: 8,
   },
-  selfieBtn: {
+
+  selfieVerifyBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFF0F3',
-    borderWidth: 1,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
     borderColor: '#E31E25',
-    paddingVertical: 12,
-    borderRadius: 12,
-    gap: 8,
+    borderRadius: 20,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
   },
-  selfieBtnVerified: {
-    backgroundColor: '#E8F5E9',
-    borderColor: '#27AE60',
-  },
-  selfieBtnText: {
-    color: '#E91E63',
-    fontSize: 14,
+  selfieVerifyText: {
+    fontSize: 13,
     fontWeight: '800',
+    color: '#E31E25',
   },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+
+  footerContainer: {
     paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingVertical: 14,
     backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
     borderColor: '#EFE6DD',
   },
-  prevBtn: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    backgroundColor: '#F5EFE6',
+  progressRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 12,
   },
-  prevBtnText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#5A4A4D',
+  progressTrackBg: {
+    flex: 1,
+    height: 6,
+    backgroundColor: '#EFE6DD',
+    borderRadius: 3,
+    overflow: 'hidden',
   },
-  nextBtn: {
-    backgroundColor: '#E91E63',
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    borderRadius: 14,
-    shadowColor: '#E91E63',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
+  progressBarFill: {
+    height: '100%',
+    backgroundColor: '#E31E25',
+    borderRadius: 3,
   },
-  nextBtnText: {
+  progressText: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: '#E31E25',
+  },
+  continueBtn: {
+    backgroundColor: '#E31E25',
+    paddingVertical: 16,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#E31E25',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  continueBtnText: {
     color: '#FFFFFF',
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '800',
   },
 });
