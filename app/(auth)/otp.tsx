@@ -5,6 +5,7 @@ import {
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../src/context/AppContext';
+import AnimatedGlassBackground from '../../src/components/AnimatedGlassBackground';
 
 export default function OtpScreen() {
   const router = useRouter();
@@ -55,85 +56,88 @@ export default function OtpScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      {/* Top Header Navigation (Inspiration Screenshots 1 & 3) */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.headerBtn}>
-          <Ionicons name="arrow-back" size={24} color="#2C1A1D" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Verification</Text>
-        <TouchableOpacity onPress={() => router.replace('/(auth)/login')} style={styles.headerBtn}>
-          <Ionicons name="close" size={24} color="#2C1A1D" />
-        </TouchableOpacity>
-      </View>
+    <AnimatedGlassBackground>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.headerBtn}>
+            <Ionicons name="arrow-back" size={22} color="#FFFFFF" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Verification</Text>
+          <TouchableOpacity onPress={() => router.replace('/(auth)/login')} style={styles.headerBtn}>
+            <Ionicons name="close" size={22} color="#FFFFFF" />
+          </TouchableOpacity>
+        </View>
 
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}
-      >
-        {/* Central Verification Icon Circle Badge (Inspiration Screenshots 1 & 3) */}
-        <View style={styles.badgeWrapper}>
-          <View style={styles.outerGlowCircle}>
-            <View style={styles.innerRedBadge}>
-              <MaterialCommunityIcons name="card-account-details-outline" size={36} color="#FFFFFF" />
+        <KeyboardAvoidingView 
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.container}
+        >
+          {/* Glass Card Container */}
+          <View style={styles.glassCard}>
+            {/* Glowing Shield Emblem */}
+            <View style={styles.badgeWrapper}>
+              <View style={styles.outerGlowCircle}>
+                <View style={styles.innerRedBadge}>
+                  <MaterialCommunityIcons name="shield-lock-outline" size={36} color="#FFFFFF" />
+                </View>
+              </View>
             </View>
-          </View>
-        </View>
 
-        {/* Title & Subtitle */}
-        <View style={styles.textContainer}>
-          <Text style={styles.mainTitle}>Verification Code</Text>
-          <Text style={styles.subTitle}>You have to fill the 6-digit OTP for account verification sent to</Text>
-          
-          <View style={styles.contactBadge}>
-            <Text style={styles.contactText}>{contact}</Text>
-          </View>
-        </View>
+            {/* Title & Subtitle */}
+            <View style={styles.textContainer}>
+              <Text style={styles.mainTitle}>Verification Code</Text>
+              <Text style={styles.subTitle}>Enter the 6-digit OTP code sent to verify your account</Text>
+              
+              <View style={styles.contactGlassBadge}>
+                <Text style={styles.contactText}>{contact}</Text>
+              </View>
+            </View>
 
-        {/* 6 Digit OTP Input Boxes (Inspiration Screenshots 1 & 3) */}
-        <View style={styles.otpRow}>
-          {otp.map((digit, index) => (
-            <TextInput
-              key={index}
-              ref={(ref) => { inputs.current[index] = ref; }}
-              style={[
-                styles.otpBox,
-                digit ? styles.otpBoxFilled : null,
-                index === otp.findIndex((val) => val === '') ? styles.otpBoxActive : null,
-              ]}
-              keyboardType="number-pad"
-              maxLength={1}
-              value={digit}
-              onChangeText={(text) => handleChange(text, index)}
-              onKeyPress={(e) => handleKeyPress(e, index)}
-            />
-          ))}
-        </View>
+            {/* 6 Digit Glass Input Boxes */}
+            <View style={styles.otpRow}>
+              {otp.map((digit, index) => (
+                <TextInput
+                  key={index}
+                  ref={(ref) => { inputs.current[index] = ref; }}
+                  style={[
+                    styles.otpGlassBox,
+                    digit ? styles.otpBoxFilled : null,
+                    index === otp.findIndex((val) => val === '') ? styles.otpBoxActive : null,
+                  ]}
+                  keyboardType="number-pad"
+                  maxLength={1}
+                  value={digit}
+                  onChangeText={(text) => handleChange(text, index)}
+                  onKeyPress={(e) => handleKeyPress(e, index)}
+                />
+              ))}
+            </View>
 
-        {/* Resend Code Section */}
-        <View style={styles.resendContainer}>
-          {timer > 0 ? (
-            <Text style={styles.timerText}>Didn't receive code? Resend in <Text style={styles.timerBold}>{timer}s</Text></Text>
-          ) : (
-            <TouchableOpacity style={styles.resendPillBtn} onPress={() => setTimer(30)}>
-              <Text style={styles.resendPillText}>Send Code Again</Text>
+            {/* Resend Code Section */}
+            <View style={styles.resendContainer}>
+              {timer > 0 ? (
+                <Text style={styles.timerText}>Didn't receive code? Resend in <Text style={styles.timerBold}>{timer}s</Text></Text>
+              ) : (
+                <TouchableOpacity style={styles.resendGlassBtn} onPress={() => setTimer(30)}>
+                  <Text style={styles.resendGlassText}>Send Code Again</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+
+            {/* Primary Action Button */}
+            <TouchableOpacity style={styles.submitBtn} onPress={handleVerify} activeOpacity={0.88}>
+              <Text style={styles.submitBtnText}>Submit & Continue →</Text>
             </TouchableOpacity>
-          )}
-        </View>
-
-        {/* Primary Action Button */}
-        <TouchableOpacity style={styles.submitBtn} onPress={handleVerify} activeOpacity={0.88}>
-          <Text style={styles.submitBtnText}>Submit & Continue →</Text>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+          </View>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </AnimatedGlassBackground>
   );
 }
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FFF9F6',
   },
   header: {
     flexDirection: 'row',
@@ -141,76 +145,87 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EFE6DD',
   },
   headerBtn: {
-    padding: 4,
+    padding: 6,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#2C1A1D',
+    color: '#FFFFFF',
     fontFamily: 'serif',
   },
   container: {
     flex: 1,
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  /* Central Badge Circle */
+  glassCard: {
+    width: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.16)',
+    borderRadius: 28,
+    padding: 24,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.35,
+    shadowRadius: 20,
+    elevation: 6,
+  },
   badgeWrapper: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 16,
   },
   outerGlowCircle: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
-    backgroundColor: '#FFF0F1',
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: 'rgba(255, 77, 109, 0.15)',
     borderWidth: 1,
-    borderColor: '#FCD4D7',
+    borderColor: 'rgba(255, 77, 109, 0.3)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   innerRedBadge: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 58,
+    height: 58,
+    borderRadius: 29,
     backgroundColor: '#E31E25',
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#E31E25',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.6,
+    shadowRadius: 12,
+    elevation: 6,
   },
   textContainer: {
     alignItems: 'center',
-    marginBottom: 28,
-    paddingHorizontal: 10,
+    marginBottom: 24,
   },
   mainTitle: {
     fontSize: 24,
     fontWeight: '800',
-    color: '#2C1A1D',
+    color: '#FFFFFF',
     fontFamily: 'serif',
     marginBottom: 6,
   },
   subTitle: {
-    fontSize: 14,
-    color: '#5A4A4D',
+    fontSize: 13,
+    color: '#BDA6B2',
     textAlign: 'center',
-    lineHeight: 20,
+    lineHeight: 18,
     marginBottom: 10,
   },
-  contactBadge: {
-    backgroundColor: '#FFF0F1',
+  contactGlassBadge: {
+    backgroundColor: 'rgba(255, 77, 109, 0.15)',
     borderWidth: 1,
-    borderColor: '#FCD4D7',
+    borderColor: 'rgba(255, 77, 109, 0.35)',
     borderRadius: 16,
     paddingHorizontal: 14,
     paddingVertical: 5,
@@ -218,70 +233,72 @@ const styles = StyleSheet.create({
   contactText: {
     fontSize: 14,
     fontWeight: '800',
-    color: '#E31E25',
+    color: '#FF4D6D',
   },
   otpRow: {
     flexDirection: 'row',
     justifyContent: 'center',
     gap: 8,
-    marginBottom: 28,
+    marginBottom: 24,
   },
-  otpBox: {
-    width: 46,
-    height: 54,
+  otpGlassBox: {
+    width: 44,
+    height: 52,
     borderWidth: 1.5,
-    borderColor: '#EFE6DD',
+    borderColor: 'rgba(255, 255, 255, 0.16)',
     borderRadius: 14,
     textAlign: 'center',
     fontSize: 22,
     fontWeight: '800',
-    color: '#2C1A1D',
-    backgroundColor: '#FFFFFF',
+    color: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
   },
   otpBoxFilled: {
     borderColor: '#E31E25',
-    backgroundColor: '#FFF0F1',
+    backgroundColor: 'rgba(227, 30, 37, 0.2)',
   },
   otpBoxActive: {
-    borderColor: '#E31E25',
+    borderColor: '#FF4D6D',
     borderWidth: 2,
   },
   resendContainer: {
     alignItems: 'center',
-    marginBottom: 32,
+    marginBottom: 24,
   },
   timerText: {
     fontSize: 13,
-    color: '#5A4A4D',
+    color: '#BDA6B2',
   },
   timerBold: {
     fontWeight: '800',
-    color: '#E31E25',
+    color: '#FF4D6D',
   },
-  resendPillBtn: {
-    backgroundColor: '#FFFFFF',
+  resendGlassBtn: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderWidth: 1,
-    borderColor: '#EFE6DD',
+    borderColor: 'rgba(255, 255, 255, 0.2)',
     borderRadius: 20,
     paddingHorizontal: 18,
     paddingVertical: 8,
   },
-  resendPillText: {
+  resendGlassText: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#E31E25',
+    color: '#FF4D6D',
   },
   submitBtn: {
     width: '100%',
     backgroundColor: '#E31E25',
     paddingVertical: 16,
-    borderRadius: 28,
+    borderRadius: 24,
     alignItems: 'center',
     shadowColor: '#E31E25',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 5,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.5,
+    shadowRadius: 14,
+    elevation: 6,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.25)',
   },
   submitBtnText: {
     color: '#FFFFFF',

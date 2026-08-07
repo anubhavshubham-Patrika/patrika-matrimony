@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { 
-  View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image, TextInput, Modal 
+  View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, TextInput, Modal 
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
 import { Translations } from '../../../src/constants/translations';
+import AnimatedGlassBackground from '../../../src/components/AnimatedGlassBackground';
 
 export default function Step6() {
   const router = useRouter();
@@ -40,17 +41,9 @@ export default function Step6() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Hero Banner */}
-      <View style={styles.heroBannerContainer}>
-        <Image
-          source={{ uri: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop' }}
-          style={styles.heroBannerImage}
-          resizeMode="cover"
-        />
-        <View style={styles.heroOverlay} />
-
-        <View style={styles.topNavRow}>
+    <AnimatedGlassBackground>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.topHeader}>
           <TouchableOpacity onPress={() => router.back()} style={styles.blurBackBtn} activeOpacity={0.8}>
             <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
           </TouchableOpacity>
@@ -59,242 +52,257 @@ export default function Step6() {
           </View>
         </View>
 
-        <View style={styles.curvedArchMask} />
-      </View>
-
-      <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
-        <View style={styles.headerTitleBox}>
-          <Text style={styles.questionTitle}>{t.step6Title}</Text>
-          <Text style={styles.questionSubtitle}>{t.step6Subtitle}</Text>
-        </View>
-
-        {/* Highest Education */}
-        <Text style={styles.sectionHeaderLabel}>Highest Education Degree</Text>
-        <TouchableOpacity
-          style={styles.dropdownTrigger}
-          onPress={() => setShowEduModal(true)}
-          activeOpacity={0.88}
-        >
-          <View style={styles.dropdownTriggerLeft}>
-            <MaterialCommunityIcons name="school-outline" size={22} color="#E31E25" style={{ marginRight: 10 }} />
-            <Text style={styles.dropdownValueText}>{education}</Text>
-          </View>
-          <Ionicons name="chevron-down" size={20} color="#8C7A7C" />
-        </TouchableOpacity>
-
-        {/* Employment Type */}
-        <Text style={styles.sectionHeaderLabel}>Employment Type</Text>
-        <View style={styles.empGrid}>
-          {employmentTypes.map((type) => {
-            const isSel = employmentType === type;
-            return (
-              <TouchableOpacity
-                key={type}
-                style={[styles.empCard, isSel && styles.empCardSelected]}
-                onPress={() => setEmploymentType(type)}
-                activeOpacity={0.88}
-              >
-                <Text style={[styles.empLabel, isSel && styles.empLabelSelected]}>{type}</Text>
-                <View style={[styles.radioOuterCircle, isSel && styles.radioOuterCircleSelected]}>
-                  {isSel && <Ionicons name="checkmark" size={14} color="#FFFFFF" />}
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-
-        {/* Occupation Field */}
-        <Text style={styles.sectionHeaderLabel}>Occupation / Job Title</Text>
-        <View style={styles.inputWrapper}>
-          <MaterialCommunityIcons name="briefcase-outline" size={20} color="#8C7A7C" style={{ marginRight: 10 }} />
-          <TextInput
-            style={styles.inputField}
-            placeholder="Enter job title (e.g. Senior Software Engineer)"
-            value={occupation}
-            onChangeText={setOccupation}
-            placeholderTextColor="#8C7A7C"
-          />
-        </View>
-
-        {/* Annual Income */}
-        <Text style={styles.sectionHeaderLabel}>Annual Income Range</Text>
-        <TouchableOpacity
-          style={styles.dropdownTrigger}
-          onPress={() => setShowIncomeModal(true)}
-          activeOpacity={0.88}
-        >
-          <View style={styles.dropdownTriggerLeft}>
-            <MaterialCommunityIcons name="currency-inr" size={22} color="#E31E25" style={{ marginRight: 10 }} />
-            <Text style={styles.dropdownValueText}>₹{annualIncomeRange} per annum</Text>
-          </View>
-          <Ionicons name="chevron-down" size={20} color="#8C7A7C" />
-        </TouchableOpacity>
-
-        <View style={{ height: 20 }} />
-      </ScrollView>
-
-      {/* Education Modal */}
-      <Modal visible={showEduModal} animationType="slide" transparent>
-        <View style={styles.modalBackdrop}>
-          <View style={styles.modalCard}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Select Highest Education</Text>
-              <TouchableOpacity onPress={() => setShowEduModal(false)}>
-                <Ionicons name="close" size={24} color="#2C1A1D" />
-              </TouchableOpacity>
+        <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
+          <View style={styles.glassCardContainer}>
+            <View style={styles.badgeWrapper}>
+              <View style={styles.glowingVectorCircle}>
+                <MaterialCommunityIcons name="briefcase-account-outline" size={32} color="#FFFFFF" />
+              </View>
             </View>
-            <ScrollView style={{ maxHeight: 320 }}>
-              {educationOptions.map((e) => (
-                <TouchableOpacity
-                  key={e}
-                  style={styles.modalOptionItem}
-                  onPress={() => { setEducation(e); setShowEduModal(false); }}
-                >
-                  <Text style={[styles.modalOptionText, education === e && styles.modalOptionTextSelected]}>{e}</Text>
-                  {education === e && <Ionicons name="checkmark" size={20} color="#E31E25" />}
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
-        </View>
-      </Modal>
 
-      {/* Income Modal */}
-      <Modal visible={showIncomeModal} animationType="slide" transparent>
-        <View style={styles.modalBackdrop}>
-          <View style={styles.modalCard}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Select Annual Income Range</Text>
-              <TouchableOpacity onPress={() => setShowIncomeModal(false)}>
-                <Ionicons name="close" size={24} color="#2C1A1D" />
-              </TouchableOpacity>
+            <View style={styles.headerTitleBox}>
+              <Text style={styles.questionTitle}>{t.step6Title}</Text>
+              <Text style={styles.questionSubtitle}>{t.step6Subtitle}</Text>
             </View>
-            <ScrollView style={{ maxHeight: 320 }}>
-              {incomeOptions.map((inc) => (
-                <TouchableOpacity
-                  key={inc}
-                  style={styles.modalOptionItem}
-                  onPress={() => { setAnnualIncomeRange(inc); setShowIncomeModal(false); }}
-                >
-                  <Text style={[styles.modalOptionText, annualIncomeRange === inc && styles.modalOptionTextSelected]}>₹{inc} per annum</Text>
-                  {annualIncomeRange === inc && <Ionicons name="checkmark" size={20} color="#E31E25" />}
+
+            {/* Highest Education */}
+            <Text style={styles.sectionHeaderLabel}>Highest Education Degree</Text>
+            <TouchableOpacity
+              style={styles.dropdownGlassTrigger}
+              onPress={() => setShowEduModal(true)}
+              activeOpacity={0.88}
+            >
+              <View style={styles.dropdownTriggerLeft}>
+                <MaterialCommunityIcons name="school-outline" size={22} color="#FF4D6D" style={{ marginRight: 10 }} />
+                <Text style={styles.dropdownValueText}>{education}</Text>
+              </View>
+              <Ionicons name="chevron-down" size={20} color="#BDA6B2" />
+            </TouchableOpacity>
+
+            {/* Employment Type */}
+            <Text style={styles.sectionHeaderLabel}>Employment Type</Text>
+            <View style={styles.empGrid}>
+              {employmentTypes.map((type) => {
+                const isSel = employmentType === type;
+                return (
+                  <TouchableOpacity
+                    key={type}
+                    style={[styles.empCard, isSel && styles.empCardSelected]}
+                    onPress={() => setEmploymentType(type)}
+                    activeOpacity={0.88}
+                  >
+                    <Text style={[styles.empLabel, isSel && styles.empLabelSelected]}>{type}</Text>
+                    <View style={[styles.radioOuterCircle, isSel && styles.radioOuterCircleSelected]}>
+                      {isSel && <Ionicons name="checkmark" size={14} color="#FFFFFF" />}
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+
+            {/* Occupation Field */}
+            <Text style={styles.sectionHeaderLabel}>Occupation / Job Title</Text>
+            <View style={styles.glassInputWrapper}>
+              <MaterialCommunityIcons name="briefcase-outline" size={20} color="#FF85A1" style={{ marginRight: 10 }} />
+              <TextInput
+                style={styles.inputField}
+                placeholder="Enter job title (e.g. Senior Software Engineer)"
+                value={occupation}
+                onChangeText={setOccupation}
+                placeholderTextColor="#8C7383"
+              />
+            </View>
+
+            {/* Annual Income */}
+            <Text style={styles.sectionHeaderLabel}>Annual Income Range</Text>
+            <TouchableOpacity
+              style={styles.dropdownGlassTrigger}
+              onPress={() => setShowIncomeModal(true)}
+              activeOpacity={0.88}
+            >
+              <View style={styles.dropdownTriggerLeft}>
+                <MaterialCommunityIcons name="currency-inr" size={22} color="#FF4D6D" style={{ marginRight: 10 }} />
+                <Text style={styles.dropdownValueText}>₹{annualIncomeRange} per annum</Text>
+              </View>
+              <Ionicons name="chevron-down" size={20} color="#BDA6B2" />
+            </TouchableOpacity>
+          </View>
+          <View style={{ height: 20 }} />
+        </ScrollView>
+
+        {/* Education Modal */}
+        <Modal visible={showEduModal} animationType="slide" transparent>
+          <View style={styles.modalBackdrop}>
+            <View style={styles.modalGlassCard}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Select Highest Education</Text>
+                <TouchableOpacity onPress={() => setShowEduModal(false)}>
+                  <Ionicons name="close" size={24} color="#FFFFFF" />
                 </TouchableOpacity>
-              ))}
-            </ScrollView>
+              </View>
+              <ScrollView style={{ maxHeight: 320 }}>
+                {educationOptions.map((e) => (
+                  <TouchableOpacity
+                    key={e}
+                    style={styles.modalOptionItem}
+                    onPress={() => { setEducation(e); setShowEduModal(false); }}
+                  >
+                    <Text style={[styles.modalOptionText, education === e && styles.modalOptionTextSelected]}>{e}</Text>
+                    {education === e && <Ionicons name="checkmark" size={20} color="#FF4D6D" />}
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
 
-      {/* Sticky Bottom Navigation Footer */}
-      <View style={styles.footerContainer}>
-        <View style={styles.progressRow}>
-          <View style={styles.progressTrackBg}>
-            <View style={[styles.progressBarFill, { width: `${(6 / 13) * 100}%` }]} />
+        {/* Income Modal */}
+        <Modal visible={showIncomeModal} animationType="slide" transparent>
+          <View style={styles.modalBackdrop}>
+            <View style={styles.modalGlassCard}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Select Annual Income Range</Text>
+                <TouchableOpacity onPress={() => setShowIncomeModal(false)}>
+                  <Ionicons name="close" size={24} color="#FFFFFF" />
+                </TouchableOpacity>
+              </View>
+              <ScrollView style={{ maxHeight: 320 }}>
+                {incomeOptions.map((inc) => (
+                  <TouchableOpacity
+                    key={inc}
+                    style={styles.modalOptionItem}
+                    onPress={() => { setAnnualIncomeRange(inc); setShowIncomeModal(false); }}
+                  >
+                    <Text style={[styles.modalOptionText, annualIncomeRange === inc && styles.modalOptionTextSelected]}>₹{inc} per annum</Text>
+                    {annualIncomeRange === inc && <Ionicons name="checkmark" size={20} color="#FF4D6D" />}
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
           </View>
-          <Text style={styles.progressText}>46%</Text>
-        </View>
+        </Modal>
 
-        <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
-          <Text style={styles.continueBtnText}>{t.continue} →</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+        <View style={styles.footerContainer}>
+          <View style={styles.progressRow}>
+            <View style={styles.progressTrackBg}>
+              <View style={[styles.progressBarFill, { width: `${(6 / 13) * 100}%` }]} />
+            </View>
+            <Text style={styles.progressText}>46%</Text>
+          </View>
+
+          <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
+            <Text style={styles.continueBtnText}>{t.continue} →</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </AnimatedGlassBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    backgroundColor: '#FFF9F6',
   },
-  heroBannerContainer: {
-    height: 180,
-    width: '100%',
-    position: 'relative',
-  },
-  heroBannerImage: {
-    width: '100%',
-    height: '100%',
-  },
-  heroOverlay: {
-    ...StyleSheet.absoluteFill,
-    backgroundColor: 'rgba(44, 26, 29, 0.35)',
-  },
-  topNavRow: {
+  topHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingTop: 12,
-    zIndex: 10,
+    paddingVertical: 12,
   },
   blurBackBtn: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: 'rgba(0, 0, 0, 0.35)',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   stepPillBadge: {
-    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
     borderRadius: 16,
     paddingHorizontal: 12,
     paddingVertical: 5,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
+    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   stepPillText: {
     color: '#FFFFFF',
     fontSize: 12,
     fontWeight: '700',
   },
-  curvedArchMask: {
-    position: 'absolute',
-    bottom: -1,
-    left: 0,
-    right: 0,
-    height: 24,
-    backgroundColor: '#FFF9F6',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-  },
 
   contentScroll: {
-    paddingHorizontal: 20,
-    paddingTop: 4,
+    paddingHorizontal: 16,
+    paddingTop: 8,
+  },
+  glassCardContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.16)',
+    borderRadius: 28,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 6,
+  },
+  badgeWrapper: {
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  glowingVectorCircle: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#E31E25',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#E31E25',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.6,
+    shadowRadius: 14,
+    elevation: 6,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
   },
   headerTitleBox: {
-    marginBottom: 16,
+    alignItems: 'center',
+    marginBottom: 14,
   },
   questionTitle: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '800',
-    color: '#2C1A1D',
+    color: '#FFFFFF',
     fontFamily: 'serif',
+    textAlign: 'center',
     marginBottom: 4,
   },
   questionSubtitle: {
-    fontSize: 14,
-    color: '#5A4A4D',
-    lineHeight: 20,
+    fontSize: 13,
+    color: '#BDA6B2',
+    textAlign: 'center',
+    lineHeight: 18,
   },
   sectionHeaderLabel: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '800',
-    color: '#2C1A1D',
+    color: '#FFFFFF',
     marginTop: 14,
     marginBottom: 8,
   },
 
-  dropdownTrigger: {
+  dropdownGlassTrigger: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
     borderWidth: 1.5,
-    borderColor: '#EFE6DD',
-    borderRadius: 16,
+    borderColor: 'rgba(255, 255, 255, 0.14)',
+    borderRadius: 18,
     paddingHorizontal: 16,
     paddingVertical: 14,
     marginBottom: 10,
@@ -304,9 +312,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dropdownValueText: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '700',
-    color: '#2C1A1D',
+    color: '#FFFFFF',
   },
 
   empGrid: {
@@ -317,24 +325,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    borderRadius: 18,
     paddingHorizontal: 16,
-    paddingVertical: 14,
+    paddingVertical: 13,
     borderWidth: 1.5,
-    borderColor: '#EFE6DD',
+    borderColor: 'rgba(255, 255, 255, 0.12)',
   },
   empCardSelected: {
     borderColor: '#E31E25',
-    backgroundColor: '#FFF0F1',
+    backgroundColor: 'rgba(227, 30, 37, 0.18)',
   },
   empLabel: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '700',
-    color: '#2C1A1D',
+    color: '#FFFFFF',
   },
   empLabelSelected: {
-    color: '#E31E25',
+    color: '#FFFFFF',
     fontWeight: '800',
   },
   radioOuterCircle: {
@@ -342,7 +350,7 @@ const styles = StyleSheet.create({
     height: 22,
     borderRadius: 11,
     borderWidth: 2,
-    borderColor: '#A39396',
+    borderColor: 'rgba(255, 255, 255, 0.3)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -351,13 +359,13 @@ const styles = StyleSheet.create({
     borderColor: '#E31E25',
   },
 
-  inputWrapper: {
+  glassInputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
     borderWidth: 1.5,
-    borderColor: '#EFE6DD',
-    borderRadius: 16,
+    borderColor: 'rgba(255, 255, 255, 0.14)',
+    borderRadius: 18,
     paddingHorizontal: 16,
     marginBottom: 10,
   },
@@ -365,19 +373,21 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 14,
     fontSize: 15,
-    color: '#2C1A1D',
+    color: '#FFFFFF',
   },
 
   modalBackdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.7)',
     justifyContent: 'flex-end',
   },
-  modalCard: {
-    backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
+  modalGlassCard: {
+    backgroundColor: '#1E0D19',
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
     padding: 20,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.16)',
   },
   modalHeader: {
     flexDirection: 'row',
@@ -388,7 +398,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#2C1A1D',
+    color: '#FFFFFF',
     fontFamily: 'serif',
   },
   modalOptionItem: {
@@ -397,34 +407,34 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 14,
     borderBottomWidth: 1,
-    borderBottomColor: '#EFE6DD',
+    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
   },
   modalOptionText: {
     fontSize: 16,
-    color: '#2C1A1D',
+    color: '#BDA6B2',
   },
   modalOptionTextSelected: {
-    color: '#E31E25',
+    color: '#FF4D6D',
     fontWeight: '800',
   },
 
   footerContainer: {
     paddingHorizontal: 20,
     paddingVertical: 14,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(18, 7, 14, 0.85)',
     borderTopWidth: 1,
-    borderColor: '#EFE6DD',
+    borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   progressRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    marginBottom: 12,
+    marginBottom: 10,
   },
   progressTrackBg: {
     flex: 1,
     height: 6,
-    backgroundColor: '#EFE6DD',
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
     borderRadius: 3,
     overflow: 'hidden',
   },
@@ -436,19 +446,21 @@ const styles = StyleSheet.create({
   progressText: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#E31E25',
+    color: '#FF4D6D',
   },
   continueBtn: {
     backgroundColor: '#E31E25',
     paddingVertical: 16,
-    borderRadius: 28,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#E31E25',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 5,
+    shadowOpacity: 0.5,
+    shadowRadius: 12,
+    elevation: 6,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.25)',
   },
   continueBtnText: {
     color: '#FFFFFF',

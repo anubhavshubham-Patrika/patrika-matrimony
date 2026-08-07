@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
 import { Translations } from '../../../src/constants/translations';
+import AnimatedGlassBackground from '../../../src/components/AnimatedGlassBackground';
 
 export default function Step8() {
   const router = useRouter();
@@ -60,17 +61,9 @@ export default function Step8() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Hero Banner */}
-      <View style={styles.heroBannerContainer}>
-        <Image
-          source={{ uri: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop' }}
-          style={styles.heroBannerImage}
-          resizeMode="cover"
-        />
-        <View style={styles.heroOverlay} />
-
-        <View style={styles.topNavRow}>
+    <AnimatedGlassBackground>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.topHeader}>
           <TouchableOpacity onPress={() => router.back()} style={styles.blurBackBtn} activeOpacity={0.8}>
             <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
           </TouchableOpacity>
@@ -79,194 +72,209 @@ export default function Step8() {
           </View>
         </View>
 
-        <View style={styles.curvedArchMask} />
-      </View>
+        <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
+          <View style={styles.glassCardContainer}>
+            <View style={styles.badgeWrapper}>
+              <View style={styles.glowingVectorCircle}>
+                <MaterialCommunityIcons name="palette-outline" size={32} color="#FFFFFF" />
+              </View>
+            </View>
 
-      <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
-        <View style={styles.headerTitleBox}>
-          <Text style={styles.questionTitle}>{t.step8Title}</Text>
-          <Text style={styles.questionSubtitle}>Select your lifestyle preferences and hobbies</Text>
-        </View>
+            <View style={styles.headerTitleBox}>
+              <Text style={styles.questionTitle}>{t.step8Title}</Text>
+              <Text style={styles.questionSubtitle}>Select your lifestyle preferences and hobbies</Text>
+            </View>
 
-        {/* Hobbies Selection */}
-        <Text style={styles.sectionHeaderLabel}>Hobbies & Interests (Select multiple)</Text>
-        <View style={styles.hobbiesGrid}>
-          {hobbyOptions.map((item) => {
-            const isSel = selectedHobbies.includes(item.id);
-            return (
-              <TouchableOpacity
-                key={item.id}
-                style={[styles.hobbyChipCard, isSel && styles.hobbyChipCardSelected]}
-                onPress={() => toggleHobby(item.id)}
-                activeOpacity={0.85}
-              >
-                <MaterialCommunityIcons name={item.icon as any} size={18} color={isSel ? '#E31E25' : '#8C7A7C'} style={{ marginRight: 6 }} />
-                <Text style={[styles.hobbyChipText, isSel && styles.hobbyChipTextSelected]}>{item.label}</Text>
-                {isSel && <Ionicons name="checkmark" size={14} color="#E31E25" style={{ marginLeft: 4 }} />}
-              </TouchableOpacity>
-            );
-          })}
-        </View>
+            {/* Hobbies Selection */}
+            <Text style={styles.sectionHeaderLabel}>Hobbies & Interests (Select multiple)</Text>
+            <View style={styles.hobbiesGrid}>
+              {hobbyOptions.map((item) => {
+                const isSel = selectedHobbies.includes(item.id);
+                return (
+                  <TouchableOpacity
+                    key={item.id}
+                    style={[styles.hobbyGlassChip, isSel && styles.hobbyGlassChipSelected]}
+                    onPress={() => toggleHobby(item.id)}
+                    activeOpacity={0.85}
+                  >
+                    <MaterialCommunityIcons name={item.icon as any} size={18} color={isSel ? '#FFFFFF' : '#FF85A1'} style={{ marginRight: 6 }} />
+                    <Text style={[styles.hobbyChipText, isSel && styles.hobbyChipTextSelected]}>{item.label}</Text>
+                    {isSel && <Ionicons name="checkmark" size={14} color="#FFFFFF" style={{ marginLeft: 4 }} />}
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
 
-        {/* Diet Options */}
-        <Text style={styles.sectionHeaderLabel}>Dietary Habits</Text>
-        <View style={styles.dietGrid}>
-          {dietOptions.map((item) => {
-            const isSel = diet === item.id;
-            return (
-              <TouchableOpacity
-                key={item.id}
-                style={[styles.optionCardRow, isSel && styles.optionCardRowSelected]}
-                onPress={() => setDiet(item.id)}
-                activeOpacity={0.88}
-              >
-                <View style={[styles.iconCircleBadge, isSel && styles.iconCircleBadgeSelected]}>
-                  <MaterialCommunityIcons name={item.icon as any} size={20} color={isSel ? '#E31E25' : '#8C7A7C'} />
+            {/* Diet Options */}
+            <Text style={styles.sectionHeaderLabel}>Dietary Habits</Text>
+            <View style={styles.dietGrid}>
+              {dietOptions.map((item) => {
+                const isSel = diet === item.id;
+                return (
+                  <TouchableOpacity
+                    key={item.id}
+                    style={[styles.optionCardRow, isSel && styles.optionCardRowSelected]}
+                    onPress={() => setDiet(item.id)}
+                    activeOpacity={0.88}
+                  >
+                    <View style={[styles.iconCircleBadge, isSel && styles.iconCircleBadgeSelected]}>
+                      <MaterialCommunityIcons name={item.icon as any} size={20} color={isSel ? '#FFFFFF' : '#FF85A1'} />
+                    </View>
+                    <Text style={[styles.optionLabel, isSel && styles.optionLabelSelected]}>{item.label}</Text>
+                    <View style={[styles.radioOuterCircle, isSel && styles.radioOuterCircleSelected]}>
+                      {isSel && <Ionicons name="checkmark" size={14} color="#FFFFFF" />}
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+
+            {/* Smoking & Drinking Toggles */}
+            <Text style={styles.sectionHeaderLabel}>Smoking & Drinking</Text>
+            <View style={styles.toggleRowContainer}>
+              <View style={styles.toggleItem}>
+                <Text style={styles.toggleLabel}>Smoking</Text>
+                <View style={styles.toggleBtnGroup}>
+                  {(['No', 'Yes'] as const).map((opt) => (
+                    <TouchableOpacity
+                      key={opt}
+                      style={[styles.toggleBtn, smoking === opt && styles.toggleBtnActive]}
+                      onPress={() => setSmoking(opt)}
+                    >
+                      <Text style={[styles.toggleBtnText, smoking === opt && styles.toggleBtnTextActive]}>{opt}</Text>
+                    </TouchableOpacity>
+                  ))}
                 </View>
-                <Text style={[styles.optionLabel, isSel && styles.optionLabelSelected]}>{item.label}</Text>
-                <View style={[styles.radioOuterCircle, isSel && styles.radioOuterCircleSelected]}>
-                  {isSel && <Ionicons name="checkmark" size={14} color="#FFFFFF" />}
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
+              </View>
 
-        {/* Smoking & Drinking Toggles */}
-        <Text style={styles.sectionHeaderLabel}>Smoking & Drinking</Text>
-        <View style={styles.toggleRowContainer}>
-          <View style={styles.toggleItem}>
-            <Text style={styles.toggleLabel}>Smoking</Text>
-            <View style={styles.toggleBtnGroup}>
-              {(['No', 'Yes'] as const).map((opt) => (
-                <TouchableOpacity
-                  key={opt}
-                  style={[styles.toggleBtn, smoking === opt && styles.toggleBtnActive]}
-                  onPress={() => setSmoking(opt)}
-                >
-                  <Text style={[styles.toggleBtnText, smoking === opt && styles.toggleBtnTextActive]}>{opt}</Text>
-                </TouchableOpacity>
-              ))}
+              <View style={styles.toggleItem}>
+                <Text style={styles.toggleLabel}>Drinking</Text>
+                <View style={styles.toggleBtnGroup}>
+                  {(['No', 'Yes'] as const).map((opt) => (
+                    <TouchableOpacity
+                      key={opt}
+                      style={[styles.toggleBtn, drinking === opt && styles.toggleBtnActive]}
+                      onPress={() => setDrinking(opt)}
+                    >
+                      <Text style={[styles.toggleBtnText, drinking === opt && styles.toggleBtnTextActive]}>{opt}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
             </View>
           </View>
+          <View style={{ height: 20 }} />
+        </ScrollView>
 
-          <View style={styles.toggleItem}>
-            <Text style={styles.toggleLabel}>Drinking</Text>
-            <View style={styles.toggleBtnGroup}>
-              {(['No', 'Yes'] as const).map((opt) => (
-                <TouchableOpacity
-                  key={opt}
-                  style={[styles.toggleBtn, drinking === opt && styles.toggleBtnActive]}
-                  onPress={() => setDrinking(opt)}
-                >
-                  <Text style={[styles.toggleBtnText, drinking === opt && styles.toggleBtnTextActive]}>{opt}</Text>
-                </TouchableOpacity>
-              ))}
+        <View style={styles.footerContainer}>
+          <View style={styles.progressRow}>
+            <View style={styles.progressTrackBg}>
+              <View style={[styles.progressBarFill, { width: `${(8 / 13) * 100}%` }]} />
             </View>
+            <Text style={styles.progressText}>61%</Text>
           </View>
+
+          <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
+            <Text style={styles.continueBtnText}>{t.continue} →</Text>
+          </TouchableOpacity>
         </View>
-
-        <View style={{ height: 20 }} />
-      </ScrollView>
-
-      {/* Sticky Bottom Navigation Footer */}
-      <View style={styles.footerContainer}>
-        <View style={styles.progressRow}>
-          <View style={styles.progressTrackBg}>
-            <View style={[styles.progressBarFill, { width: `${(8 / 13) * 100}%` }]} />
-          </View>
-          <Text style={styles.progressText}>61%</Text>
-        </View>
-
-        <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
-          <Text style={styles.continueBtnText}>{t.continue} →</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </AnimatedGlassBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    backgroundColor: '#FFF9F6',
   },
-  heroBannerContainer: {
-    height: 180,
-    width: '100%',
-    position: 'relative',
-  },
-  heroBannerImage: {
-    width: '100%',
-    height: '100%',
-  },
-  heroOverlay: {
-    ...StyleSheet.absoluteFill,
-    backgroundColor: 'rgba(44, 26, 29, 0.35)',
-  },
-  topNavRow: {
+  topHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingTop: 12,
-    zIndex: 10,
+    paddingVertical: 12,
   },
   blurBackBtn: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: 'rgba(0, 0, 0, 0.35)',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   stepPillBadge: {
-    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
     borderRadius: 16,
     paddingHorizontal: 12,
     paddingVertical: 5,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
+    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   stepPillText: {
     color: '#FFFFFF',
     fontSize: 12,
     fontWeight: '700',
   },
-  curvedArchMask: {
-    position: 'absolute',
-    bottom: -1,
-    left: 0,
-    right: 0,
-    height: 24,
-    backgroundColor: '#FFF9F6',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-  },
 
   contentScroll: {
-    paddingHorizontal: 20,
-    paddingTop: 4,
+    paddingHorizontal: 16,
+    paddingTop: 8,
+  },
+  glassCardContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.16)',
+    borderRadius: 28,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 6,
+  },
+  badgeWrapper: {
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  glowingVectorCircle: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#E31E25',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#E31E25',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.6,
+    shadowRadius: 14,
+    elevation: 6,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
   },
   headerTitleBox: {
-    marginBottom: 16,
+    alignItems: 'center',
+    marginBottom: 14,
   },
   questionTitle: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '800',
-    color: '#2C1A1D',
+    color: '#FFFFFF',
     fontFamily: 'serif',
+    textAlign: 'center',
     marginBottom: 4,
   },
   questionSubtitle: {
-    fontSize: 14,
-    color: '#5A4A4D',
-    lineHeight: 20,
+    fontSize: 13,
+    color: '#BDA6B2',
+    textAlign: 'center',
+    lineHeight: 18,
   },
   sectionHeaderLabel: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '800',
-    color: '#2C1A1D',
+    color: '#FFFFFF',
     marginTop: 14,
     marginBottom: 8,
   },
@@ -277,27 +285,27 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 10,
   },
-  hobbyChipCard: {
+  hobbyGlassChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
     borderWidth: 1.5,
-    borderColor: '#EFE6DD',
+    borderColor: 'rgba(255, 255, 255, 0.14)',
     borderRadius: 20,
     paddingHorizontal: 14,
     paddingVertical: 9,
   },
-  hobbyChipCardSelected: {
+  hobbyGlassChipSelected: {
     borderColor: '#E31E25',
-    backgroundColor: '#FFF0F1',
+    backgroundColor: 'rgba(227, 30, 37, 0.25)',
   },
   hobbyChipText: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#2C1A1D',
+    color: '#BDA6B2',
   },
   hobbyChipTextSelected: {
-    color: '#E31E25',
+    color: '#FFFFFF',
     fontWeight: '800',
   },
 
@@ -307,37 +315,37 @@ const styles = StyleSheet.create({
   optionCardRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    borderRadius: 18,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
     borderWidth: 1.5,
-    borderColor: '#EFE6DD',
+    borderColor: 'rgba(255, 255, 255, 0.12)',
   },
   optionCardRowSelected: {
     borderColor: '#E31E25',
-    backgroundColor: '#FFF0F1',
+    backgroundColor: 'rgba(227, 30, 37, 0.18)',
   },
   iconCircleBadge: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#FFF9F6',
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: 'rgba(255, 77, 109, 0.15)',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
   },
   iconCircleBadgeSelected: {
-    backgroundColor: '#FFE4E6',
+    backgroundColor: '#E31E25',
   },
   optionLabel: {
     flex: 1,
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '700',
-    color: '#2C1A1D',
+    color: '#FFFFFF',
   },
   optionLabelSelected: {
-    color: '#E31E25',
+    color: '#FFFFFF',
     fontWeight: '800',
   },
   radioOuterCircle: {
@@ -345,7 +353,7 @@ const styles = StyleSheet.create({
     height: 22,
     borderRadius: 11,
     borderWidth: 2,
-    borderColor: '#A39396',
+    borderColor: 'rgba(255, 255, 255, 0.3)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -360,21 +368,21 @@ const styles = StyleSheet.create({
   },
   toggleItem: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 14,
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    borderRadius: 18,
+    padding: 12,
     borderWidth: 1.5,
-    borderColor: '#EFE6DD',
+    borderColor: 'rgba(255, 255, 255, 0.12)',
   },
   toggleLabel: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '700',
-    color: '#2C1A1D',
+    color: '#FFFFFF',
     marginBottom: 8,
   },
   toggleBtnGroup: {
     flexDirection: 'row',
-    backgroundColor: '#FFF9F6',
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
     borderRadius: 12,
     padding: 3,
   },
@@ -388,9 +396,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#E31E25',
   },
   toggleBtnText: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '600',
-    color: '#5A4A4D',
+    color: '#BDA6B2',
   },
   toggleBtnTextActive: {
     color: '#FFFFFF',
@@ -400,20 +408,20 @@ const styles = StyleSheet.create({
   footerContainer: {
     paddingHorizontal: 20,
     paddingVertical: 14,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(18, 7, 14, 0.85)',
     borderTopWidth: 1,
-    borderColor: '#EFE6DD',
+    borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   progressRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    marginBottom: 12,
+    marginBottom: 10,
   },
   progressTrackBg: {
     flex: 1,
     height: 6,
-    backgroundColor: '#EFE6DD',
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
     borderRadius: 3,
     overflow: 'hidden',
   },
@@ -425,19 +433,21 @@ const styles = StyleSheet.create({
   progressText: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#E31E25',
+    color: '#FF4D6D',
   },
   continueBtn: {
     backgroundColor: '#E31E25',
     paddingVertical: 16,
-    borderRadius: 28,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#E31E25',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 5,
+    shadowOpacity: 0.5,
+    shadowRadius: 12,
+    elevation: 6,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.25)',
   },
   continueBtnText: {
     color: '#FFFFFF',

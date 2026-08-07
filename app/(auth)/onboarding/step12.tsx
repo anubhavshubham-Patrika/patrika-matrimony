@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
 import { Translations } from '../../../src/constants/translations';
+import AnimatedGlassBackground from '../../../src/components/AnimatedGlassBackground';
 
 export default function Step12() {
   const router = useRouter();
@@ -26,17 +27,9 @@ export default function Step12() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Hero Banner */}
-      <View style={styles.heroBannerContainer}>
-        <Image
-          source={{ uri: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop' }}
-          style={styles.heroBannerImage}
-          resizeMode="cover"
-        />
-        <View style={styles.heroOverlay} />
-
-        <View style={styles.topNavRow}>
+    <AnimatedGlassBackground>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.topHeader}>
           <TouchableOpacity onPress={() => router.back()} style={styles.blurBackBtn} activeOpacity={0.8}>
             <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
           </TouchableOpacity>
@@ -45,172 +38,186 @@ export default function Step12() {
           </View>
         </View>
 
-        <View style={styles.curvedArchMask} />
-      </View>
-
-      <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
-        <View style={styles.headerTitleBox}>
-          <Text style={styles.questionTitle}>{t.step12Title}</Text>
-          <Text style={styles.questionSubtitle}>Upload your best profile photo to get 8x more responses</Text>
-        </View>
-
-        {/* Live Callout Pill */}
-        <View style={styles.liveCalloutPill}>
-          <Ionicons name="camera-outline" size={18} color="#E31E25" style={{ marginRight: 6 }} />
-          <Text style={styles.liveCalloutText}>Profiles with photos receive 8x more partner responses!</Text>
-        </View>
-
-        {/* Main Photo Upload Frame */}
-        <View style={styles.photoFrameContainer}>
-          {mainPhoto ? (
-            <View style={styles.photoContainer}>
-              <Image source={{ uri: mainPhoto }} style={styles.uploadedPhoto} resizeMode="cover" />
-              <TouchableOpacity
-                style={styles.changePhotoBadge}
-                onPress={() => setMainPhoto('https://randomuser.me/api/portraits/men/32.jpg')}
-              >
-                <Ionicons name="camera-reverse" size={16} color="#FFFFFF" />
-              </TouchableOpacity>
+        <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
+          <View style={styles.glassCardContainer}>
+            <View style={styles.badgeWrapper}>
+              <View style={styles.glowingVectorCircle}>
+                <MaterialCommunityIcons name="camera-enhance-outline" size={32} color="#FFFFFF" />
+              </View>
             </View>
-          ) : (
-            <TouchableOpacity style={styles.emptyPhotoBox} activeOpacity={0.8}>
-              <Ionicons name="add-circle-outline" size={44} color="#E31E25" />
-              <Text style={styles.emptyPhotoText}>Tap to add main profile photo</Text>
+
+            <View style={styles.headerTitleBox}>
+              <Text style={styles.questionTitle}>{t.step12Title}</Text>
+              <Text style={styles.questionSubtitle}>Upload your best profile photo to get 8x more responses</Text>
+            </View>
+
+            <View style={styles.liveCalloutGlassPill}>
+              <Ionicons name="camera-outline" size={18} color="#FF4D6D" style={{ marginRight: 6 }} />
+              <Text style={styles.liveCalloutText}>Profiles with photos receive 8x more partner responses!</Text>
+            </View>
+
+            {/* Main Photo Upload Frame */}
+            <View style={styles.photoFrameContainer}>
+              {mainPhoto ? (
+                <View style={styles.photoContainer}>
+                  <Image source={{ uri: mainPhoto }} style={styles.uploadedPhoto} resizeMode="cover" />
+                  <TouchableOpacity
+                    style={styles.changePhotoBadge}
+                    onPress={() => setMainPhoto('https://randomuser.me/api/portraits/men/32.jpg')}
+                  >
+                    <Ionicons name="camera-reverse" size={16} color="#FFFFFF" />
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <TouchableOpacity style={styles.emptyPhotoBox} activeOpacity={0.8}>
+                  <Ionicons name="add-circle-outline" size={44} color="#FF4D6D" />
+                  <Text style={styles.emptyPhotoText}>Tap to add main profile photo</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+
+            {/* Capture Selfie Verification Button */}
+            <TouchableOpacity style={styles.selfieVerifyBtn} activeOpacity={0.88}>
+              <MaterialCommunityIcons name="shield-account-outline" size={22} color="#FF4D6D" style={{ marginRight: 8 }} />
+              <Text style={styles.selfieVerifyText}>Capture Selfie for Instant 100% Verification</Text>
             </TouchableOpacity>
-          )}
-        </View>
-
-        {/* Capture Selfie Verification Button */}
-        <TouchableOpacity style={styles.selfieVerifyBtn} activeOpacity={0.88}>
-          <MaterialCommunityIcons name="shield-account-outline" size={22} color="#E31E25" style={{ marginRight: 8 }} />
-          <Text style={styles.selfieVerifyText}>Capture Selfie for Instant 100% Verification</Text>
-        </TouchableOpacity>
-
-        <View style={{ height: 20 }} />
-      </ScrollView>
-
-      {/* Sticky Bottom Navigation Footer */}
-      <View style={styles.footerContainer}>
-        <View style={styles.progressRow}>
-          <View style={styles.progressTrackBg}>
-            <View style={[styles.progressBarFill, { width: `${(12 / 13) * 100}%` }]} />
           </View>
-          <Text style={styles.progressText}>92%</Text>
-        </View>
+          <View style={{ height: 20 }} />
+        </ScrollView>
 
-        <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
-          <Text style={styles.continueBtnText}>{t.continue} →</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+        <View style={styles.footerContainer}>
+          <View style={styles.progressRow}>
+            <View style={styles.progressTrackBg}>
+              <View style={[styles.progressBarFill, { width: `${(12 / 13) * 100}%` }]} />
+            </View>
+            <Text style={styles.progressText}>92%</Text>
+          </View>
+
+          <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
+            <Text style={styles.continueBtnText}>{t.continue} →</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </AnimatedGlassBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    backgroundColor: '#FFF9F6',
   },
-  heroBannerContainer: {
-    height: 180,
-    width: '100%',
-    position: 'relative',
-  },
-  heroBannerImage: {
-    width: '100%',
-    height: '100%',
-  },
-  heroOverlay: {
-    ...StyleSheet.absoluteFill,
-    backgroundColor: 'rgba(44, 26, 29, 0.35)',
-  },
-  topNavRow: {
+  topHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingTop: 12,
-    zIndex: 10,
+    paddingVertical: 12,
   },
   blurBackBtn: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: 'rgba(0, 0, 0, 0.35)',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   stepPillBadge: {
-    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
     borderRadius: 16,
     paddingHorizontal: 12,
     paddingVertical: 5,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
+    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   stepPillText: {
     color: '#FFFFFF',
     fontSize: 12,
     fontWeight: '700',
   },
-  curvedArchMask: {
-    position: 'absolute',
-    bottom: -1,
-    left: 0,
-    right: 0,
-    height: 24,
-    backgroundColor: '#FFF9F6',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-  },
 
   contentScroll: {
-    paddingHorizontal: 20,
-    paddingTop: 4,
+    paddingHorizontal: 16,
+    paddingTop: 8,
+  },
+  glassCardContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.16)',
+    borderRadius: 28,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 6,
+  },
+  badgeWrapper: {
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  glowingVectorCircle: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#E31E25',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#E31E25',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.6,
+    shadowRadius: 14,
+    elevation: 6,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
   },
   headerTitleBox: {
+    alignItems: 'center',
     marginBottom: 14,
   },
   questionTitle: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '800',
-    color: '#2C1A1D',
+    color: '#FFFFFF',
     fontFamily: 'serif',
+    textAlign: 'center',
     marginBottom: 4,
   },
   questionSubtitle: {
-    fontSize: 14,
-    color: '#5A4A4D',
-    lineHeight: 20,
+    fontSize: 13,
+    color: '#BDA6B2',
+    textAlign: 'center',
+    lineHeight: 18,
   },
 
-  liveCalloutPill: {
+  liveCalloutGlassPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF0F1',
+    backgroundColor: 'rgba(255, 77, 109, 0.12)',
     borderWidth: 1,
-    borderColor: '#FCD4D7',
+    borderColor: 'rgba(255, 77, 109, 0.3)',
     borderRadius: 14,
     paddingHorizontal: 14,
-    paddingVertical: 10,
-    marginBottom: 20,
+    paddingVertical: 9,
+    marginBottom: 18,
   },
   liveCalloutText: {
-    fontSize: 13,
-    color: '#E31E25',
+    fontSize: 12,
+    color: '#FFFFFF',
     fontWeight: '700',
     flex: 1,
   },
 
   photoFrameContainer: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 18,
   },
   photoContainer: {
     position: 'relative',
     width: 140,
     height: 170,
-    borderRadius: 20,
+    borderRadius: 22,
     overflow: 'hidden',
     borderWidth: 3,
     borderColor: '#E31E25',
@@ -233,10 +240,10 @@ const styles = StyleSheet.create({
   emptyPhotoBox: {
     width: 140,
     height: 170,
-    borderRadius: 20,
-    backgroundColor: '#FFFFFF',
+    borderRadius: 22,
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
     borderWidth: 2,
-    borderColor: '#E31E25',
+    borderColor: '#FF4D6D',
     borderStyle: 'dashed',
     alignItems: 'center',
     justifyContent: 'center',
@@ -244,7 +251,7 @@ const styles = StyleSheet.create({
   },
   emptyPhotoText: {
     fontSize: 12,
-    color: '#8C7A7C',
+    color: '#BDA6B2',
     textAlign: 'center',
     marginTop: 8,
   },
@@ -253,9 +260,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
     borderWidth: 1.5,
-    borderColor: '#E31E25',
+    borderColor: 'rgba(255, 255, 255, 0.2)',
     borderRadius: 20,
     paddingVertical: 14,
     paddingHorizontal: 16,
@@ -263,26 +270,26 @@ const styles = StyleSheet.create({
   selfieVerifyText: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#E31E25',
+    color: '#FFFFFF',
   },
 
   footerContainer: {
     paddingHorizontal: 20,
     paddingVertical: 14,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(18, 7, 14, 0.85)',
     borderTopWidth: 1,
-    borderColor: '#EFE6DD',
+    borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   progressRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    marginBottom: 12,
+    marginBottom: 10,
   },
   progressTrackBg: {
     flex: 1,
     height: 6,
-    backgroundColor: '#EFE6DD',
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
     borderRadius: 3,
     overflow: 'hidden',
   },
@@ -294,19 +301,21 @@ const styles = StyleSheet.create({
   progressText: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#E31E25',
+    color: '#FF4D6D',
   },
   continueBtn: {
     backgroundColor: '#E31E25',
     paddingVertical: 16,
-    borderRadius: 28,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#E31E25',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 5,
+    shadowOpacity: 0.5,
+    shadowRadius: 12,
+    elevation: 6,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.25)',
   },
   continueBtnText: {
     color: '#FFFFFF',

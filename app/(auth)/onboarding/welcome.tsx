@@ -1,163 +1,182 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';
-import PatrikaRibbonLogo from '../../../src/components/PatrikaRibbonLogo';
+import { Translations } from '../../../src/constants/translations';
+import AnimatedGlassBackground from '../../../src/components/AnimatedGlassBackground';
 
 export default function WelcomeScreen() {
   const router = useRouter();
-  const { dispatch } = useApp();
+  const { state, dispatch } = useApp();
+  const lang = state.language || 'en';
+  const t = Translations[lang];
 
-  const handleStart = () => {
+  const handleStartExploring = () => {
     dispatch({
       type: 'LOGIN',
       payload: {
         userId: 'U001',
-        name: 'Arjun Singh',
+        name: state.onboardingData?.name || 'Arjun Singh',
         mobile: '+91-9876543210',
         email: 'arjun@example.com',
         profileId: 'P001',
       },
     });
 
-    router.push('/(tabs)/home');
+    router.replace('/(tabs)/home');
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.formCard}>
-          <View style={styles.cardHeaderBanner}>
-            <PatrikaRibbonLogo size={80} style={{ alignSelf: 'center', marginBottom: 10 }} />
-            <Text style={styles.cardHeaderTitle}>Welcome to Patrika Matrimony!</Text>
-            <Text style={styles.cardHeaderSubtitle}>Your profile has been created successfully</Text>
-          </View>
-
-          <View style={styles.cardBody}>
-            <View style={styles.iconContainer}>
-              <Ionicons name="checkmark-circle" size={72} color="#1E8449" />
-            </View>
-
-            <View style={styles.tipsContainer}>
-              <View style={styles.tipRow}>
-                <Ionicons name="checkmark-circle" size={20} color="#E31E25" style={styles.tipIcon} />
-                <Text style={styles.tipText}>Complete verification to get 5x more responses</Text>
-              </View>
-              <View style={styles.tipRow}>
-                <Ionicons name="checkmark-circle" size={20} color="#E31E25" style={styles.tipIcon} />
-                <Text style={styles.tipText}>Explore matches based on your preferences</Text>
-              </View>
-              <View style={styles.tipRow}>
-                <Ionicons name="checkmark-circle" size={20} color="#E31E25" style={styles.tipIcon} />
-                <Text style={styles.tipText}>Link your Rajasthan Patrika newspaper ad</Text>
+    <AnimatedGlassBackground>
+      <SafeAreaView style={styles.safeArea}>
+        <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
+          <View style={styles.glassCardContainer}>
+            {/* Celebration Badge */}
+            <View style={styles.badgeWrapper}>
+              <View style={styles.outerGlowCircle}>
+                <Ionicons name="checkmark-done" size={44} color="#FFFFFF" />
               </View>
             </View>
-          </View>
-        </View>
-      </View>
 
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.btn} onPress={handleStart} activeOpacity={0.88}>
-          <Text style={styles.btnText}>Start Exploring Matches →</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+            <Text style={styles.welcomeTitle}>Welcome to Patrika Matrimony!</Text>
+            <Text style={styles.welcomeSubtitle}>Your profile is ready to explore verified matches</Text>
+
+            {/* Tips Glass Cards */}
+            <View style={styles.tipsList}>
+              <View style={styles.tipGlassItem}>
+                <Ionicons name="shield-checkmark" size={22} color="#FF4D6D" style={{ marginRight: 12 }} />
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.tipTitle}>100% Verified Profile</Text>
+                  <Text style={styles.tipSub}>Your profile is verified and active for matching</Text>
+                </View>
+              </View>
+
+              <View style={styles.tipGlassItem}>
+                <MaterialCommunityIcons name="newspaper-variant-outline" size={22} color="#FF4D6D" style={{ marginRight: 12 }} />
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.tipTitle}>Rajasthan Patrika Ad Sync</Text>
+                  <Text style={styles.tipSub}>Connect your print classified ad to get 5x responses</Text>
+                </View>
+              </View>
+
+              <View style={styles.tipGlassItem}>
+                <MaterialCommunityIcons name="auto-fix" size={22} color="#FF4D6D" style={{ marginRight: 12 }} />
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.tipTitle}>AI-Powered Recommendations</Text>
+                  <Text style={styles.tipSub}>Daily curated matches based on your community preferences</Text>
+                </View>
+              </View>
+            </View>
+
+            <TouchableOpacity style={styles.exploreBtn} onPress={handleStartExploring} activeOpacity={0.88}>
+              <Text style={styles.exploreBtnText}>Start Exploring Matches →</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </AnimatedGlassBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    backgroundColor: '#FFF9F6',
   },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 16,
-  },
-  formCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    shadowColor: '#2C1A1D',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-    elevation: 4,
-  },
-  cardHeaderBanner: {
-    backgroundColor: '#E31E25',
+  contentScroll: {
     paddingHorizontal: 20,
-    paddingVertical: 24,
-    alignItems: 'center',
+    paddingVertical: 30,
+    flexGrow: 1,
+    justifyContent: 'center',
   },
-  cardHeaderTitle: {
-    fontSize: 22,
+  glassCardContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.16)',
+    borderRadius: 28,
+    padding: 24,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.35,
+    shadowRadius: 20,
+    elevation: 6,
+  },
+  badgeWrapper: {
+    marginBottom: 20,
+  },
+  outerGlowCircle: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: '#E31E25',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#E31E25',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.6,
+    shadowRadius: 16,
+    elevation: 8,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  welcomeTitle: {
+    fontSize: 26,
     fontWeight: '800',
     color: '#FFFFFF',
     fontFamily: 'serif',
     textAlign: 'center',
-    marginBottom: 4,
+    marginBottom: 6,
   },
-  cardHeaderSubtitle: {
-    fontSize: 13,
-    color: 'rgba(255,255,255,0.85)',
+  welcomeSubtitle: {
+    fontSize: 14,
+    color: '#BDA6B2',
     textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 24,
   },
-  cardBody: {
-    padding: 20,
-    alignItems: 'center',
-  },
-  iconContainer: {
-    marginBottom: 16,
-  },
-  tipsContainer: {
+  tipsList: {
     width: '100%',
-    backgroundColor: '#FAF5F7',
-    padding: 16,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
+    gap: 12,
+    marginBottom: 28,
   },
-  tipRow: {
+  tipGlassItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.12)',
+    borderRadius: 18,
+    padding: 14,
   },
-  tipIcon: {
-    marginRight: 10,
-  },
-  tipText: {
-    fontSize: 13,
-    color: '#2C1A1D',
-    fontWeight: '600',
-    flex: 1,
-    lineHeight: 18,
-  },
-  footer: {
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    backgroundColor: '#FFFFFF',
-    borderTopWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  btn: {
-    backgroundColor: '#E31E25',
-    paddingVertical: 16,
-    borderRadius: 14,
-    alignItems: 'center',
-    shadowColor: '#E31E25',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  btnText: {
+  tipTitle: {
+    fontSize: 14,
+    fontWeight: '800',
     color: '#FFFFFF',
-    fontSize: 16,
+  },
+  tipSub: {
+    fontSize: 12,
+    color: '#BDA6B2',
+    marginTop: 2,
+  },
+  exploreBtn: {
+    width: '100%',
+    backgroundColor: '#E31E25',
+    paddingVertical: 18,
+    borderRadius: 26,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#E31E25',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.5,
+    shadowRadius: 14,
+    elevation: 6,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  exploreBtnText: {
+    color: '#FFFFFF',
+    fontSize: 17,
     fontWeight: '800',
   },
 });
