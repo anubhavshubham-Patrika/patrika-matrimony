@@ -107,13 +107,6 @@ export default function Step1() {
 
         {/* Sticky Bottom Glass Footer */}
         <View style={styles.footerContainer}>
-          <View style={styles.progressRow}>
-            <View style={styles.progressTrackBg}>
-              <View style={[styles.progressBarFill, { width: `${(1 / 13) * 100}%` }]} />
-            </View>
-            <Text style={styles.progressText}>8%</Text>
-          </View>
-
           <TouchableOpacity
             style={[styles.continueBtn, !profileFor && styles.continueBtnDisabled]}
             onPress={handleNext}

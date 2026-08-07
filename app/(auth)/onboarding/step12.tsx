@@ -252,13 +252,6 @@ export default function Step12() {
         </Modal>
 
         <View style={styles.footerContainer}>
-          <View style={styles.progressRow}>
-            <View style={styles.progressTrackBg}>
-              <View style={[styles.progressBarFill, { width: `${(12 / 13) * 100}%` }]} />
-            </View>
-            <Text style={styles.progressText}>92%</Text>
-          </View>
-
           <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
             <Text style={styles.continueBtnText}>{t.continue} →</Text>
           </TouchableOpacity>

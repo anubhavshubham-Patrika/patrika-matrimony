@@ -101,13 +101,6 @@ export default function Step9() {
         </ScrollView>
 
         <View style={styles.footerContainer}>
-          <View style={styles.progressRow}>
-            <View style={styles.progressTrackBg}>
-              <View style={[styles.progressBarFill, { width: `${(9 / 13) * 100}%` }]} />
-            </View>
-            <Text style={styles.progressText}>69%</Text>
-          </View>
-
           <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
             <Text style={styles.continueBtnText}>{t.continue} →</Text>
           </TouchableOpacity>

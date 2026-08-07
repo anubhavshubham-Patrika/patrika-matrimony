@@ -102,13 +102,6 @@ export default function Step13() {
         </ScrollView>
 
         <View style={styles.footerContainer}>
-          <View style={styles.progressRow}>
-            <View style={styles.progressTrackBg}>
-              <View style={[styles.progressBarFill, { width: '100%' }]} />
-            </View>
-            <Text style={styles.progressText}>100%</Text>
-          </View>
-
           <TouchableOpacity style={styles.continueBtn} onPress={handleFinish} activeOpacity={0.88}>
             <Text style={styles.continueBtnText}>Complete Profile ✨</Text>
           </TouchableOpacity>

@@ -173,13 +173,6 @@ export default function Step5() {
         </Modal>
 
         <View style={styles.footerContainer}>
-          <View style={styles.progressRow}>
-            <View style={styles.progressTrackBg}>
-              <View style={[styles.progressBarFill, { width: `${(5 / 13) * 100}%` }]} />
-            </View>
-            <Text style={styles.progressText}>38%</Text>
-          </View>
-
           <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
             <Text style={styles.continueBtnText}>{t.continue} →</Text>
           </TouchableOpacity>
