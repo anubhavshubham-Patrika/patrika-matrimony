@@ -9,7 +9,7 @@ import { useApp } from '../../src/context/AppContext';
 import chatsData from '../../src/data/chats.json';
 import profilesData from '../../src/data/profiles.json';
 
-const PRIMARY = '#E31E25';
+const PRIMARY = '#0F2E2B';
 
 interface Message {
   chatId: string;

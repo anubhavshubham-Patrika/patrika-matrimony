@@ -58,9 +58,9 @@ export default function ProfileCard({
               onPress={onInterest}
             >
               <Ionicons 
-                name={isInterestSent ? "heart" : "heart-outline"} 
+                name={isInterestSent ? "checkmark-circle" : "heart"} 
                 size={14} 
-                color={isInterestSent ? "#FFFFFF" : "#E31E25"} 
+                color={isInterestSent ? "#FFFFFF" : "#0F2E2B"} 
               />
               <Text style={[styles.compactInterestText, isInterestSent && { color: '#FFFFFF' }]}>
                 {isInterestSent ? 'Sent' : 'Interest'}
@@ -105,7 +105,7 @@ export default function ProfileCard({
 
           {profile.isNewspaperAdLinked && (
             <View style={styles.newspaperGlassBadge}>
-              <Ionicons name="newspaper-outline" size={13} color="#E31E25" style={{ marginRight: 4 }} />
+              <Ionicons name="newspaper-outline" size={13} color="#0F2E2B" style={{ marginRight: 4 }} />
               <Text style={styles.newspaperText}>Patrika Ad</Text>
             </View>
           )}
@@ -227,21 +227,21 @@ const styles = StyleSheet.create({
   compactInterestBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(227, 30, 37, 0.1)',
+    backgroundColor: 'rgba(15, 46, 43, 0.08)',
     borderWidth: 1,
-    borderColor: 'rgba(227, 30, 37, 0.3)',
+    borderColor: 'rgba(15, 46, 43, 0.2)',
     borderRadius: 14,
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
   compactInterestBtnSent: {
-    backgroundColor: '#E31E25',
-    borderColor: '#E31E25',
+    backgroundColor: '#0D9488',
+    borderColor: '#0D9488',
   },
   compactInterestText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#E31E25',
+    color: '#0F2E2B',
     marginLeft: 4,
   },
   compactShortlistBtn: {
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
   matchScoreGlassBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    backgroundColor: 'rgba(255, 255, 255, 0.92)',
     borderRadius: 16,
     paddingHorizontal: 10,
     paddingVertical: 5,
@@ -298,15 +298,17 @@ const styles = StyleSheet.create({
   newspaperGlassBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 240, 241, 0.92)',
+    backgroundColor: 'rgba(232, 245, 243, 0.95)',
     borderRadius: 16,
     paddingHorizontal: 10,
     paddingVertical: 5,
+    borderWidth: 1,
+    borderColor: 'rgba(13, 148, 136, 0.3)',
   },
   newspaperText: {
     fontSize: 11,
     fontWeight: '800',
-    color: '#E31E25',
+    color: '#0F2E2B',
   },
   floatingStarBtn: {
     position: 'absolute',
@@ -376,12 +378,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#E31E25',
+    backgroundColor: '#0F2E2B',
     borderRadius: 20,
     paddingVertical: 12,
-    shadowColor: '#E31E25',
+    shadowColor: '#0F2E2B',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 4,
   },

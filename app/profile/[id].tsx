@@ -536,8 +536,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#E31E25',
-    borderRadius: 22,
+    backgroundColor: '#0F2E2B',
+    shadowColor: '#0F2E2B',
     paddingVertical: 14,
   },
   primaryInterestBtnSent: {
