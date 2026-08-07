@@ -1,247 +1,42 @@
 import React, { useEffect, useRef } from 'react';
 import {
-  View, Text, StyleSheet, TouchableOpacity, Animated,
-  SafeAreaView, ScrollView, Dimensions,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  SafeAreaView,
+  Animated,
+  Dimensions,
 } from 'react-native';
-import Svg, {
-  Path, Ellipse, Circle, G, Rect,
-  Defs, RadialGradient, Stop, ClipPath,
-} from 'react-native-svg';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useApp } from '../../src/context/AppContext';
-import MintGlassBackground from '../../src/components/MintGlassBackground';
-import PalaceScene from '../../src/components/PalaceScene';
 
 const { width: SW } = Dimensions.get('window');
 
-/* ─────────────────────────────────────────────
-   Mughal arch + wedding rings inline SVG
-───────────────────────────────────────────── */
-function ArchEmblem() {
-  const AW = 180;
-  const AH = 220;
-  // arch shape: pointed Mughal arch (wider than tall ratio for pointed top)
-  // Using a path: left pillar → pointed top arc → right pillar → bottom
-  const archPath = `
-    M 18,${AH}
-    L 18,85
-    Q 18,18 ${AW / 2},12
-    Q ${AW - 18},18 ${AW - 18},85
-    L ${AW - 18},${AH}
-    Z
-  `;
-  // Slightly larger gold border path
-  const goldPath = `
-    M 12,${AH}
-    L 12,85
-    Q 12,8 ${AW / 2},4
-    Q ${AW - 12},8 ${AW - 12},85
-    L ${AW - 12},${AH}
-    Z
-  `;
+// ─── Design Tokens (from CSS :root) ──────────────────────
+const C = {
+  mintBg: '#eaf8f7',
+  mintLight: '#dff3f1',
+  mint: '#bfe8e4',
+  teal: '#159d95',
+  darkTeal: '#073b38',
+  deepTeal: '#063b37',
+  gold: '#c79b45',
+  goldLight: '#e4c477',
+  white: '#ffffff',
+  text: '#123b39',
+  muted: '#58706f',
+};
 
-  return (
-    <View style={styles.archEmblemWrapper}>
-      {/* Outer faint concentric ring 1 */}
-      <View style={styles.ringOuter1} />
-      {/* Outer faint concentric ring 2 */}
-      <View style={styles.ringOuter2} />
-
-      {/* Arch SVG */}
-      <Svg width={AW} height={AH} style={{ zIndex: 2 }}>
-        <Defs>
-          <RadialGradient id="archGold" cx="50%" cy="50%" r="50%">
-            <Stop offset="0%" stopColor="#D4AF37" />
-            <Stop offset="100%" stopColor="#8B6914" />
-          </RadialGradient>
-          <RadialGradient id="ringGold1" cx="50%" cy="40%" r="60%">
-            <Stop offset="0%" stopColor="#F5D06A" />
-            <Stop offset="55%" stopColor="#D4AF37" />
-            <Stop offset="100%" stopColor="#A07C1A" />
-          </RadialGradient>
-          <RadialGradient id="ringGold2" cx="50%" cy="40%" r="60%">
-            <Stop offset="0%" stopColor="#F7DC7E" />
-            <Stop offset="55%" stopColor="#C9962A" />
-            <Stop offset="100%" stopColor="#915E0A" />
-          </RadialGradient>
-        </Defs>
-
-        {/* Gold border shadow */}
-        <Path d={goldPath} fill="#C8941A" opacity={0.35} />
-        {/* Gold outline */}
-        <Path d={goldPath} fill="none" stroke="#D4AF37" strokeWidth={4} />
-        {/* Dark teal arch body */}
-        <Path d={archPath} fill="#0A4A3C" />
-        {/* Subtle inner highlight at arch top */}
-        <Path
-          d={`M 40,${AH} L 40,92 Q 40,30 ${AW/2},25 Q ${AW-40},30 ${AW-40},92 L ${AW-40},${AH}`}
-          fill="rgba(255,255,255,0.04)"
-        />
-
-        {/* ── White circle for logo ── */}
-        <Circle cx={AW / 2} cy={AH * 0.48} r={55} fill="#FFFFFF" />
-        <Circle cx={AW / 2} cy={AH * 0.48} r={55} fill="none" stroke="rgba(212,175,55,0.3)" strokeWidth={1.5} />
-
-        {/* ── Crown / Lotus on top ── */}
-        {/* centre gem */}
-        <Ellipse cx={AW/2} cy={AH*0.48 - 38} rx={5} ry={7} fill="url(#ringGold1)" />
-        {/* left gem */}
-        <Ellipse cx={AW/2 - 12} cy={AH*0.48 - 34} rx={4} ry={5.5} fill="url(#ringGold1)" />
-        {/* right gem */}
-        <Ellipse cx={AW/2 + 12} cy={AH*0.48 - 34} rx={4} ry={5.5} fill="url(#ringGold1)" />
-        {/* crown base bar */}
-        <Rect x={AW/2 - 20} y={AH*0.48 - 27} width={40} height={5} rx={2} fill="url(#archGold)" />
-
-        {/* ── Left ring ── */}
-        <Circle cx={AW/2 - 10} cy={AH*0.48 + 6} r={22} fill="none" stroke="url(#ringGold1)" strokeWidth={9} />
-        {/* ── Right ring ── */}
-        <Circle cx={AW/2 + 10} cy={AH*0.48 + 6} r={22} fill="none" stroke="url(#ringGold2)" strokeWidth={9} />
-        {/* Overlap bridge (arch background color to create depth) */}
-        <Path
-          d={`M ${AW/2},${AH*0.48 - 14} Q ${AW/2 + 8},${AH*0.48} ${AW/2},${AH*0.48 + 14} Q ${AW/2 - 8},${AH*0.48} ${AW/2},${AH*0.48 - 14}`}
-          fill="#FFFFFF"
-        />
-        {/* Overlap ring highlight */}
-        <Path
-          d={`M ${AW/2},${AH*0.48 - 12} Q ${AW/2 + 6},${AH*0.48} ${AW/2},${AH*0.48 + 12} Q ${AW/2 - 6},${AH*0.48} ${AW/2},${AH*0.48 - 12}`}
-          fill="none"
-          stroke="#D4AF37"
-          strokeWidth={2}
-        />
-      </Svg>
-
-      {/* Sparkle dots */}
-      <View style={[styles.sparkle, { top: 30, right: 10 }]} />
-      <View style={[styles.sparkle, { top: 60, left: 8 }]} />
-      <View style={[styles.sparkle, { bottom: 40, right: 14 }]} />
-    </View>
-  );
-}
-
-/* ─────────────────────────────────────────────
-   Large decorative white flowers (left side)
-───────────────────────────────────────────── */
-function LeftFloral() {
-  return (
-    <View style={styles.floralLeft} pointerEvents="none">
-      <Svg width={130} height={310}>
-        <Defs>
-          <RadialGradient id="petalGrad" cx="50%" cy="30%" r="70%">
-            <Stop offset="0%" stopColor="#FFFFFF" />
-            <Stop offset="100%" stopColor="#D8F0EC" />
-          </RadialGradient>
-          <RadialGradient id="petalGrad2" cx="50%" cy="30%" r="70%">
-            <Stop offset="0%" stopColor="#FFFFFF" />
-            <Stop offset="100%" stopColor="#C8EAE5" />
-          </RadialGradient>
-        </Defs>
-
-        {/* ── LARGE FLOWER TOP ── */}
-        {/* 6-petal arrangement */}
-        {[0,60,120,180,240,300].map((angle, i) => {
-          const rad = (angle * Math.PI) / 180;
-          const cx = 55, cy = 80, r = 28;
-          const px = cx + Math.cos(rad) * r;
-          const py = cy + Math.sin(rad) * r;
-          return (
-            <Ellipse
-              key={i}
-              cx={px} cy={py}
-              rx={16} ry={22}
-              fill="url(#petalGrad)"
-              transform={`rotate(${angle} ${px} ${py})`}
-              opacity={0.92}
-            />
-          );
-        })}
-        {/* Centre */}
-        <Circle cx={55} cy={80} r={14} fill="#F0FAF8" />
-        <Circle cx={55} cy={80} r={8} fill="#E0F5F0" />
-        {/* Stamens */}
-        {[0,45,90,135,180,225,270,315].map((a,i)=>{
-          const rad = a*Math.PI/180;
-          return <Circle key={i} cx={55+Math.cos(rad)*5} cy={80+Math.sin(rad)*5} r={1.5} fill="#A8D8D0" />;
-        })}
-
-        {/* Stem and leaves */}
-        <Path d="M 55,94 Q 40,140 35,200" stroke="#7DC4B8" strokeWidth={3.5} fill="none" strokeLinecap="round" />
-        {/* Left leaf */}
-        <Path d="M 48,130 Q 20,118 18,100 Q 35,108 48,130" fill="#7DC4B8" opacity={0.8} />
-        {/* Right leaf */}
-        <Path d="M 42,158 Q 12,145 10,126 Q 30,136 42,158" fill="#6BB5A8" opacity={0.7} />
-
-        {/* ── SMALLER FLOWER BOTTOM ── */}
-        {[0,72,144,216,288].map((angle, i) => {
-          const rad = (angle * Math.PI) / 180;
-          const cx2 = 38, cy2 = 240, r2 = 20;
-          const px = cx2 + Math.cos(rad) * r2;
-          const py = cy2 + Math.sin(rad) * r2;
-          return (
-            <Ellipse
-              key={`b${i}`}
-              cx={px} cy={py}
-              rx={12} ry={17}
-              fill="url(#petalGrad2)"
-              transform={`rotate(${angle} ${px} ${py})`}
-              opacity={0.88}
-            />
-          );
-        })}
-        <Circle cx={38} cy={240} r={10} fill="#F0FAF8" />
-        <Circle cx={38} cy={240} r={6} fill="#DFF5F0" />
-
-        {/* Bud top-left */}
-        <Ellipse cx={25} cy={34} rx={10} ry={14} fill="rgba(255,255,255,0.75)" />
-        <Ellipse cx={20} cy={30} rx={8} ry={12} fill="rgba(255,255,255,0.65)" />
-        <Path d="M 22,44 Q 18,60 16,80" stroke="#7DC4B8" strokeWidth={2.5} fill="none" />
-
-        {/* Small leaf top */}
-        <Path d="M 80,18 Q 100,10 105,25 Q 90,22 80,18" fill="#7DC4B8" opacity={0.75} />
-        <Path d="M 85,28 Q 110,22 115,40 Q 98,34 85,28" fill="#6BB5A8" opacity={0.6} />
-      </Svg>
-    </View>
-  );
-}
-
-/* ─────────────────────────────────────────────
-   Small decorative flowers top-right
-───────────────────────────────────────────── */
-function TopRightFloral() {
-  return (
-    <View style={styles.floralTopRight} pointerEvents="none">
-      <Svg width={70} height={80}>
-        <Defs>
-          <RadialGradient id="pG3" cx="50%" cy="30%" r="70%">
-            <Stop offset="0%" stopColor="#FFFFFF" />
-            <Stop offset="100%" stopColor="#D8F0EC" />
-          </RadialGradient>
-        </Defs>
-        {/* small bud */}
-        {[0,72,144,216,288].map((angle,i)=>{
-          const rad=(angle*Math.PI)/180;
-          const px=35+Math.cos(rad)*16, py=35+Math.sin(rad)*16;
-          return <Ellipse key={i} cx={px} cy={py} rx={9} ry={13} fill="url(#pG3)" transform={`rotate(${angle} ${px} ${py})`} opacity={0.85} />;
-        })}
-        <Circle cx={35} cy={35} r={8} fill="#F0FAF8" />
-        <Circle cx={35} cy={35} r={4} fill="#E0F5F0" />
-        {/* mini bud */}
-        <Ellipse cx={15} cy={12} rx={6} ry={9} fill="rgba(255,255,255,0.7)" />
-        <Ellipse cx={60} cy={15} rx={5} ry={7} fill="rgba(255,255,255,0.6)" />
-        <Path d="M 35,44 Q 28,62 25,75" stroke="#7DC4B8" strokeWidth={2} fill="none" />
-      </Svg>
-    </View>
-  );
-}
-
-/* ─────────────────────────────────────────────
-   Main Splash Screen
-───────────────────────────────────────────── */
+// ─── Feature data ─────────────────────────────────────────
 const FEATURES = [
-  { icon: 'shield-checkmark' as const, title: 'Verified\nProfiles', sub: '100% trusted &\nauthentic' },
-  { icon: 'search' as const, title: 'Smart\nMatches', sub: 'AI powered\ncompatibility' },
-  { icon: 'lock-closed' as const, title: 'Privacy\nFirst', sub: 'Your data is safe\n& secure' },
-  { icon: 'heart' as const, title: 'Serious\nConnections', sub: 'For meaningful\nrelationships' },
+  { icon: 'shield-checkmark' as const, title: 'Verified', sub: 'Profiles', desc: '100% trusted &\nauthentic' },
+  { icon: 'search' as const, title: 'Smart', sub: 'Matches', desc: 'AI powered\ncompatibility' },
+  { icon: 'lock-closed' as const, title: 'Privacy', sub: 'First', desc: 'Your data is safe\n& secure' },
+  { icon: 'heart' as const, title: 'Serious', sub: 'Connections', desc: 'For meaningful\nrelationships' },
 ];
 
 const STATS = [
@@ -251,506 +46,913 @@ const STATS = [
   { icon: 'trophy-outline' as const, value: '20+', label: 'Years of Trust' },
 ];
 
+// ─── Sub-components ───────────────────────────────────────
+
+/** Translates .logo-arch + .logo-inner + .ring-logo */
+function LogoArch() {
+  return (
+    <View style={s.logoDecoration}>
+      {/* .ring .ring-one / .ring-two / .ring-three */}
+      <View style={[s.ring, { width: 250, height: 250, borderRadius: 125 }]} />
+      <View style={[s.ring, { width: 210, height: 210, borderRadius: 105 }]} />
+      <View style={[s.ring, { width: 170, height: 170, borderRadius: 85 }]} />
+
+      {/* .logo-arch */}
+      <LinearGradient
+        colors={['#0b504b', '#063733']}
+        start={{ x: 0.15, y: 0.15 }}
+        end={{ x: 0.85, y: 0.85 }}
+        style={s.logoArch}
+      >
+        {/* .logo-inner */}
+        <View style={s.logoInner}>
+          {/* .ring-logo */}
+          <View style={s.ringLogo}>
+            {/* Lotus / crown at top */}
+            <Text style={s.lotus}>♕</Text>
+            {/* .ring-left */}
+            <View style={[s.ringBand, s.ringBandLeft]} />
+            {/* .ring-right */}
+            <View style={[s.ringBand, s.ringBandRight]} />
+          </View>
+        </View>
+      </LinearGradient>
+    </View>
+  );
+}
+
+/** Translates .palace (left/right) */
+function Palace({ side }: { side: 'left' | 'right' }) {
+  const isLeft = side === 'left';
+  return (
+    <View style={[s.palace, isLeft ? s.palaceLeft : s.palaceRight]}>
+      {/* .dome */}
+      <View style={s.dome} />
+      {/* .palace-body */}
+      <View style={s.palaceBody}>
+        <View style={s.palaceArch} />
+        <View style={s.palaceArch} />
+        <View style={s.palaceArch} />
+      </View>
+    </View>
+  );
+}
+
+/** Translates .couple (groom + bride) */
+function Couple() {
+  return (
+    <View style={s.couple}>
+      {/* .groom */}
+      <View style={s.groom}>
+        <View style={s.groomHead} />
+        {/* Turban */}
+        <View style={s.groomTurban} />
+        <View style={s.groomBody} />
+        <View style={[s.groomLeg, { left: 11 }]} />
+        <View style={[s.groomLeg, { right: 10 }]} />
+      </View>
+
+      {/* .bride */}
+      <View style={s.bride}>
+        <View style={s.brideHead} />
+        <View style={s.brideVeil} />
+        {/* bride-body trapezoid approximation */}
+        <View style={s.brideBodyTop} />
+        <View style={s.brideBodyBottom} />
+        <View style={s.brideLeg} />
+      </View>
+    </View>
+  );
+}
+
+/** Translates .wedding-section */
+function WeddingSection() {
+  return (
+    <View style={s.weddingSection}>
+      {/* .hill-one */}
+      <LinearGradient
+        colors={['#8ed2cc', '#5cbab2']}
+        style={[s.hill, s.hillOne]}
+      />
+      {/* .hill-two */}
+      <LinearGradient
+        colors={['#a4ddd8', '#70c6bf']}
+        style={[s.hill, s.hillTwo]}
+      />
+
+      {/* Palaces */}
+      <Palace side="left" />
+      <Palace side="right" />
+
+      {/* Couple */}
+      <Couple />
+
+      {/* .flower-left / .flower-right */}
+      <Text style={[s.flower, s.flowerLeft]}>✿</Text>
+      <Text style={[s.flower, s.flowerRight]}>✿</Text>
+    </View>
+  );
+}
+
+// ─── MAIN SCREEN ──────────────────────────────────────────
 export default function SplashScreen() {
   const router = useRouter();
   const { state, dispatch } = useApp();
   const lang = state.language || 'en';
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(20)).current;
+  const slideAnim = useRef(new Animated.Value(18)).current;
 
   useEffect(() => {
     Animated.parallel([
-      Animated.timing(fadeAnim, { toValue: 1, duration: 600, useNativeDriver: true }),
-      Animated.timing(slideAnim, { toValue: 0, duration: 600, useNativeDriver: true }),
+      Animated.timing(fadeAnim, { toValue: 1, duration: 550, useNativeDriver: true }),
+      Animated.timing(slideAnim, { toValue: 0, duration: 550, useNativeDriver: true }),
     ]).start();
   }, []);
 
-  const toggleLanguage = () =>
+  const toggleLang = () =>
     dispatch({ type: 'SET_LANGUAGE', payload: lang === 'en' ? 'hi' : 'en' });
 
   return (
-    <MintGlassBackground>
-      <SafeAreaView style={styles.safe}>
-        {/* ── Big white flowers LEFT (absolute, behind content) ── */}
-        <LeftFloral />
+    <View style={s.page}>
+      {/* ── Background: radial blobs (translates CSS background) */}
+      <View style={[s.bgCircle, s.circleOne]} />
+      <View style={[s.bgCircle, s.circleTwo]} />
+      <View style={[s.bgCircle, s.circleThree]} />
 
-        {/* ── Small florals top-right corner ── */}
-        <TopRightFloral />
+      {/* Floating leaves */}
+      <Text style={[s.floatingLeaf, s.leafOne]}>⌁</Text>
+      <Text style={[s.floatingLeaf, s.leafTwo]}>⌁</Text>
 
-        {/* ── LANGUAGE BUTTON (top-right) ── */}
-        <View style={styles.topBar}>
-          <TouchableOpacity style={styles.langPill} onPress={toggleLanguage} activeOpacity={0.85}>
-            <Ionicons name="globe-outline" size={15} color="#0F2E2B" />
-            <Text style={styles.langText}>{lang === 'en' ? 'English' : 'हिंदी'}</Text>
-            <Ionicons name="chevron-down" size={13} color="#0F2E2B" />
-          </TouchableOpacity>
-        </View>
+      {/* Sparkle stars */}
+      <Text style={[s.floatingStar, s.starOne]}>✦</Text>
+      <Text style={[s.floatingStar, s.starTwo]}>✦</Text>
+
+      <SafeAreaView style={{ flex: 1 }}>
+
+        {/* ── .language-selector ── */}
+        <TouchableOpacity style={s.langSelector} onPress={toggleLang} activeOpacity={0.85}>
+          <Ionicons name="globe-outline" size={16} color={C.darkTeal} strokeWidth={2.2} />
+          <Text style={s.langText}>{lang === 'en' ? 'English' : 'हिंदी'}</Text>
+          <Ionicons name="chevron-down" size={15} color={C.darkTeal} />
+        </TouchableOpacity>
 
         <ScrollView
-          contentContainerStyle={styles.scroll}
           showsVerticalScrollIndicator={false}
+          contentContainerStyle={s.scroll}
           bounces={false}
         >
           <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }], alignItems: 'center', width: '100%' }}>
 
-            {/* ── ARCH EMBLEM ── */}
-            <ArchEmblem />
+            {/* ══════════════════════════════════════════
+                .hero — logo + title + verified badge
+            ══════════════════════════════════════════ */}
+            <View style={s.hero}>
+              <LogoArch />
 
-            {/* ── HEADLINE ── */}
-            <Text style={styles.welcomeLabel}>W E L C O M E  T O</Text>
-            <Text style={styles.brand1}>Patrika</Text>
-            <Text style={styles.brand2}>Matrimony</Text>
+              {/* .welcome-label */}
+              <Text style={s.welcomeLabel}>W E L C O M E &nbsp; T O</Text>
 
-            {/* Heart line divider */}
-            <View style={styles.heartRow}>
-              <View style={styles.heartLine} />
-              <Ionicons name="heart" size={13} color="#0A4A3C" style={{ marginHorizontal: 8 }} />
-              <View style={styles.heartLine} />
+              {/* h1 */}
+              <Text style={s.h1}>{'Patrika\nMatrimony'}</Text>
+
+              {/* .title-divider */}
+              <View style={s.titleDivider}>
+                <View style={s.dividerLineLeft} />
+                <Ionicons name="heart" size={17} color={C.teal} />
+                <View style={s.dividerLineRight} />
+              </View>
+
+              {/* .tagline */}
+              <Text style={s.tagline}>Trusted matches from Rajasthan Patrika</Text>
+
+              {/* .verified-badge */}
+              <View style={s.verifiedBadge}>
+                <Ionicons name="shield-checkmark" size={19} color={C.teal} />
+                <Text style={s.verifiedText}>100% Verified Profiles</Text>
+              </View>
             </View>
 
-            <Text style={styles.tagline}>Trusted matches from Rajasthan Patrika</Text>
-
-            {/* Verified pill */}
-            <View style={styles.verifiedPill}>
-              <Ionicons name="shield-checkmark" size={16} color="#0A4A3C" style={{ marginRight: 7 }} />
-              <Text style={styles.verifiedText}>100% Verified Profiles</Text>
-            </View>
-
-            {/* ── FEATURE CARD ── */}
-            <View style={styles.featureCard}>
+            {/* ══════════════════════════════════════════
+                .features-card
+            ══════════════════════════════════════════ */}
+            <View style={s.featuresCard}>
               {FEATURES.map((f, idx) => (
-                <View key={f.title} style={[styles.featureCol, idx < 3 && styles.featureColBorder]}>
-                  <View style={styles.featIconBg}>
-                    <Ionicons name={f.icon} size={19} color="#FFFFFF" />
+                <View
+                  key={f.title}
+                  style={[s.feature, idx < 3 && s.featureBorder]}
+                >
+                  <View style={s.featureIcon}>
+                    <Ionicons name={f.icon} size={23} color="#fff" />
                   </View>
-                  <Text style={styles.featTitle}>{f.title}</Text>
-                  <Text style={styles.featSub}>{f.sub}</Text>
+                  <Text style={s.featureH3}>{`${f.title}\n${f.sub}`}</Text>
+                  <View style={s.featureLine} />
+                  <Text style={s.featureP}>{f.desc}</Text>
                 </View>
               ))}
             </View>
 
-            {/* ── STATS ROW ── */}
-            <View style={styles.statsCard}>
-              {STATS.map((s, idx) => (
-                <View key={s.label} style={[styles.statCol, idx < 3 && styles.statColBorder]}>
-                  <Ionicons name={s.icon} size={22} color="#0A4A3C" />
-                  <Text style={styles.statValue}>{s.value}</Text>
-                  <Text style={styles.statLabel}>{s.label}</Text>
+            {/* ══════════════════════════════════════════
+                .stats-card
+            ══════════════════════════════════════════ */}
+            <LinearGradient
+              colors={['rgba(220,246,243,0.85)', 'rgba(238,250,248,0.75)']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
+              style={s.statsCard}
+            >
+              {STATS.map((st, idx) => (
+                <View
+                  key={st.label}
+                  style={[s.stat, idx < 3 && s.statBorder]}
+                >
+                  <Ionicons name={st.icon} size={22} color={C.teal} />
+                  <Text style={s.statValue}>{st.value}</Text>
+                  <Text style={s.statLabel}>{st.label}</Text>
                 </View>
               ))}
-            </View>
+            </LinearGradient>
 
-            {/* ── PALACE SCENE BANNER ── */}
-            <View style={styles.palaceWrapper}>
-              {/* Mint tinted bg */}
-              <View style={styles.palaceBg} />
-              {/* White flowers left */}
-              <View style={styles.palaceFlowerLeft} pointerEvents="none">
-                <Svg width={85} height={130}>
-                  <Defs>
-                    <RadialGradient id="pfl" cx="50%" cy="30%" r="70%">
-                      <Stop offset="0%" stopColor="#FFFFFF" />
-                      <Stop offset="100%" stopColor="#D8F0EC" />
-                    </RadialGradient>
-                  </Defs>
-                  {[0,72,144,216,288].map((a,i)=>{
-                    const r=(a*Math.PI)/180, cx=42, cy=50;
-                    return <Ellipse key={i} cx={cx+Math.cos(r)*20} cy={cy+Math.sin(r)*20} rx={13} ry={18} fill="url(#pfl)" transform={`rotate(${a} ${cx+Math.cos(r)*20} ${cy+Math.sin(r)*20})`} opacity={0.9} />;
-                  })}
-                  <Circle cx={42} cy={50} r={10} fill="#F5FFFE" />
-                  {[0,72,144,216,288].map((a,i)=>{
-                    const r=(a*Math.PI)/180, cx=42, cy=100;
-                    return <Ellipse key={`s${i}`} cx={cx+Math.cos(r)*14} cy={cy+Math.sin(r)*14} rx={9} ry={12} fill="url(#pfl)" transform={`rotate(${a} ${cx+Math.cos(r)*14} ${cy+Math.sin(r)*14})`} opacity={0.8} />;
-                  })}
-                  <Circle cx={42} cy={100} r={7} fill="#F5FFFE" />
-                </Svg>
-              </View>
-              {/* White flowers right */}
-              <View style={styles.palaceFlowerRight} pointerEvents="none">
-                <Svg width={85} height={130}>
-                  <Defs>
-                    <RadialGradient id="pfr" cx="50%" cy="30%" r="70%">
-                      <Stop offset="0%" stopColor="#FFFFFF" />
-                      <Stop offset="100%" stopColor="#D8F0EC" />
-                    </RadialGradient>
-                  </Defs>
-                  {[0,72,144,216,288].map((a,i)=>{
-                    const r=(a*Math.PI)/180, cx=43, cy=50;
-                    return <Ellipse key={i} cx={cx+Math.cos(r)*20} cy={cy+Math.sin(r)*20} rx={13} ry={18} fill="url(#pfr)" transform={`rotate(${a} ${cx+Math.cos(r)*20} ${cy+Math.sin(r)*20})`} opacity={0.9} />;
-                  })}
-                  <Circle cx={43} cy={50} r={10} fill="#F5FFFE" />
-                  {[0,72,144,216,288].map((a,i)=>{
-                    const r=(a*Math.PI)/180, cx=43, cy=100;
-                    return <Ellipse key={`s${i}`} cx={cx+Math.cos(r)*14} cy={cy+Math.sin(r)*14} rx={9} ry={12} fill="url(#pfr)" transform={`rotate(${a} ${cx+Math.cos(r)*14} ${cy+Math.sin(r)*14})`} opacity={0.8} />;
-                  })}
-                  <Circle cx={43} cy={100} r={7} fill="#F5FFFE" />
-                </Svg>
-              </View>
-              {/* Palace + couple SVG */}
-              <PalaceScene width={SW - 36} height={190} />
-            </View>
+            {/* ══════════════════════════════════════════
+                .wedding-section
+            ══════════════════════════════════════════ */}
+            <WeddingSection />
 
           </Animated.View>
         </ScrollView>
 
-        {/* ── CTA + FOOTER ── */}
-        <Animated.View style={[styles.footer, { opacity: fadeAnim }]}>
-          {/* Big CTA */}
+        {/* ══════════════════════════════════════════
+            .bottom-section (overlaps wedding with gradient)
+        ══════════════════════════════════════════ */}
+        <Animated.View style={[s.bottomSection, { opacity: fadeAnim }]}>
+          {/* Fade-in gradient overlay from transparent → mint */}
+          <LinearGradient
+            colors={['rgba(255,255,255,0)', 'rgba(238,250,248,0.97)']}
+            style={StyleSheet.absoluteFill}
+            pointerEvents="none"
+          />
+
+          {/* .start-button */}
           <TouchableOpacity
-            style={styles.ctaBtn}
-            onPress={() => router.push('/(auth)/onboarding/step1')}
             activeOpacity={0.88}
+            onPress={() => router.push('/(auth)/onboarding/step1')}
+            style={s.startBtnWrap}
           >
-            <Text style={styles.ctaText}>Let's Start   →</Text>
+            <LinearGradient
+              colors={['#084943', '#063530']}
+              start={{ x: 0.15, y: 0.15 }}
+              end={{ x: 0.85, y: 0.85 }}
+              style={s.startButton}
+            >
+              <Text style={s.startText}>Let's Start</Text>
+              <Ionicons name="arrow-forward" size={26} color="#fff" />
+            </LinearGradient>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => router.push('/(auth)/login')} activeOpacity={0.75}>
-            <Text style={styles.loginText}>
-              Already have an account?{'  '}
-              <Text style={styles.loginLink}>Login</Text>
-            </Text>
-          </TouchableOpacity>
+          {/* .login-text */}
+          <View style={s.loginRow}>
+            <Text style={s.loginLabel}>Already have an account? </Text>
+            <TouchableOpacity onPress={() => router.push('/(auth)/login')} activeOpacity={0.7}>
+              <Text style={s.loginLink}>Login</Text>
+            </TouchableOpacity>
+          </View>
 
-          <View style={styles.footerRow}>
-            <Ionicons name="lock-closed-outline" size={11} color="#5A8A82" />
-            <Text style={styles.footerItem}>  Secure & Private</Text>
-            <Text style={styles.footerDot}>  ·  </Text>
-            <Ionicons name="people-outline" size={11} color="#5A8A82" />
-            <Text style={styles.footerItem}>  Trusted by Millions</Text>
-            <Text style={styles.footerDot}>  ·  </Text>
-            <Ionicons name="heart" size={11} color="#0A4A3C" />
-            <Text style={styles.footerItem}>  Made with ❤️ in India</Text>
+          {/* .trust-footer */}
+          <View style={s.trustFooter}>
+            <View style={s.trustItem}>
+              <Ionicons name="lock-closed-outline" size={15} color={C.teal} />
+              <Text style={s.trustText}>Secure & Private</Text>
+            </View>
+            <View style={s.trustItem}>
+              <Ionicons name="people-outline" size={15} color={C.teal} />
+              <Text style={s.trustText}>Trusted by Millions</Text>
+            </View>
+            <View style={s.trustItem}>
+              <Ionicons name="heart" size={15} color={C.teal} />
+              <Text style={s.trustText}>Made with ♥ in India</Text>
+            </View>
           </View>
         </Animated.View>
+
       </SafeAreaView>
-    </MintGlassBackground>
+    </View>
   );
 }
 
-const styles = StyleSheet.create({
-  safe: { flex: 1 },
+// ─── Styles (faithful CSS→RN translation) ─────────────────
+const s = StyleSheet.create({
 
-  /* ── Floral decorations ── */
-  floralLeft: {
-    position: 'absolute',
-    left: -10,
-    top: 0,
-    zIndex: 1,
-    opacity: 0.92,
-  },
-  floralTopRight: {
-    position: 'absolute',
-    right: -5,
-    top: 100,
-    zIndex: 1,
-    opacity: 0.75,
+  /* .patrika-page */
+  page: {
+    flex: 1,
+    backgroundColor: '#dff4f2',
+    position: 'relative',
+    overflow: 'hidden',
   },
 
-  /* ── Top bar ── */
-  topBar: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    paddingHorizontal: 16,
-    paddingTop: 8,
+  /* background circles (radial-gradient blobs) */
+  bgCircle: {
+    position: 'absolute',
+    borderRadius: 999,
+  },
+  /* circle-one: left:-105px, top:-105px, 350px, rgba(156,225,219,0.42) */
+  circleOne: {
+    width: 350, height: 350,
+    left: -105, top: -105,
+    backgroundColor: 'rgba(156,225,219,0.42)',
+  },
+  /* circle-two: right:-140px, top:310px, 270px */
+  circleTwo: {
+    width: 270, height: 270,
+    right: -140, top: 310,
+    backgroundColor: 'rgba(220,237,235,0.65)',
+  },
+  /* circle-three: left:-130px, bottom:260px, 210px */
+  circleThree: {
+    width: 210, height: 210,
+    left: -130, bottom: 260,
+    backgroundColor: 'rgba(191,232,228,0.35)',
+  },
+
+  /* .floating-leaf */
+  floatingLeaf: {
+    position: 'absolute',
+    color: 'rgba(21,157,149,0.30)',
+    fontSize: 60,
+  },
+  leafOne: { left: 18, top: 315 },
+  leafTwo: { right: -4, top: 190 },
+
+  /* .floating-star */
+  floatingStar: {
+    position: 'absolute',
+    color: 'rgba(21,157,149,0.45)',
+    fontSize: 24,
+  },
+  starOne: { right: 30, top: 350 },
+  starTwo: { left: 35, top: 515 },
+
+  /* .language-selector */
+  langSelector: {
+    position: 'absolute',
     zIndex: 20,
-  },
-  langPill: {
+    top: 14,
+    right: 12,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    backgroundColor: 'rgba(255,255,255,0.90)',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.95)',
-    borderRadius: 20,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    shadowColor: '#0F2E2B',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 6,
+    paddingHorizontal: 13,
+    paddingVertical: 9,
+    backgroundColor: 'rgba(255,255,255,0.88)',
+    borderRadius: 22,
+    shadowColor: '#144e4b',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.06,
+    shadowRadius: 20,
     elevation: 3,
   },
-  langText: { fontSize: 13, fontWeight: '700', color: '#0F2E2B' },
-
-  /* ── Scroll ── */
-  scroll: {
-    paddingHorizontal: 18,
-    paddingTop: 0,
-    paddingBottom: 6,
-    alignItems: 'center',
-    zIndex: 5,
+  langText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: C.darkTeal,
+    marginHorizontal: 2,
   },
 
-  /* ── Arch emblem ── */
-  archEmblemWrapper: {
+  /* scroll */
+  scroll: {
+    paddingTop: 0,
+    alignItems: 'center',
+  },
+
+  /* ── .hero ── */
+  hero: {
+    position: 'relative',
+    zIndex: 5,
+    width: '100%',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 58,
+    paddingBottom: 20,
+  },
+
+  /* .logo-decoration */
+  logoDecoration: {
+    width: 250,
+    height: 270,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 4,
-    marginBottom: 8,
     position: 'relative',
-    width: 220,
-    height: 250,
   },
-  ringOuter1: {
+  /* .ring */
+  ring: {
     position: 'absolute',
-    width: 210,
-    height: 210,
-    borderRadius: 105,
     borderWidth: 1,
-    borderColor: 'rgba(10,74,60,0.12)',
-    backgroundColor: 'rgba(10,74,60,0.03)',
-    top: 20,
+    borderColor: 'rgba(21,157,149,0.18)',
+    backgroundColor: 'transparent',
   },
-  ringOuter2: {
+  /* .logo-arch: 150×190, border-radius 75 75 28 28 */
+  logoArch: {
+    width: 150,
+    height: 190,
+    borderTopLeftRadius: 75,
+    borderTopRightRadius: 75,
+    borderBottomLeftRadius: 28,
+    borderBottomRightRadius: 28,
+    borderWidth: 1.5,
+    borderColor: C.gold,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#043834',
+    shadowOffset: { width: 0, height: 18 },
+    shadowOpacity: 0.20,
+    shadowRadius: 35,
+    elevation: 8,
+    zIndex: 5,
+  },
+  /* .logo-inner: 106px circle, white */
+  logoInner: {
+    width: 106,
+    height: 106,
+    borderRadius: 53,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.12,
+    shadowRadius: 18,
+    elevation: 5,
+  },
+  /* .ring-logo: 68px circle with gold border */
+  ringLogo: {
+    width: 68,
+    height: 68,
+    borderRadius: 34,
+    borderWidth: 2,
+    borderColor: C.gold,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  /* .lotus */
+  lotus: {
     position: 'absolute',
-    width: 168,
-    height: 168,
-    borderRadius: 84,
-    borderWidth: 1,
-    borderColor: 'rgba(10,74,60,0.16)',
-    backgroundColor: 'rgba(10,74,60,0.04)',
-    top: 41,
+    top: 3,
+    left: '50%',
+    marginLeft: -9,
+    color: C.gold,
+    fontSize: 18,
+    lineHeight: 22,
+    zIndex: 2,
   },
-  sparkle: {
+  /* .ring-left / .ring-right bands */
+  ringBand: {
     position: 'absolute',
-    width: 5,
-    height: 5,
-    borderRadius: 3,
-    backgroundColor: 'rgba(212,175,55,0.5)',
+    width: 30,
+    height: 38,
+    top: 17,
+    borderWidth: 2,
+    borderColor: C.gold,
+    borderRadius: 15,
+    backgroundColor: 'transparent',
   },
+  ringBandLeft: { left: 8 },
+  ringBandRight: { right: 8 },
 
-  /* ── Headline ── */
+  /* .welcome-label */
   welcomeLabel: {
-    fontSize: 12,
+    marginTop: -8,
+    color: C.teal,
+    fontSize: 10,
     fontWeight: '800',
-    color: '#0A8A7A',
-    letterSpacing: 4.5,
+    letterSpacing: 7,
     textAlign: 'center',
-    marginBottom: 2,
   },
-  brand1: {
-    fontSize: 46,
-    fontWeight: '900',
-    color: '#0A2218',
-    textAlign: 'center',
-    lineHeight: 52,
+  /* h1 */
+  h1: {
+    marginTop: 7,
+    color: C.darkTeal,
     fontFamily: 'serif',
-  },
-  brand2: {
-    fontSize: 46,
-    fontWeight: '900',
-    color: '#0A2218',
+    fontSize: 50,
+    lineHeight: 50,
+    fontWeight: '700',
     textAlign: 'center',
-    lineHeight: 52,
-    fontFamily: 'serif',
-    marginBottom: 14,
+    letterSpacing: -1.8,
   },
-  heartRow: {
+  /* .title-divider */
+  titleDivider: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '65%',
-    marginBottom: 10,
+    justifyContent: 'center',
+    width: 210,
+    marginTop: 18,
+    gap: 9,
   },
-  heartLine: {
+  dividerLineLeft: {
     flex: 1,
     height: 1,
-    backgroundColor: 'rgba(10,74,60,0.2)',
+    backgroundColor: 'rgba(21,157,149,0.45)',
   },
+  dividerLineRight: {
+    flex: 1,
+    height: 1,
+    backgroundColor: 'rgba(21,157,149,0.45)',
+  },
+  /* .tagline */
   tagline: {
+    marginTop: 10,
+    marginBottom: 14,
+    color: C.muted,
     fontSize: 14,
     fontWeight: '500',
-    color: '#4A7A72',
     textAlign: 'center',
-    marginBottom: 14,
   },
-
-  /* Verified pill */
-  verifiedPill: {
+  /* .verified-badge */
+  verifiedBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(10,74,60,0.08)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(10,74,60,0.18)',
-    borderRadius: 24,
+    justifyContent: 'center',
+    gap: 8,
     paddingHorizontal: 20,
     paddingVertical: 9,
-    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(21,157,149,0.20)',
+    borderRadius: 30,
+    backgroundColor: 'rgba(210,242,239,0.72)',
   },
   verifiedText: {
-    fontSize: 14,
-    fontWeight: '800',
-    color: '#0A2218',
+    color: C.darkTeal,
+    fontSize: 13,
+    fontWeight: '700',
   },
 
-  /* ── Feature card ── */
-  featureCard: {
-    width: '100%',
+  /* ── .features-card ── */
+  featuresCard: {
+    width: SW - 30,
+    marginTop: 10,
+    marginBottom: 0,
+    paddingVertical: 25,
+    paddingHorizontal: 12,
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    paddingVertical: 20,
-    paddingHorizontal: 8,
-    shadowColor: '#0A4A3C',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.10,
-    shadowRadius: 16,
+    backgroundColor: 'rgba(255,255,255,0.93)',
+    borderRadius: 25,
+    shadowColor: '#124d49',
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.08,
+    shadowRadius: 35,
     elevation: 5,
-    marginBottom: 14,
   },
-  featureCol: {
+  feature: {
     flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 2,
+    paddingHorizontal: 8,
   },
-  featureColBorder: {
+  featureBorder: {
     borderRightWidth: 1,
-    borderRightColor: 'rgba(0,0,0,0.06)',
+    borderRightColor: 'rgba(15,92,87,0.10)',
   },
-  featIconBg: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
-    backgroundColor: '#0A4A3C',
+  featureIcon: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: C.darkTeal,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 9,
-    shadowColor: '#0A4A3C',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
+    shadowColor: '#053b37',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.14,
+    shadowRadius: 15,
     elevation: 4,
   },
-  featTitle: {
-    fontSize: 11,
+  featureH3: {
+    marginTop: 12,
+    color: C.darkTeal,
+    fontSize: 11.5,
+    lineHeight: 16,
     fontWeight: '800',
-    color: '#0A2218',
     textAlign: 'center',
-    marginBottom: 4,
-    lineHeight: 15,
   },
-  featSub: {
-    fontSize: 9.5,
-    color: '#6A9A92',
-    textAlign: 'center',
+  featureLine: {
+    width: 28,
+    height: 3,
+    marginVertical: 9,
+    borderRadius: 10,
+    backgroundColor: C.teal,
+  },
+  featureP: {
+    color: '#657d7b',
+    fontSize: 9,
     lineHeight: 13,
+    textAlign: 'center',
   },
 
-  /* ── Stats card ── */
+  /* ── .stats-card ── */
   statsCard: {
-    width: '100%',
+    width: SW - 30,
+    marginTop: 18,
+    paddingVertical: 17,
+    paddingHorizontal: 8,
     flexDirection: 'row',
-    backgroundColor: 'rgba(10,74,60,0.07)',
     borderWidth: 1,
-    borderColor: 'rgba(10,74,60,0.12)',
-    borderRadius: 18,
-    paddingVertical: 16,
-    paddingHorizontal: 4,
-    marginBottom: 14,
+    borderColor: 'rgba(21,157,149,0.16)',
+    borderRadius: 22,
   },
-  statCol: {
+  stat: {
     flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 2,
   },
-  statColBorder: {
+  statBorder: {
     borderRightWidth: 1,
-    borderRightColor: 'rgba(10,74,60,0.15)',
+    borderRightColor: 'rgba(21,157,149,0.14)',
   },
   statValue: {
-    fontSize: 20,
-    fontWeight: '900',
-    color: '#0A2218',
     marginTop: 5,
-    marginBottom: 3,
+    marginBottom: 5,
+    color: C.darkTeal,
+    fontFamily: 'serif',
+    fontSize: 27,
+    lineHeight: 30,
+    fontWeight: '700',
   },
   statLabel: {
+    color: C.darkTeal,
     fontSize: 9,
-    color: '#5A8A82',
-    textAlign: 'center',
-    fontWeight: '600',
-    lineHeight: 12,
-  },
-
-  /* ── Palace banner ── */
-  palaceWrapper: {
-    width: '100%',
-    height: 190,
-    borderRadius: 22,
-    overflow: 'hidden',
-    position: 'relative',
-    marginBottom: 2,
-  },
-  palaceBg: {
-    ...StyleSheet.absoluteFill,
-    backgroundColor: 'rgba(10,74,60,0.07)',
-    borderWidth: 1,
-    borderColor: 'rgba(10,74,60,0.12)',
-    borderRadius: 22,
-  },
-  palaceFlowerLeft: {
-    position: 'absolute',
-    left: -4,
-    bottom: 0,
-    zIndex: 5,
-  },
-  palaceFlowerRight: {
-    position: 'absolute',
-    right: -4,
-    bottom: 0,
-    zIndex: 5,
-  },
-
-  /* ── Footer ── */
-  footer: {
-    paddingHorizontal: 18,
-    paddingBottom: 14,
-    paddingTop: 6,
-    alignItems: 'center',
-    zIndex: 10,
-  },
-  ctaBtn: {
-    width: '100%',
-    backgroundColor: '#0A2E25',
-    borderRadius: 32,
-    paddingVertical: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#0A2218',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.32,
-    shadowRadius: 20,
-    elevation: 10,
-    marginBottom: 14,
-  },
-  ctaText: {
-    color: '#FFFFFF',
-    fontSize: 19,
-    fontWeight: '900',
-    letterSpacing: 0.4,
-  },
-  loginText: {
-    fontSize: 13.5,
-    color: '#5A8A82',
     fontWeight: '500',
-    marginBottom: 10,
+    textAlign: 'center',
   },
-  loginLink: {
-    color: '#0A8A7A',
-    fontWeight: '800',
+
+  /* ── .wedding-section ── */
+  weddingSection: {
+    position: 'relative',
+    width: SW,
+    height: 260,
+    marginTop: 5,
+    overflow: 'hidden',
   },
-  footerRow: {
+
+  /* .hill */
+  hill: {
+    position: 'absolute',
+    bottom: 0,
+    width: SW * 0.7,
+    height: 90,
+    borderTopLeftRadius: 999,
+    borderTopRightRadius: 999,
+  },
+  hillOne: {
+    left: -SW * 0.20,
+    transform: [{ rotate: '-5deg' }],
+  },
+  hillTwo: {
+    right: -SW * 0.20,
+    transform: [{ rotate: '5deg' }],
+  },
+
+  /* .palace */
+  palace: {
+    position: 'absolute',
+    bottom: 65,
+    width: 120,
+    height: 120,
+    opacity: 0.34,
+  },
+  palaceLeft: { left: -10 },
+  palaceRight: { right: -10 },
+
+  /* .dome */
+  dome: {
+    position: 'absolute',
+    left: 35,
+    top: 5,
+    width: 50,
+    height: 45,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    backgroundColor: '#8acac4',
+  },
+
+  /* .palace-body */
+  palaceBody: {
+    position: 'absolute',
+    bottom: 0,
+    left: 10,
+    width: 100,
+    height: 90,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    backgroundColor: '#8acac4',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-evenly',
+  },
+
+  /* .palace-body span */
+  palaceArch: {
+    width: 18,
+    height: 55,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    backgroundColor: '#e8f8f6',
+  },
+
+  /* .couple */
+  couple: {
+    position: 'absolute',
+    zIndex: 5,
+    left: '50%',
+    marginLeft: -65,   // translateX(-50%) of width:130
+    bottom: 42,
+    width: 130,
+    height: 160,
+  },
+
+  /* .groom */
+  groom: {
+    position: 'absolute',
+    left: 10,
+    bottom: 0,
+    width: 55,
+    height: 145,
+  },
+  groomHead: {
+    position: 'absolute',
+    left: 17,
+    top: 14,
+    width: 25,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: C.darkTeal,
+  },
+  groomTurban: {
+    position: 'absolute',
+    left: 13,
+    top: 5,
+    width: 33,
+    height: 16,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    backgroundColor: C.darkTeal,
+  },
+  groomBody: {
+    position: 'absolute',
+    left: 10,
+    top: 38,
+    width: 38,
+    height: 80,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    backgroundColor: C.darkTeal,
+  },
+  groomLeg: {
+    position: 'absolute',
+    bottom: 0,
+    width: 14,
+    height: 48,
+    backgroundColor: C.darkTeal,
+  },
+
+  /* .bride */
+  bride: {
+    position: 'absolute',
+    right: 5,
+    bottom: 0,
+    width: 70,
+    height: 150,
+  },
+  brideHead: {
+    position: 'absolute',
+    top: 14,
+    left: 25,
+    width: 25,
+    height: 27,
+    borderRadius: 14,
+    backgroundColor: '#07504b',
+  },
+  brideVeil: {
+    position: 'absolute',
+    top: 12,
+    left: 6,
+    width: 60,
+    height: 90,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+    backgroundColor: 'rgba(4,72,67,0.50)',
+  },
+  /* Bride body — approximates clip-path trapezoid */
+  brideBodyTop: {
+    position: 'absolute',
+    left: 20,
+    top: 38,
+    width: 36,
+    height: 45,
+    backgroundColor: C.darkTeal,
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+  },
+  brideBodyBottom: {
+    position: 'absolute',
+    left: 10,
+    top: 80,
+    width: 56,
+    height: 58,
+    backgroundColor: C.darkTeal,
+    borderTopLeftRadius: 2,
+    borderTopRightRadius: 2,
+  },
+  brideLeg: {
+    position: 'absolute',
+    left: 32,
+    bottom: 0,
+    width: 10,
+    height: 30,
+    backgroundColor: C.darkTeal,
+  },
+
+  /* .flower */
+  flower: {
+    position: 'absolute',
+    zIndex: 7,
+    color: '#fff',
+    fontSize: 50,
+    textShadowColor: 'rgba(21,157,149,0.15)',
+    textShadowOffset: { width: 0, height: 3 },
+    textShadowRadius: 10,
+  },
+  flowerLeft: { left: 5, bottom: 12 },
+  flowerRight: { right: 5, bottom: 12 },
+
+  /* ── .bottom-section ── */
+  bottomSection: {
+    position: 'relative',
+    marginTop: -20,
+    paddingHorizontal: 16,
+    paddingBottom: 22,
+    zIndex: 20,
+  },
+
+  /* .start-button */
+  startBtnWrap: {
+    width: '100%',
+    borderRadius: 40,
+    borderWidth: 2,
+    borderColor: C.goldLight,
+    shadowColor: '#043935',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.20,
+    shadowRadius: 25,
+    elevation: 8,
+    overflow: 'hidden',
+  },
+  startButton: {
+    height: 64,
     flexDirection: 'row',
     alignItems: 'center',
-    flexWrap: 'wrap',
     justifyContent: 'center',
+    gap: 16,
   },
-  footerItem: {
-    fontSize: 10,
-    color: '#5A8A82',
+  startText: {
+    color: '#fff',
+    fontSize: 21,
+    fontWeight: '700',
   },
-  footerDot: {
-    fontSize: 10,
-    color: '#5A8A82',
+
+  /* .login-text */
+  loginRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 15,
+    marginBottom: 18,
+  },
+  loginLabel: {
+    color: '#647c7a',
+    fontSize: 14,
+  },
+  loginLink: {
+    color: C.teal,
+    fontSize: 14,
+    fontWeight: '800',
+  },
+
+  /* .trust-footer */
+  trustFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 13,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(21,157,149,0.15)',
+  },
+  trustItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 5,
+  },
+  trustText: {
+    color: '#587471',
+    fontSize: 9,
+    fontWeight: '500',
   },
 });
