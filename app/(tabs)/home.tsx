@@ -55,7 +55,7 @@ export default function HomeScreen() {
           <View style={styles.headerRightActions}>
             <TouchableOpacity 
               style={styles.headerIconGlassBtn} 
-              onPress={() => router.push('/plans')}
+              onPress={() => router.push('/subscription')}
               activeOpacity={0.8}
             >
               <MaterialCommunityIcons name="crown" size={18} color="#D4AF37" />

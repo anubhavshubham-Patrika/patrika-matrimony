@@ -196,7 +196,7 @@ export default function ProfileTabScreen() {
 
             <TouchableOpacity 
               style={styles.settingRow} 
-              onPress={() => router.push('/plans')}
+              onPress={() => router.push('/subscription')}
               activeOpacity={0.85}
             >
               <View style={[styles.settingIconBadge, { backgroundColor: 'rgba(212, 175, 55, 0.15)' }]}>
