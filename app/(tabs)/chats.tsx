@@ -1,327 +1,239 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, SafeAreaView, StatusBar } from 'react-native';
+import { 
+  View, Text, StyleSheet, FlatList, TouchableOpacity, SafeAreaView, Image 
+} from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useApp } from '../../src/context/AppContext';
+import { Ionicons } from '@expo/vector-icons';
+import { useApp, Profile } from '../../src/context/AppContext';
 import chatsData from '../../src/data/chats.json';
-import profilesData from '../../src/data/profiles.json';
-
-const MY_PROFILE_ID = 'P001';
-const PRIMARY = '#E31E25';
+import MintGlassBackground from '../../src/components/MintGlassBackground';
 
 export default function ChatsScreen() {
   const router = useRouter();
-  const { state } = useApp();
-  const [activeMainTab, setActiveMainTab] = useState<'Chats' | 'Calls'>('Chats');
-  const [activeFilter, setActiveFilter] = useState<'All' | 'Accepted' | 'New'>('All');
+  const { profiles } = useApp();
+  const currentUserId = 'P001';
 
-  const { currentPlan } = state;
-  const isPremium = currentPlan !== 'Free';
+  const [activeTab, setActiveTab] = useState<'Chats' | 'Calls'>('Chats');
 
-  // Build chat list from chats.json
-  const chatList = (chatsData as any[])
-    .filter((conv: any) => conv.participants?.includes(MY_PROFILE_ID))
-    .map((conv: any) => {
-      const otherParticipantId = conv.participants?.find((p: string) => p !== MY_PROFILE_ID);
-      const otherProfile = (profilesData as any[]).find((p: any) => p.profileId === otherParticipantId);
-      const messages = conv.messages || [];
-      const lastMsg = messages[messages.length - 1];
-      return {
-        conversationId: conv.conversationId,
-        otherProfile,
-        lastMessage: lastMsg,
-        lastMessageText: conv.lastMessage || (lastMsg?.text ?? ''),
-        lastMessageTime: conv.lastMessageTime || lastMsg?.timestamp,
-        unreadCount: conv.unreadCount || 0,
-      };
-    })
-    .filter((c: any) => c.otherProfile)
-    .slice(0, 30);
-
-  const dummyCalls = [
-    { id: '1', type: 'Incoming', time: 'Today, 2:30 PM', duration: '5:02', profile: (profilesData as any[])[1] },
-    { id: '2', type: 'Outgoing', time: 'Yesterday, 10:15 AM', duration: 'Missed', profile: (profilesData as any[])[2] },
-    { id: '3', type: 'Incoming', time: 'Yesterday, 6:45 PM', duration: '12:33', profile: (profilesData as any[])[4] },
-    { id: '4', type: 'Missed', time: '2 days ago, 9:00 AM', duration: 'Missed', profile: (profilesData as any[])[7] },
-  ];
-
-  const renderChatItem = ({ item }: { item: any }) => {
-    const isUnread = item.unreadCount > 0;
-    const timeStr = item.lastMessageTime
-      ? new Date(item.lastMessageTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })
-      : '';
-
-    return (
-      <TouchableOpacity
-        style={styles.chatItem}
-        onPress={() => router.push(`/chat/${item.conversationId}`)}
-      >
-        <Image
-          source={{ uri: item.otherProfile?.profilePhotoURL || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400' }}
-          style={styles.avatar}
-        />
-        {isUnread && <View style={styles.onlineDot} />}
-        <View style={styles.chatDetails}>
-          <View style={styles.chatHeader}>
-            <Text style={[styles.chatName, isUnread && styles.chatNameUnread]} numberOfLines={1}>
-              {item.otherProfile?.name || 'Unknown'}
-            </Text>
-            <Text style={[styles.chatTime, isUnread && styles.chatTimeUnread]}>{timeStr}</Text>
-          </View>
-          <View style={styles.chatMessageRow}>
-            <Text style={[styles.chatMessage, isUnread && styles.chatMessageUnread]} numberOfLines={1}>
-              {item.lastMessageText || 'Tap to view conversation'}
-            </Text>
-            {isUnread && (
-              <View style={styles.unreadBadge}>
-                <Text style={styles.unreadBadgeText}>{item.unreadCount}</Text>
-              </View>
-            )}
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
-  const renderCallItem = ({ item }: { item: any }) => (
-    <View style={styles.chatItem}>
-      <Image
-        source={{ uri: item.profile?.profilePhotoURL || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400' }}
-        style={styles.avatar}
-      />
-      <View style={styles.chatDetails}>
-        <View style={styles.chatHeader}>
-          <Text style={styles.chatName}>{item.profile?.name || 'Unknown'}</Text>
-          <Text style={styles.chatTime}>{item.time}</Text>
-        </View>
-        <View style={styles.chatMessageRow}>
-          <MaterialCommunityIcons
-            name={item.type === 'Incoming' ? 'phone-incoming' : item.type === 'Missed' ? 'phone-missed' : 'phone-outgoing'}
-            size={14}
-            color={item.type === 'Incoming' ? '#27AE60' : item.type === 'Missed' ? '#E31E25' : '#C5A059'}
-          />
-          <Text style={styles.callTypeText}>
-            {item.type} call • {item.duration}
-          </Text>
-        </View>
-      </View>
-      <TouchableOpacity style={styles.callBackButton}>
-        <Ionicons name="call" size={20} color={PRIMARY} />
-      </TouchableOpacity>
-    </View>
-  );
+  // Filter conversations involving P001
+  const userConversations = chatsData.filter((c: any) => c.participants.includes(currentUserId));
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#F9F6F0" />
+    <MintGlassBackground>
+      <SafeAreaView style={styles.safeArea}>
+        {/* Header Bar */}
+        <View style={styles.topHeader}>
+          <Text style={styles.headerTitle}>Messages & Calls</Text>
+        </View>
 
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Chats & Calls</Text>
-        <TouchableOpacity style={styles.searchIconBtn}>
-          <Ionicons name="search-outline" size={22} color="#2C1A1D" />
-        </TouchableOpacity>
-      </View>
-
-      {/* Main Tabs */}
-      <View style={styles.mainTabs}>
-        {(['Chats', 'Calls'] as const).map((tab) => (
+        {/* Glass Segment Switcher (Chats | Calls) */}
+        <View style={styles.segmentGlassWrapper}>
           <TouchableOpacity
-            key={tab}
-            style={[styles.mainTab, activeMainTab === tab && styles.activeMainTab]}
-            onPress={() => setActiveMainTab(tab)}
+            style={[styles.segmentBtn, activeTab === 'Chats' && styles.segmentBtnActive]}
+            onPress={() => setActiveTab('Chats')}
+            activeOpacity={0.88}
           >
-            <Text style={[styles.mainTabText, activeMainTab === tab && styles.activeMainTabText]}>{tab}</Text>
+            <Text style={[styles.segmentText, activeTab === 'Chats' && styles.segmentTextActive]}>Chats</Text>
           </TouchableOpacity>
-        ))}
-      </View>
 
-      {/* Premium gate banner */}
-      {!isPremium && activeMainTab === 'Chats' && (
-        <TouchableOpacity style={styles.premiumPrompt} onPress={() => router.push('/subscription')}>
-          <MaterialCommunityIcons name="crown" size={16} color="#C5A059" />
-          <Text style={styles.premiumPromptText}>Upgrade to Gold to chat with matches →</Text>
-        </TouchableOpacity>
-      )}
+          <TouchableOpacity
+            style={[styles.segmentBtn, activeTab === 'Calls' && styles.segmentBtnActive]}
+            onPress={() => setActiveTab('Calls')}
+            activeOpacity={0.88}
+          >
+            <Text style={[styles.segmentText, activeTab === 'Calls' && styles.segmentTextActive]}>Calls History</Text>
+          </TouchableOpacity>
+        </View>
 
-      {activeMainTab === 'Chats' ? (
-        <>
-          {/* Sub-filter tabs */}
-          <View style={styles.filterTabs}>
-            {([
-              { key: 'All', label: `All (${chatList.length})` },
-              { key: 'Accepted', label: 'Accepted' },
-              { key: 'New', label: 'New Interests' },
-            ] as const).map(({ key, label }) => (
-              <TouchableOpacity
-                key={key}
-                style={[styles.filterTab, activeFilter === key && styles.activeFilterTab]}
-                onPress={() => setActiveFilter(key)}
-              >
-                <Text style={[styles.filterTabText, activeFilter === key && styles.activeFilterTabText]}>
-                  {label}
-                </Text>
-              </TouchableOpacity>
-            ))}
+        {activeTab === 'Chats' ? (
+          <FlatList
+            data={userConversations}
+            keyExtractor={(item) => item.conversationId}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => {
+              const otherId = item.participants.find((p: string) => p !== currentUserId);
+              const otherProfile = (profiles || []).find((p: Profile) => p.profileId === otherId);
+              if (!otherProfile) return null;
+
+              return (
+                <TouchableOpacity
+                  style={styles.chatRowGlassCard}
+                  onPress={() => router.push(`/chat/${item.conversationId}`)}
+                  activeOpacity={0.88}
+                >
+                  <View style={styles.avatarWrapper}>
+                    <Image
+                      source={{ uri: otherProfile.profilePhotoURL || 'https://randomuser.me/api/portraits/women/44.jpg' }}
+                      style={styles.avatarPhoto}
+                    />
+                    {otherProfile.isVerified && (
+                      <View style={styles.verifiedDot}>
+                        <Ionicons name="checkmark-circle" size={12} color="#0D9488" />
+                      </View>
+                    )}
+                  </View>
+
+                  <View style={styles.chatInfoCol}>
+                    <View style={styles.chatTopRow}>
+                      <Text style={styles.partnerNameText} numberOfLines={1}>{otherProfile.name}</Text>
+                      <Text style={styles.timeText}>10:45 AM</Text>
+                    </View>
+
+                    <Text style={styles.lastMsgText} numberOfLines={1}>
+                      {item.lastMessage || 'Namaste! I liked your matrimony profile.'}
+                    </Text>
+                  </View>
+
+                  {item.unreadCount ? (
+                    <View style={styles.unreadBadge}>
+                      <Text style={styles.unreadCountText}>{item.unreadCount}</Text>
+                    </View>
+                  ) : null}
+                </TouchableOpacity>
+              );
+            }}
+          />
+        ) : (
+          <View style={styles.emptyCallsContainer}>
+            <Ionicons name="call-outline" size={48} color="#0D9488" style={{ marginBottom: 12 }} />
+            <Text style={styles.emptyTitle}>No Recent Calls</Text>
+            <Text style={styles.emptySub}>Voice and Video call logs will appear here</Text>
           </View>
-
-          {chatList.length > 0 ? (
-            <FlatList
-              data={chatList}
-              keyExtractor={(item) => item.conversationId}
-              renderItem={renderChatItem}
-              contentContainerStyle={styles.listContent}
-            />
-          ) : (
-            <View style={styles.emptyState}>
-              <Ionicons name="chatbubbles-outline" size={64} color="#8C7A7C" />
-              <Text style={styles.emptyStateText}>No conversations yet.</Text>
-              <Text style={styles.emptyStateSubtext}>Send an interest to start chatting!</Text>
-            </View>
-          )}
-        </>
-      ) : (
-        <FlatList
-          data={dummyCalls}
-          keyExtractor={(item) => item.id}
-          renderItem={renderCallItem}
-          contentContainerStyle={styles.listContent}
-          ListEmptyComponent={
-            <View style={styles.emptyState}>
-              <Ionicons name="call-outline" size={64} color="#8C7A7C" />
-              <Text style={styles.emptyStateText}>No call history</Text>
-            </View>
-          }
-        />
-      )}
-    </SafeAreaView>
+        )}
+      </SafeAreaView>
+    </MintGlassBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F9F6F0' },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 18,
-    paddingVertical: 14,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EFE6DD',
-  },
-  headerTitle: { fontSize: 22, fontWeight: '800', color: '#2C1A1D', fontFamily: 'serif' },
-  searchIconBtn: { padding: 4 },
-  mainTabs: {
-    flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EFE6DD',
-  },
-  mainTab: {
+  safeArea: {
     flex: 1,
-    paddingVertical: 13,
-    alignItems: 'center',
-    borderBottomWidth: 2,
-    borderBottomColor: 'transparent',
   },
-  activeMainTab: { borderBottomColor: PRIMARY },
-  mainTabText: { fontSize: 15, fontWeight: '600', color: '#8C7A7C' },
-  activeMainTabText: { color: PRIMARY, fontWeight: '800' },
-  premiumPrompt: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFF9E6',
-    padding: 10,
-    gap: 6,
-    borderBottomWidth: 1,
-    borderBottomColor: '#EFE6DD',
-  },
-  premiumPromptText: { color: '#C5A059', fontWeight: '700', fontSize: 13 },
-  filterTabs: {
-    flexDirection: 'row',
+  topHeader: {
     paddingHorizontal: 16,
-    paddingVertical: 10,
-    gap: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#EFE6DD',
+    paddingTop: 10,
+    paddingBottom: 8,
   },
-  filterTab: {
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    borderRadius: 20,
-    backgroundColor: '#FAF5F7',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: '#0F2E2B',
+    fontFamily: 'serif',
   },
-  activeFilterTab: { backgroundColor: PRIMARY, borderColor: PRIMARY },
-  filterTabText: { fontSize: 12, color: '#5A4A4D', fontWeight: '600' },
-  activeFilterTabText: { color: '#FFFFFF', fontWeight: '800' },
-  listContent: { paddingBottom: 20 },
-  chatItem: {
+  segmentGlassWrapper: {
     flexDirection: 'row',
-    padding: 14,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EFE6DD',
-    alignItems: 'center',
-    position: 'relative',
+    backgroundColor: 'rgba(255, 255, 255, 0.75)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 20,
+    marginHorizontal: 16,
+    padding: 4,
+    marginBottom: 12,
   },
-  avatar: {
+  segmentBtn: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderRadius: 16,
+  },
+  segmentBtnActive: {
+    backgroundColor: '#0F2E2B',
+  },
+  segmentText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#0F2E2B',
+  },
+  segmentTextActive: {
+    color: '#FFFFFF',
+  },
+
+  listContent: {
+    paddingHorizontal: 16,
+    paddingBottom: 90,
+  },
+  chatRowGlassCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.82)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 22,
+    padding: 12,
+    marginBottom: 10,
+    shadowColor: '#0F2E2B',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 10,
+    elevation: 2,
+  },
+  avatarWrapper: {
+    position: 'relative',
+    marginRight: 12,
+  },
+  avatarPhoto: {
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: '#F5EFE6',
   },
-  onlineDot: {
+  verifiedDot: {
     position: 'absolute',
-    left: 52,
-    top: 14,
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    backgroundColor: '#27AE60',
-    borderWidth: 2,
-    borderColor: '#FFFFFF',
+    bottom: 0,
+    right: 0,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
   },
-  chatDetails: { flex: 1, marginLeft: 12 },
-  chatHeader: {
+  chatInfoCol: {
+    flex: 1,
+  },
+  chatTopRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 4,
   },
-  chatName: { fontSize: 15, fontWeight: '700', color: '#2C1A1D', flex: 1, fontFamily: 'serif' },
-  chatNameUnread: { fontWeight: '800' },
-  chatTime: { fontSize: 12, color: '#8C7A7C' },
-  chatTimeUnread: { color: PRIMARY },
-  chatMessageRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  partnerNameText: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#0F2E2B',
   },
-  chatMessage: { flex: 1, fontSize: 13, color: '#5A4A4D', marginRight: 8 },
-  chatMessageUnread: { color: '#2C1A1D', fontWeight: '600' },
+  timeText: {
+    fontSize: 11,
+    color: '#8C9E9B',
+  },
+  lastMsgText: {
+    fontSize: 13,
+    color: '#4A6B66',
+  },
   unreadBadge: {
-    backgroundColor: PRIMARY,
+    backgroundColor: '#E31E25',
     borderRadius: 10,
-    minWidth: 20,
-    height: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    marginLeft: 8,
   },
-  unreadBadgeText: { color: '#FFFFFF', fontSize: 11, fontWeight: '800' },
-  callTypeText: { fontSize: 13, color: '#5A4A4D', marginLeft: 6 },
-  callBackButton: { padding: 10 },
-  emptyState: {
+  unreadCountText: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '800',
+  },
+
+  emptyCallsContainer: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    padding: 40,
-    marginTop: 60,
+    justifyContent: 'center',
+    padding: 20,
   },
-  emptyStateText: { marginTop: 16, fontSize: 17, fontWeight: '800', color: '#2C1A1D', textAlign: 'center', fontFamily: 'serif' },
-  emptyStateSubtext: { marginTop: 6, fontSize: 14, color: '#8C7A7C', textAlign: 'center' },
+  emptyTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#0F2E2B',
+    fontFamily: 'serif',
+  },
+  emptySub: {
+    fontSize: 13,
+    color: '#4A6B66',
+    marginTop: 4,
+  },
 });

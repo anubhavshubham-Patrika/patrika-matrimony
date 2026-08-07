@@ -1,149 +1,87 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { View, StyleSheet, Platform, Text } from 'react-native';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { View, StyleSheet, Platform } from 'react-native';
 
-const PRIMARY_RED = '#E31E25';
-const INACTIVE_COLOR = '#8C7A7C';
-const PARCHMENT_BG = '#FFFFFF';
-const ACTIVE_BG = '#FFF0F3'; // Soft Rose Red Tint Pill
-
-export default function TabLayout() {
+export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: PRIMARY_RED,
-        tabBarInactiveTintColor: INACTIVE_COLOR,
-        tabBarStyle: styles.tabBar,
         headerShown: false,
-        tabBarLabelStyle: styles.tabBarLabel,
-        tabBarItemStyle: styles.tabBarItem,
-      }}>
+        tabBarActiveTintColor: '#0F2E2B',
+        tabBarInactiveTintColor: '#8C9E9B',
+        tabBarStyle: {
+          backgroundColor: 'rgba(255, 255, 255, 0.92)',
+          borderTopWidth: 1.5,
+          borderTopColor: 'rgba(255, 255, 255, 0.95)',
+          height: Platform.OS === 'ios' ? 88 : 68,
+          paddingBottom: Platform.OS === 'ios' ? 28 : 10,
+          paddingTop: 8,
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          elevation: 10,
+          shadowColor: '#0F2E2B',
+          shadowOffset: { width: 0, height: -4 },
+          shadowOpacity: 0.08,
+          shadowRadius: 12,
+        },
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: '700',
+        },
+      }}
+    >
       <Tabs.Screen
         name="home"
         options={{
           title: 'Home',
-          tabBarIcon: ({ focused }) => (
-            <View style={[styles.iconBox, focused && styles.activeIconBox]}>
-              <MaterialCommunityIcons 
-                name={focused ? 'home' : 'home-outline'} 
-                size={24} 
-                color={focused ? PRIMARY_RED : INACTIVE_COLOR} 
-              />
-            </View>
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'home' : 'home-outline'} size={22} color={color} />
           ),
         }}
       />
+
       <Tabs.Screen
         name="search"
         options={{
           title: 'Matches',
-          tabBarIcon: ({ focused }) => (
-            <View style={[styles.iconBox, focused && styles.activeIconBox]}>
-              <MaterialCommunityIcons 
-                name={focused ? 'cards-heart' : 'cards-heart-outline'} 
-                size={24} 
-                color={focused ? PRIMARY_RED : INACTIVE_COLOR} 
-              />
-            </View>
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'search' : 'search-outline'} size={22} color={color} />
           ),
         }}
       />
+
       <Tabs.Screen
         name="chats"
         options={{
           title: 'Chats',
-          tabBarIcon: ({ focused }) => (
-            <View style={[styles.iconBox, focused && styles.activeIconBox]}>
-              <MaterialCommunityIcons 
-                name={focused ? 'chat' : 'chat-outline'} 
-                size={24} 
-                color={focused ? PRIMARY_RED : INACTIVE_COLOR} 
-              />
-              <View style={styles.badgeDot} />
-            </View>
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons name={focused ? 'message' : 'message-outline'} size={22} color={color} />
           ),
         }}
       />
+
       <Tabs.Screen
         name="shortlist"
         options={{
           title: 'Shortlist',
-          tabBarIcon: ({ focused }) => (
-            <View style={[styles.iconBox, focused && styles.activeIconBox]}>
-              <MaterialCommunityIcons 
-                name={focused ? 'heart' : 'heart-outline'} 
-                size={24} 
-                color={focused ? PRIMARY_RED : INACTIVE_COLOR} 
-              />
-            </View>
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'star' : 'star-outline'} size={22} color={color} />
           ),
         }}
       />
+
       <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ focused }) => (
-            <View style={[styles.iconBox, focused && styles.activeIconBox]}>
-              <MaterialCommunityIcons 
-                name={focused ? 'account' : 'account-outline'} 
-                size={24} 
-                color={focused ? PRIMARY_RED : INACTIVE_COLOR} 
-              />
-            </View>
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'person' : 'person-outline'} size={22} color={color} />
           ),
         }}
       />
     </Tabs>
   );
 }
-
-const styles = StyleSheet.create({
-  tabBar: {
-    backgroundColor: PARCHMENT_BG,
-    height: Platform.OS === 'ios' ? 88 : 72,
-    paddingBottom: Platform.OS === 'ios' ? 26 : 10,
-    paddingTop: 8,
-    borderTopWidth: 1,
-    borderColor: '#EFE6DD',
-    elevation: 12,
-    shadowColor: '#2C1A1D',
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-  },
-  tabBarItem: {
-    paddingVertical: 2,
-  },
-  tabBarLabel: {
-    fontSize: 12,
-    fontWeight: '700',
-    marginTop: 4,
-    marginBottom: 2,
-  },
-  iconBox: {
-    width: 48,
-    height: 32,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-  },
-  activeIconBox: {
-    backgroundColor: ACTIVE_BG,
-    borderWidth: 1,
-    borderColor: '#F8D7DA',
-  },
-  badgeDot: {
-    position: 'absolute',
-    top: 2,
-    right: 10,
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: PRIMARY_RED,
-    borderWidth: 1.5,
-    borderColor: PARCHMENT_BG,
-  },
-});

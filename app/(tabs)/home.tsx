@@ -1,744 +1,332 @@
 import React, { useState } from 'react';
 import { 
-  View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, 
-  SafeAreaView, Platform, StatusBar, Image, Modal 
+  View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity 
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useApp } from '../../src/context/AppContext';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useApp, Profile } from '../../src/context/AppContext';
 import ProfileCard from '../../src/components/ProfileCard';
 import PatrikaRibbonLogo from '../../src/components/PatrikaRibbonLogo';
+import MintGlassBackground from '../../src/components/MintGlassBackground';
 
 export default function HomeScreen() {
   const router = useRouter();
   const { state, dispatch, profiles } = useApp();
+  const [activeTabCategory, setActiveTabCategory] = useState<'Recommended' | 'Verified' | 'Nearby' | 'Ads'>('Recommended');
 
-  // Search Bar Filter state
-  const [ageRange, setAgeRange] = useState('25 - 35');
-  const [location, setLocation] = useState('Jaipur');
-  const [community, setCommunity] = useState('Any');
-  const [profession, setProfession] = useState('Any');
+  const shortlistedIds = state.shortlistedProfiles || [];
+  const sentInterests = state.sentInterests || [];
 
-  // Filter Modals state
-  const [activeModal, setActiveModal] = useState<'age' | 'location' | 'community' | 'profession' | null>(null);
+  const recommendedProfiles = profiles.slice(0, 10);
+  const verifiedProfiles = profiles.filter((p: Profile) => p.isVerified).slice(0, 10);
+  const nearbyProfiles = profiles.filter((p: Profile) => p.residentState === 'Rajasthan').slice(0, 10);
+  const newspaperAdProfiles = profiles.filter((p: Profile) => p.isNewspaperAdLinked).slice(0, 10);
 
-  const ageOptions = ['18 - 25', '25 - 35', '35 - 45', '45+', 'Any'];
-  const locationOptions = ['Jaipur', 'Jodhpur', 'Udaipur', 'Kota', 'Ajmer', 'Delhi NCR', 'Mumbai', 'Bengaluru', 'Any'];
-  const communityOptions = ['Rajput', 'Agarwal', 'Brahmin', 'Marwari', 'Jain', 'Sindhi', 'Sikh', 'Muslim', 'Any'];
-  const professionOptions = ['Engineering / IT', 'Medical / Healthcare', 'Government / Public', 'Business / Self-Employed', 'Finance / Banking', 'Civil Services', 'Any'];
-
-  const isShortlisted = (id: string) => state.shortlistedProfiles.includes(id);
-  const isInterestSent = (id: string) => state.sentInterests.includes(id);
-
-  const handlePress = (id: string) => router.push(`/profile/${id}`);
-  const handleInterest = (id: string) => dispatch({ type: 'SEND_INTEREST', payload: id });
-  const handleShortlist = (id: string) => dispatch({ type: 'TOGGLE_SHORTLIST', payload: id });
-
-  const handleStartMatching = () => {
-    router.push({
-      pathname: '/(tabs)/search',
-      params: { ageRange, location, community, profession },
-    });
+  const getActiveProfiles = () => {
+    switch (activeTabCategory) {
+      case 'Verified': return verifiedProfiles;
+      case 'Nearby': return nearbyProfiles;
+      case 'Ads': return newspaperAdProfiles;
+      default: return recommendedProfiles;
+    }
   };
 
-  // Filter profiles for sections
-  const featuredProfiles = profiles.slice(0, 10);
-  const verifiedProfiles = profiles.filter((p) => p.isVerified).slice(0, 8);
+  const handleInterestToggle = (profileId: string) => {
+    dispatch({ type: 'SEND_INTEREST', payload: profileId });
+  };
 
-  // AI-Selected Compatible Profiles
-  const aiSelectedProfiles = [
-    {
-      id: profiles[1]?.profileId || 'P002',
-      name: profiles[1]?.name || 'Kavya R.',
-      age: profiles[1]?.age || 31,
-      badge: 'Highly Compatible',
-      photo: profiles[1]?.profilePhotoURL || 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600&auto=format&fit=crop&q=80',
-    },
-    {
-      id: profiles[2]?.profileId || 'P003',
-      name: profiles[2]?.name || 'Vikram S.',
-      age: profiles[2]?.age || 33,
-      badge: 'Shared Values',
-      photo: profiles[2]?.profilePhotoURL || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&auto=format&fit=crop&q=80',
-    },
-    {
-      id: profiles[3]?.profileId || 'P004',
-      name: profiles[3]?.name || 'Nisha K.',
-      age: profiles[3]?.age || 29,
-      badge: 'Family-Oriented',
-      photo: profiles[3]?.profilePhotoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80',
-    },
-  ];
-
-  const renderHeader = () => (
-    <View style={styles.header}>
-      <View style={styles.headerBrandRow}>
-        <PatrikaRibbonLogo size={32} />
-        <Text style={styles.logoText}>Patrika Matrimony</Text>
-      </View>
-      <View style={styles.headerIcons}>
-        <TouchableOpacity style={styles.iconBtn}>
-          <Ionicons name="notifications-outline" size={24} color="#2C1A1D" />
-          <View style={styles.badgeCount}>
-            <Text style={styles.badgeCountText}>3</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.iconBtn} onPress={() => router.push('/(tabs)/profile')}>
-          <Ionicons name="menu-outline" size={26} color="#2C1A1D" />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+  const handleShortlistToggle = (profileId: string) => {
+    dispatch({ type: 'TOGGLE_SHORTLIST', payload: profileId });
+  };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      {renderHeader()}
-
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-        
-        {/* Hero Title Section */}
-        <View style={styles.heroSection}>
-          <Text style={styles.heroTitle}>Find someone who{'\n'}truly understands you</Text>
-          <Text style={styles.heroSubtitle}>Where meaningful connections begin</Text>
-
-          {/* Quick Match Floating Filter Card */}
-          <View style={styles.searchCard}>
-            <View style={styles.searchCardHeader}>
-              <Ionicons name="search-outline" size={16} color="#E31E25" style={{ marginRight: 6 }} />
-              <Text style={styles.searchCardTitle}>Refine your search</Text>
+    <MintGlassBackground>
+      <SafeAreaView style={styles.safeArea}>
+        {/* Top Header Bar */}
+        <View style={styles.topHeader}>
+          <View style={styles.brandCol}>
+            <View style={styles.logoRow}>
+              <PatrikaRibbonLogo size={28} />
+              <Text style={styles.brandText}>Patrika Matrimony</Text>
             </View>
+            <Text style={styles.brandTagline}>Find your perfect Rajasthan life partner</Text>
+          </View>
 
-            <View style={styles.filterGrid}>
-              {/* Age Range Picker Box */}
-              <TouchableOpacity 
-                style={styles.filterBox} 
-                onPress={() => setActiveModal('age')}
-                activeOpacity={0.85}
-              >
-                <Text style={styles.filterLabel}>Age Range</Text>
-                <View style={styles.filterDropdown}>
-                  <Text style={styles.filterValue}>{ageRange}</Text>
-                  <Ionicons name="chevron-down" size={16} color="#E31E25" />
-                </View>
-              </TouchableOpacity>
-
-              {/* Location Picker Box */}
-              <TouchableOpacity 
-                style={styles.filterBox} 
-                onPress={() => setActiveModal('location')}
-                activeOpacity={0.85}
-              >
-                <Text style={styles.filterLabel}>Location</Text>
-                <View style={styles.filterDropdown}>
-                  <Text style={styles.filterValue} numberOfLines={1}>{location}</Text>
-                  <Ionicons name="chevron-down" size={16} color="#E31E25" />
-                </View>
-              </TouchableOpacity>
-
-              {/* Community Picker Box */}
-              <TouchableOpacity 
-                style={styles.filterBox} 
-                onPress={() => setActiveModal('community')}
-                activeOpacity={0.85}
-              >
-                <Text style={styles.filterLabel}>Community</Text>
-                <View style={styles.filterDropdown}>
-                  <Text style={styles.filterValue} numberOfLines={1}>{community}</Text>
-                  <Ionicons name="chevron-down" size={16} color="#E31E25" />
-                </View>
-              </TouchableOpacity>
-
-              {/* Profession Picker Box */}
-              <TouchableOpacity 
-                style={styles.filterBox} 
-                onPress={() => setActiveModal('profession')}
-                activeOpacity={0.85}
-              >
-                <Text style={styles.filterLabel}>Profession</Text>
-                <View style={styles.filterDropdown}>
-                  <Text style={styles.filterValue} numberOfLines={1}>{profession}</Text>
-                  <Ionicons name="chevron-down" size={16} color="#E31E25" />
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            {/* Start Matching Button */}
+          <View style={styles.headerRightActions}>
             <TouchableOpacity 
-              style={styles.startMatchingBtn} 
-              onPress={handleStartMatching}
-              activeOpacity={0.88}
+              style={styles.headerIconGlassBtn} 
+              onPress={() => router.push('/plans')}
+              activeOpacity={0.8}
             >
-              <Text style={styles.startMatchingBtnText}>Start Matching →</Text>
+              <MaterialCommunityIcons name="crown" size={18} color="#D4AF37" />
+              <Text style={styles.upgradeText}>Upgrade</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.headerIconGlassBtn} activeOpacity={0.8}>
+              <Ionicons name="notifications-outline" size={20} color="#0F2E2B" />
+              <View style={styles.notifBadge} />
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* Featured Matches Section */}
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Featured Matches</Text>
-          <TouchableOpacity onPress={() => router.push('/(tabs)/search')}>
-            <Text style={styles.viewAllText}>View All</Text>
-          </TouchableOpacity>
-        </View>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+          {/* Glass Hero Banner Card */}
+          <View style={styles.glassHeroCard}>
+            <View style={styles.heroLeftCol}>
+              <View style={styles.heroPillBadge}>
+                <MaterialCommunityIcons name="shield-check-outline" size={14} color="#0D9488" style={{ marginRight: 4 }} />
+                <Text style={styles.heroPillText}>Patrika Assured</Text>
+              </View>
+              <Text style={styles.heroTitle}>Discover 100% Verified Matches</Text>
+              <Text style={styles.heroSub}>Connect with genuine Rajasthani brides & grooms</Text>
 
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={featuredProfiles}
-          keyExtractor={(item) => item.profileId}
-          renderItem={({ item }) => (
-            <ProfileCard
-              profile={item}
-              size="full"
-              onPress={() => handlePress(item.profileId)}
-              onInterest={() => handleInterest(item.profileId)}
-              onShortlist={() => handleShortlist(item.profileId)}
-              isShortlisted={isShortlisted(item.profileId)}
-              isInterestSent={isInterestSent(item.profileId)}
-            />
-          )}
-          contentContainerStyle={styles.listContainer}
-        />
-
-        {/* AI-Selected for You Section */}
-        <View style={styles.aiContainer}>
-          <View style={styles.aiHeader}>
-            <Ionicons name="sparkles" size={20} color="#E31E25" style={{ marginRight: 6 }} />
-            <Text style={styles.aiTitle}>AI-Selected for You</Text>
-          </View>
-          <Text style={styles.aiSubtitle}>Deeper compatibility analysis based on your preferences and values</Text>
-
-          <View style={styles.aiGrid}>
-            {aiSelectedProfiles.map((item) => (
-              <TouchableOpacity
-                key={item.id}
-                style={styles.aiCard}
-                onPress={() => handlePress(item.id)}
+              <TouchableOpacity 
+                style={styles.heroCtaBtn} 
+                onPress={() => router.push('/(tabs)/search')}
                 activeOpacity={0.88}
               >
-                <Image source={{ uri: item.photo }} style={styles.aiPhoto} />
-                <View style={styles.aiBadgeTag}>
-                  <Text style={styles.aiBadgeTagText} numberOfLines={1}>{item.badge}</Text>
-                </View>
-                <Text style={styles.aiName} numberOfLines={1}>{item.name}</Text>
-                <Text style={styles.aiAge}>{item.age} years</Text>
+                <Text style={styles.heroCtaText}>Explore Matches →</Text>
               </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* Floating Category Filter Pills Row */}
+          <View style={styles.categoryPillContainer}>
+            {[
+              { id: 'Recommended', label: 'For You', icon: 'sparkles' },
+              { id: 'Verified', label: 'Verified', icon: 'shield-checkmark-outline' },
+              { id: 'Nearby', label: 'Nearby', icon: 'location-outline' },
+              { id: 'Ads', label: 'Paper Ads', icon: 'newspaper-outline' },
+            ].map((cat) => {
+              const isSel = activeTabCategory === cat.id;
+              return (
+                <TouchableOpacity
+                  key={cat.id}
+                  style={[styles.categoryGlassPill, isSel && styles.categoryGlassPillActive]}
+                  onPress={() => setActiveTabCategory(cat.id as any)}
+                  activeOpacity={0.85}
+                >
+                  <Ionicons 
+                    name={cat.icon as any} 
+                    size={14} 
+                    color={isSel ? '#FFFFFF' : '#0F2E2B'} 
+                    style={{ marginRight: 5 }} 
+                  />
+                  <Text style={[styles.categoryPillText, isSel && styles.categoryPillTextActive]}>
+                    {cat.label}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+
+          {/* Section Header */}
+          <View style={styles.sectionHeaderRow}>
+            <View>
+              <Text style={styles.sectionTitle}>{activeTabCategory} Matches</Text>
+              <Text style={styles.sectionSub}>Showing curated profiles for you</Text>
+            </View>
+
+            <TouchableOpacity onPress={() => router.push('/(tabs)/search')}>
+              <Text style={styles.seeAllText}>See All ({getActiveProfiles().length}) →</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Profiles Vertical List */}
+          <View style={styles.profilesListWrapper}>
+            {getActiveProfiles().map((profile: Profile) => (
+              <ProfileCard
+                key={profile.profileId}
+                profile={profile}
+                onPress={() => router.push(`/profile/${profile.profileId}`)}
+                onInterest={() => handleInterestToggle(profile.profileId)}
+                onShortlist={() => handleShortlistToggle(profile.profileId)}
+                isInterestSent={sentInterests.includes(profile.profileId)}
+                isShortlisted={shortlistedIds.includes(profile.profileId)}
+              />
             ))}
           </View>
-        </View>
-
-        {/* Verified Profiles Section */}
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Verified Profiles</Text>
-          <TouchableOpacity onPress={() => router.push('/(tabs)/search')}>
-            <Text style={styles.viewAllText}>View All</Text>
-          </TouchableOpacity>
-        </View>
-
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={verifiedProfiles}
-          keyExtractor={(item) => item.profileId}
-          renderItem={({ item }) => (
-            <ProfileCard
-              profile={item}
-              size="full"
-              onPress={() => handlePress(item.profileId)}
-              onInterest={() => handleInterest(item.profileId)}
-              onShortlist={() => handleShortlist(item.profileId)}
-              isShortlisted={isShortlisted(item.profileId)}
-              isInterestSent={isInterestSent(item.profileId)}
-            />
-          )}
-          contentContainerStyle={styles.listContainer}
-        />
-
-        {/* Success Stories Section */}
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Success Stories</Text>
-        </View>
-
-        <View style={styles.storyCard}>
-          <View style={styles.storyContent}>
-            <Image
-              source={{ uri: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600&auto=format&fit=crop&q=80' }}
-              style={styles.storyPhoto}
-            />
-            <View style={styles.storyTextContainer}>
-              <Text style={styles.storyQuote}>
-                "We found each other when it mattered most. Patrika Matrimony gave us a beautiful path to lifelong happiness."
-              </Text>
-              <Text style={styles.storyAuthor}>Meera & Rajesh</Text>
-              <Text style={styles.storyDate}>Married in December 2025</Text>
-            </View>
-          </View>
-          <TouchableOpacity style={styles.readMoreBtn}>
-            <Text style={styles.readMoreBtnText}>Read More Stories ›</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Why Trust Us Section */}
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Why Trust Us</Text>
-        </View>
-
-        <View style={styles.trustContainer}>
-          <View style={styles.trustItem}>
-            <View style={styles.trustIconBox}>
-              <MaterialCommunityIcons name="shield-check-outline" size={24} color="#E31E25" />
-            </View>
-            <View style={styles.trustTextCol}>
-              <Text style={styles.trustTitle}>Verified Profiles</Text>
-              <Text style={styles.trustDesc}>Every profile is manually verified for authentic connections</Text>
-            </View>
-          </View>
-
-          <View style={styles.trustItem}>
-            <View style={styles.trustIconBox}>
-              <MaterialCommunityIcons name="lock-outline" size={24} color="#E31E25" />
-            </View>
-            <View style={styles.trustTextCol}>
-              <Text style={styles.trustTitle}>Privacy First</Text>
-              <Text style={styles.trustDesc}>Your contact data and photo access remain 100% secure</Text>
-            </View>
-          </View>
-
-          <View style={styles.trustItem}>
-            <View style={styles.trustIconBox}>
-              <MaterialCommunityIcons name="account-group-outline" size={24} color="#E31E25" />
-            </View>
-            <View style={styles.trustTextCol}>
-              <Text style={styles.trustTitle}>Serious Members</Text>
-              <Text style={styles.trustDesc}>Quality matches focused on marriage and family values</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.bottomPadding} />
-      </ScrollView>
-
-      {/* Filter Selection Modals */}
-      <Modal visible={activeModal !== null} transparent animationType="slide">
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>
-                Select {activeModal === 'age' ? 'Age Range' : activeModal === 'location' ? 'Location' : activeModal === 'community' ? 'Community' : 'Profession'}
-              </Text>
-              <TouchableOpacity onPress={() => setActiveModal(null)}>
-                <Ionicons name="close" size={24} color="#2C1A1D" />
-              </TouchableOpacity>
-            </View>
-
-            <ScrollView style={{ maxHeight: 320 }}>
-              {(activeModal === 'age' ? ageOptions : activeModal === 'location' ? locationOptions : activeModal === 'community' ? communityOptions : professionOptions).map((opt) => {
-                const isSelected = 
-                  (activeModal === 'age' && ageRange === opt) ||
-                  (activeModal === 'location' && location === opt) ||
-                  (activeModal === 'community' && community === opt) ||
-                  (activeModal === 'profession' && profession === opt);
-                
-                return (
-                  <TouchableOpacity
-                    key={opt}
-                    style={[styles.modalOptionItem, isSelected && styles.modalOptionSelected]}
-                    onPress={() => {
-                      if (activeModal === 'age') setAgeRange(opt);
-                      if (activeModal === 'location') setLocation(opt);
-                      if (activeModal === 'community') setCommunity(opt);
-                      if (activeModal === 'profession') setProfession(opt);
-                      setActiveModal(null);
-                    }}
-                  >
-                    <Text style={[styles.modalOptionText, isSelected && styles.modalOptionTextSelected]}>{opt}</Text>
-                    {isSelected && <Ionicons name="checkmark" size={20} color="#E31E25" />}
-                  </TouchableOpacity>
-                );
-              })}
-            </ScrollView>
-          </View>
-        </View>
-      </Modal>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    </MintGlassBackground>
   );
 }
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FFF9F6',
-    paddingTop: Platform.OS === 'android' ? (StatusBar.currentHeight ?? 0) : 0,
   },
-  header: {
+  topHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EFE6DD',
+    paddingHorizontal: 16,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
-  headerBrandRow: {
+  brandCol: {
+    flex: 1,
+  },
+  logoRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
   },
-  logoText: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: '#E31E25',
-    fontFamily: 'serif',
-  },
-  headerIcons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  iconBtn: {
-    marginLeft: 16,
-    position: 'relative',
-  },
-  badgeCount: {
-    position: 'absolute',
-    top: -4,
-    right: -6,
-    backgroundColor: '#E31E25',
-    borderRadius: 10,
-    minWidth: 18,
-    height: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  badgeCountText: {
-    color: '#FFFFFF',
-    fontSize: 10,
-    fontWeight: '800',
-  },
-  scrollContent: {
-    paddingVertical: 12,
-  },
-  heroSection: {
-    paddingHorizontal: 20,
-    paddingTop: 16,
-    paddingBottom: 24,
-  },
-  heroTitle: {
-    fontSize: 28,
-    fontWeight: '800',
-    color: '#2C1A1D',
-    fontFamily: 'serif',
-    lineHeight: 36,
-    letterSpacing: -0.5,
-  },
-  heroSubtitle: {
-    fontSize: 14,
-    color: '#8C7A7C',
-    fontWeight: '500',
-    marginTop: 6,
-    marginBottom: 20,
-  },
-  searchCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    padding: 18,
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    shadowColor: '#2C1A1D',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-    elevation: 4,
-  },
-  searchCardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 14,
-  },
-  searchCardTitle: {
-    fontSize: 14,
-    fontWeight: '800',
-    color: '#2C1A1D',
-  },
-  filterGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-    marginBottom: 18,
-  },
-  filterBox: {
-    width: '47%',
-  },
-  filterLabel: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: '#8C7A7C',
-    marginBottom: 4,
-  },
-  filterDropdown: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#FAF5F7',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    borderRadius: 14,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-  },
-  filterValue: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#2C1A1D',
-  },
-  startMatchingBtn: {
-    backgroundColor: '#E31E25',
-    borderRadius: 20,
-    paddingVertical: 15,
-    alignItems: 'center',
-    shadowColor: '#E31E25',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  startMatchingBtnText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '800',
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  sectionTitle: {
-    fontSize: 22,
-    fontWeight: '800',
-    color: '#2C1A1D',
-    fontFamily: 'serif',
-  },
-  viewAllText: {
-    fontSize: 13,
-    color: '#E31E25',
-    fontWeight: '800',
-  },
-  listContainer: {
-    paddingLeft: 8,
-    paddingRight: 16,
-  },
-
-  // AI-Selected Section
-  aiContainer: {
-    backgroundColor: '#FFF0F3',
-    marginHorizontal: 16,
-    marginTop: 24,
-    marginBottom: 10,
-    padding: 20,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#FFD6DF',
-  },
-  aiHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  aiTitle: {
+  brandText: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#2C1A1D',
+    color: '#0F2E2B',
     fontFamily: 'serif',
   },
-  aiSubtitle: {
-    fontSize: 12,
-    color: '#5A4A4D',
-    marginTop: 4,
-    marginBottom: 16,
-    lineHeight: 18,
-  },
-  aiGrid: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 10,
-  },
-  aiCard: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 10,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  aiPhoto: {
-    width: '100%',
-    height: 90,
-    borderRadius: 12,
-    marginBottom: 8,
-  },
-  aiBadgeTag: {
-    backgroundColor: '#FFF0F3',
-    paddingHorizontal: 6,
-    paddingVertical: 3,
-    borderRadius: 6,
-    marginBottom: 4,
-    maxWidth: '100%',
-  },
-  aiBadgeTagText: {
-    fontSize: 9,
-    fontWeight: '800',
-    color: '#E31E25',
-    textAlign: 'center',
-  },
-  aiName: {
-    fontSize: 13,
-    fontWeight: '800',
-    color: '#2C1A1D',
-    fontFamily: 'serif',
-  },
-  aiAge: {
+  brandTagline: {
     fontSize: 11,
-    color: '#8C7A7C',
-  },
-
-  // Success Stories
-  storyCard: {
-    backgroundColor: '#FFFFFF',
-    marginHorizontal: 16,
-    borderRadius: 20,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  storyContent: {
-    flexDirection: 'row',
-    gap: 14,
-    marginBottom: 14,
-  },
-  storyPhoto: {
-    width: 80,
-    height: 80,
-    borderRadius: 14,
-  },
-  storyTextContainer: {
-    flex: 1,
-  },
-  storyQuote: {
-    fontSize: 12,
-    color: '#5A4A4D',
-    lineHeight: 18,
-    fontStyle: 'italic',
-    marginBottom: 6,
-  },
-  storyAuthor: {
-    fontSize: 13,
-    fontWeight: '800',
-    color: '#2C1A1D',
-  },
-  storyDate: {
-    fontSize: 11,
-    color: '#8C7A7C',
-  },
-  readMoreBtn: {
-    backgroundColor: '#FAF5F7',
-    paddingVertical: 10,
-    borderRadius: 12,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  readMoreBtnText: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#E31E25',
-  },
-
-  // Why Trust Us Section
-  trustContainer: {
-    backgroundColor: '#FFFFFF',
-    marginHorizontal: 16,
-    borderRadius: 20,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    gap: 12,
-  },
-  trustItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  trustIconBox: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
-    backgroundColor: '#FFF0F3',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  trustTextCol: {
-    flex: 1,
-  },
-  trustTitle: {
-    fontSize: 15,
-    fontWeight: '800',
-    color: '#2C1A1D',
-  },
-  trustDesc: {
-    fontSize: 12,
-    color: '#8C7A7C',
+    color: '#4A6B66',
     marginTop: 2,
   },
-
-  // Modal styles
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(44,26,29,0.6)',
-    justifyContent: 'flex-end',
-  },
-  modalContainer: {
-    backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    padding: 20,
-  },
-  modalHeader: {
+  headerRightActions: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    gap: 8,
   },
-  modalTitle: {
+  headerIconGlassBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 18,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    position: 'relative',
+  },
+  upgradeText: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: '#0F2E2B',
+    marginLeft: 4,
+  },
+  notifBadge: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#E31E25',
+  },
+
+  scrollContent: {
+    paddingHorizontal: 16,
+    paddingBottom: 90,
+  },
+
+  glassHeroCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.82)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 24,
+    padding: 18,
+    marginVertical: 10,
+    shadowColor: '#0F2E2B',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.08,
+    shadowRadius: 14,
+    elevation: 3,
+  },
+  heroLeftCol: {
+    alignItems: 'flex-start',
+  },
+  heroPillBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(13, 148, 136, 0.12)',
+    borderRadius: 14,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginBottom: 8,
+  },
+  heroPillText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#0D9488',
+  },
+  heroTitle: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: '#0F2E2B',
+    fontFamily: 'serif',
+    marginBottom: 4,
+  },
+  heroSub: {
+    fontSize: 13,
+    color: '#4A6B66',
+    marginBottom: 14,
+  },
+  heroCtaBtn: {
+    backgroundColor: '#0F2E2B',
+    borderRadius: 20,
+    paddingHorizontal: 18,
+    paddingVertical: 10,
+  },
+  heroCtaText: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '800',
+  },
+
+  categoryPillContainer: {
+    flexDirection: 'row',
+    gap: 8,
+    marginVertical: 10,
+  },
+  categoryGlassPill: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.75)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 18,
+    paddingVertical: 9,
+  },
+  categoryGlassPillActive: {
+    backgroundColor: '#0F2E2B',
+    borderColor: '#0F2E2B',
+  },
+  categoryPillText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#0F2E2B',
+  },
+  categoryPillTextActive: {
+    color: '#FFFFFF',
+  },
+
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 12,
+  },
+  sectionTitle: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#2C1A1D',
+    color: '#0F2E2B',
     fontFamily: 'serif',
   },
-  modalOptionItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 14,
-    paddingHorizontal: 12,
-    borderBottomWidth: 1,
-    borderColor: '#EFE6DD',
+  sectionSub: {
+    fontSize: 12,
+    color: '#4A6B66',
+    marginTop: 2,
   },
-  modalOptionSelected: {
-    backgroundColor: '#FFF0F3',
-  },
-  modalOptionText: {
-    fontSize: 15,
-    color: '#2C1A1D',
-  },
-  modalOptionTextSelected: {
-    color: '#E31E25',
+  seeAllText: {
+    fontSize: 13,
     fontWeight: '800',
+    color: '#0D9488',
   },
 
-  bottomPadding: {
-    height: 40,
+  profilesListWrapper: {
+    marginTop: 6,
   },
 });

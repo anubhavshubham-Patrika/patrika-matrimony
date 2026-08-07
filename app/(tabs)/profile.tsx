@@ -1,432 +1,295 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Modal, TextInput } from 'react-native';
+import React from 'react';
+import { 
+  View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Image 
+} from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../src/context/AppContext';
+import MintGlassBackground from '../../src/components/MintGlassBackground';
 
-export default function ProfileTab() {
+export default function ProfileTabScreen() {
   const router = useRouter();
-  const { state, dispatch, profiles } = useApp();
-  const [editModalVisible, setEditModalVisible] = useState(false);
-  
-  const userProfile = state.myProfile || profiles.find(p => p.profileId === 'P001') || profiles[0];
-  const { currentPlan } = state;
-
-  const [editForm, setEditForm] = useState({
-    name: userProfile?.name || '',
-    age: userProfile?.age?.toString() || '',
-    height: userProfile?.height || '',
-    occupation: userProfile?.occupation || '',
-    city: userProfile?.residentCity || ''
-  });
+  const { state, dispatch } = useApp();
+  const user = state.currentUser;
 
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
-    router.replace('/');
+    router.replace('/(auth)/splash');
   };
-
-  const handleSaveProfile = () => {
-    setEditModalVisible(false);
-  };
-
-  if (!userProfile) {
-    return (
-      <View style={styles.centerContainer}>
-        <Text style={{ color: '#2C1A1D' }}>Loading Profile...</Text>
-      </View>
-    );
-  }
 
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        {/* Header Section */}
-        <View style={styles.headerContainer}>
-          <Image source={{ uri: userProfile.profilePhotoURL }} style={styles.profilePhoto} />
-          <Text style={styles.userName}>{userProfile.name}, {userProfile.age}</Text>
-          <Text style={styles.userId}>{userProfile.profileId}</Text>
-          
-          <View style={styles.planBadgeContainer}>
-            <View style={[styles.planBadge, currentPlan === 'Free' ? styles.freeBadge : styles.premiumBadge]}>
-              <Text style={styles.planBadgeText}>{currentPlan === 'Free' ? 'Free Member' : `${currentPlan} Member`}</Text>
-            </View>
-          </View>
+    <MintGlassBackground>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.topHeader}>
+          <Text style={styles.headerTitle}>My Profile</Text>
+          <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
+            <Ionicons name="log-out-outline" size={20} color="#E31E25" />
+          </TouchableOpacity>
+        </View>
 
-          {currentPlan === 'Free' && (
-            <TouchableOpacity style={styles.upgradeBtn} onPress={() => router.push('/subscription')}>
-              <Text style={styles.upgradeBtnText}>Upgrade Plan</Text>
+        <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+          {/* Main User Card */}
+          <View style={styles.profileGlassCard}>
+            <View style={styles.avatarRow}>
+              <View style={styles.photoContainer}>
+                <Image
+                  source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }}
+                  style={styles.profilePhoto}
+                />
+                <View style={styles.verifiedBadge}>
+                  <Ionicons name="checkmark-circle" size={16} color="#0D9488" />
+                </View>
+              </View>
+
+              <View style={styles.userTextCol}>
+                <Text style={styles.userNameText}>{user?.name || 'Arjun Singh'}</Text>
+                <Text style={styles.userSubText}>Profile ID: {user?.profileId || 'P001'}</Text>
+                <View style={styles.planPillBadge}>
+                  <MaterialCommunityIcons name="crown" size={14} color="#D4AF37" style={{ marginRight: 4 }} />
+                  <Text style={styles.planPillText}>Gold Member</Text>
+                </View>
+              </View>
+            </View>
+
+            {/* Quick Stats Grid */}
+            <View style={styles.statsGlassGrid}>
+              <View style={styles.statBox}>
+                <Text style={styles.statNumber}>142</Text>
+                <Text style={styles.statLabel}>Profile Views</Text>
+              </View>
+              <View style={styles.statDivider} />
+              <View style={styles.statBox}>
+                <Text style={styles.statNumber}>28</Text>
+                <Text style={styles.statLabel}>Interests</Text>
+              </View>
+              <View style={styles.statDivider} />
+              <View style={styles.statBox}>
+                <Text style={styles.statNumber}>19</Text>
+                <Text style={styles.statLabel}>Shortlists</Text>
+              </View>
+            </View>
+
+            <TouchableOpacity 
+              style={styles.editProfileBtn} 
+              onPress={() => router.push('/(auth)/onboarding/step1')}
+              activeOpacity={0.88}
+            >
+              <Ionicons name="create-outline" size={16} color="#FFFFFF" style={{ marginRight: 6 }} />
+              <Text style={styles.editProfileText}>Edit Matrimonial Profile</Text>
             </TouchableOpacity>
-          )}
-
-          <View style={styles.progressContainer}>
-            <View style={styles.progressHeader}>
-              <Text style={styles.progressText}>Profile Completion</Text>
-              <Text style={styles.progressPercent}>75%</Text>
-            </View>
-            <View style={styles.progressBarBg}>
-              <View style={[styles.progressBarFill, { width: '75%' }]} />
-            </View>
-            <Text style={styles.progressHint}>Complete your profile to get 5x more matches</Text>
           </View>
-        </View>
 
-        {/* Quick Stats */}
-        <View style={styles.statsContainer}>
-          <View style={styles.statBox}>
-            <Text style={styles.statValue}>12</Text>
-            <Text style={styles.statLabel}>Interests Received</Text>
+          {/* Account Settings Glass List */}
+          <View style={styles.settingsGroupGlassCard}>
+            <Text style={styles.groupTitle}>Account & Subscription</Text>
+
+            <TouchableOpacity 
+              style={styles.settingRow} 
+              onPress={() => router.push('/plans')}
+              activeOpacity={0.85}
+            >
+              <View style={[styles.settingIconBadge, { backgroundColor: 'rgba(212, 175, 55, 0.15)' }]}>
+                <MaterialCommunityIcons name="crown" size={20} color="#D4AF37" />
+              </View>
+              <Text style={styles.settingLabel}>Membership Plans & Upgrade</Text>
+              <Ionicons name="chevron-forward" size={18} color="#8C9E9B" />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.settingRow} activeOpacity={0.85}>
+              <View style={[styles.settingIconBadge, { backgroundColor: 'rgba(227, 30, 37, 0.12)' }]}>
+                <MaterialCommunityIcons name="newspaper-variant-outline" size={20} color="#E31E25" />
+              </View>
+              <Text style={styles.settingLabel}>Link Rajasthan Patrika Print Ad</Text>
+              <Ionicons name="chevron-forward" size={18} color="#8C9E9B" />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.settingRow} activeOpacity={0.85}>
+              <View style={[styles.settingIconBadge, { backgroundColor: 'rgba(13, 148, 136, 0.15)' }]}>
+                <Ionicons name="shield-checkmark-outline" size={20} color="#0D9488" />
+              </View>
+              <Text style={styles.settingLabel}>Govt ID & Selfie Verification</Text>
+              <Ionicons name="chevron-forward" size={18} color="#8C9E9B" />
+            </TouchableOpacity>
           </View>
-          <View style={styles.statDivider} />
-          <View style={styles.statBox}>
-            <Text style={styles.statValue}>5</Text>
-            <Text style={styles.statLabel}>Interests Accepted</Text>
-          </View>
-          <View style={styles.statDivider} />
-          <View style={styles.statBox}>
-            <Text style={styles.statValue}>234</Text>
-            <Text style={styles.statLabel}>Profile Views</Text>
-          </View>
-        </View>
-
-        {/* Menu Sections */}
-        <View style={styles.menuSection}>
-          <Text style={styles.sectionTitle}>My Account</Text>
-          <MenuItem icon="person-outline" title="Edit Profile" onPress={() => setEditModalVisible(true)} />
-          <MenuItem icon="heart-outline" title="Partner Preferences" />
-          <MenuItem icon="star-outline" title="My Subscription" onPress={() => router.push('/subscription')} />
-          <MenuItem icon="shield-checkmark-outline" title="Verification Centre" onPress={() => router.push('/verification')} />
-        </View>
-
-        <View style={styles.menuSection}>
-          <Text style={styles.sectionTitle}>Newspaper Integration</Text>
-          <MenuItem icon="newspaper-outline" title="Link Rajasthan Patrika Ad" onPress={() => router.push('/newspaper-ads')} />
-          {userProfile.isNewspaperAdLinked && (
-            <MenuItem icon="document-text-outline" title="My Linked Ad" />
-          )}
-        </View>
-
-        <View style={styles.menuSection}>
-          <Text style={styles.sectionTitle}>Privacy & Safety</Text>
-          <MenuItem icon="lock-closed-outline" title="Privacy Settings" />
-          <MenuItem icon="close-circle-outline" title="Block & Report" />
-          <MenuItem icon="bulb-outline" title="Safety Tips" />
-          <MenuItem icon="key-outline" title="Change Password" />
-        </View>
-
-        <View style={styles.menuSection}>
-          <Text style={styles.sectionTitle}>Support</Text>
-          <MenuItem icon="help-circle-outline" title="Help & Support" />
-          <MenuItem icon="call-outline" title="Contact Us" />
-          <MenuItem icon="document-outline" title="Terms of Service" />
-          <MenuItem icon="shield-outline" title="Privacy Policy" />
-          <MenuItem icon="star-half-outline" title="Rate the App" />
-        </View>
-
-        <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
-          <Ionicons name="log-out-outline" size={24} color="#E31E25" />
-          <Text style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
-        
-        <View style={styles.footerSpace} />
-      </ScrollView>
-
-      {/* Edit Profile Modal */}
-      <Modal visible={editModalVisible} animationType="slide" transparent={true}>
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Edit Profile</Text>
-              <TouchableOpacity onPress={() => setEditModalVisible(false)}>
-                <Ionicons name="close" size={28} color="#2C1A1D" />
-              </TouchableOpacity>
-            </View>
-            <ScrollView>
-              <Text style={styles.inputLabel}>Name</Text>
-              <TextInput style={styles.input} value={editForm.name} onChangeText={t => setEditForm({...editForm, name: t})} />
-              
-              <Text style={styles.inputLabel}>Age</Text>
-              <TextInput style={styles.input} value={editForm.age} keyboardType="numeric" onChangeText={t => setEditForm({...editForm, age: t})} />
-              
-              <Text style={styles.inputLabel}>Height</Text>
-              <TextInput style={styles.input} value={editForm.height} onChangeText={t => setEditForm({...editForm, height: t})} />
-              
-              <Text style={styles.inputLabel}>Occupation</Text>
-              <TextInput style={styles.input} value={editForm.occupation} onChangeText={t => setEditForm({...editForm, occupation: t})} />
-              
-              <Text style={styles.inputLabel}>City</Text>
-              <TextInput style={styles.input} value={editForm.city} onChangeText={t => setEditForm({...editForm, city: t})} />
-
-              <TouchableOpacity style={styles.saveBtn} onPress={handleSaveProfile}>
-                <Text style={styles.saveBtnText}>Save Changes</Text>
-              </TouchableOpacity>
-            </ScrollView>
-          </View>
-        </View>
-      </Modal>
-    </View>
+        </ScrollView>
+      </SafeAreaView>
+    </MintGlassBackground>
   );
 }
 
-const MenuItem = ({ icon, title, onPress }: { icon: any, title: string, onPress?: () => void }) => (
-  <TouchableOpacity style={styles.menuItem} onPress={onPress}>
-    <View style={styles.menuItemLeft}>
-      <Ionicons name={icon} size={22} color="#5A4A4D" />
-      <Text style={styles.menuItemText}>{title}</Text>
-    </View>
-    <Ionicons name="chevron-forward" size={18} color="#8C7A7C" />
-  </TouchableOpacity>
-);
-
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    backgroundColor: '#F9F6F0',
   },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  scrollContent: {
-    paddingBottom: 20,
-  },
-  headerContainer: {
-    backgroundColor: '#FFFFFF',
-    padding: 24,
+  topHeader: {
+    flexDirection: 'row',
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EFE6DD',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingTop: 10,
+    paddingBottom: 8,
   },
-  profilePhoto: {
-    width: 88,
-    height: 88,
-    borderRadius: 44,
-    marginBottom: 12,
-    borderWidth: 2.5,
-    borderColor: '#E31E25',
-  },
-  userName: {
+  headerTitle: {
     fontSize: 22,
     fontWeight: '800',
-    color: '#2C1A1D',
+    color: '#0F2E2B',
     fontFamily: 'serif',
-    marginBottom: 2,
   },
-  userId: {
-    fontSize: 13,
-    color: '#8C7A7C',
-    marginBottom: 12,
+  logoutBtn: {
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor: 'rgba(227, 30, 37, 0.1)',
   },
-  planBadgeContainer: {
+
+  scrollContent: {
+    paddingHorizontal: 16,
+    paddingBottom: 90,
+  },
+
+  profileGlassCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 26,
+    padding: 18,
+    marginBottom: 16,
+    shadowColor: '#0F2E2B',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.08,
+    shadowRadius: 14,
+    elevation: 3,
+  },
+  avatarRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 16,
   },
-  planBadge: {
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    borderRadius: 20,
+  photoContainer: {
+    position: 'relative',
+    marginRight: 14,
   },
-  freeBadge: {
-    backgroundColor: '#FAF5F7',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
+  profilePhoto: {
+    width: 68,
+    height: 68,
+    borderRadius: 34,
+    borderWidth: 2,
+    borderColor: '#0D9488',
   },
-  premiumBadge: {
-    backgroundColor: '#FFF9E6',
-    borderWidth: 1,
-    borderColor: '#C5A059',
-  },
-  planBadgeText: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#C5A059',
-  },
-  upgradeBtn: {
-    backgroundColor: '#E31E25',
-    paddingHorizontal: 32,
-    paddingVertical: 12,
-    borderRadius: 24,
-    marginBottom: 20,
-  },
-  upgradeBtnText: {
-    color: '#FFFFFF',
-    fontSize: 15,
-    fontWeight: '800',
-  },
-  progressContainer: {
-    width: '100%',
-    backgroundColor: '#FAF5F7',
-    padding: 16,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  progressHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8,
-  },
-  progressText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#2C1A1D',
-  },
-  progressPercent: {
-    fontSize: 14,
-    fontWeight: '800',
-    color: '#E31E25',
-  },
-  progressBarBg: {
-    height: 6,
-    backgroundColor: '#EFE6DD',
-    borderRadius: 3,
-    marginBottom: 8,
-  },
-  progressBarFill: {
-    height: 6,
-    backgroundColor: '#E31E25',
-    borderRadius: 3,
-  },
-  progressHint: {
-    fontSize: 12,
-    color: '#5A4A4D',
-    textAlign: 'center',
-  },
-  statsContainer: {
-    flexDirection: 'row',
+  verifiedBadge: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
     backgroundColor: '#FFFFFF',
-    marginTop: 12,
-    paddingVertical: 16,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: '#EFE6DD',
+    borderRadius: 10,
+  },
+  userTextCol: {
+    flex: 1,
+  },
+  userNameText: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: '#0F2E2B',
+    fontFamily: 'serif',
+  },
+  userSubText: {
+    fontSize: 12,
+    color: '#4A6B66',
+    marginTop: 2,
+  },
+  planPillBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    backgroundColor: '#FFFBEB',
+    borderWidth: 1,
+    borderColor: '#FEF08A',
+    borderRadius: 14,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    marginTop: 6,
+  },
+  planPillText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#854D0E',
+  },
+
+  statsGlassGrid: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(15, 46, 43, 0.04)',
+    borderRadius: 18,
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    marginBottom: 16,
   },
   statBox: {
     flex: 1,
     alignItems: 'center',
   },
-  statValue: {
-    fontSize: 20,
+  statNumber: {
+    fontSize: 18,
     fontWeight: '800',
-    color: '#E91E63',
-    fontFamily: 'serif',
-    marginBottom: 2,
+    color: '#0F2E2B',
   },
   statLabel: {
-    fontSize: 12,
-    color: '#5A4A4D',
-    textAlign: 'center',
+    fontSize: 11,
+    color: '#4A6B66',
+    marginTop: 2,
   },
   statDivider: {
     width: 1,
-    backgroundColor: '#EFE6DD',
+    height: 24,
+    backgroundColor: 'rgba(15, 46, 43, 0.12)',
   },
-  menuSection: {
-    backgroundColor: '#FFFFFF',
-    marginTop: 12,
-    paddingTop: 16,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: '#EFE6DD',
-  },
-  sectionTitle: {
-    fontSize: 15,
-    fontWeight: '800',
-    color: '#2C1A1D',
-    paddingHorizontal: 20,
-    marginBottom: 8,
-    fontFamily: 'serif',
-  },
-  menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#FAF5F7',
-  },
-  menuItemLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  menuItemText: {
-    fontSize: 15,
-    color: '#2C1A1D',
-    marginLeft: 14,
-    fontWeight: '500',
-  },
-  logoutBtn: {
+
+  editProfileBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
-    marginTop: 24,
-    paddingVertical: 16,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: '#EFE6DD',
+    backgroundColor: '#0F2E2B',
+    borderRadius: 20,
+    paddingVertical: 13,
   },
-  logoutText: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: '#E91E63',
-    marginLeft: 8,
-  },
-  footerSpace: {
-    height: 40,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(44,26,29,0.6)',
-    justifyContent: 'flex-end',
-  },
-  modalContent: {
-    backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    padding: 24,
-    maxHeight: '80%',
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: '#2C1A1D',
-    fontFamily: 'serif',
-  },
-  inputLabel: {
-    fontSize: 14,
-    color: '#5A4A4D',
-    marginBottom: 6,
-    fontWeight: '600',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 16,
-    marginBottom: 16,
-    color: '#2C1A1D',
-    backgroundColor: '#FAF5F7',
-  },
-  saveBtn: {
-    backgroundColor: '#E91E63',
-    padding: 16,
-    borderRadius: 28,
-    alignItems: 'center',
-    marginTop: 8,
-    marginBottom: 20,
-  },
-  saveBtnText: {
+  editProfileText: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '800',
-  }
+  },
+
+  settingsGroupGlassCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 26,
+    padding: 18,
+  },
+  groupTitle: {
+    fontSize: 15,
+    fontWeight: '800',
+    color: '#0F2E2B',
+    fontFamily: 'serif',
+    marginBottom: 14,
+  },
+  settingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(15, 46, 43, 0.06)',
+  },
+  settingIconBadge: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  settingLabel: {
+    flex: 1,
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#0F2E2B',
+  },
 });
