@@ -18,11 +18,11 @@ export default function Step12() {
 
   const handleUploadGalleryImage = () => {
     Alert.alert(
-      '📷 Upload Image',
-      'Select a photo from your gallery to set as your main profile image.',
+      '🖼️ Upload Profile Image',
+      'Choose a high-quality photo from your gallery.',
       [
-        { text: 'Choose Demo Photo 1', onPress: () => setPhotoUrl('https://randomuser.me/api/portraits/men/45.jpg') },
-        { text: 'Choose Demo Photo 2', onPress: () => setPhotoUrl('https://randomuser.me/api/portraits/men/68.jpg') },
+        { text: 'Choose Portrait 1 📸', onPress: () => setPhotoUrl('https://randomuser.me/api/portraits/men/45.jpg') },
+        { text: 'Choose Portrait 2 📸', onPress: () => setPhotoUrl('https://randomuser.me/api/portraits/men/68.jpg') },
         { text: 'Cancel', style: 'cancel' },
       ]
     );
@@ -31,9 +31,9 @@ export default function Step12() {
   const handleVerifySelfie = () => {
     setIsSelfieVerified(true);
     Alert.alert(
-      '🤳 Selfie Verification Successful!',
-      'Your live selfie has been verified. A green "Govt & Selfie Verified" badge is now added to your profile!',
-      [{ text: 'Great!' }]
+      '🤳 Live Selfie Verified!',
+      'Your identity has been verified! A green "Govt ID & Selfie Verified" badge is now live on your profile.',
+      [{ text: 'Awesome! ✨' }]
     );
   };
 
@@ -62,71 +62,81 @@ export default function Step12() {
 
         <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
           <View style={styles.glassCardContainer}>
+            {/* Top Glowing Header Emblem */}
             <View style={styles.badgeWrapper}>
               <View style={styles.glowingVectorCircle}>
-                <MaterialCommunityIcons name="camera-plus-outline" size={30} color="#FFFFFF" />
+                <Text style={{ fontSize: 28 }}>📸</Text>
               </View>
             </View>
 
             <View style={styles.headerTitleBox}>
               <Text style={styles.questionTitle}>{t.step12Title}</Text>
-              <Text style={styles.questionSubtitle}>Add your profile photo & verify with selfie</Text>
+              <Text style={styles.questionSubtitle}>Add your profile photo & verify identity</Text>
             </View>
 
-            {/* Photo Avatar Preview Frame */}
+            {/* Candidate Photo Preview Frame */}
             <View style={styles.photoFrameContainer}>
               <Image source={{ uri: photoUrl }} style={styles.avatarImage} />
               <TouchableOpacity style={styles.cameraIconBtn} onPress={handleUploadGalleryImage} activeOpacity={0.88}>
-                <Ionicons name="camera" size={20} color="#FFFFFF" />
+                <Text style={{ fontSize: 16 }}>📸</Text>
               </TouchableOpacity>
 
               {isSelfieVerified && (
                 <View style={styles.selfieVerifiedBadge}>
-                  <Ionicons name="shield-checkmark" size={14} color="#FFFFFF" style={{ marginRight: 3 }} />
-                  <Text style={styles.selfieVerifiedText}>Verified</Text>
+                  <Text style={styles.selfieVerifiedText}>🛡️ Selfie Verified</Text>
                 </View>
               )}
             </View>
 
-            {/* Action Option Buttons Container */}
-            <View style={styles.actionButtonsContainer}>
-              {/* Option 1: Add Image from Gallery */}
+            {/* CREATIVE EMOJI BOXES SECTION */}
+            <View style={styles.emojiBoxesContainer}>
+              {/* Box 1: Gallery Upload */}
               <TouchableOpacity 
-                style={styles.actionGlassBtn} 
+                style={styles.emojiCardBox} 
                 onPress={handleUploadGalleryImage}
                 activeOpacity={0.88}
               >
-                <View style={styles.actionBtnIconBadge}>
-                  <MaterialCommunityIcons name="image-plus" size={20} color="#0D9488" />
+                <View style={styles.emojiIconCircle}>
+                  <Text style={{ fontSize: 26 }}>🖼️</Text>
                 </View>
-                <View style={styles.actionBtnTextCol}>
-                  <Text style={styles.actionBtnTitle}>Add Profile Image</Text>
-                  <Text style={styles.actionBtnSub}>Upload from phone gallery</Text>
+                <View style={styles.emojiCardContent}>
+                  <View style={styles.titleTagRow}>
+                    <Text style={styles.emojiCardTitle}>Upload Profile Image</Text>
+                    <View style={styles.accentTagPill}>
+                      <Text style={styles.accentTagText}>⚡ 8x Responses</Text>
+                    </View>
+                  </View>
+                  <Text style={styles.emojiCardSub}>Select your best photo from phone gallery</Text>
                 </View>
-                <Ionicons name="chevron-forward" size={18} color="#8C9E9B" />
+                <Ionicons name="chevron-forward" size={18} color="#0F2E2B" />
               </TouchableOpacity>
 
-              {/* Option 2: Verify with Selfie */}
+              {/* Box 2: Live Selfie Verification */}
               <TouchableOpacity 
-                style={[styles.actionGlassBtn, styles.actionGlassBtnPrimary]} 
+                style={[styles.emojiCardBox, styles.emojiCardBoxHighlight]} 
                 onPress={handleVerifySelfie}
                 activeOpacity={0.88}
               >
-                <View style={[styles.actionBtnIconBadge, { backgroundColor: '#0D9488' }]}>
-                  <MaterialCommunityIcons name="camera-account" size={20} color="#FFFFFF" />
+                <View style={[styles.emojiIconCircle, { backgroundColor: '#0D9488' }]}>
+                  <Text style={{ fontSize: 26 }}>🤳</Text>
                 </View>
-                <View style={styles.actionBtnTextCol}>
-                  <Text style={styles.actionBtnTitle}>Verify with Live Selfie</Text>
-                  <Text style={styles.actionBtnSub}>Get 5x more responses & verified badge</Text>
+                <View style={styles.emojiCardContent}>
+                  <View style={styles.titleTagRow}>
+                    <Text style={styles.emojiCardTitle}>Verify with Live Selfie</Text>
+                    <View style={[styles.accentTagPill, { backgroundColor: '#0D9488' }]}>
+                      <Text style={[styles.accentTagText, { color: '#FFFFFF' }]}>✅ Verified Badge</Text>
+                    </View>
+                  </View>
+                  <Text style={styles.emojiCardSub}>Instant facial verification for 100% trust score</Text>
                 </View>
-                <Ionicons name="checkmark-circle" size={20} color="#0D9488" />
+                <Ionicons name="checkmark-circle" size={22} color="#0D9488" />
               </TouchableOpacity>
             </View>
 
-            {/* Photo Tip Pill */}
+            {/* Tip Banner */}
             <View style={styles.tipGlassPill}>
-              <MaterialCommunityIcons name="lightning-bolt" size={16} color="#0D9488" style={{ marginRight: 6 }} />
-              <Text style={styles.tipPillText}>Verified profiles with photos get 8x more matches!</Text>
+              <Text style={{ fontSize: 14, marginRight: 6 }}>💡</Text>
+              <Text style={styles.tipPillText}>Profiles with verified selfies get priority in search results!</Text>
             </View>
           </View>
           <View style={{ height: 20 }} />
@@ -206,9 +216,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   glowingVectorCircle: {
-    width: 58,
-    height: 58,
-    borderRadius: 29,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     backgroundColor: '#0F2E2B',
     alignItems: 'center',
     justifyContent: 'center',
@@ -263,14 +273,17 @@ const styles = StyleSheet.create({
   },
   selfieVerifiedBadge: {
     position: 'absolute',
-    top: -4,
-    right: -4,
+    top: -6,
+    right: -10,
     backgroundColor: '#0D9488',
     borderRadius: 14,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    flexDirection: 'row',
-    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    shadowColor: '#0D9488',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 4,
   },
   selfieVerifiedText: {
     color: '#FFFFFF',
@@ -278,45 +291,70 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
 
-  actionButtonsContainer: {
+  /* Creative Emoji Boxes */
+  emojiBoxesContainer: {
     width: '100%',
-    gap: 10,
+    gap: 12,
     marginVertical: 14,
   },
-  actionGlassBtn: {
+  emojiCardBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 20,
-    padding: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 22,
+    padding: 14,
     borderWidth: 1.5,
     borderColor: 'rgba(15, 46, 43, 0.12)',
+    shadowColor: '#0F2E2B',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
-  actionGlassBtnPrimary: {
+  emojiCardBoxHighlight: {
     backgroundColor: 'rgba(13, 148, 136, 0.08)',
     borderColor: '#0D9488',
+    borderWidth: 2,
   },
-  actionBtnIconBadge: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+  emojiIconCircle: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: 'rgba(13, 148, 136, 0.12)',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
   },
-  actionBtnTextCol: {
+  emojiCardContent: {
     flex: 1,
   },
-  actionBtnTitle: {
-    fontSize: 14,
+  titleTagRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginBottom: 2,
+  },
+  emojiCardTitle: {
+    fontSize: 15,
     fontWeight: '800',
     color: '#0F2E2B',
   },
-  actionBtnSub: {
-    fontSize: 11,
+  accentTagPill: {
+    backgroundColor: 'rgba(15, 46, 43, 0.08)',
+    borderRadius: 10,
+    paddingHorizontal: 7,
+    paddingVertical: 2,
+  },
+  accentTagText: {
+    fontSize: 10,
+    fontWeight: '800',
+    color: '#0F2E2B',
+  },
+  emojiCardSub: {
+    fontSize: 12,
     color: '#4A6B66',
-    marginTop: 2,
+    lineHeight: 16,
   },
 
   tipGlassPill: {
