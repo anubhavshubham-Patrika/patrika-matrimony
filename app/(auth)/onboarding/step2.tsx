@@ -112,7 +112,7 @@ export default function Step2() {
 
         <View style={styles.footerContainer}>
           <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
-            <Text style={styles.continueBtnText}>{t.continue} →</Text>
+            <Text style={styles.continueBtnText}>Save & Continue →</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>

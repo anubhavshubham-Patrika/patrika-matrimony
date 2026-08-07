@@ -15,22 +15,31 @@ export default function Step6() {
   const t = Translations[lang];
 
   const [degree, setDegree] = useState(state.onboardingData?.education?.degree || 'B.Tech / B.E.');
+  const [collegeName, setCollegeName] = useState(state.onboardingData?.collegeName || 'MNIT Jaipur');
   const [employmentType, setEmploymentType] = useState(state.onboardingData?.employmentType || 'Private');
-  const [occupation, setOccupation] = useState(state.onboardingData?.occupation || 'Software Engineer');
-  const [annualIncomeRange, setAnnualIncomeRange] = useState(state.onboardingData?.annualIncomeRange || '10-20L');
+  const [organizationName, setOrganizationName] = useState(state.onboardingData?.organizationName || 'TCS');
+  const [occupation, setOccupation] = useState(state.onboardingData?.occupation || 'Senior Software Engineer');
+  const [annualIncomeRange, setAnnualIncomeRange] = useState(state.onboardingData?.annualIncomeRange || '₹10 - ₹15 Lakhs');
 
   const [showDegreeModal, setShowDegreeModal] = useState(false);
+  const [showIncomeModal, setShowIncomeModal] = useState(false);
 
   const degrees = ['B.Tech / B.E.', 'MBBS / MD', 'MBA / PGDM', 'CA / CS', 'B.Com / M.Com', 'B.Sc / M.Sc', 'LLB / LLM', 'PhD', '12th Pass', 'Other'];
   const employmentTypes = ['Private', 'Govt / Public', 'Business / Self-Employed', 'Defence', 'Civil Services', 'Not Working'];
-  const incomeRanges = ['Below 2L', '2-5L', '5-10L', '10-20L', '20-30L', '30-50L', '50L+'];
+  const incomeRanges = [
+    'Below ₹2 Lakhs', '₹2 - ₹3 Lakhs', '₹3 - ₹5 Lakhs', '₹5 - ₹7 Lakhs',
+    '₹7 - ₹10 Lakhs', '₹10 - ₹15 Lakhs', '₹15 - ₹20 Lakhs', '₹20 - ₹30 Lakhs',
+    '₹30 - ₹50 Lakhs', '₹50 Lakhs - ₹1 Crore', '₹1 Crore+'
+  ];
 
   const handleNext = () => {
     dispatch({
       type: 'UPDATE_ONBOARDING',
       payload: {
         education: { degree, field: 'Technology' },
+        collegeName,
         employmentType,
+        organizationName,
         occupation,
         annualIncomeRange,
       },
@@ -59,11 +68,11 @@ export default function Step6() {
             </View>
 
             <View style={styles.headerTitleBox}>
-              <Text style={styles.questionTitle}>{t.step6Title}</Text>
-              <Text style={styles.questionSubtitle}>{t.step6Subtitle}</Text>
+              <Text style={styles.questionTitle}>Education & Career Profile</Text>
+              <Text style={styles.questionSubtitle}>Provide your qualification, company & income details</Text>
             </View>
 
-            {/* Highest Degree */}
+            {/* 1. Highest Degree */}
             <Text style={styles.sectionHeaderLabel}>Highest Education Degree</Text>
             <TouchableOpacity
               style={styles.dropdownGlassTrigger}
@@ -77,8 +86,21 @@ export default function Step6() {
               <Ionicons name="chevron-down" size={20} color="#8C9E9B" />
             </TouchableOpacity>
 
-            {/* Employment Type */}
-            <Text style={styles.sectionHeaderLabel}>Employment Type</Text>
+            {/* 2. College Name */}
+            <Text style={styles.sectionHeaderLabel}>College / University Name</Text>
+            <View style={styles.glassInputWrapper}>
+              <MaterialCommunityIcons name="school" size={20} color="#0D9488" style={{ marginRight: 10 }} />
+              <TextInput
+                style={styles.inputField}
+                placeholder="e.g. MNIT Jaipur, Rajasthan University"
+                value={collegeName}
+                onChangeText={setCollegeName}
+                placeholderTextColor="#8C9E9B"
+              />
+            </View>
+
+            {/* 3. Employment Sector */}
+            <Text style={styles.sectionHeaderLabel}>Employment Sector</Text>
             <View style={styles.chipsWrapRow}>
               {employmentTypes.map((type) => (
                 <TouchableOpacity
@@ -91,37 +113,51 @@ export default function Step6() {
               ))}
             </View>
 
-            {/* Occupation Input */}
-            <Text style={styles.sectionHeaderLabel}>Occupation / Job Title</Text>
+            {/* 4. Company / Employer Name */}
+            <Text style={styles.sectionHeaderLabel}>Current Company / Employer Name</Text>
             <View style={styles.glassInputWrapper}>
-              <MaterialCommunityIcons name="briefcase-outline" size={20} color="#0D9488" style={{ marginRight: 10 }} />
+              <MaterialCommunityIcons name="office-building-outline" size={20} color="#0D9488" style={{ marginRight: 10 }} />
               <TextInput
                 style={styles.inputField}
-                placeholder="Enter job title (e.g. Software Engineer)"
+                placeholder="e.g. TCS, Infosys, State Bank of India"
+                value={organizationName}
+                onChangeText={setOrganizationName}
+                placeholderTextColor="#8C9E9B"
+              />
+            </View>
+
+            {/* 5. Current Designation / Job Title */}
+            <Text style={styles.sectionHeaderLabel}>Current Designation / Job Title</Text>
+            <View style={styles.glassInputWrapper}>
+              <MaterialCommunityIcons name="badge-account-outline" size={20} color="#0D9488" style={{ marginRight: 10 }} />
+              <TextInput
+                style={styles.inputField}
+                placeholder="e.g. Senior Software Engineer, Manager"
                 value={occupation}
                 onChangeText={setOccupation}
                 placeholderTextColor="#8C9E9B"
               />
             </View>
 
-            {/* Annual Income */}
-            <Text style={styles.sectionHeaderLabel}>Annual Income Range</Text>
-            <View style={styles.chipsWrapRow}>
-              {incomeRanges.map((inc) => (
-                <TouchableOpacity
-                  key={inc}
-                  style={[styles.glassChip, annualIncomeRange === inc && styles.glassChipSelected]}
-                  onPress={() => setAnnualIncomeRange(inc)}
-                >
-                  <Text style={[styles.glassChipText, annualIncomeRange === inc && styles.glassChipTextSelected]}>{inc}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+            {/* 6. Annual Income Range */}
+            <Text style={styles.sectionHeaderLabel}>Annual Income (Per Annum)</Text>
+            <TouchableOpacity
+              style={styles.dropdownGlassTrigger}
+              onPress={() => setShowIncomeModal(true)}
+              activeOpacity={0.88}
+            >
+              <View style={styles.dropdownTriggerLeft}>
+                <MaterialCommunityIcons name="cash-multiple" size={22} color="#0D9488" style={{ marginRight: 10 }} />
+                <Text style={styles.dropdownValueText}>{annualIncomeRange}</Text>
+              </View>
+              <Ionicons name="chevron-down" size={20} color="#8C9E9B" />
+            </TouchableOpacity>
+
           </View>
           <View style={{ height: 20 }} />
         </ScrollView>
 
-        {/* Degree Modal */}
+        {/* Degree Selection Modal */}
         <Modal visible={showDegreeModal} animationType="slide" transparent>
           <View style={styles.modalBackdrop}>
             <View style={styles.modalGlassCard}>
@@ -147,9 +183,35 @@ export default function Step6() {
           </View>
         </Modal>
 
+        {/* Income Selection Modal */}
+        <Modal visible={showIncomeModal} animationType="slide" transparent>
+          <View style={styles.modalBackdrop}>
+            <View style={styles.modalGlassCard}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Select Annual Income (P.A.)</Text>
+                <TouchableOpacity onPress={() => setShowIncomeModal(false)}>
+                  <Ionicons name="close" size={24} color="#0F2E2B" />
+                </TouchableOpacity>
+              </View>
+              <ScrollView style={{ maxHeight: 360 }}>
+                {incomeRanges.map((inc) => (
+                  <TouchableOpacity
+                    key={inc}
+                    style={styles.modalOptionItem}
+                    onPress={() => { setAnnualIncomeRange(inc); setShowIncomeModal(false); }}
+                  >
+                    <Text style={[styles.modalOptionText, annualIncomeRange === inc && styles.modalOptionTextSelected]}>{inc}</Text>
+                    {annualIncomeRange === inc && <Ionicons name="checkmark" size={20} color="#0D9488" />}
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+          </View>
+        </Modal>
+
         <View style={styles.footerContainer}>
           <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
-            <Text style={styles.continueBtnText}>{t.continue} →</Text>
+            <Text style={styles.continueBtnText}>Save & Continue →</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -366,29 +428,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(235, 247, 245, 0.92)',
     borderTopWidth: 1,
     borderColor: 'rgba(15, 46, 43, 0.1)',
-  },
-  progressRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    marginBottom: 10,
-  },
-  progressTrackBg: {
-    flex: 1,
-    height: 6,
-    backgroundColor: 'rgba(15, 46, 43, 0.12)',
-    borderRadius: 3,
-    overflow: 'hidden',
-  },
-  progressBarFill: {
-    height: '100%',
-    backgroundColor: '#0D9488',
-    borderRadius: 3,
-  },
-  progressText: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: '#0D9488',
   },
   continueBtn: {
     backgroundColor: '#0F2E2B',

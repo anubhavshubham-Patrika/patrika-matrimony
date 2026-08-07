@@ -29,7 +29,7 @@ export default function Step9() {
         },
       },
     });
-    router.push('/(auth)/onboarding/step10');
+    router.push('/(auth)/onboarding/step11');
   };
 
   return (
@@ -102,7 +102,7 @@ export default function Step9() {
 
         <View style={styles.footerContainer}>
           <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
-            <Text style={styles.continueBtnText}>{t.continue} →</Text>
+            <Text style={styles.continueBtnText}>Save & Continue →</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>

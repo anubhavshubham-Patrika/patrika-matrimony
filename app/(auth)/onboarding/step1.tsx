@@ -113,7 +113,7 @@ export default function Step1() {
             disabled={!profileFor}
             activeOpacity={0.88}
           >
-            <Text style={styles.continueBtnText}>{t.continue} →</Text>
+            <Text style={styles.continueBtnText}>Save & Continue →</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>

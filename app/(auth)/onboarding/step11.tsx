@@ -12,13 +12,13 @@ export default function Step11() {
   const lang = state.language || 'en';
   const t = Translations[lang];
 
-  const [fullName, setFullName] = useState(state.onboardingData?.name || 'Arjun Singh');
+  const isOtpLogin = !!state.currentUser?.mobile;
+
+  const [fullName, setFullName] = useState(state.onboardingData?.name || state.currentUser?.name || 'Arjun Singh');
   const [mobile, setMobile] = useState(state.currentUser?.mobile || '+91-9876543210');
   const [email, setEmail] = useState(state.currentUser?.email || 'arjun@example.com');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleNext = () => {
     dispatch({
@@ -51,8 +51,8 @@ export default function Step11() {
             </View>
 
             <View style={styles.headerTitleBox}>
-              <Text style={styles.questionTitle}>{t.step11Title}</Text>
-              <Text style={styles.questionSubtitle}>Enter candidate details, contact & account password</Text>
+              <Text style={styles.questionTitle}>Account Registration</Text>
+              <Text style={styles.questionSubtitle}>Verify contact & candidate full name</Text>
             </View>
 
             {/* Candidate Full Name */}
@@ -69,13 +69,22 @@ export default function Step11() {
             </View>
 
             {/* Phone Number */}
-            <Text style={styles.sectionHeaderLabel}>Phone Number</Text>
-            <View style={styles.glassInputWrapper}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 14, marginBottom: 8 }}>
+              <Text style={[styles.sectionHeaderLabel, { marginTop: 0, marginBottom: 0 }]}>Phone Number</Text>
+              {isOtpLogin && (
+                <View style={styles.verifiedOtpPill}>
+                  <Ionicons name="checkmark-circle" size={12} color="#0D9488" style={{ marginRight: 3 }} />
+                  <Text style={styles.verifiedOtpText}>Verified via Mobile OTP</Text>
+                </View>
+              )}
+            </View>
+            <View style={[styles.glassInputWrapper, isOtpLogin && styles.disabledGlassInput]}>
               <MaterialCommunityIcons name="phone-outline" size={20} color="#0D9488" style={{ marginRight: 10 }} />
               <TextInput
                 style={styles.inputField}
                 placeholder="Enter 10-digit mobile number"
                 keyboardType="phone-pad"
+                editable={!isOtpLogin}
                 value={mobile}
                 onChangeText={setMobile}
                 placeholderTextColor="#8C9E9B"
@@ -97,13 +106,13 @@ export default function Step11() {
               />
             </View>
 
-            {/* Account Password */}
-            <Text style={styles.sectionHeaderLabel}>Account Password</Text>
+            {/* Account Password (Optional if OTP Login) */}
+            <Text style={styles.sectionHeaderLabel}>Account Password {!isOtpLogin ? '(Required)' : '(Optional)'}</Text>
             <View style={styles.glassInputWrapper}>
               <MaterialCommunityIcons name="lock-outline" size={20} color="#0D9488" style={{ marginRight: 10 }} />
               <TextInput
                 style={styles.inputField}
-                placeholder="Create password (min 6 characters)"
+                placeholder={isOtpLogin ? "Mobile OTP Login active (Password optional)" : "Create password (min 6 characters)"}
                 secureTextEntry={!showPassword}
                 value={password}
                 onChangeText={setPassword}
@@ -114,21 +123,10 @@ export default function Step11() {
               </TouchableOpacity>
             </View>
 
-            {/* Confirm Password */}
-            <Text style={styles.sectionHeaderLabel}>Confirm Password</Text>
-            <View style={styles.glassInputWrapper}>
-              <MaterialCommunityIcons name="lock-check-outline" size={20} color="#0D9488" style={{ marginRight: 10 }} />
-              <TextInput
-                style={styles.inputField}
-                placeholder="Re-enter password"
-                secureTextEntry={!showConfirmPassword}
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-                placeholderTextColor="#8C9E9B"
-              />
-              <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)} style={{ padding: 4 }}>
-                <Ionicons name={showConfirmPassword ? "eye-off-outline" : "eye-outline"} size={20} color="#0D9488" />
-              </TouchableOpacity>
+            {/* Privacy Guarantee Pill */}
+            <View style={styles.privacyGuaranteePill}>
+              <Ionicons name="shield-checkmark" size={16} color="#0D9488" style={{ marginRight: 6 }} />
+              <Text style={styles.privacyGuaranteeText}>Privacy Guaranteed 🔒 Your contact details are kept secure.</Text>
             </View>
           </View>
           <View style={{ height: 20 }} />
@@ -136,7 +134,7 @@ export default function Step11() {
 
         <View style={styles.footerContainer}>
           <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
-            <Text style={styles.continueBtnText}>{t.continue} →</Text>
+            <Text style={styles.continueBtnText}>Save & Continue →</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -238,6 +236,20 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
 
+  verifiedOtpPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(13, 148, 136, 0.12)',
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  verifiedOtpText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#0D9488',
+  },
+
   glassInputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -248,11 +260,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginBottom: 10,
   },
+  disabledGlassInput: {
+    backgroundColor: 'rgba(15, 46, 43, 0.04)',
+    borderColor: 'rgba(15, 46, 43, 0.08)',
+  },
   inputField: {
     flex: 1,
     paddingVertical: 14,
     fontSize: 15,
     color: '#0F2E2B',
+  },
+
+  privacyGuaranteePill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(13, 148, 136, 0.12)',
+    borderRadius: 16,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    marginTop: 12,
+  },
+  privacyGuaranteeText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#0F2E2B',
+    flex: 1,
   },
 
   footerContainer: {
@@ -261,29 +293,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(235, 247, 245, 0.92)',
     borderTopWidth: 1,
     borderColor: 'rgba(15, 46, 43, 0.1)',
-  },
-  progressRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    marginBottom: 10,
-  },
-  progressTrackBg: {
-    flex: 1,
-    height: 6,
-    backgroundColor: 'rgba(15, 46, 43, 0.12)',
-    borderRadius: 3,
-    overflow: 'hidden',
-  },
-  progressBarFill: {
-    height: '100%',
-    backgroundColor: '#0D9488',
-    borderRadius: 3,
-  },
-  progressText: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: '#0D9488',
   },
   continueBtn: {
     backgroundColor: '#0F2E2B',
