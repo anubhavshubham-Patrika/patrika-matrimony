@@ -11,6 +11,7 @@ export default function ProfileTabScreen() {
   const router = useRouter();
   const { state, dispatch } = useApp();
   const user = state.currentUser;
+  const onboarding = state.onboardingData;
 
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
@@ -33,7 +34,7 @@ export default function ProfileTabScreen() {
             <View style={styles.avatarRow}>
               <View style={styles.photoContainer}>
                 <Image
-                  source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }}
+                  source={{ uri: onboarding?.profilePhotoURL || 'https://randomuser.me/api/portraits/men/32.jpg' }}
                   style={styles.profilePhoto}
                 />
                 <View style={styles.verifiedBadge}>
@@ -42,11 +43,11 @@ export default function ProfileTabScreen() {
               </View>
 
               <View style={styles.userTextCol}>
-                <Text style={styles.userNameText}>{user?.name || 'Arjun Singh'}</Text>
+                <Text style={styles.userNameText}>{onboarding?.name || user?.name || 'Arjun Singh'}</Text>
                 <Text style={styles.userSubText}>Profile ID: {user?.profileId || 'P001'}</Text>
                 <View style={styles.planPillBadge}>
                   <MaterialCommunityIcons name="crown" size={14} color="#D4AF37" style={{ marginRight: 4 }} />
-                  <Text style={styles.planPillText}>Gold Member</Text>
+                  <Text style={styles.planPillText}>{state.currentPlan || 'Gold'} Member</Text>
                 </View>
               </View>
             </View>
@@ -59,12 +60,12 @@ export default function ProfileTabScreen() {
               </View>
               <View style={styles.statDivider} />
               <View style={styles.statBox}>
-                <Text style={styles.statNumber}>28</Text>
+                <Text style={styles.statNumber}>{state.sentInterests?.length || 28}</Text>
                 <Text style={styles.statLabel}>Interests</Text>
               </View>
               <View style={styles.statDivider} />
               <View style={styles.statBox}>
-                <Text style={styles.statNumber}>19</Text>
+                <Text style={styles.statNumber}>{state.shortlistedProfiles?.length || 19}</Text>
                 <Text style={styles.statLabel}>Shortlists</Text>
               </View>
             </View>
@@ -77,6 +78,50 @@ export default function ProfileTabScreen() {
               <Ionicons name="create-outline" size={16} color="#FFFFFF" style={{ marginRight: 6 }} />
               <Text style={styles.editProfileText}>Edit Matrimonial Profile</Text>
             </TouchableOpacity>
+          </View>
+
+          {/* Profile Information Summary */}
+          <View style={styles.infoGlassCard}>
+            <Text style={styles.groupTitle}>Profile Summary Information</Text>
+
+            <View style={styles.detailsGrid}>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Full Name</Text>
+                <Text style={styles.gridValue}>{onboarding?.name || user?.name || 'Arjun Singh'}</Text>
+              </View>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Mobile Number</Text>
+                <Text style={styles.gridValue}>{user?.mobile || '+91-9876543210'}</Text>
+              </View>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Email Address</Text>
+                <Text style={styles.gridValue}>{user?.email || 'arjun@example.com'}</Text>
+              </View>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Profile Created For</Text>
+                <Text style={styles.gridValue}>{onboarding?.profileFor || 'Self'}</Text>
+              </View>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Mother Tongue</Text>
+                <Text style={styles.gridValue}>{onboarding?.motherTongue || 'Hindi'}</Text>
+              </View>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Religion & Caste</Text>
+                <Text style={styles.gridValue}>{onboarding?.religion || 'Hindu'} ({onboarding?.caste || 'Rajput'})</Text>
+              </View>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Resident Location</Text>
+                <Text style={styles.gridValue}>{onboarding?.residentCity || 'Jaipur'}, {onboarding?.residentState || 'Rajasthan'}</Text>
+              </View>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Highest Education</Text>
+                <Text style={styles.gridValue}>{onboarding?.education?.degree || 'B.Tech'}</Text>
+              </View>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Occupation</Text>
+                <Text style={styles.gridValue}>{onboarding?.occupation || 'Software Engineer'}</Text>
+              </View>
+            </View>
           </View>
 
           {/* Account Settings Glass List */}
@@ -152,7 +197,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 26,
     padding: 18,
-    marginBottom: 16,
+    marginBottom: 14,
     shadowColor: '#0F2E2B',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.08,
@@ -255,6 +300,41 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 14,
     fontWeight: '800',
+  },
+
+  infoGlassCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 26,
+    padding: 18,
+    marginBottom: 14,
+    shadowColor: '#0F2E2B',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.08,
+    shadowRadius: 14,
+    elevation: 3,
+  },
+
+  detailsGrid: {
+    gap: 10,
+    marginTop: 4,
+  },
+  gridItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 6,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(15, 46, 43, 0.06)',
+  },
+  gridLabel: {
+    fontSize: 13,
+    color: '#4A6B66',
+  },
+  gridValue: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#0F2E2B',
   },
 
   settingsGroupGlassCard: {

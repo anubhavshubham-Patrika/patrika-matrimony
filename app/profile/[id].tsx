@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
-  View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Image 
+  View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Image, Dimensions 
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp, Profile } from '../../src/context/AppContext';
 import MintGlassBackground from '../../src/components/MintGlassBackground';
+
+const { width } = Dimensions.get('window');
 
 export default function ProfileDetailScreen() {
   const router = useRouter();
@@ -15,6 +17,8 @@ export default function ProfileDetailScreen() {
   const profile = (profiles || []).find((p: Profile) => p.profileId === id) || profiles?.[0];
   const isShortlisted = (state.shortlistedProfiles || []).includes(profile?.profileId || '');
   const isInterestSent = (state.sentInterests || []).includes(profile?.profileId || '');
+
+  const [activePhoto, setActivePhoto] = useState<string>(profile?.profilePhotoURL || '');
 
   if (!profile) {
     return (
@@ -30,6 +34,11 @@ export default function ProfileDetailScreen() {
       </MintGlassBackground>
     );
   }
+
+  const photosList = [
+    profile.profilePhotoURL,
+    ...(profile.galleryPhotoURLs || []),
+  ].filter(Boolean);
 
   const handleInterestToggle = () => {
     dispatch({ type: 'SEND_INTEREST', payload: profile.profileId });
@@ -58,10 +67,10 @@ export default function ProfileDetailScreen() {
         </View>
 
         <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-          {/* Main Photo Glass Hero */}
+          {/* Hero Photo Container */}
           <View style={styles.heroGlassContainer}>
             <Image
-              source={{ uri: profile.profilePhotoURL || 'https://randomuser.me/api/portraits/women/44.jpg' }}
+              source={{ uri: activePhoto || profile.profilePhotoURL || 'https://randomuser.me/api/portraits/women/44.jpg' }}
               style={styles.heroPhoto}
               resizeMode="cover"
             />
@@ -71,7 +80,7 @@ export default function ProfileDetailScreen() {
               {profile.isVerified && (
                 <View style={styles.verifiedBadge}>
                   <Ionicons name="shield-checkmark" size={13} color="#0D9488" style={{ marginRight: 3 }} />
-                  <Text style={styles.verifiedText}>Verified</Text>
+                  <Text style={styles.verifiedText}>100% Verified</Text>
                 </View>
               )}
               {profile.isNewspaperAdLinked && (
@@ -83,9 +92,32 @@ export default function ProfileDetailScreen() {
             </View>
           </View>
 
-          {/* Profile Name & Primary Details Card */}
+          {/* Photo Gallery Thumbnails */}
+          {photosList.length > 1 && (
+            <View style={styles.galleryScrollWrapper}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.galleryRow}>
+                {photosList.map((url, idx) => (
+                  <TouchableOpacity
+                    key={idx}
+                    onPress={() => setActivePhoto(url)}
+                    style={[styles.thumbBox, activePhoto === url && styles.thumbBoxActive]}
+                  >
+                    <Image source={{ uri: url }} style={styles.thumbPhoto} />
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+          )}
+
+          {/* Profile Header Info Card */}
           <View style={styles.infoGlassCard}>
-            <Text style={styles.nameText}>{profile.name}, {profile.age}</Text>
+            <View style={styles.titleRow}>
+              <Text style={styles.nameText}>{profile.name}, {profile.age}</Text>
+              <View style={styles.idPill}>
+                <Text style={styles.idText}>ID: {profile.profileId}</Text>
+              </View>
+            </View>
+
             <Text style={styles.subText}>{profile.occupation} • {profile.education?.degree}</Text>
             <Text style={styles.locText}>📍 {profile.residentCity}, {profile.residentState}, {profile.country}</Text>
 
@@ -125,35 +157,198 @@ export default function ProfileDetailScreen() {
             </View>
           </View>
 
-          {/* About Section */}
+          {/* About Me & Family */}
           <View style={styles.infoGlassCard}>
             <Text style={styles.sectionTitle}>About {profile.name}</Text>
             <Text style={styles.bodyText}>
-              {profile.aboutMe || 'Looking for an understanding, educated life partner from a cultured Rajasthani family.'}
+              {profile.aboutMe || 'Looking for an understanding, educated life partner from a cultured family.'}
             </Text>
+
+            {profile.aboutFamily ? (
+              <>
+                <Text style={[styles.sectionTitle, { marginTop: 14 }]}>About Family</Text>
+                <Text style={styles.bodyText}>{profile.aboutFamily}</Text>
+              </>
+            ) : null}
           </View>
 
-          {/* Basic Details Grid */}
+          {/* Basic & Personal Details */}
           <View style={styles.infoGlassCard}>
             <Text style={styles.sectionTitle}>Basic & Personal Details</Text>
             <View style={styles.detailsGrid}>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Created For</Text>
+                <Text style={styles.gridValue}>{profile.profileFor}</Text>
+              </View>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Gender</Text>
+                <Text style={styles.gridValue}>{profile.gender}</Text>
+              </View>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Age & Height</Text>
+                <Text style={styles.gridValue}>{profile.age} Yrs, {profile.height}</Text>
+              </View>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Marital Status</Text>
+                <Text style={styles.gridValue}>{profile.maritalStatus}</Text>
+              </View>
               <View style={styles.gridItem}>
                 <Text style={styles.gridLabel}>Mother Tongue</Text>
                 <Text style={styles.gridValue}>{profile.motherTongue}</Text>
               </View>
               <View style={styles.gridItem}>
-                <Text style={styles.gridLabel}>Religion & Caste</Text>
-                <Text style={styles.gridValue}>{profile.religion} ({profile.caste})</Text>
+                <Text style={styles.gridLabel}>Physical Status</Text>
+                <Text style={styles.gridValue}>{profile.physicalStatus || 'Normal'}</Text>
+              </View>
+            </View>
+          </View>
+
+          {/* Religion & Community Details */}
+          <View style={styles.infoGlassCard}>
+            <Text style={styles.sectionTitle}>Religion & Caste</Text>
+            <View style={styles.detailsGrid}>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Religion</Text>
+                <Text style={styles.gridValue}>{profile.religion}</Text>
               </View>
               <View style={styles.gridItem}>
-                <Text style={styles.gridLabel}>Height</Text>
-                <Text style={styles.gridValue}>{profile.height}</Text>
+                <Text style={styles.gridLabel}>Caste / Community</Text>
+                <Text style={styles.gridValue}>{profile.caste}</Text>
               </View>
+              {profile.subCaste ? (
+                <View style={styles.gridItem}>
+                  <Text style={styles.gridLabel}>Sub-Caste</Text>
+                  <Text style={styles.gridValue}>{profile.subCaste}</Text>
+                </View>
+              ) : null}
+              {profile.gotra ? (
+                <View style={styles.gridItem}>
+                  <Text style={styles.gridLabel}>Gotra</Text>
+                  <Text style={styles.gridValue}>{profile.gotra}</Text>
+                </View>
+              ) : null}
               <View style={styles.gridItem}>
                 <Text style={styles.gridLabel}>Manglik Status</Text>
                 <Text style={styles.gridValue}>{profile.manglikStatus || 'Non-Manglik'}</Text>
               </View>
             </View>
+          </View>
+
+          {/* Education & Career Details */}
+          <View style={styles.infoGlassCard}>
+            <Text style={styles.sectionTitle}>Education & Career</Text>
+            <View style={styles.detailsGrid}>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Highest Degree</Text>
+                <Text style={styles.gridValue}>{profile.education?.degree}</Text>
+              </View>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Education Field</Text>
+                <Text style={styles.gridValue}>{profile.education?.field}</Text>
+              </View>
+              {profile.collegeName ? (
+                <View style={styles.gridItem}>
+                  <Text style={styles.gridLabel}>College / University</Text>
+                  <Text style={styles.gridValue}>{profile.collegeName}</Text>
+                </View>
+              ) : null}
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Employment Type</Text>
+                <Text style={styles.gridValue}>{profile.employmentType}</Text>
+              </View>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Occupation</Text>
+                <Text style={styles.gridValue}>{profile.occupation}</Text>
+              </View>
+              {profile.organizationName ? (
+                <View style={styles.gridItem}>
+                  <Text style={styles.gridLabel}>Organization</Text>
+                  <Text style={styles.gridValue}>{profile.organizationName}</Text>
+                </View>
+              ) : null}
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Annual Income</Text>
+                <Text style={styles.gridValue}>₹{profile.annualIncomeRange}</Text>
+              </View>
+            </View>
+          </View>
+
+          {/* Location & Ancestral Origin */}
+          <View style={styles.infoGlassCard}>
+            <Text style={styles.sectionTitle}>Location & Ancestral Origin</Text>
+            <View style={styles.detailsGrid}>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Resident City</Text>
+                <Text style={styles.gridValue}>{profile.residentCity}</Text>
+              </View>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Resident State</Text>
+                <Text style={styles.gridValue}>{profile.residentState}</Text>
+              </View>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Country</Text>
+                <Text style={styles.gridValue}>{profile.country}</Text>
+              </View>
+              {profile.ancestralOrigin ? (
+                <View style={styles.gridItem}>
+                  <Text style={styles.gridLabel}>Ancestral Origin</Text>
+                  <Text style={styles.gridValue}>{profile.ancestralOrigin}</Text>
+                </View>
+              ) : null}
+            </View>
+          </View>
+
+          {/* Horoscope Details */}
+          {profile.horoscope ? (
+            <View style={styles.infoGlassCard}>
+              <Text style={styles.sectionTitle}>Horoscope & Guna Details</Text>
+              <View style={styles.detailsGrid}>
+                <View style={styles.gridItem}>
+                  <Text style={styles.gridLabel}>Nakshatra / Star</Text>
+                  <Text style={styles.gridValue}>{profile.horoscope.star}</Text>
+                </View>
+                <View style={styles.gridItem}>
+                  <Text style={styles.gridLabel}>Time of Birth</Text>
+                  <Text style={styles.gridValue}>{profile.horoscope.timeOfBirth}</Text>
+                </View>
+                <View style={styles.gridItem}>
+                  <Text style={styles.gridLabel}>Place of Birth</Text>
+                  <Text style={styles.gridValue}>{profile.horoscope.placeOfBirth}</Text>
+                </View>
+              </View>
+            </View>
+          ) : null}
+
+          {/* Lifestyle & Hobbies */}
+          <View style={styles.infoGlassCard}>
+            <Text style={styles.sectionTitle}>Lifestyle & Hobbies</Text>
+            <View style={styles.detailsGrid}>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Diet</Text>
+                <Text style={styles.gridValue}>{profile.diet}</Text>
+              </View>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Smoking</Text>
+                <Text style={styles.gridValue}>{profile.smoking}</Text>
+              </View>
+              <View style={styles.gridItem}>
+                <Text style={styles.gridLabel}>Drinking</Text>
+                <Text style={styles.gridValue}>{profile.drinking}</Text>
+              </View>
+            </View>
+
+            {profile.hobbies?.length ? (
+              <>
+                <Text style={[styles.sectionTitle, { marginTop: 14 }]}>Hobbies & Interests</Text>
+                <View style={styles.chipsWrapRow}>
+                  {profile.hobbies.map((h, i) => (
+                    <View key={i} style={styles.hobbyChip}>
+                      <Text style={styles.hobbyChipText}>{h}</Text>
+                    </View>
+                  ))}
+                </View>
+              </>
+            ) : null}
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -206,7 +401,7 @@ const styles = StyleSheet.create({
     height: 320,
     borderRadius: 28,
     overflow: 'hidden',
-    marginBottom: 14,
+    marginBottom: 10,
     borderWidth: 1.5,
     borderColor: 'rgba(255, 255, 255, 0.95)',
   },
@@ -248,6 +443,29 @@ const styles = StyleSheet.create({
     color: '#E31E25',
   },
 
+  galleryScrollWrapper: {
+    marginBottom: 14,
+  },
+  galleryRow: {
+    gap: 8,
+  },
+  thumbBox: {
+    width: 64,
+    height: 64,
+    borderRadius: 14,
+    overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.7)',
+  },
+  thumbBoxActive: {
+    borderColor: '#0D9488',
+    borderWidth: 3,
+  },
+  thumbPhoto: {
+    width: '100%',
+    height: '100%',
+  },
+
   infoGlassCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderWidth: 1.5,
@@ -261,11 +479,27 @@ const styles = StyleSheet.create({
     shadowRadius: 14,
     elevation: 3,
   },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   nameText: {
     fontSize: 22,
     fontWeight: '800',
     color: '#0F2E2B',
     fontFamily: 'serif',
+  },
+  idPill: {
+    backgroundColor: 'rgba(15, 46, 43, 0.06)',
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  idText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#4A6B66',
   },
   subText: {
     fontSize: 14,
@@ -337,7 +571,7 @@ const styles = StyleSheet.create({
   },
 
   detailsGrid: {
-    gap: 12,
+    gap: 10,
     marginTop: 4,
   },
   gridItem: {
@@ -355,5 +589,23 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '700',
     color: '#0F2E2B',
+  },
+
+  chipsWrapRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginTop: 8,
+  },
+  hobbyChip: {
+    backgroundColor: 'rgba(13, 148, 136, 0.12)',
+    borderRadius: 14,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  hobbyChipText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#0D9488',
   },
 });
