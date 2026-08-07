@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
-  View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Image 
+  View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Image, Modal, TextInput, Alert 
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -13,9 +13,57 @@ export default function ProfileTabScreen() {
   const user = state.currentUser;
   const onboarding = state.onboardingData;
 
+  // Modals state
+  const [showPatrikaAdModal, setShowPatrikaAdModal] = useState(false);
+  const [showGovtIdModal, setShowGovtIdModal] = useState(false);
+
+  // Rajasthan Patrika Print Ad state
+  const [adBookingId, setAdBookingId] = useState(onboarding?.offlineAdReferenceId || 'AD-884920');
+  const [pubDate, setPubDate] = useState('12 Aug 2025');
+  const [edition, setEdition] = useState('Jaipur');
+  const [isAdLinked, setIsAdLinked] = useState(onboarding?.isNewspaperAdLinked || false);
+
+  // Govt ID & Selfie Verification state
+  const [idType, setIdType] = useState('Aadhaar Card');
+  const [idNumber, setIdNumber] = useState('XXXX-XXXX-9821');
+  const [isGovtVerified, setIsGovtVerified] = useState(onboarding?.isVerified || false);
+
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
     router.replace('/(auth)/splash');
+  };
+
+  const handleLinkPatrikaAd = () => {
+    setIsAdLinked(true);
+    dispatch({
+      type: 'UPDATE_ONBOARDING',
+      payload: {
+        isNewspaperAdLinked: true,
+        offlineAdReferenceId: adBookingId,
+      },
+    });
+    setShowPatrikaAdModal(false);
+    Alert.alert(
+      '🗞️ Print Ad Linked Successfully!',
+      `Your Rajasthan Patrika newspaper matrimonial ad (${adBookingId} - ${edition} Edition) has been linked. "Rajasthan Patrika Verified" badge is now active on your profile!`,
+      [{ text: 'Awesome! ✨' }]
+    );
+  };
+
+  const handleVerifyGovtId = () => {
+    setIsGovtVerified(true);
+    dispatch({
+      type: 'UPDATE_ONBOARDING',
+      payload: {
+        isVerified: true,
+      },
+    });
+    setShowGovtIdModal(false);
+    Alert.alert(
+      '🛡️ Verification Submitted!',
+      `Your ${idType} (${idNumber}) and Live Selfie have been verified. Green "Govt ID & Selfie Verified" trust badge is now live on your profile!`,
+      [{ text: 'Great!' }]
+    );
   };
 
   return (
@@ -37,17 +85,35 @@ export default function ProfileTabScreen() {
                   source={{ uri: onboarding?.profilePhotoURL || 'https://randomuser.me/api/portraits/men/32.jpg' }}
                   style={styles.profilePhoto}
                 />
-                <View style={styles.verifiedBadge}>
-                  <Ionicons name="checkmark-circle" size={16} color="#0D9488" />
-                </View>
+                {(isGovtVerified || isAdLinked) && (
+                  <View style={styles.verifiedBadge}>
+                    <Ionicons name="checkmark-circle" size={18} color="#0D9488" />
+                  </View>
+                )}
               </View>
 
               <View style={styles.userTextCol}>
                 <Text style={styles.userNameText}>{onboarding?.name || user?.name || 'Arjun Singh'}</Text>
                 <Text style={styles.userSubText}>Profile ID: {user?.profileId || 'P001'}</Text>
-                <View style={styles.planPillBadge}>
-                  <MaterialCommunityIcons name="crown" size={14} color="#D4AF37" style={{ marginRight: 4 }} />
-                  <Text style={styles.planPillText}>{state.currentPlan || 'Gold'} Member</Text>
+                
+                {/* Active Badges */}
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 6 }}>
+                  <View style={styles.planPillBadge}>
+                    <MaterialCommunityIcons name="crown" size={13} color="#D4AF37" style={{ marginRight: 3 }} />
+                    <Text style={styles.planPillText}>{state.currentPlan || 'Gold'}</Text>
+                  </View>
+                  {isAdLinked && (
+                    <View style={[styles.planPillBadge, { backgroundColor: '#FEE2E2', borderColor: '#FECACA' }]}>
+                      <Text style={{ fontSize: 10, marginRight: 3 }}>🗞️</Text>
+                      <Text style={[styles.planPillText, { color: '#991B1B' }]}>Patrika Ad</Text>
+                    </View>
+                  )}
+                  {isGovtVerified && (
+                    <View style={[styles.planPillBadge, { backgroundColor: '#CCFBF1', borderColor: '#99F6E4' }]}>
+                      <Text style={{ fontSize: 10, marginRight: 3 }}>🛡️</Text>
+                      <Text style={[styles.planPillText, { color: '#0F766E' }]}>ID Verified</Text>
+                    </View>
+                  )}
                 </View>
               </View>
             </View>
@@ -136,27 +202,224 @@ export default function ProfileTabScreen() {
               <View style={[styles.settingIconBadge, { backgroundColor: 'rgba(212, 175, 55, 0.15)' }]}>
                 <MaterialCommunityIcons name="crown" size={20} color="#D4AF37" />
               </View>
-              <Text style={styles.settingLabel}>Membership Plans & Upgrade</Text>
+
+              <View style={{ flex: 1 }}>
+                <Text style={styles.settingLabel}>Membership Plans & Upgrade</Text>
+                <Text style={styles.settingSubLabel}>Current Plan: {state.currentPlan || 'Gold'} (Active)</Text>
+              </View>
+
               <Ionicons name="chevron-forward" size={18} color="#8C9E9B" />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.settingRow} activeOpacity={0.85}>
+            {/* 1. Link Rajasthan Patrika Print Ad */}
+            <TouchableOpacity 
+              style={styles.settingRow} 
+              onPress={() => setShowPatrikaAdModal(true)}
+              activeOpacity={0.85}
+            >
               <View style={[styles.settingIconBadge, { backgroundColor: 'rgba(227, 30, 37, 0.12)' }]}>
                 <MaterialCommunityIcons name="newspaper-variant-outline" size={20} color="#E31E25" />
               </View>
-              <Text style={styles.settingLabel}>Link Rajasthan Patrika Print Ad</Text>
-              <Ionicons name="chevron-forward" size={18} color="#8C9E9B" />
+
+              <View style={{ flex: 1 }}>
+                <Text style={styles.settingLabel}>Link Rajasthan Patrika Print Ad</Text>
+                <Text style={styles.settingSubLabel}>
+                  {isAdLinked ? `Linked: Ref #${adBookingId}` : 'Link newspaper ad for verified responses'}
+                </Text>
+              </View>
+
+              {isAdLinked ? (
+                <View style={styles.activeCheckPill}>
+                  <Text style={styles.activeCheckText}>Linked ✓</Text>
+                </View>
+              ) : (
+                <Ionicons name="chevron-forward" size={18} color="#8C9E9B" />
+              )}
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.settingRow} activeOpacity={0.85}>
+            {/* 2. Govt ID & Selfie Verification */}
+            <TouchableOpacity 
+              style={styles.settingRow} 
+              onPress={() => setShowGovtIdModal(true)}
+              activeOpacity={0.85}
+            >
               <View style={[styles.settingIconBadge, { backgroundColor: 'rgba(13, 148, 136, 0.15)' }]}>
                 <Ionicons name="shield-checkmark-outline" size={20} color="#0D9488" />
               </View>
-              <Text style={styles.settingLabel}>Govt ID & Selfie Verification</Text>
-              <Ionicons name="chevron-forward" size={18} color="#8C9E9B" />
+
+              <View style={{ flex: 1 }}>
+                <Text style={styles.settingLabel}>Govt ID & Selfie Verification</Text>
+                <Text style={styles.settingSubLabel}>
+                  {isGovtVerified ? 'Govt ID & Selfie Verified 🛡️' : 'Upload ID & Selfie for 100% Trust Badge'}
+                </Text>
+              </View>
+
+              {isGovtVerified ? (
+                <View style={[styles.activeCheckPill, { backgroundColor: '#CCFBF1' }]}>
+                  <Text style={[styles.activeCheckText, { color: '#0F766E' }]}>Verified ✓</Text>
+                </View>
+              ) : (
+                <Ionicons name="chevron-forward" size={18} color="#8C9E9B" />
+              )}
             </TouchableOpacity>
           </View>
         </ScrollView>
+
+        {/* MODAL 1: LINK RAJASTHAN PATRIKA PRINT AD */}
+        <Modal visible={showPatrikaAdModal} animationType="slide" transparent>
+          <View style={styles.modalBackdrop}>
+            <View style={styles.modalGlassCard}>
+              <View style={styles.modalHeader}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ fontSize: 24, marginRight: 8 }}>🗞️</Text>
+                  <View>
+                    <Text style={styles.modalTitle}>Link Patrika Print Ad</Text>
+                    <Text style={styles.modalSubTitle}>Rajasthan Patrika Newspaper Integration</Text>
+                  </View>
+                </View>
+                <TouchableOpacity onPress={() => setShowPatrikaAdModal(false)}>
+                  <Ionicons name="close" size={24} color="#0F2E2B" />
+                </TouchableOpacity>
+              </View>
+
+              <ScrollView style={{ maxHeight: 360 }} showsVerticalScrollIndicator={false}>
+                <Text style={styles.inputLabel}>Ad Receipt / Booking Reference ID</Text>
+                <View style={styles.glassInputBox}>
+                  <MaterialCommunityIcons name="barcode-scan" size={20} color="#E31E25" style={{ marginRight: 10 }} />
+                  <TextInput
+                    style={styles.modalInput}
+                    value={adBookingId}
+                    onChangeText={setAdBookingId}
+                    placeholder="e.g. AD-884920"
+                    placeholderTextColor="#8C9E9B"
+                  />
+                </View>
+
+                <Text style={styles.inputLabel}>Newspaper Edition</Text>
+                <View style={styles.editionChipsRow}>
+                  {['Jaipur', 'Jodhpur', 'Udaipur', 'Kota', 'Ajmer', 'Bikaner', 'Delhi'].map((ed) => (
+                    <TouchableOpacity
+                      key={ed}
+                      style={[styles.editionChip, edition === ed && styles.editionChipSelected]}
+                      onPress={() => setEdition(ed)}
+                    >
+                      <Text style={[styles.editionChipText, edition === ed && styles.editionChipTextSelected]}>{ed}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+
+                <Text style={styles.inputLabel}>Publication Date</Text>
+                <View style={styles.glassInputBox}>
+                  <MaterialCommunityIcons name="calendar-range" size={20} color="#E31E25" style={{ marginRight: 10 }} />
+                  <TextInput
+                    style={styles.modalInput}
+                    value={pubDate}
+                    onChangeText={setPubDate}
+                    placeholder="e.g. 12 Aug 2025"
+                    placeholderTextColor="#8C9E9B"
+                  />
+                </View>
+
+                <View style={styles.adInfoBanner}>
+                  <Text style={{ fontSize: 16, marginRight: 8 }}>💡</Text>
+                  <Text style={styles.adInfoBannerText}>
+                    Linking your classified print ad displays your profile to readers who saw your advertisement in Rajasthan Patrika newspaper.
+                  </Text>
+                </View>
+              </ScrollView>
+
+              <TouchableOpacity 
+                style={styles.linkAdBtn} 
+                onPress={handleLinkPatrikaAd}
+                activeOpacity={0.88}
+              >
+                <Text style={styles.linkAdBtnText}>Link Print Ad & Activate Badge 🗞️</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+        {/* MODAL 2: GOVT ID & SELFIE VERIFICATION */}
+        <Modal visible={showGovtIdModal} animationType="slide" transparent>
+          <View style={styles.modalBackdrop}>
+            <View style={styles.modalGlassCard}>
+              <View style={styles.modalHeader}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ fontSize: 24, marginRight: 8 }}>🛡️</Text>
+                  <View>
+                    <Text style={styles.modalTitle}>Govt ID & Selfie Verification</Text>
+                    <Text style={styles.modalSubTitle}>AI Facial & Document Verification</Text>
+                  </View>
+                </View>
+                <TouchableOpacity onPress={() => setShowGovtIdModal(false)}>
+                  <Ionicons name="close" size={24} color="#0F2E2B" />
+                </TouchableOpacity>
+              </View>
+
+              <ScrollView style={{ maxHeight: 380 }} showsVerticalScrollIndicator={false}>
+                <Text style={styles.inputLabel}>Select Govt ID Document</Text>
+                <View style={styles.editionChipsRow}>
+                  {['Aadhaar Card', 'PAN Card', 'Driving License', 'Passport', 'Voter ID'].map((doc) => (
+                    <TouchableOpacity
+                      key={doc}
+                      style={[styles.editionChip, idType === doc && styles.editionChipSelected]}
+                      onPress={() => setIdType(doc)}
+                    >
+                      <Text style={[styles.editionChipText, idType === doc && styles.editionChipTextSelected]}>{doc}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+
+                <Text style={styles.inputLabel}>Document Number</Text>
+                <View style={styles.glassInputBox}>
+                  <MaterialCommunityIcons name="card-text-outline" size={20} color="#0D9488" style={{ marginRight: 10 }} />
+                  <TextInput
+                    style={styles.modalInput}
+                    value={idNumber}
+                    onChangeText={setIdNumber}
+                    placeholder="Enter document number"
+                    placeholderTextColor="#8C9E9B"
+                  />
+                </View>
+
+                {/* Upload Triggers Row */}
+                <View style={styles.uploadTriggersRow}>
+                  <TouchableOpacity 
+                    style={styles.uploadBoxBtn} 
+                    onPress={() => Alert.alert('📄 Document Upload', 'Front page of Govt ID selected successfully!')}
+                  >
+                    <MaterialCommunityIcons name="file-document-outline" size={24} color="#0D9488" />
+                    <Text style={styles.uploadBoxText}>Upload Front ID</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity 
+                    style={styles.uploadBoxBtn}
+                    onPress={() => Alert.alert('🤳 Selfie Captured', 'Live facial selfie matched 98.4% with ID photo!')}
+                  >
+                    <MaterialCommunityIcons name="camera-account" size={24} color="#0D9488" />
+                    <Text style={styles.uploadBoxText}>Live Selfie Match</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={[styles.adInfoBanner, { backgroundColor: 'rgba(13, 148, 136, 0.12)' }]}>
+                  <Text style={{ fontSize: 16, marginRight: 8 }}>🔒</Text>
+                  <Text style={styles.adInfoBannerText}>
+                    Your documents are stored with 256-bit AES encryption and are never shown publicly on your profile.
+                  </Text>
+                </View>
+              </ScrollView>
+
+              <TouchableOpacity 
+                style={[styles.linkAdBtn, { backgroundColor: '#0D9488' }]} 
+                onPress={handleVerifyGovtId}
+                activeOpacity={0.88}
+              >
+                <Text style={styles.linkAdBtnText}>Submit & Get Verified Badge 🛡️</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
       </SafeAreaView>
     </MintGlassBackground>
   );
@@ -244,14 +507,12 @@ const styles = StyleSheet.create({
   planPillBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'flex-start',
     backgroundColor: '#FFFBEB',
     borderWidth: 1,
     borderColor: '#FEF08A',
     borderRadius: 14,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    marginTop: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
   },
   planPillText: {
     fontSize: 11,
@@ -367,9 +628,162 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   settingLabel: {
-    flex: 1,
     fontSize: 14,
     fontWeight: '700',
     color: '#0F2E2B',
+  },
+  settingSubLabel: {
+    fontSize: 11,
+    color: '#4A6B66',
+    marginTop: 2,
+  },
+  activeCheckPill: {
+    backgroundColor: '#FEE2E2',
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  activeCheckText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#991B1B',
+  },
+
+  /* Modals Styling */
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'flex-end',
+  },
+  modalGlassCard: {
+    backgroundColor: '#F3FAF8',
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    padding: 20,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.9)',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#0F2E2B',
+    fontFamily: 'serif',
+  },
+  modalSubTitle: {
+    fontSize: 12,
+    color: '#0D9488',
+    fontWeight: '700',
+    marginTop: 2,
+  },
+
+  inputLabel: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: '#0F2E2B',
+    marginTop: 12,
+    marginBottom: 6,
+  },
+  glassInputBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 16,
+    paddingHorizontal: 14,
+    borderWidth: 1.5,
+    borderColor: 'rgba(15, 46, 43, 0.12)',
+  },
+  modalInput: {
+    flex: 1,
+    paddingVertical: 12,
+    fontSize: 14,
+    color: '#0F2E2B',
+  },
+
+  editionChipsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 4,
+  },
+  editionChip: {
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 14,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(15, 46, 43, 0.15)',
+  },
+  editionChipSelected: {
+    backgroundColor: '#0F2E2B',
+    borderColor: '#0F2E2B',
+  },
+  editionChipText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#4A6B66',
+  },
+  editionChipTextSelected: {
+    color: '#FFFFFF',
+  },
+
+  adInfoBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(227, 30, 37, 0.08)',
+    borderRadius: 16,
+    padding: 12,
+    marginTop: 14,
+  },
+  adInfoBannerText: {
+    fontSize: 12,
+    color: '#0F2E2B',
+    flex: 1,
+    lineHeight: 16,
+  },
+
+  uploadTriggersRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 12,
+  },
+  uploadBoxBtn: {
+    flex: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 16,
+    padding: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1.5,
+    borderColor: 'rgba(13, 148, 136, 0.25)',
+  },
+  uploadBoxText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#0F2E2B',
+    marginTop: 6,
+  },
+
+  linkAdBtn: {
+    backgroundColor: '#E31E25',
+    borderRadius: 22,
+    paddingVertical: 14,
+    alignItems: 'center',
+    marginTop: 16,
+    shadowColor: '#E31E25',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  linkAdBtnText: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: '800',
   },
 });
