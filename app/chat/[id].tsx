@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {
-  View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity,
-  SafeAreaView, Image, KeyboardAvoidingView, Platform, StatusBar, ScrollView
-} from 'react-native';
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Image, KeyboardAvoidingView, Platform, StatusBar, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useApp } from '../../src/context/AppContext';

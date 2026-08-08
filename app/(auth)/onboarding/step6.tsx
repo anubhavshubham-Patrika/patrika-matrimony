@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import PremiumButton from '../../../src/components/ui/PremiumButton';
 import PremiumCard from '../../../src/components/ui/PremiumCard';
 import { Typography } from '../../../src/constants/theme';
-import { 
-  View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, TextInput, Modal 
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput, Modal } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp } from '../../../src/context/AppContext';

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { 
-  View, Text, StyleSheet, TouchableOpacity, Animated, Dimensions, SafeAreaView, Easing, Platform 
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Animated, Dimensions, Easing, Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Typography, Spacing } from '../../src/constants/theme';

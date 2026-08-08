@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { 
-  View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, FlatList
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp, Profile } from '../../src/context/AppContext';
