@@ -4,395 +4,229 @@ import {
   KeyboardAvoidingView, Platform, ScrollView 
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useApp } from '../../src/context/AppContext';
+import { Ionicons } from '@expo/vector-icons';
+import { Colors, Typography, Spacing, BorderRadius, Shadow } from '../../src/constants/theme';
 import PatrikaRibbonLogo from '../../src/components/PatrikaRibbonLogo';
-import MintGlassBackground from '../../src/components/MintGlassBackground';
+import PremiumButton from '../../src/components/ui/PremiumButton';
 
 export default function LoginScreen() {
   const router = useRouter();
-  const { state, dispatch } = useApp();
-  const lang = state.language || 'en';
-
-  const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
-
-  const toggleLanguage = () => {
-    dispatch({ type: 'SET_LANGUAGE', payload: lang === 'en' ? 'hi' : 'en' });
-  };
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   const handleLoginSubmit = () => {
     router.push({
       pathname: '/(auth)/otp',
-      params: { contact: identifier || '+91-9876543210' },
+      params: { contact: phoneNumber || '9876543210' },
     });
   };
 
   return (
-    <MintGlassBackground>
-      <SafeAreaView style={styles.safeArea}>
-        {/* Top Header Bar */}
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-            <Ionicons name="arrow-back" size={22} color="#0F2E2B" />
-          </TouchableOpacity>
-
-          <View style={styles.headerBrandRow}>
-            <PatrikaRibbonLogo size={28} />
-            <Text style={styles.headerTitle}>Patrika Matrimony</Text>
+    <SafeAreaView style={styles.safeArea}>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+        style={styles.flexOne}
+      >
+        <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+          
+          {/* Header */}
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+              <Ionicons name="arrow-back" size={24} color={Colors.text} />
+            </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={styles.langPillBtn} onPress={toggleLanguage} activeOpacity={0.8}>
-            <Ionicons name="globe-outline" size={14} color="#0D9488" style={{ marginRight: 3 }} />
-            <Text style={styles.langPillText}>{lang === 'en' ? 'EN' : 'HI'}</Text>
+          {/* Logo & Intro */}
+          <View style={styles.introContainer}>
+            <PatrikaRibbonLogo size={48} />
+            <Text style={styles.welcomeTitle}>Welcome back.</Text>
+            <Text style={styles.welcomeSub}>
+              Your next meaningful connection could be closer than you think.
+            </Text>
+          </View>
+
+          {/* Form */}
+          <View style={styles.formContainer}>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.inputPrefix}>+91</Text>
+              <TextInput
+                style={styles.inputField}
+                placeholder="Enter mobile number"
+                keyboardType="phone-pad"
+                value={phoneNumber}
+                onChangeText={setPhoneNumber}
+                placeholderTextColor={Colors.textMuted}
+                maxLength={10}
+              />
+            </View>
+
+            <PremiumButton 
+              title="Continue" 
+              variant="premium"
+              onPress={handleLoginSubmit} 
+              icon="arrow-forward"
+              iconPosition="right"
+              style={{ marginTop: Spacing.xl }}
+            />
+
+            {/* Divider OR */}
+            <View style={styles.dividerRow}>
+              <View style={styles.dividerLine} />
+              <Text style={styles.dividerText}>OR CONTINUE WITH</Text>
+              <View style={styles.dividerLine} />
+            </View>
+
+            {/* Social Buttons */}
+            <View style={styles.socialRow}>
+              <TouchableOpacity style={styles.socialBtn} activeOpacity={0.8}>
+                <Ionicons name="logo-google" size={20} color="#EA4335" />
+                <Text style={styles.socialBtnText}>Google</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.socialBtn} activeOpacity={0.8}>
+                <Ionicons name="logo-apple" size={20} color={Colors.text} />
+                <Text style={styles.socialBtnText}>Apple</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+        </ScrollView>
+        
+        {/* Bottom Footer */}
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>New here? </Text>
+          <TouchableOpacity onPress={() => router.push('/(auth)/onboarding/step1')}>
+            <Text style={styles.footerLink}>Create account</Text>
           </TouchableOpacity>
         </View>
 
-        <KeyboardAvoidingView 
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
-          style={styles.flexOne}
-        >
-          <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-            {/* Glassmorphic Container Card */}
-            <View style={styles.glassCardContainer}>
-              {/* Glowing Vector Icon Emblem Badge */}
-              <View style={styles.topVectorEmblemWrapper}>
-                <View style={styles.glowingVectorCircle}>
-                  <MaterialCommunityIcons name="heart-flash" size={32} color="#FFFFFF" />
-                </View>
-              </View>
-
-              {/* Welcome Headline */}
-              <View style={styles.topIntro}>
-                <Text style={styles.welcomeTitle}>Welcome Back</Text>
-                <Text style={styles.welcomeSub}>Enter your email or mobile to log in to your account</Text>
-              </View>
-
-              {/* Login Form */}
-              <View style={styles.formContainer}>
-                {/* Field 1: Email or Mobile */}
-                <Text style={styles.inputLabel}>Email or Phone Number</Text>
-                <View style={styles.glassInputWrapper}>
-                  <MaterialCommunityIcons name="email-outline" size={20} color="#0D9488" style={styles.inputIcon} />
-                  <TextInput
-                    style={styles.inputField}
-                    placeholder="Enter your email or phone"
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    value={identifier}
-                    onChangeText={setIdentifier}
-                    placeholderTextColor="#8C9E9B"
-                  />
-                </View>
-
-                {/* Field 2: Password */}
-                <Text style={styles.inputLabel}>Password</Text>
-                <View style={styles.glassInputWrapper}>
-                  <MaterialCommunityIcons name="lock-outline" size={20} color="#0D9488" style={styles.inputIcon} />
-                  <TextInput
-                    style={styles.inputField}
-                    placeholder="Enter password"
-                    secureTextEntry={!showPassword}
-                    value={password}
-                    onChangeText={setPassword}
-                    placeholderTextColor="#8C9E9B"
-                  />
-                  <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIconBtn}>
-                    <Ionicons name={showPassword ? "eye-off-outline" : "eye-outline"} size={20} color="#0D9488" />
-                  </TouchableOpacity>
-                </View>
-
-                {/* Remember Me & Forgot Password Row */}
-                <View style={styles.rememberRow}>
-                  <TouchableOpacity 
-                    style={styles.checkboxContainer} 
-                    onPress={() => setRememberMe(!rememberMe)}
-                    activeOpacity={0.8}
-                  >
-                    <View style={[styles.customCheckbox, rememberMe && styles.customCheckboxChecked]}>
-                      {rememberMe && <Ionicons name="checkmark" size={14} color="#FFFFFF" />}
-                    </View>
-                    <Text style={styles.rememberText}>Keep me logged in</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity activeOpacity={0.7}>
-                    <Text style={styles.forgotPasswordText}>Forget password?</Text>
-                  </TouchableOpacity>
-                </View>
-
-                {/* Primary Action Button */}
-                <TouchableOpacity style={styles.primaryButton} onPress={handleLoginSubmit} activeOpacity={0.88}>
-                  <Text style={styles.primaryButtonText}>Log In</Text>
-                </TouchableOpacity>
-
-                {/* Divider OR */}
-                <View style={styles.dividerRow}>
-                  <View style={styles.dividerLine} />
-                  <Text style={styles.dividerText}>or</Text>
-                  <View style={styles.dividerLine} />
-                </View>
-
-                {/* Glass Social Buttons Row */}
-                <View style={styles.socialRow}>
-                  <TouchableOpacity style={styles.socialGlassBtn} activeOpacity={0.85}>
-                    <Ionicons name="logo-google" size={18} color="#EA4335" style={{ marginRight: 6 }} />
-                    <Text style={styles.socialBtnText}>Google</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity style={styles.socialGlassBtn} activeOpacity={0.85}>
-                    <Ionicons name="logo-apple" size={18} color="#0F2E2B" style={{ marginRight: 6 }} />
-                    <Text style={styles.socialBtnText}>Apple</Text>
-                  </TouchableOpacity>
-                </View>
-
-                {/* Bottom Create Profile Prompt */}
-                <View style={styles.createAccountRow}>
-                  <Text style={styles.createAccountText}>Don't have an account? </Text>
-                  <TouchableOpacity onPress={() => router.push('/(auth)/onboarding/step1')}>
-                    <Text style={styles.createAccountBold}>Create a new account</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </MintGlassBackground>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    backgroundColor: Colors.background,
   },
   flexOne: {
     flex: 1,
   },
+  scrollContent: {
+    padding: Spacing['2xl'],
+    flexGrow: 1,
+  },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    marginBottom: Spacing['2xl'],
   },
   backButton: {
-    padding: 6,
+    width: 40,
+    height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-  },
-  headerBrandRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#0F2E2B',
-    fontFamily: 'serif',
-  },
-  langPillBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.95)',
-    borderRadius: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  },
-  langPillText: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: '#0F2E2B',
-  },
-  scrollContent: {
-    padding: 20,
-    paddingBottom: 40,
-  },
-  glassCardContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.95)',
-    borderRadius: 28,
-    padding: 24,
-    shadowColor: '#0F2E2B',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
-    elevation: 4,
-  },
-  topVectorEmblemWrapper: {
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  glowingVectorCircle: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#0F2E2B',
+    backgroundColor: Colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#0F2E2B',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.25,
-    shadowRadius: 12,
-    elevation: 6,
+    ...Shadow.sm,
   },
-  topIntro: {
-    alignItems: 'center',
-    marginBottom: 24,
+  introContainer: {
+    alignItems: 'flex-start',
+    marginBottom: Spacing['4xl'],
   },
   welcomeTitle: {
-    fontSize: 26,
-    fontWeight: '800',
-    color: '#0F2E2B',
-    fontFamily: 'serif',
-    textAlign: 'center',
+    fontFamily: Typography.fontFamily.serif,
+    fontSize: Typography.sizes['3xl'],
+    color: Colors.text,
+    marginTop: Spacing.xl,
+    marginBottom: Spacing.sm,
   },
   welcomeSub: {
-    fontSize: 13,
-    color: '#4A6B66',
-    marginTop: 6,
-    textAlign: 'center',
-    lineHeight: 18,
+    fontFamily: Typography.fontFamily.sans,
+    fontSize: Typography.sizes.base,
+    color: Colors.textSecondary,
+    lineHeight: 24,
   },
   formContainer: {
     width: '100%',
   },
-  inputLabel: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#0F2E2B',
-    marginBottom: 8,
-  },
-  glassInputWrapper: {
+  inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(15, 46, 43, 0.12)',
-    borderRadius: 18,
-    paddingHorizontal: 16,
-    marginBottom: 18,
+    backgroundColor: Colors.surface,
+    borderRadius: BorderRadius.xl,
+    height: 64,
+    paddingHorizontal: Spacing.xl,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    ...Shadow.sm,
   },
-  inputIcon: {
-    marginRight: 10,
+  inputPrefix: {
+    fontFamily: Typography.fontFamily.sansMedium,
+    fontSize: Typography.sizes.lg,
+    color: Colors.text,
+    marginRight: Spacing.sm,
   },
   inputField: {
     flex: 1,
-    paddingVertical: 14,
-    fontSize: 15,
-    color: '#0F2E2B',
-  },
-  eyeIconBtn: {
-    padding: 8,
-  },
-  rememberRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 24,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  customCheckbox: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    borderWidth: 1.5,
-    borderColor: '#8C9E9B',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 8,
-    backgroundColor: 'transparent',
-  },
-  customCheckboxChecked: {
-    backgroundColor: '#0F2E2B',
-    borderColor: '#0F2E2B',
-  },
-  rememberText: {
-    fontSize: 13,
-    color: '#4A6B66',
-    fontWeight: '500',
-  },
-  forgotPasswordText: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#0D9488',
-    textDecorationLine: 'underline',
-  },
-  primaryButton: {
-    backgroundColor: '#0F2E2B',
-    paddingVertical: 16,
-    borderRadius: 24,
-    alignItems: 'center',
-    shadowColor: '#0F2E2B',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.25,
-    shadowRadius: 14,
-    elevation: 6,
-    marginBottom: 20,
-  },
-  primaryButtonText: {
-    color: '#FFFFFF',
-    fontSize: 17,
-    fontWeight: '800',
+    fontFamily: Typography.fontFamily.sans,
+    fontSize: Typography.sizes.lg,
+    color: Colors.text,
+    height: '100%',
   },
   dividerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 18,
+    marginVertical: Spacing['3xl'],
   },
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: 'rgba(15, 46, 43, 0.12)',
+    backgroundColor: Colors.border,
   },
   dividerText: {
-    fontSize: 12,
-    color: '#8C9E9B',
-    marginHorizontal: 12,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.sansMedium,
+    fontSize: Typography.sizes.xs,
+    color: Colors.textMuted,
+    marginHorizontal: Spacing.lg,
+    letterSpacing: 1,
   },
   socialRow: {
     flexDirection: 'row',
-    gap: 12,
-    marginBottom: 24,
+    justifyContent: 'space-between',
+    gap: Spacing.base,
   },
-  socialGlassBtn: {
+  socialBtn: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(15, 46, 43, 0.12)',
-    borderRadius: 20,
-    paddingVertical: 12,
+    backgroundColor: Colors.surface,
+    height: 56,
+    borderRadius: BorderRadius.xl,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    gap: Spacing.sm,
+    ...Shadow.sm,
   },
   socialBtnText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#0F2E2B',
+    fontFamily: Typography.fontFamily.sansMedium,
+    fontSize: Typography.sizes.md,
+    color: Colors.text,
   },
-  createAccountRow: {
+  footer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: Spacing['2xl'],
+    paddingBottom: Platform.OS === 'ios' ? Spacing['3xl'] : Spacing['2xl'],
   },
-  createAccountText: {
-    fontSize: 13,
-    color: '#4A6B66',
+  footerText: {
+    fontFamily: Typography.fontFamily.sans,
+    fontSize: Typography.sizes.md,
+    color: Colors.textSecondary,
   },
-  createAccountBold: {
-    fontSize: 13,
-    fontWeight: '800',
-    color: '#0D9488',
-    textDecorationLine: 'underline',
+  footerLink: {
+    fontFamily: Typography.fontFamily.sansBold,
+    fontSize: Typography.sizes.md,
+    color: Colors.primary,
   },
 });

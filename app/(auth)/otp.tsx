@@ -1,36 +1,61 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
-  View, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Platform 
+  View, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Platform, Animated
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { useApp } from '../../src/context/AppContext';
-import MintGlassBackground from '../../src/components/MintGlassBackground';
+import { Colors, Typography, Spacing, BorderRadius, Shadow } from '../../src/constants/theme';
+import PremiumButton from '../../src/components/ui/PremiumButton';
 
 export default function OtpScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const { dispatch } = useApp();
-  const contact = params.contact || '+91-9876543210';
+  const contact = params.contact || '+91 XXXXX XXXXX';
 
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const [timer, setTimer] = useState(30);
+  const [timer, setTimer] = useState(28);
   const inputs = useRef<Array<TextInput | null>>([]);
+  const scaleAnims = useRef(otp.map(() => new Animated.Value(1))).current;
 
   useEffect(() => {
+    // Auto focus first input
+    setTimeout(() => {
+      inputs.current[0]?.focus();
+    }, 500);
+
     const interval = setInterval(() => {
       setTimer((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
     return () => clearInterval(interval);
   }, []);
 
+  const animateInput = (index: number) => {
+    Animated.sequence([
+      Animated.timing(scaleAnims[index], {
+        toValue: 1.1,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleAnims[index], {
+        toValue: 1,
+        duration: 150,
+        useNativeDriver: true,
+      })
+    ]).start();
+  };
+
   const handleChange = (text: string, index: number) => {
     const newOtp = [...otp];
     newOtp[index] = text;
     setOtp(newOtp);
 
-    if (text && index < 5) {
-      inputs.current[index + 1]?.focus();
+    if (text) {
+      animateInput(index);
+      if (index < 5) {
+        inputs.current[index + 1]?.focus();
+      }
     }
   };
 
@@ -52,55 +77,39 @@ export default function OtpScreen() {
       },
     });
 
+    // Go to "Profile Ready" or Home depending on onboarding status
+    // For now we assume they go to Home
     router.replace('/(tabs)/home');
   };
 
+  const formattedTimer = `00:${timer.toString().padStart(2, '0')}`;
+
   return (
-    <MintGlassBackground>
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => router.back()} style={styles.headerBtn}>
-            <Ionicons name="arrow-back" size={22} color="#0F2E2B" />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Verification</Text>
-          <TouchableOpacity onPress={() => router.replace('/(auth)/login')} style={styles.headerBtn}>
-            <Ionicons name="close" size={22} color="#0F2E2B" />
-          </TouchableOpacity>
-        </View>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color={Colors.text} />
+        </TouchableOpacity>
+      </View>
 
-        <KeyboardAvoidingView 
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.container}
-        >
-          {/* Glass Card Container */}
-          <View style={styles.glassCard}>
-            {/* Glowing Shield Emblem */}
-            <View style={styles.badgeWrapper}>
-              <View style={styles.outerGlowCircle}>
-                <View style={styles.innerBadge}>
-                  <MaterialCommunityIcons name="shield-lock-outline" size={32} color="#FFFFFF" />
-                </View>
-              </View>
-            </View>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}
+      >
+        <View style={styles.content}>
+          <Text style={styles.mainTitle}>Verify your number</Text>
+          <Text style={styles.subTitle}>
+            We've sent a 6-digit code to {contact}
+          </Text>
 
-            {/* Title & Subtitle */}
-            <View style={styles.textContainer}>
-              <Text style={styles.mainTitle}>Verification Code</Text>
-              <Text style={styles.subTitle}>Enter the 6-digit OTP code sent to verify your account</Text>
-              
-              <View style={styles.contactGlassBadge}>
-                <Text style={styles.contactText}>{contact}</Text>
-              </View>
-            </View>
-
-            {/* 6 Digit Glass Input Boxes */}
-            <View style={styles.otpRow}>
-              {otp.map((digit, index) => (
+          {/* OTP Inputs */}
+          <View style={styles.otpRow}>
+            {otp.map((digit, index) => (
+              <Animated.View key={index} style={{ transform: [{ scale: scaleAnims[index] }] }}>
                 <TextInput
-                  key={index}
                   ref={(ref) => { inputs.current[index] = ref; }}
                   style={[
-                    styles.otpGlassBox,
+                    styles.otpBox,
                     digit ? styles.otpBoxFilled : null,
                     index === otp.findIndex((val) => val === '') ? styles.otpBoxActive : null,
                   ]}
@@ -110,190 +119,126 @@ export default function OtpScreen() {
                   onChangeText={(text) => handleChange(text, index)}
                   onKeyPress={(e) => handleKeyPress(e, index)}
                 />
-              ))}
-            </View>
-
-            {/* Resend Code Section */}
-            <View style={styles.resendContainer}>
-              {timer > 0 ? (
-                <Text style={styles.timerText}>Didn't receive code? Resend in <Text style={styles.timerBold}>{timer}s</Text></Text>
-              ) : (
-                <TouchableOpacity style={styles.resendGlassBtn} onPress={() => setTimer(30)}>
-                  <Text style={styles.resendGlassText}>Send Code Again</Text>
-                </TouchableOpacity>
-              )}
-            </View>
-
-            {/* Primary Action Button */}
-            <TouchableOpacity style={styles.submitBtn} onPress={handleVerify} activeOpacity={0.88}>
-              <Text style={styles.submitBtnText}>Submit & Continue →</Text>
-            </TouchableOpacity>
+              </Animated.View>
+            ))}
           </View>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </MintGlassBackground>
+
+          {/* Resend Section */}
+          <View style={styles.resendContainer}>
+            {timer > 0 ? (
+              <Text style={styles.resendText}>
+                Resend in <Text style={styles.timerBold}>{formattedTimer}</Text>
+              </Text>
+            ) : (
+              <Text style={styles.resendText}>
+                Didn't receive it?{' '}
+                <Text style={styles.resendLink} onPress={() => setTimer(28)}>
+                  Resend OTP
+                </Text>
+              </Text>
+            )}
+          </View>
+        </View>
+
+        <View style={styles.footer}>
+          <PremiumButton 
+            title="Verify & Continue" 
+            variant="primary"
+            onPress={handleVerify}
+            icon="arrow-forward"
+            iconPosition="right"
+          />
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    backgroundColor: Colors.background,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingHorizontal: Spacing['2xl'],
+    paddingTop: Spacing.xl,
+    paddingBottom: Spacing.md,
   },
-  headerBtn: {
-    padding: 6,
+  backButton: {
+    width: 40,
+    height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#0F2E2B',
-    fontFamily: 'serif',
+    backgroundColor: Colors.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Shadow.sm,
   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-  glassCard: {
-    width: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.95)',
-    borderRadius: 28,
-    padding: 24,
-    alignItems: 'center',
-    shadowColor: '#0F2E2B',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
-    elevation: 4,
-  },
-  badgeWrapper: {
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  outerGlowCircle: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
-    backgroundColor: 'rgba(13, 148, 136, 0.12)',
-    borderWidth: 1,
-    borderColor: 'rgba(13, 148, 136, 0.25)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  innerBadge: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: '#0F2E2B',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  textContainer: {
-    alignItems: 'center',
-    marginBottom: 24,
+  content: {
+    flex: 1,
+    paddingHorizontal: Spacing['2xl'],
+    paddingTop: Spacing['3xl'],
   },
   mainTitle: {
-    fontSize: 24,
-    fontWeight: '800',
-    color: '#0F2E2B',
-    fontFamily: 'serif',
-    marginBottom: 6,
+    fontFamily: Typography.fontFamily.serif,
+    fontSize: Typography.sizes['3xl'],
+    color: Colors.text,
+    marginBottom: Spacing.sm,
   },
   subTitle: {
-    fontSize: 13,
-    color: '#4A6B66',
-    textAlign: 'center',
-    lineHeight: 18,
-    marginBottom: 10,
-  },
-  contactGlassBadge: {
-    backgroundColor: 'rgba(13, 148, 136, 0.12)',
-    borderRadius: 16,
-    paddingHorizontal: 14,
-    paddingVertical: 5,
-  },
-  contactText: {
-    fontSize: 14,
-    fontWeight: '800',
-    color: '#0D9488',
+    fontFamily: Typography.fontFamily.sans,
+    fontSize: Typography.sizes.base,
+    color: Colors.textSecondary,
+    lineHeight: 24,
+    marginBottom: Spacing['3xl'],
   },
   otpRow: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 8,
-    marginBottom: 24,
+    justifyContent: 'space-between',
+    marginBottom: Spacing['3xl'],
   },
-  otpGlassBox: {
-    width: 44,
-    height: 52,
+  otpBox: {
+    width: 50,
+    height: 60,
+    borderRadius: BorderRadius.lg,
+    backgroundColor: Colors.surface,
     borderWidth: 1.5,
-    borderColor: 'rgba(15, 46, 43, 0.14)',
-    borderRadius: 14,
+    borderColor: Colors.border,
     textAlign: 'center',
-    fontSize: 22,
-    fontWeight: '800',
-    color: '#0F2E2B',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    fontSize: Typography.sizes['2xl'],
+    fontFamily: Typography.fontFamily.sansBold,
+    color: Colors.text,
+    ...Shadow.sm,
   },
   otpBoxFilled: {
-    borderColor: '#0D9488',
-    backgroundColor: 'rgba(13, 148, 136, 0.12)',
+    borderColor: Colors.primaryLight,
+    backgroundColor: Colors.surface,
   },
   otpBoxActive: {
-    borderColor: '#0F2E2B',
-    borderWidth: 2,
+    borderColor: Colors.gold,
+    backgroundColor: Colors.surface,
   },
   resendContainer: {
     alignItems: 'center',
-    marginBottom: 24,
+    marginTop: Spacing.md,
   },
-  timerText: {
-    fontSize: 13,
-    color: '#4A6B66',
+  resendText: {
+    fontFamily: Typography.fontFamily.sans,
+    fontSize: Typography.sizes.md,
+    color: Colors.textSecondary,
   },
   timerBold: {
-    fontWeight: '800',
-    color: '#0D9488',
+    fontFamily: Typography.fontFamily.sansBold,
+    color: Colors.text,
   },
-  resendGlassBtn: {
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-    borderWidth: 1,
-    borderColor: 'rgba(15, 46, 43, 0.15)',
-    borderRadius: 20,
-    paddingHorizontal: 18,
-    paddingVertical: 8,
+  resendLink: {
+    fontFamily: Typography.fontFamily.sansBold,
+    color: Colors.primary,
   },
-  resendGlassText: {
-    fontSize: 13,
-    fontWeight: '800',
-    color: '#0D9488',
-  },
-  submitBtn: {
-    width: '100%',
-    backgroundColor: '#0F2E2B',
-    paddingVertical: 16,
-    borderRadius: 24,
-    alignItems: 'center',
-    shadowColor: '#0F2E2B',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.25,
-    shadowRadius: 14,
-    elevation: 6,
-  },
-  submitBtnText: {
-    color: '#FFFFFF',
-    fontSize: 17,
-    fontWeight: '800',
+  footer: {
+    padding: Spacing['2xl'],
+    paddingBottom: Platform.OS === 'ios' ? Spacing['3xl'] : Spacing['2xl'],
   },
 });

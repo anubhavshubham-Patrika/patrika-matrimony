@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { 
-  View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity 
+  View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, FlatList
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useApp, Profile } from '../../src/context/AppContext';
 import ProfileCard from '../../src/components/ProfileCard';
+import PremiumButton from '../../src/components/ui/PremiumButton';
+import PremiumCard from '../../src/components/ui/PremiumCard';
 import PatrikaRibbonLogo from '../../src/components/PatrikaRibbonLogo';
-import MintGlassBackground from '../../src/components/MintGlassBackground';
+import { Colors, Typography, Spacing, BorderRadius, Shadow } from '../../src/constants/theme';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function HomeScreen() {
   const router = useRouter();
   const { state, dispatch, profiles } = useApp();
-  const [activeTabCategory, setActiveTabCategory] = useState<'Recommended' | 'Verified' | 'Nearby' | 'Ads'>('Recommended');
 
   const shortlistedIds = state.shortlistedProfiles || [];
   const sentInterests = state.sentInterests || [];
@@ -20,16 +22,8 @@ export default function HomeScreen() {
   const recommendedProfiles = profiles.slice(0, 10);
   const verifiedProfiles = profiles.filter((p: Profile) => p.isVerified).slice(0, 10);
   const nearbyProfiles = profiles.filter((p: Profile) => p.residentState === 'Rajasthan').slice(0, 10);
-  const newspaperAdProfiles = profiles.filter((p: Profile) => p.isNewspaperAdLinked).slice(0, 10);
 
-  const getActiveProfiles = () => {
-    switch (activeTabCategory) {
-      case 'Verified': return verifiedProfiles;
-      case 'Nearby': return nearbyProfiles;
-      case 'Ads': return newspaperAdProfiles;
-      default: return recommendedProfiles;
-    }
-  };
+  const dailyMatch = recommendedProfiles[0];
 
   const handleInterestToggle = (profileId: string) => {
     dispatch({ type: 'SEND_INTEREST', payload: profileId });
@@ -39,120 +33,126 @@ export default function HomeScreen() {
     dispatch({ type: 'TOGGLE_SHORTLIST', payload: profileId });
   };
 
+  const renderHorizontalSection = (title: string, subtitle: string, data: Profile[]) => (
+    <View style={styles.sectionContainer}>
+      <View style={styles.sectionHeader}>
+        <View>
+          <Text style={styles.sectionTitle}>{title}</Text>
+          <Text style={styles.sectionSubtitle}>{subtitle}</Text>
+        </View>
+        <TouchableOpacity onPress={() => router.push('/(tabs)/search')}>
+          <Text style={styles.seeAllText}>See All</Text>
+        </TouchableOpacity>
+      </View>
+      <FlatList
+        data={data}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.horizontalListContent}
+        keyExtractor={(item) => item.profileId}
+        renderItem={({ item }) => (
+          <View style={{ width: 280, marginRight: Spacing.base }}>
+            <ProfileCard
+              profile={item}
+              onPress={() => router.push(`/profile/${item.profileId}`)}
+              onInterest={() => handleInterestToggle(item.profileId)}
+              onShortlist={() => handleShortlistToggle(item.profileId)}
+              isInterestSent={sentInterests.includes(item.profileId)}
+              isShortlisted={shortlistedIds.includes(item.profileId)}
+              size="full"
+            />
+          </View>
+        )}
+      />
+    </View>
+  );
+
   return (
-    <MintGlassBackground>
+    <View style={styles.container}>
+      <LinearGradient 
+        colors={Colors.gradient.background as any} 
+        style={StyleSheet.absoluteFill} 
+        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} 
+      />
       <SafeAreaView style={styles.safeArea}>
         {/* Top Header Bar */}
         <View style={styles.topHeader}>
           <View style={styles.brandCol}>
-            <View style={styles.logoRow}>
-              <PatrikaRibbonLogo size={28} />
-              <Text style={styles.brandText}>Patrika Matrimony</Text>
-            </View>
-            <Text style={styles.brandTagline}>Find your perfect Rajasthan life partner</Text>
+            <Text style={styles.greetingText}>Good Morning, User</Text>
+            <Text style={styles.subGreetingText}>Find your perfect match today</Text>
           </View>
 
           <View style={styles.headerRightActions}>
             <TouchableOpacity 
-              style={styles.headerIconGlassBtn} 
+              style={styles.headerIconBtn} 
               onPress={() => router.push('/subscription')}
               activeOpacity={0.8}
             >
-              <MaterialCommunityIcons name="crown" size={18} color="#D4AF37" />
-              <Text style={styles.upgradeText}>Upgrade</Text>
+              <MaterialCommunityIcons name="crown" size={20} color={Colors.gold} />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.headerIconGlassBtn} activeOpacity={0.8}>
-              <Ionicons name="notifications-outline" size={20} color="#0F2E2B" />
+            <TouchableOpacity style={styles.headerIconBtn} activeOpacity={0.8}>
+              <Ionicons name="notifications-outline" size={20} color={Colors.primary} />
               <View style={styles.notifBadge} />
             </TouchableOpacity>
           </View>
         </View>
 
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-          {/* Glass Hero Banner Card */}
-          <View style={styles.glassHeroCard}>
-            <View style={styles.heroLeftCol}>
-              <View style={styles.heroPillBadge}>
-                <MaterialCommunityIcons name="shield-check-outline" size={14} color="#0D9488" style={{ marginRight: 4 }} />
-                <Text style={styles.heroPillText}>Patrika Assured</Text>
+          
+          {/* Daily Match Section */}
+          {dailyMatch && (
+            <View style={styles.dailyMatchContainer}>
+              <View style={styles.dailyMatchHeader}>
+                <Ionicons name="star" size={20} color={Colors.gold} />
+                <Text style={styles.dailyMatchTitle}>Your Daily Match</Text>
               </View>
-              <Text style={styles.heroTitle}>Discover 100% Verified Matches</Text>
-              <Text style={styles.heroSub}>Connect with genuine Rajasthani brides & grooms</Text>
-
-              <TouchableOpacity 
-                style={styles.heroCtaBtn} 
-                onPress={() => router.push('/(tabs)/search')}
-                activeOpacity={0.88}
-              >
-                <Text style={styles.heroCtaText}>Explore Matches →</Text>
+              <TouchableOpacity onPress={() => (router as any).push(`/profile/${dailyMatch.profileId}`)} activeOpacity={0.9}>
+                <PremiumCard variant="highlight" style={styles.dailyMatchCard}>
+                  <ProfileCard
+                    profile={dailyMatch}
+                    onPress={() => (router as any).push(`/profile/${dailyMatch.profileId}`)}
+                    onInterest={() => handleInterestToggle(dailyMatch.profileId)}
+                    onShortlist={() => handleShortlistToggle(dailyMatch.profileId)}
+                    isInterestSent={sentInterests.includes(dailyMatch.profileId)}
+                    isShortlisted={shortlistedIds.includes(dailyMatch.profileId)}
+                    size="full"
+                  />
+                  <View style={styles.compatibilityReasonsBox}>
+                    <Text style={styles.compatibilityReasonsTitle}>Why this match?</Text>
+                    <View style={styles.reasonRow}>
+                      <Ionicons name="checkmark-circle" size={16} color={Colors.gold} />
+                      <Text style={styles.reasonText}>Both are from {dailyMatch.residentCity}</Text>
+                    </View>
+                    <View style={styles.reasonRow}>
+                      <Ionicons name="checkmark-circle" size={16} color={Colors.gold} />
+                      <Text style={styles.reasonText}>Matching educational background</Text>
+                    </View>
+                    <View style={styles.reasonRow}>
+                      <Ionicons name="checkmark-circle" size={16} color={Colors.gold} />
+                      <Text style={styles.reasonText}>High astrology compatibility</Text>
+                    </View>
+                  </View>
+                </PremiumCard>
               </TouchableOpacity>
             </View>
-          </View>
+          )}
 
-          {/* Floating Category Filter Pills Row */}
-          <View style={styles.categoryPillContainer}>
-            {[
-              { id: 'Recommended', label: 'For You', icon: 'sparkles' },
-              { id: 'Verified', label: 'Verified', icon: 'shield-checkmark-outline' },
-              { id: 'Nearby', label: 'Nearby', icon: 'location-outline' },
-              { id: 'Ads', label: 'Paper Ads', icon: 'newspaper-outline' },
-            ].map((cat) => {
-              const isSel = activeTabCategory === cat.id;
-              return (
-                <TouchableOpacity
-                  key={cat.id}
-                  style={[styles.categoryGlassPill, isSel && styles.categoryGlassPillActive]}
-                  onPress={() => setActiveTabCategory(cat.id as any)}
-                  activeOpacity={0.85}
-                >
-                  <Ionicons 
-                    name={cat.icon as any} 
-                    size={14} 
-                    color={isSel ? '#FFFFFF' : '#0F2E2B'} 
-                    style={{ marginRight: 5 }} 
-                  />
-                  <Text style={[styles.categoryPillText, isSel && styles.categoryPillTextActive]}>
-                    {cat.label}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
+          {renderHorizontalSection('Recommended For You', 'Curated profiles based on your preferences', recommendedProfiles.slice(1))}
+          {renderHorizontalSection('100% Verified Profiles', 'Connect with authentic individuals', verifiedProfiles)}
+          {renderHorizontalSection('Matches Nearby', 'Find someone closer to your home', nearbyProfiles)}
 
-          {/* Section Header */}
-          <View style={styles.sectionHeaderRow}>
-            <View>
-              <Text style={styles.sectionTitle}>{activeTabCategory} Matches</Text>
-              <Text style={styles.sectionSub}>Showing curated profiles for you</Text>
-            </View>
-
-            <TouchableOpacity onPress={() => router.push('/(tabs)/search')}>
-              <Text style={styles.seeAllText}>See All ({getActiveProfiles().length}) →</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Profiles Vertical List */}
-          <View style={styles.profilesListWrapper}>
-            {getActiveProfiles().map((profile: Profile) => (
-              <ProfileCard
-                key={profile.profileId}
-                profile={profile}
-                onPress={() => router.push(`/profile/${profile.profileId}`)}
-                onInterest={() => handleInterestToggle(profile.profileId)}
-                onShortlist={() => handleShortlistToggle(profile.profileId)}
-                isInterestSent={sentInterests.includes(profile.profileId)}
-                isShortlisted={shortlistedIds.includes(profile.profileId)}
-              />
-            ))}
-          </View>
         </ScrollView>
       </SafeAreaView>
-    </MintGlassBackground>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.background,
+  },
   safeArea: {
     flex: 1,
   },
@@ -160,173 +160,121 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingHorizontal: Spacing.base,
+    paddingTop: Spacing.sm,
+    paddingBottom: Spacing.md,
   },
   brandCol: {
     flex: 1,
   },
-  logoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  greetingText: {
+    fontSize: Typography.sizes.xl,
+    fontFamily: Typography.fontFamily.serif,
+    color: Colors.text,
   },
-  brandText: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#0F2E2B',
-    fontFamily: 'serif',
-  },
-  brandTagline: {
-    fontSize: 11,
-    color: '#4A6B66',
+  subGreetingText: {
+    fontSize: Typography.sizes.sm,
+    fontFamily: Typography.fontFamily.sans,
+    color: Colors.textSecondary,
     marginTop: 2,
   },
   headerRightActions: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: Spacing.sm,
   },
-  headerIconGlassBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.95)',
-    borderRadius: 18,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+  headerIconBtn: {
+    backgroundColor: Colors.surfaceGlass,
+    borderRadius: BorderRadius.full,
+    padding: Spacing.sm,
     position: 'relative',
-  },
-  upgradeText: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: '#0F2E2B',
-    marginLeft: 4,
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   notifBadge: {
     position: 'absolute',
-    top: 5,
-    right: 5,
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: '#0D9488',
+    top: 6,
+    right: 8,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: Colors.primaryLight,
+    borderWidth: 1,
+    borderColor: Colors.surface,
   },
-
   scrollContent: {
-    paddingHorizontal: 16,
-    paddingBottom: 90,
+    paddingBottom: Spacing['5xl'],
   },
-
-  glassHeroCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.82)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.95)',
-    borderRadius: 24,
-    padding: 18,
-    marginVertical: 10,
-    shadowColor: '#0F2E2B',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.08,
-    shadowRadius: 14,
-    elevation: 3,
+  dailyMatchContainer: {
+    paddingHorizontal: Spacing.base,
+    marginBottom: Spacing.xl,
   },
-  heroLeftCol: {
-    alignItems: 'flex-start',
-  },
-  heroPillBadge: {
+  dailyMatchHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(13, 148, 136, 0.12)',
-    borderRadius: 14,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginBottom: 8,
+    marginBottom: Spacing.sm,
+    gap: Spacing.xs,
   },
-  heroPillText: {
-    fontSize: 11,
-    fontWeight: '800',
-    color: '#0D9488',
+  dailyMatchTitle: {
+    fontSize: Typography.sizes.lg,
+    fontFamily: Typography.fontFamily.serif,
+    color: Colors.textGold,
   },
-  heroTitle: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: '#0F2E2B',
-    fontFamily: 'serif',
-    marginBottom: 4,
+  dailyMatchCard: {
+    padding: 2, // Slight padding so inner content sits well
   },
-  heroSub: {
-    fontSize: 13,
-    color: '#4A6B66',
-    marginBottom: 14,
+  compatibilityReasonsBox: {
+    padding: Spacing.md,
+    backgroundColor: Colors.surfaceWarm,
+    borderRadius: BorderRadius.lg,
+    marginTop: -Spacing.base, // Pull up to overlap slightly with the profile card if needed, or just let it sit below
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
   },
-  heroCtaBtn: {
-    backgroundColor: '#0F2E2B',
-    borderRadius: 20,
-    paddingHorizontal: 18,
-    paddingVertical: 10,
+  compatibilityReasonsTitle: {
+    fontSize: Typography.sizes.sm,
+    fontFamily: Typography.fontFamily.sansBold,
+    color: Colors.text,
+    marginBottom: Spacing.sm,
   },
-  heroCtaText: {
-    color: '#FFFFFF',
-    fontSize: 13,
-    fontWeight: '800',
-  },
-
-  categoryPillContainer: {
-    flexDirection: 'row',
-    gap: 8,
-    marginVertical: 10,
-  },
-  categoryGlassPill: {
-    flex: 1,
+  reasonRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.75)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 18,
-    paddingVertical: 9,
+    marginBottom: Spacing.xs,
+    gap: Spacing.xs,
   },
-  categoryGlassPillActive: {
-    backgroundColor: '#0F2E2B',
-    borderColor: '#0F2E2B',
+  reasonText: {
+    fontSize: Typography.sizes.sm,
+    fontFamily: Typography.fontFamily.sans,
+    color: Colors.textSecondary,
   },
-  categoryPillText: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#0F2E2B',
+  sectionContainer: {
+    marginBottom: Spacing.xl,
   },
-  categoryPillTextActive: {
-    color: '#FFFFFF',
-  },
-
-  sectionHeaderRow: {
+  sectionHeader: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    marginVertical: 12,
+    alignItems: 'flex-end',
+    paddingHorizontal: Spacing.base,
+    marginBottom: Spacing.md,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#0F2E2B',
-    fontFamily: 'serif',
+    fontSize: Typography.sizes.lg,
+    fontFamily: Typography.fontFamily.serif,
+    color: Colors.text,
   },
-  sectionSub: {
-    fontSize: 12,
-    color: '#4A6B66',
+  sectionSubtitle: {
+    fontSize: Typography.sizes.xs,
+    fontFamily: Typography.fontFamily.sans,
+    color: Colors.textSecondary,
     marginTop: 2,
   },
   seeAllText: {
-    fontSize: 13,
-    fontWeight: '800',
-    color: '#0D9488',
+    fontSize: Typography.sizes.sm,
+    fontFamily: Typography.fontFamily.sansBold,
+    color: Colors.primaryLight,
   },
-
-  profilesListWrapper: {
-    marginTop: 6,
-  },
+  horizontalListContent: {
+    paddingHorizontal: Spacing.base,
+  }
 });

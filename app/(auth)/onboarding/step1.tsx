@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import PremiumButton from '../../../src/components/ui/PremiumButton';
+import PremiumCard from '../../../src/components/ui/PremiumCard';
+import { Typography } from '../../../src/constants/theme';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -36,16 +39,16 @@ export default function Step1() {
         {/* Top Header */}
         <View style={styles.topHeader}>
           <TouchableOpacity onPress={() => router.back()} style={styles.blurBackBtn} activeOpacity={0.8}>
-            <Ionicons name="chevron-back" size={22} color="#0F2E2B" />
+            <Ionicons name="chevron-back" size={22} color="#183B82" />
           </TouchableOpacity>
           <View style={styles.stepPillBadge}>
-            <Text style={styles.stepPillText}>Step 1 of 13</Text>
+            <Text style={styles.stepPillText}>01 / 13</Text>
           </View>
         </View>
 
         <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
           {/* Glass Card Container */}
-          <View style={styles.glassCardContainer}>
+          <PremiumCard variant="glass" style={styles.glassCardContainer}>
             {/* Glowing 3D Vector Emblem Badge at Top */}
             <View style={styles.badgeWrapper}>
               <View style={styles.glowingVectorCircle}>
@@ -61,7 +64,7 @@ export default function Step1() {
 
             {/* Live Activity Callout */}
             <View style={styles.liveActivityGlassPill}>
-              <Ionicons name="sparkles" size={16} color="#0D9488" style={{ marginRight: 6 }} />
+              <Ionicons name="sparkles" size={16} color="#4169D8" style={{ marginRight: 6 }} />
               <Text style={styles.liveActivityText}>127 verified profiles joined in Rajasthan this week!</Text>
             </View>
 
@@ -81,7 +84,7 @@ export default function Step1() {
                       <MaterialCommunityIcons
                         name={item.iconName as any}
                         size={20}
-                        color={isSelected ? '#FFFFFF' : '#0D9488'}
+                        color={isSelected ? '#FFFFFF' : '#4169D8'}
                       />
                     </View>
 
@@ -101,20 +104,13 @@ export default function Step1() {
                 );
               })}
             </View>
-          </View>
+          </PremiumCard>
           <View style={{ height: 20 }} />
         </ScrollView>
 
         {/* Sticky Bottom Glass Footer */}
         <View style={styles.footerContainer}>
-          <TouchableOpacity
-            style={[styles.continueBtn, !profileFor && styles.continueBtnDisabled]}
-            onPress={handleNext}
-            disabled={!profileFor}
-            activeOpacity={0.88}
-          >
-            <Text style={styles.continueBtnText}>Save & Continue →</Text>
-          </TouchableOpacity>
+          <PremiumButton title="Save & Continue →" onPress={handleNext} disabled={!profileFor} variant="primary" />
         </View>
       </SafeAreaView>
     </MintGlassBackground>
@@ -151,7 +147,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.95)',
   },
   stepPillText: {
-    color: '#0F2E2B',
+    color: '#183B82',
     fontSize: 12,
     fontWeight: '700',
   },
@@ -166,7 +162,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 28,
     padding: 20,
-    shadowColor: '#0F2E2B',
+    shadowColor: '#183B82',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.08,
     shadowRadius: 16,
@@ -180,10 +176,10 @@ const styles = StyleSheet.create({
     width: 58,
     height: 58,
     borderRadius: 29,
-    backgroundColor: '#0F2E2B',
+    backgroundColor: '#183B82',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#0F2E2B',
+    shadowColor: '#183B82',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.25,
     shadowRadius: 12,
@@ -196,8 +192,8 @@ const styles = StyleSheet.create({
   questionTitle: {
     fontSize: 22,
     fontWeight: '800',
-    color: '#0F2E2B',
-    fontFamily: 'serif',
+    color: '#183B82',
+    fontFamily: Typography.fontFamily.serif,
     textAlign: 'center',
     marginBottom: 4,
   },
@@ -210,7 +206,7 @@ const styles = StyleSheet.create({
   liveActivityGlassPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(13, 148, 136, 0.12)',
+    backgroundColor: 'rgba(65, 105, 216, 0.12)',
     borderRadius: 14,
     paddingHorizontal: 14,
     paddingVertical: 9,
@@ -218,7 +214,7 @@ const styles = StyleSheet.create({
   },
   liveActivityText: {
     fontSize: 12,
-    color: '#0F2E2B',
+    color: '#183B82',
     fontWeight: '700',
     flex: 1,
   },
@@ -233,23 +229,23 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     padding: 14,
     borderWidth: 1.5,
-    borderColor: 'rgba(15, 46, 43, 0.12)',
+    borderColor: 'rgba(24, 59, 130, 0.12)',
   },
   optionCardRowSelected: {
-    borderColor: '#0F2E2B',
-    backgroundColor: 'rgba(15, 46, 43, 0.08)',
+    borderColor: '#183B82',
+    backgroundColor: 'rgba(24, 59, 130, 0.08)',
   },
   iconCircleBadge: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(13, 148, 136, 0.12)',
+    backgroundColor: 'rgba(65, 105, 216, 0.12)',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
   },
   iconCircleBadgeSelected: {
-    backgroundColor: '#0F2E2B',
+    backgroundColor: '#183B82',
   },
   optionTextCol: {
     flex: 1,
@@ -257,10 +253,10 @@ const styles = StyleSheet.create({
   optionLabel: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#0F2E2B',
+    color: '#183B82',
   },
   optionLabelSelected: {
-    color: '#0F2E2B',
+    color: '#183B82',
     fontWeight: '800',
   },
   optionSub: {
@@ -273,21 +269,21 @@ const styles = StyleSheet.create({
     height: 22,
     borderRadius: 11,
     borderWidth: 2,
-    borderColor: 'rgba(15, 46, 43, 0.25)',
+    borderColor: 'rgba(24, 59, 130, 0.25)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   radioOuterCircleSelected: {
-    backgroundColor: '#0F2E2B',
-    borderColor: '#0F2E2B',
+    backgroundColor: '#183B82',
+    borderColor: '#183B82',
   },
 
   footerContainer: {
     paddingHorizontal: 20,
     paddingVertical: 14,
-    backgroundColor: 'rgba(235, 247, 245, 0.92)',
+    backgroundColor: 'rgba(243, 247, 255, 0.92)',
     borderTopWidth: 1,
-    borderColor: 'rgba(15, 46, 43, 0.1)',
+    borderColor: 'rgba(24, 59, 130, 0.1)',
   },
   progressRow: {
     flexDirection: 'row',
@@ -298,34 +294,34 @@ const styles = StyleSheet.create({
   progressTrackBg: {
     flex: 1,
     height: 6,
-    backgroundColor: 'rgba(15, 46, 43, 0.12)',
+    backgroundColor: 'rgba(24, 59, 130, 0.12)',
     borderRadius: 3,
     overflow: 'hidden',
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: '#0D9488',
+    backgroundColor: '#4169D8',
     borderRadius: 3,
   },
   progressText: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#0D9488',
+    color: '#4169D8',
   },
   continueBtn: {
-    backgroundColor: '#0F2E2B',
+    backgroundColor: '#183B82',
     paddingVertical: 16,
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#0F2E2B',
+    shadowColor: '#183B82',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.25,
     shadowRadius: 12,
     elevation: 6,
   },
   continueBtnDisabled: {
-    backgroundColor: 'rgba(15, 46, 43, 0.2)',
+    backgroundColor: 'rgba(24, 59, 130, 0.2)',
     shadowOpacity: 0,
     elevation: 0,
   },

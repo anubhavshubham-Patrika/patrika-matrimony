@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import PremiumButton from '../../../src/components/ui/PremiumButton';
+import PremiumCard from '../../../src/components/ui/PremiumCard';
+import { Typography } from '../../../src/constants/theme';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -47,15 +50,15 @@ export default function Step8() {
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.topHeader}>
           <TouchableOpacity onPress={() => router.back()} style={styles.blurBackBtn} activeOpacity={0.8}>
-            <Ionicons name="chevron-back" size={22} color="#0F2E2B" />
+            <Ionicons name="chevron-back" size={22} color="#183B82" />
           </TouchableOpacity>
           <View style={styles.stepPillBadge}>
-            <Text style={styles.stepPillText}>Step 8 of 13</Text>
+            <Text style={styles.stepPillText}>08 / 13</Text>
           </View>
         </View>
 
         <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
-          <View style={styles.glassCardContainer}>
+          <PremiumCard variant="glass" style={styles.glassCardContainer}>
             <View style={styles.badgeWrapper}>
               <View style={styles.glowingVectorCircle}>
                 <MaterialCommunityIcons name="silverware-fork-knife" size={30} color="#FFFFFF" />
@@ -125,14 +128,12 @@ export default function Step8() {
                 );
               })}
             </View>
-          </View>
+          </PremiumCard>
           <View style={{ height: 20 }} />
         </ScrollView>
 
         <View style={styles.footerContainer}>
-          <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
-            <Text style={styles.continueBtnText}>Save & Continue →</Text>
-          </TouchableOpacity>
+          <PremiumButton title="Save & Continue →" onPress={handleNext} variant="primary" />
         </View>
       </SafeAreaView>
     </MintGlassBackground>
@@ -169,7 +170,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.95)',
   },
   stepPillText: {
-    color: '#0F2E2B',
+    color: '#183B82',
     fontSize: 12,
     fontWeight: '700',
   },
@@ -184,7 +185,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 28,
     padding: 20,
-    shadowColor: '#0F2E2B',
+    shadowColor: '#183B82',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.08,
     shadowRadius: 16,
@@ -198,10 +199,10 @@ const styles = StyleSheet.create({
     width: 58,
     height: 58,
     borderRadius: 29,
-    backgroundColor: '#0F2E2B',
+    backgroundColor: '#183B82',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#0F2E2B',
+    shadowColor: '#183B82',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.25,
     shadowRadius: 12,
@@ -214,8 +215,8 @@ const styles = StyleSheet.create({
   questionTitle: {
     fontSize: 22,
     fontWeight: '800',
-    color: '#0F2E2B',
-    fontFamily: 'serif',
+    color: '#183B82',
+    fontFamily: Typography.fontFamily.serif,
     textAlign: 'center',
     marginBottom: 4,
   },
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
   sectionHeaderLabel: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#0F2E2B',
+    color: '#183B82',
     marginTop: 14,
     marginBottom: 8,
   },
@@ -248,12 +249,12 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
   },
   glassChipSelected: {
-    backgroundColor: '#0F2E2B',
-    borderColor: '#0F2E2B',
+    backgroundColor: '#183B82',
+    borderColor: '#183B82',
   },
   glassChipText: {
     fontSize: 12,
-    color: '#0F2E2B',
+    color: '#183B82',
     fontWeight: '600',
   },
   glassChipTextSelected: {
@@ -264,9 +265,9 @@ const styles = StyleSheet.create({
   footerContainer: {
     paddingHorizontal: 20,
     paddingVertical: 14,
-    backgroundColor: 'rgba(235, 247, 245, 0.92)',
+    backgroundColor: 'rgba(243, 247, 255, 0.92)',
     borderTopWidth: 1,
-    borderColor: 'rgba(15, 46, 43, 0.1)',
+    borderColor: 'rgba(24, 59, 130, 0.1)',
   },
   progressRow: {
     flexDirection: 'row',
@@ -277,27 +278,27 @@ const styles = StyleSheet.create({
   progressTrackBg: {
     flex: 1,
     height: 6,
-    backgroundColor: 'rgba(15, 46, 43, 0.12)',
+    backgroundColor: 'rgba(24, 59, 130, 0.12)',
     borderRadius: 3,
     overflow: 'hidden',
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: '#0D9488',
+    backgroundColor: '#4169D8',
     borderRadius: 3,
   },
   progressText: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#0D9488',
+    color: '#4169D8',
   },
   continueBtn: {
-    backgroundColor: '#0F2E2B',
+    backgroundColor: '#183B82',
     paddingVertical: 16,
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#0F2E2B',
+    shadowColor: '#183B82',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.25,
     shadowRadius: 12,

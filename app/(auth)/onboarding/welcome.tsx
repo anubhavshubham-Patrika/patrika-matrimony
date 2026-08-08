@@ -1,4 +1,7 @@
 import React from 'react';
+import PremiumButton from '../../../src/components/ui/PremiumButton';
+import PremiumCard from '../../../src/components/ui/PremiumCard';
+import { Typography } from '../../../src/constants/theme';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -28,7 +31,7 @@ export default function WelcomeScreen() {
     <MintGlassBackground>
       <SafeAreaView style={styles.safeArea}>
         <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
-          <View style={styles.glassCardContainer}>
+          <PremiumCard variant="glass" style={styles.glassCardContainer}>
             {/* Success Shield Badge */}
             <View style={styles.badgeWrapper}>
               <View style={styles.glowingVectorCircle}>
@@ -46,7 +49,7 @@ export default function WelcomeScreen() {
             <View style={styles.featuresList}>
               <View style={styles.featureRow}>
                 <View style={styles.featureIconCircle}>
-                  <Ionicons name="shield-checkmark" size={18} color="#0D9488" />
+                  <Ionicons name="shield-checkmark" size={18} color="#4169D8" />
                 </View>
                 <View style={styles.featureTextCol}>
                   <Text style={styles.featureTitle}>100% Govt ID & Selfie Verified</Text>
@@ -56,7 +59,7 @@ export default function WelcomeScreen() {
 
               <View style={styles.featureRow}>
                 <View style={styles.featureIconCircle}>
-                  <MaterialCommunityIcons name="newspaper-variant-outline" size={18} color="#0D9488" />
+                  <MaterialCommunityIcons name="newspaper-variant-outline" size={18} color="#4169D8" />
                 </View>
                 <View style={styles.featureTextCol}>
                   <Text style={styles.featureTitle}>Rajasthan Patrika Print Ad Integration</Text>
@@ -66,7 +69,7 @@ export default function WelcomeScreen() {
 
               <View style={styles.featureRow}>
                 <View style={styles.featureIconCircle}>
-                  <MaterialCommunityIcons name="star-face" size={18} color="#0D9488" />
+                  <MaterialCommunityIcons name="star-face" size={18} color="#4169D8" />
                 </View>
                 <View style={styles.featureTextCol}>
                   <Text style={styles.featureTitle}>Horoscope & Guna Compatibility</Text>
@@ -76,10 +79,8 @@ export default function WelcomeScreen() {
             </View>
 
             {/* Primary Action CTA */}
-            <TouchableOpacity style={styles.primaryBtn} onPress={handleStartExploring} activeOpacity={0.88}>
-              <Text style={styles.primaryBtnText}>Start Exploring Matches →</Text>
-            </TouchableOpacity>
-          </View>
+            <PremiumButton title="Start Exploring Matches →" onPress={handleStartExploring} variant="primary" />
+          </PremiumCard>
         </ScrollView>
       </SafeAreaView>
     </MintGlassBackground>
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     padding: 24,
     alignItems: 'center',
-    shadowColor: '#0F2E2B',
+    shadowColor: '#183B82',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.08,
     shadowRadius: 16,
@@ -117,10 +118,10 @@ const styles = StyleSheet.create({
     width: 72,
     height: 72,
     borderRadius: 36,
-    backgroundColor: '#0F2E2B',
+    backgroundColor: '#183B82',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#0F2E2B',
+    shadowColor: '#183B82',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.25,
     shadowRadius: 12,
@@ -129,8 +130,8 @@ const styles = StyleSheet.create({
   welcomeTitle: {
     fontSize: 24,
     fontWeight: '800',
-    color: '#0F2E2B',
-    fontFamily: 'serif',
+    color: '#183B82',
+    fontFamily: Typography.fontFamily.serif,
     textAlign: 'center',
     marginBottom: 8,
   },
@@ -154,13 +155,13 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     padding: 12,
     borderWidth: 1.5,
-    borderColor: 'rgba(15, 46, 43, 0.12)',
+    borderColor: 'rgba(24, 59, 130, 0.12)',
   },
   featureIconCircle: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: 'rgba(13, 148, 136, 0.12)',
+    backgroundColor: 'rgba(65, 105, 216, 0.12)',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -171,7 +172,7 @@ const styles = StyleSheet.create({
   featureTitle: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#0F2E2B',
+    color: '#183B82',
   },
   featureSub: {
     fontSize: 11,
@@ -181,12 +182,12 @@ const styles = StyleSheet.create({
 
   primaryBtn: {
     width: '100%',
-    backgroundColor: '#0F2E2B',
+    backgroundColor: '#183B82',
     paddingVertical: 16,
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#0F2E2B',
+    shadowColor: '#183B82',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.25,
     shadowRadius: 14,

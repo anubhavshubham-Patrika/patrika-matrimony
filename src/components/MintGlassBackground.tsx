@@ -82,13 +82,13 @@ export default function MintGlassBackground({ children }: MintGlassBackgroundPro
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EBF7F5',
+    backgroundColor: '#F3F7FF', // Icy blue
     position: 'relative',
     overflow: 'hidden',
   },
   baseBg: {
     ...StyleSheet.absoluteFill,
-    backgroundColor: '#E8F5F3',
+    backgroundColor: '#F3F7FF',
   },
   bokehOrb: {
     position: 'absolute',
@@ -99,14 +99,14 @@ const styles = StyleSheet.create({
     left: -30,
     width: width * 0.9,
     height: width * 0.9,
-    backgroundColor: 'rgba(168, 230, 222, 0.45)', // Soft Mint
+    backgroundColor: 'rgba(175, 199, 248, 0.4)', // Soft Lavender Blue (secondary)
   },
   orbTeal: {
     top: height * 0.4,
     right: -60,
     width: width * 0.85,
     height: width * 0.85,
-    backgroundColor: 'rgba(254, 215, 226, 0.35)', // Soft Rose Coral Tint
+    backgroundColor: 'rgba(201, 217, 255, 0.3)', // Lighter Lavender
   },
   contentLayer: {
     flex: 1,

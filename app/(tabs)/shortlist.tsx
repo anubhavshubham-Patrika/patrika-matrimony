@@ -10,15 +10,20 @@ export default function ShortlistScreen() {
   const router = useRouter();
   const { state, dispatch, profiles } = useApp();
 
-  const [activeSubTab, setActiveSubTab] = useState<'MyShortlist' | 'ShortlistedMe'>('MyShortlist');
+  const [activeSubTab, setActiveSubTab] = useState<'Shortlisted' | 'Received' | 'Sent'>('Shortlisted');
 
   const shortlistedIds = state.shortlistedProfiles || [];
   const sentInterests = state.sentInterests || [];
 
   const myShortlistedProfiles = (profiles || []).filter((p: Profile) => shortlistedIds.includes(p.profileId));
-  const shortlistedMeProfiles = (profiles || []).slice(15, 22);
+  // Mock received/sent for the UI
+  const receivedProfiles = (profiles || []).slice(10, 15);
+  const sentProfiles = (profiles || []).filter((p: Profile) => sentInterests.includes(p.profileId));
 
-  const currentDisplayProfiles = activeSubTab === 'MyShortlist' ? myShortlistedProfiles : shortlistedMeProfiles;
+  const currentDisplayProfiles = 
+    activeSubTab === 'Shortlisted' ? myShortlistedProfiles : 
+    activeSubTab === 'Received' ? receivedProfiles : 
+    sentProfiles;
 
   const handleInterestToggle = (profileId: string) => {
     dispatch({ type: 'SEND_INTEREST', payload: profileId });
@@ -38,22 +43,32 @@ export default function ShortlistScreen() {
         {/* Sub-Tab Glass Switcher */}
         <View style={styles.segmentGlassWrapper}>
           <TouchableOpacity
-            style={[styles.segmentBtn, activeSubTab === 'MyShortlist' && styles.segmentBtnActive]}
-            onPress={() => setActiveSubTab('MyShortlist')}
+            style={[styles.segmentBtn, activeSubTab === 'Shortlisted' && styles.segmentBtnActive]}
+            onPress={() => setActiveSubTab('Shortlisted')}
             activeOpacity={0.88}
           >
-            <Text style={[styles.segmentText, activeSubTab === 'MyShortlist' && styles.segmentTextActive]}>
-              My Shortlist ({myShortlistedProfiles.length})
+            <Text style={[styles.segmentText, activeSubTab === 'Shortlisted' && styles.segmentTextActive]}>
+              Shortlisted
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.segmentBtn, activeSubTab === 'ShortlistedMe' && styles.segmentBtnActive]}
-            onPress={() => setActiveSubTab('ShortlistedMe')}
+            style={[styles.segmentBtn, activeSubTab === 'Received' && styles.segmentBtnActive]}
+            onPress={() => setActiveSubTab('Received')}
             activeOpacity={0.88}
           >
-            <Text style={[styles.segmentText, activeSubTab === 'ShortlistedMe' && styles.segmentTextActive]}>
-              Shortlisted Me ({shortlistedMeProfiles.length})
+            <Text style={[styles.segmentText, activeSubTab === 'Received' && styles.segmentTextActive]}>
+              Received
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.segmentBtn, activeSubTab === 'Sent' && styles.segmentBtnActive]}
+            onPress={() => setActiveSubTab('Sent')}
+            activeOpacity={0.88}
+          >
+            <Text style={[styles.segmentText, activeSubTab === 'Sent' && styles.segmentTextActive]}>
+              Sent
             </Text>
           </TouchableOpacity>
         </View>
@@ -122,7 +137,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0F2E2B',
   },
   segmentText: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '700',
     color: '#0F2E2B',
   },

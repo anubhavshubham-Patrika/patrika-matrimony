@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import PremiumButton from '../../../src/components/ui/PremiumButton';
+import PremiumCard from '../../../src/components/ui/PremiumCard';
+import { Typography } from '../../../src/constants/theme';
 import { 
   View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image, Alert, Modal, ActivityIndicator 
 } from 'react-native';
@@ -76,15 +79,15 @@ export default function Step12() {
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.topHeader}>
           <TouchableOpacity onPress={() => router.back()} style={styles.blurBackBtn} activeOpacity={0.8}>
-            <Ionicons name="chevron-back" size={22} color="#0F2E2B" />
+            <Ionicons name="chevron-back" size={22} color="#183B82" />
           </TouchableOpacity>
           <View style={styles.stepPillBadge}>
-            <Text style={styles.stepPillText}>Step 12 of 13</Text>
+            <Text style={styles.stepPillText}>12 / 13</Text>
           </View>
         </View>
 
         <ScrollView contentContainerStyle={styles.contentScroll} showsVerticalScrollIndicator={false}>
-          <View style={styles.glassCardContainer}>
+          <PremiumCard variant="glass" style={styles.glassCardContainer}>
             {/* Top Glowing Header Emblem */}
             <View style={styles.badgeWrapper}>
               <View style={styles.glowingVectorCircle}>
@@ -131,7 +134,7 @@ export default function Step12() {
                   </View>
                   <Text style={styles.emojiCardSub}>Select your best photo from phone gallery</Text>
                 </View>
-                <Ionicons name="chevron-forward" size={18} color="#0F2E2B" />
+                <Ionicons name="chevron-forward" size={18} color="#183B82" />
               </TouchableOpacity>
 
               {/* Box 2: Live Selfie Verification */}
@@ -140,19 +143,19 @@ export default function Step12() {
                 onPress={handleOpenSelfieCamera}
                 activeOpacity={0.88}
               >
-                <View style={[styles.emojiIconCircle, { backgroundColor: '#0D9488' }]}>
+                <View style={[styles.emojiIconCircle, { backgroundColor: '#4169D8' }]}>
                   <Text style={{ fontSize: 26 }}>🤳</Text>
                 </View>
                 <View style={styles.emojiCardContent}>
                   <View style={styles.titleTagRow}>
                     <Text style={styles.emojiCardTitle}>Verify with Live Selfie</Text>
-                    <View style={[styles.accentTagPill, { backgroundColor: '#0D9488' }]}>
+                    <View style={[styles.accentTagPill, { backgroundColor: '#4169D8' }]}>
                       <Text style={[styles.accentTagText, { color: '#FFFFFF' }]}>✅ Verified Badge</Text>
                     </View>
                   </View>
                   <Text style={styles.emojiCardSub}>Open camera, snap selfie & match with photo</Text>
                 </View>
-                <Ionicons name="camera-outline" size={22} color="#0D9488" />
+                <Ionicons name="camera-outline" size={22} color="#4169D8" />
               </TouchableOpacity>
             </View>
 
@@ -161,7 +164,7 @@ export default function Step12() {
               <Text style={{ fontSize: 14, marginRight: 6 }}>💡</Text>
               <Text style={styles.tipPillText}>Profiles with verified selfies get priority in search results!</Text>
             </View>
-          </View>
+          </PremiumCard>
           <View style={{ height: 20 }} />
         </ScrollView>
 
@@ -213,7 +216,7 @@ export default function Step12() {
                     </View>
 
                     <View style={styles.matchVsCircle}>
-                      <MaterialCommunityIcons name="swap-horizontal" size={20} color="#0D9488" />
+                      <MaterialCommunityIcons name="swap-horizontal" size={20} color="#4169D8" />
                     </View>
 
                     <View style={styles.faceCol}>
@@ -222,7 +225,7 @@ export default function Step12() {
                     </View>
                   </View>
 
-                  <ActivityIndicator size="large" color="#0D9488" style={{ marginVertical: 16 }} />
+                  <ActivityIndicator size="large" color="#4169D8" style={{ marginVertical: 16 }} />
                   <Text style={styles.matchingPercentText}>Matching facial landmarks... 98.4% Accuracy</Text>
                 </View>
               )}
@@ -252,9 +255,7 @@ export default function Step12() {
         </Modal>
 
         <View style={styles.footerContainer}>
-          <TouchableOpacity style={styles.continueBtn} onPress={handleNext} activeOpacity={0.88}>
-            <Text style={styles.continueBtnText}>Save & Continue →</Text>
-          </TouchableOpacity>
+          <PremiumButton title="Save & Continue →" onPress={handleNext} variant="primary" />
         </View>
       </SafeAreaView>
     </MintGlassBackground>
@@ -291,7 +292,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.95)',
   },
   stepPillText: {
-    color: '#0F2E2B',
+    color: '#183B82',
     fontSize: 12,
     fontWeight: '700',
   },
@@ -307,7 +308,7 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     padding: 20,
     alignItems: 'center',
-    shadowColor: '#0F2E2B',
+    shadowColor: '#183B82',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.08,
     shadowRadius: 16,
@@ -321,10 +322,10 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#0F2E2B',
+    backgroundColor: '#183B82',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#0F2E2B',
+    shadowColor: '#183B82',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.25,
     shadowRadius: 12,
@@ -337,8 +338,8 @@ const styles = StyleSheet.create({
   questionTitle: {
     fontSize: 22,
     fontWeight: '800',
-    color: '#0F2E2B',
-    fontFamily: 'serif',
+    color: '#183B82',
+    fontFamily: Typography.fontFamily.serif,
     textAlign: 'center',
     marginBottom: 4,
   },
@@ -358,13 +359,13 @@ const styles = StyleSheet.create({
     height: 130,
     borderRadius: 65,
     borderWidth: 3,
-    borderColor: '#0D9488',
+    borderColor: '#4169D8',
   },
   cameraIconBtn: {
     position: 'absolute',
     bottom: 0,
     right: 4,
-    backgroundColor: '#0F2E2B',
+    backgroundColor: '#183B82',
     width: 38,
     height: 38,
     borderRadius: 19,
@@ -377,11 +378,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -6,
     right: -10,
-    backgroundColor: '#0D9488',
+    backgroundColor: '#4169D8',
     borderRadius: 14,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    shadowColor: '#0D9488',
+    shadowColor: '#4169D8',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
@@ -406,8 +407,8 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     padding: 14,
     borderWidth: 1.5,
-    borderColor: 'rgba(15, 46, 43, 0.12)',
-    shadowColor: '#0F2E2B',
+    borderColor: 'rgba(24, 59, 130, 0.12)',
+    shadowColor: '#183B82',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.05,
     shadowRadius: 10,
@@ -415,14 +416,14 @@ const styles = StyleSheet.create({
   },
   emojiCardBoxHighlight: {
     backgroundColor: 'rgba(13, 148, 136, 0.08)',
-    borderColor: '#0D9488',
+    borderColor: '#4169D8',
     borderWidth: 2,
   },
   emojiIconCircle: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: 'rgba(13, 148, 136, 0.12)',
+    backgroundColor: 'rgba(65, 105, 216, 0.12)',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -440,10 +441,10 @@ const styles = StyleSheet.create({
   emojiCardTitle: {
     fontSize: 15,
     fontWeight: '800',
-    color: '#0F2E2B',
+    color: '#183B82',
   },
   accentTagPill: {
-    backgroundColor: 'rgba(15, 46, 43, 0.08)',
+    backgroundColor: 'rgba(24, 59, 130, 0.08)',
     borderRadius: 10,
     paddingHorizontal: 7,
     paddingVertical: 2,
@@ -451,7 +452,7 @@ const styles = StyleSheet.create({
   accentTagText: {
     fontSize: 10,
     fontWeight: '800',
-    color: '#0F2E2B',
+    color: '#183B82',
   },
   emojiCardSub: {
     fontSize: 12,
@@ -462,7 +463,7 @@ const styles = StyleSheet.create({
   tipGlassPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(13, 148, 136, 0.12)',
+    backgroundColor: 'rgba(65, 105, 216, 0.12)',
     borderRadius: 16,
     paddingHorizontal: 14,
     paddingVertical: 10,
@@ -471,7 +472,7 @@ const styles = StyleSheet.create({
   tipPillText: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#0F2E2B',
+    color: '#183B82',
     flex: 1,
   },
 
@@ -483,7 +484,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   cameraModalCard: {
-    backgroundColor: '#0F2E2B',
+    backgroundColor: '#183B82',
     borderRadius: 28,
     padding: 20,
     borderWidth: 1.5,
@@ -499,11 +500,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '800',
     color: '#FFFFFF',
-    fontFamily: 'serif',
+    fontFamily: Typography.fontFamily.serif,
   },
   modalSubTitle: {
     fontSize: 12,
-    color: '#0D9488',
+    color: '#4169D8',
     fontWeight: '700',
     marginTop: 2,
   },
@@ -517,7 +518,7 @@ const styles = StyleSheet.create({
     height: 220,
     borderRadius: 90,
     borderWidth: 3,
-    borderColor: '#0D9488',
+    borderColor: '#4169D8',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(13, 148, 136, 0.1)',
@@ -530,7 +531,7 @@ const styles = StyleSheet.create({
     top: 40,
     width: '100%',
     height: 2,
-    backgroundColor: '#0D9488',
+    backgroundColor: '#4169D8',
   },
   cameraInstructions: {
     fontSize: 13,
@@ -541,7 +542,7 @@ const styles = StyleSheet.create({
   snapSelfieBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#0D9488',
+    backgroundColor: '#4169D8',
     paddingHorizontal: 24,
     paddingVertical: 14,
     borderRadius: 24,
@@ -575,7 +576,7 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 40,
     borderWidth: 2,
-    borderColor: '#0D9488',
+    borderColor: '#4169D8',
     marginBottom: 6,
   },
   faceColLabel: {
@@ -593,7 +594,7 @@ const styles = StyleSheet.create({
   },
   matchingPercentText: {
     fontSize: 13,
-    color: '#0D9488',
+    color: '#4169D8',
     fontWeight: '700',
   },
 
@@ -605,7 +606,7 @@ const styles = StyleSheet.create({
     width: 76,
     height: 76,
     borderRadius: 38,
-    backgroundColor: '#0D9488',
+    backgroundColor: '#4169D8',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 14,
@@ -631,7 +632,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
   },
   finishVerifyBtnText: {
-    color: '#0F2E2B',
+    color: '#183B82',
     fontSize: 15,
     fontWeight: '800',
   },
@@ -639,9 +640,9 @@ const styles = StyleSheet.create({
   footerContainer: {
     paddingHorizontal: 20,
     paddingVertical: 14,
-    backgroundColor: 'rgba(235, 247, 245, 0.92)',
+    backgroundColor: 'rgba(243, 247, 255, 0.92)',
     borderTopWidth: 1,
-    borderColor: 'rgba(15, 46, 43, 0.1)',
+    borderColor: 'rgba(24, 59, 130, 0.1)',
   },
   progressRow: {
     flexDirection: 'row',
@@ -652,27 +653,27 @@ const styles = StyleSheet.create({
   progressTrackBg: {
     flex: 1,
     height: 6,
-    backgroundColor: 'rgba(15, 46, 43, 0.12)',
+    backgroundColor: 'rgba(24, 59, 130, 0.12)',
     borderRadius: 3,
     overflow: 'hidden',
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: '#0D9488',
+    backgroundColor: '#4169D8',
     borderRadius: 3,
   },
   progressText: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#0D9488',
+    color: '#4169D8',
   },
   continueBtn: {
-    backgroundColor: '#0F2E2B',
+    backgroundColor: '#183B82',
     paddingVertical: 16,
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#0F2E2B',
+    shadowColor: '#183B82',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.25,
     shadowRadius: 12,

@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
 import { 
-  View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, SafeAreaView, Modal, ScrollView 
+  View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, SafeAreaView, Modal, ScrollView, Platform
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useApp, Profile } from '../../src/context/AppContext';
 import ProfileCard from '../../src/components/ProfileCard';
-import MintGlassBackground from '../../src/components/MintGlassBackground';
+import PremiumButton from '../../src/components/ui/PremiumButton';
+import PremiumCard from '../../src/components/ui/PremiumCard';
+import { Colors, Typography, Spacing, BorderRadius, Shadow } from '../../src/constants/theme';
+
+const TOP_TABS = ['For You', 'New', 'Compatible', 'Nearby'];
 
 export default function SearchScreen() {
   const router = useRouter();
   const { state, dispatch, profiles } = useApp();
 
+  const [activeTab, setActiveTab] = useState('For You');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedQuickFilter, setSelectedQuickFilter] = useState<string>('All');
   const [showFilterModal, setShowFilterModal] = useState(false);
@@ -36,7 +42,6 @@ export default function SearchScreen() {
 
   const quickFilters = ['All', 'Verified', 'Newspaper Ad', 'Rajput', 'Agarwal', 'Brahmin', 'Marwari', 'Jain'];
 
-  // Count Active Custom Filters
   const activeFiltersCount = [
     selectedMatchStatus !== 'All',
     selectedProfileFor !== 'All',
@@ -72,12 +77,10 @@ export default function SearchScreen() {
   };
 
   const filteredProfiles = (profiles || []).filter((profile: Profile) => {
-    // Quick filter check
     if (selectedQuickFilter === 'Verified' && !profile.isVerified) return false;
     if (selectedQuickFilter === 'Newspaper Ad' && !profile.isNewspaperAdLinked) return false;
     if (['Rajput', 'Agarwal', 'Brahmin', 'Marwari', 'Jain'].includes(selectedQuickFilter) && profile.caste !== selectedQuickFilter) return false;
 
-    // Detailed Drawer Filters
     if (selectedMatchStatus === 'Verified' && !profile.isVerified) return false;
     if (selectedMatchStatus === 'Newspaper Ad' && !profile.isNewspaperAdLinked) return false;
 
@@ -94,7 +97,6 @@ export default function SearchScreen() {
     if (selectedIncome !== 'All' && profile.annualIncomeRange !== selectedIncome) return false;
     if (photoOnly && !profile.profilePhotoURL) return false;
 
-    // Search text query
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       const matchName = profile.name?.toLowerCase().includes(q);
@@ -116,42 +118,64 @@ export default function SearchScreen() {
   };
 
   return (
-    <MintGlassBackground>
+    <LinearGradient colors={Colors.gradient.background as any} style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
-        {/* Top Header */}
-        <View style={styles.topHeader}>
-          <Text style={styles.headerTitle}>Find Matches</Text>
+        
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Matches</Text>
           <TouchableOpacity 
-            style={styles.filterGlassBtn} 
+            style={styles.filterBtn} 
             onPress={() => setShowFilterModal(true)}
             activeOpacity={0.8}
           >
-            <Ionicons name="options-outline" size={18} color="#0F2E2B" style={{ marginRight: 5 }} />
+            <Ionicons name="options-outline" size={18} color={Colors.primaryDark} style={{ marginRight: 6 }} />
             <Text style={styles.filterBtnText}>
               Filters {activeFiltersCount > 0 ? `(${activeFiltersCount})` : ''}
             </Text>
           </TouchableOpacity>
         </View>
 
-        {/* Search Bar Input */}
-        <View style={styles.searchBarGlassWrapper}>
-          <Ionicons name="search-outline" size={20} color="#0D9488" style={{ marginRight: 10 }} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search by name, caste, city, or occupation..."
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            placeholderTextColor="#8C9E9B"
-          />
-          {searchQuery ? (
-            <TouchableOpacity onPress={() => setSearchQuery('')}>
-              <Ionicons name="close-circle" size={18} color="#8C9E9B" />
-            </TouchableOpacity>
-          ) : null}
+        {/* Top Tabs */}
+        <View style={styles.tabContainer}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabScroll}>
+            {TOP_TABS.map((tab) => {
+              const isActive = activeTab === tab;
+              return (
+                <TouchableOpacity
+                  key={tab}
+                  style={[styles.tabBtn, isActive && styles.tabBtnActive]}
+                  onPress={() => setActiveTab(tab)}
+                  activeOpacity={0.8}
+                >
+                  <Text style={[styles.tabText, isActive && styles.tabTextActive]}>{tab}</Text>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
         </View>
 
-        {/* Quick Filter Chips Horizontal Scroll */}
-        <View style={{ height: 42, marginBottom: 12 }}>
+        {/* Search */}
+        <PremiumCard variant="glass" style={styles.searchCard} noPadding>
+          <View style={styles.searchWrapper}>
+            <Ionicons name="search-outline" size={20} color={Colors.textMuted} />
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search by name, caste, city..."
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              placeholderTextColor={Colors.textMuted}
+            />
+            {searchQuery ? (
+              <TouchableOpacity onPress={() => setSearchQuery('')}>
+                <Ionicons name="close-circle" size={18} color={Colors.textMuted} />
+              </TouchableOpacity>
+            ) : null}
+          </View>
+        </PremiumCard>
+
+        {/* Quick Filters */}
+        <View style={{ height: 44, marginBottom: Spacing.sm }}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.quickFilterScroll}>
             {quickFilters.map((chip) => {
               const isSel = selectedQuickFilter === chip;
@@ -169,20 +193,19 @@ export default function SearchScreen() {
           </ScrollView>
         </View>
 
-        {/* Results Counter & Reset Bar */}
+        {/* Results Info */}
         <View style={styles.counterRow}>
           <Text style={styles.counterText}>
-            Showing <Text style={{ color: '#0D9488', fontWeight: '800' }}>{filteredProfiles.length}</Text> profiles
+            Showing <Text style={{ color: Colors.primaryDark, fontWeight: '700' }}>{filteredProfiles.length}</Text> matches
           </Text>
-
-          {activeFiltersCount > 0 || searchQuery || selectedQuickFilter !== 'All' ? (
+          {(activeFiltersCount > 0 || searchQuery || selectedQuickFilter !== 'All') && (
             <TouchableOpacity onPress={resetAllFilters}>
-              <Text style={styles.resetText}>Clear All Filters</Text>
+              <Text style={styles.resetText}>Clear All</Text>
             </TouchableOpacity>
-          ) : null}
+          )}
         </View>
 
-        {/* Profiles List */}
+        {/* List */}
         <FlatList
           data={filteredProfiles}
           keyExtractor={(item) => item.profileId}
@@ -191,7 +214,7 @@ export default function SearchScreen() {
           renderItem={({ item }) => (
             <ProfileCard
               profile={item}
-              size="compact"
+              size="full"
               onPress={() => router.push(`/profile/${item.profileId}`)}
               onInterest={() => handleInterestToggle(item.profileId)}
               onShortlist={() => handleShortlistToggle(item.profileId)}
@@ -201,23 +224,24 @@ export default function SearchScreen() {
           )}
         />
 
-        {/* Advanced Comprehensive Filters Modal */}
+        {/* Modal */}
         <Modal visible={showFilterModal} animationType="slide" transparent>
           <View style={styles.modalBackdrop}>
-            <View style={styles.modalGlassCard}>
+            <View style={styles.modalContent}>
               <View style={styles.modalHeader}>
-                <Text style={styles.modalTitle}>All Search Filters</Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+                <Text style={styles.modalTitle}>Search Filters</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: Spacing.md }}>
                   <TouchableOpacity onPress={resetAllFilters}>
-                    <Text style={styles.modalResetText}>Reset All</Text>
+                    <Text style={styles.modalResetText}>Reset</Text>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => setShowFilterModal(false)}>
-                    <Ionicons name="close" size={24} color="#0F2E2B" />
+                    <Ionicons name="close" size={26} color={Colors.primaryDark} />
                   </TouchableOpacity>
                 </View>
               </View>
 
-              <ScrollView style={{ maxHeight: 460 }} showsVerticalScrollIndicator={false}>
+              <ScrollView style={{ maxHeight: 500 }} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: Spacing.xl }}>
+                
                 {/* 1. Verification & Status */}
                 <Text style={styles.filterSectionTitle}>Profile Verification & Status</Text>
                 <View style={styles.modalChipsRow}>
@@ -232,21 +256,7 @@ export default function SearchScreen() {
                   ))}
                 </View>
 
-                {/* 2. Profile Posted By */}
-                <Text style={styles.filterSectionTitle}>Profile Posted By</Text>
-                <View style={styles.modalChipsRow}>
-                  {['All', 'Self', 'Son', 'Daughter', 'Brother', 'Sister', 'Friend', 'Relative'].map((p) => (
-                    <TouchableOpacity
-                      key={p}
-                      style={[styles.modalChip, selectedProfileFor === p && styles.modalChipActive]}
-                      onPress={() => setSelectedProfileFor(p)}
-                    >
-                      <Text style={[styles.modalChipText, selectedProfileFor === p && styles.modalChipTextActive]}>{p}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-
-                {/* 3. Religion */}
+                {/* 2. Religion */}
                 <Text style={styles.filterSectionTitle}>Religion</Text>
                 <View style={styles.modalChipsRow}>
                   {['All', 'Hindu', 'Jain', 'Sikh', 'Muslim', 'Christian', 'Other'].map((r) => (
@@ -260,7 +270,7 @@ export default function SearchScreen() {
                   ))}
                 </View>
 
-                {/* 4. Mother Tongue */}
+                {/* 3. Mother Tongue */}
                 <Text style={styles.filterSectionTitle}>Mother Tongue</Text>
                 <View style={styles.modalChipsRow}>
                   {['All', 'Hindi', 'Marwari', 'Punjabi', 'Gujarati', 'Marathi', 'Tamil', 'English'].map((m) => (
@@ -274,7 +284,7 @@ export default function SearchScreen() {
                   ))}
                 </View>
 
-                {/* 5. Caste / Community */}
+                {/* 4. Caste / Community */}
                 <Text style={styles.filterSectionTitle}>Caste / Community</Text>
                 <View style={styles.modalChipsRow}>
                   {['All', 'Rajput', 'Agarwal', 'Brahmin', 'Marwari', 'Jain', 'Sindhi', 'Jat', 'Gupta', 'Maheshwari'].map((c) => (
@@ -288,7 +298,7 @@ export default function SearchScreen() {
                   ))}
                 </View>
 
-                {/* 6. Resident State */}
+                {/* 5. Resident State */}
                 <Text style={styles.filterSectionTitle}>Resident Location State</Text>
                 <View style={styles.modalChipsRow}>
                   {['All', 'Rajasthan', 'Delhi', 'Maharashtra', 'Karnataka', 'Gujarat', 'Punjab', 'Uttar Pradesh'].map((st) => (
@@ -302,7 +312,7 @@ export default function SearchScreen() {
                   ))}
                 </View>
 
-                {/* 7. Marital Status */}
+                {/* 6. Marital Status */}
                 <Text style={styles.filterSectionTitle}>Marital Status</Text>
                 <View style={styles.modalChipsRow}>
                   {['All', 'Never Married', 'Divorced', 'Widowed', 'Separated'].map((ms) => (
@@ -316,35 +326,7 @@ export default function SearchScreen() {
                   ))}
                 </View>
 
-                {/* 8. Manglik Status */}
-                <Text style={styles.filterSectionTitle}>Manglik Status</Text>
-                <View style={styles.modalChipsRow}>
-                  {['All', 'Non-Manglik', 'Manglik', 'Partial Manglik'].map((mg) => (
-                    <TouchableOpacity
-                      key={mg}
-                      style={[styles.modalChip, selectedManglik === mg && styles.modalChipActive]}
-                      onPress={() => setSelectedManglik(mg)}
-                    >
-                      <Text style={[styles.modalChipText, selectedManglik === mg && styles.modalChipTextActive]}>{mg}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-
-                {/* 9. Dietary Habits */}
-                <Text style={styles.filterSectionTitle}>Dietary Habits</Text>
-                <View style={styles.modalChipsRow}>
-                  {['All', 'Vegetarian', 'Jain', 'Eggetarian', 'Non-Vegetarian'].map((d) => (
-                    <TouchableOpacity
-                      key={d}
-                      style={[styles.modalChip, selectedDiet === d && styles.modalChipActive]}
-                      onPress={() => setSelectedDiet(d)}
-                    >
-                      <Text style={[styles.modalChipText, selectedDiet === d && styles.modalChipTextActive]}>{d}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-
-                {/* 10. Employment Type */}
+                {/* 7. Employment Type */}
                 <Text style={styles.filterSectionTitle}>Employment Type</Text>
                 <View style={styles.modalChipsRow}>
                   {['All', 'Private', 'Govt / Public', 'Business / Self-Employed', 'Defence', 'Civil Services'].map((emp) => (
@@ -358,7 +340,7 @@ export default function SearchScreen() {
                   ))}
                 </View>
 
-                {/* 11. Highest Education */}
+                {/* 8. Highest Education */}
                 <Text style={styles.filterSectionTitle}>Highest Education</Text>
                 <View style={styles.modalChipsRow}>
                   {['All', 'B.Tech / B.E.', 'MBBS / MD', 'MBA / PGDM', 'B.Com / M.Com', 'B.Sc / M.Sc', 'CA / CS', 'PhD'].map((ed) => (
@@ -372,7 +354,7 @@ export default function SearchScreen() {
                   ))}
                 </View>
 
-                {/* 12. Annual Income */}
+                {/* 9. Annual Income */}
                 <Text style={styles.filterSectionTitle}>Annual Income Range</Text>
                 <View style={styles.modalChipsRow}>
                   {['All', 'Below 2L', '2-5L', '5-10L', '10-20L', '20-30L', '30-50L', '50L+'].map((inc) => (
@@ -386,7 +368,7 @@ export default function SearchScreen() {
                   ))}
                 </View>
 
-                {/* 13. Photo Required */}
+                {/* Photo Required */}
                 <Text style={styles.filterSectionTitle}>Profile Photo Option</Text>
                 <TouchableOpacity 
                   style={styles.photoToggleRow} 
@@ -396,218 +378,236 @@ export default function SearchScreen() {
                   <Text style={styles.photoToggleLabel}>Show profiles with photo only</Text>
                   <Ionicons 
                     name={photoOnly ? "checkbox" : "square-outline"} 
-                    size={22} 
-                    color={photoOnly ? "#0D9488" : "#8C9E9B"} 
+                    size={24} 
+                    color={photoOnly ? Colors.primary : Colors.textMuted} 
                   />
                 </TouchableOpacity>
+
               </ScrollView>
 
-              <TouchableOpacity 
-                style={styles.applyFilterBtn} 
+              <PremiumButton 
+                title={`Apply Filters (${filteredProfiles.length} Matches)`} 
                 onPress={() => setShowFilterModal(false)}
-                activeOpacity={0.88}
-              >
-                <Text style={styles.applyFilterText}>Apply Filters ({filteredProfiles.length} Matches)</Text>
-              </TouchableOpacity>
+                variant="premium"
+                style={{ marginTop: Spacing.md }}
+              />
             </View>
           </View>
         </Modal>
+
       </SafeAreaView>
-    </MintGlassBackground>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
+  container: {
     flex: 1,
   },
-  topHeader: {
+  safeArea: {
+    flex: 1,
+    paddingTop: Platform.OS === 'android' ? 40 : 0,
+  },
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingTop: 10,
-    paddingBottom: 8,
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.sm,
   },
   headerTitle: {
-    fontSize: 22,
-    fontWeight: '800',
-    color: '#0F2E2B',
-    fontFamily: 'serif',
+    fontSize: Typography.sizes['2xl'],
+    fontFamily: Typography.fontFamily.serif,
+    color: Colors.primaryDark,
   },
-  filterGlassBtn: {
+  filterBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.95)',
-    borderRadius: 18,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
+    backgroundColor: Colors.surfaceGlass,
+    borderWidth: 1,
+    borderColor: Colors.borderLight,
+    borderRadius: BorderRadius.pill,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm,
+    ...Shadow.sm,
   },
   filterBtnText: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#0F2E2B',
+    fontSize: Typography.sizes.sm,
+    fontFamily: Typography.fontFamily.sansBold,
+    color: Colors.primaryDark,
   },
 
-  searchBarGlassWrapper: {
+  tabContainer: {
+    marginVertical: Spacing.sm,
+  },
+  tabScroll: {
+    paddingHorizontal: Spacing.lg,
+    gap: Spacing.sm,
+  },
+  tabBtn: {
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: 10,
+    borderRadius: BorderRadius.pill,
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  tabBtnActive: {
+    backgroundColor: Colors.surface,
+    borderColor: Colors.goldLight,
+    ...Shadow.sm,
+  },
+  tabText: {
+    fontSize: Typography.sizes.sm,
+    fontFamily: Typography.fontFamily.sansMedium,
+    color: Colors.textSecondary,
+  },
+  tabTextActive: {
+    color: Colors.primaryDark,
+    fontFamily: Typography.fontFamily.sansBold,
+  },
+
+  searchCard: {
+    marginHorizontal: Spacing.lg,
+    marginBottom: Spacing.md,
+  },
+  searchWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.95)',
-    borderRadius: 20,
-    marginHorizontal: 16,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    marginBottom: 10,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: 12,
   },
   searchInput: {
     flex: 1,
-    fontSize: 14,
-    color: '#0F2E2B',
+    marginLeft: Spacing.sm,
+    fontSize: Typography.sizes.sm,
+    fontFamily: Typography.fontFamily.sans,
+    color: Colors.text,
   },
 
   quickFilterScroll: {
-    paddingHorizontal: 16,
-    gap: 8,
+    paddingHorizontal: Spacing.lg,
+    gap: Spacing.sm,
     alignItems: 'center',
   },
   quickFilterChip: {
-    backgroundColor: 'rgba(255, 255, 255, 0.75)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 16,
-    paddingHorizontal: 14,
-    paddingVertical: 7,
+    backgroundColor: Colors.surfaceGlass,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    borderRadius: BorderRadius.pill,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: 8,
   },
   quickFilterChipActive: {
-    backgroundColor: '#0F2E2B',
-    borderColor: '#0F2E2B',
+    backgroundColor: Colors.primaryDark,
+    borderColor: Colors.primaryDark,
   },
   quickFilterText: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#0F2E2B',
+    fontSize: Typography.sizes.xs,
+    fontFamily: Typography.fontFamily.sansMedium,
+    color: Colors.primaryDark,
   },
   quickFilterTextActive: {
-    color: '#FFFFFF',
+    color: Colors.surface,
   },
 
   counterRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    marginBottom: 8,
+    paddingHorizontal: Spacing.lg,
+    marginBottom: Spacing.sm,
   },
   counterText: {
-    fontSize: 13,
-    color: '#4A6B66',
-    fontWeight: '600',
+    fontSize: Typography.sizes.sm,
+    fontFamily: Typography.fontFamily.sans,
+    color: Colors.textSecondary,
   },
   resetText: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: '#E31E25',
+    fontSize: Typography.sizes.sm,
+    fontFamily: Typography.fontFamily.sansBold,
+    color: Colors.error,
   },
 
   listContent: {
-    paddingHorizontal: 16,
-    paddingBottom: 90,
+    paddingHorizontal: Spacing.lg,
+    paddingBottom: 100,
   },
 
   modalBackdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    backgroundColor: Colors.overlay,
     justifyContent: 'flex-end',
   },
-  modalGlassCard: {
-    backgroundColor: '#F3FAF8',
-    borderTopLeftRadius: 28,
-    borderTopRightRadius: 28,
-    padding: 20,
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.9)',
+  modalContent: {
+    backgroundColor: Colors.surface,
+    borderTopLeftRadius: BorderRadius['3xl'],
+    borderTopRightRadius: BorderRadius['3xl'],
+    padding: Spacing.xl,
+    maxHeight: '90%',
   },
   modalHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 14,
+    marginBottom: Spacing.lg,
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#0F2E2B',
-    fontFamily: 'serif',
+    fontSize: Typography.sizes.xl,
+    fontFamily: Typography.fontFamily.serif,
+    color: Colors.primaryDark,
   },
   modalResetText: {
-    fontSize: 13,
-    fontWeight: '800',
-    color: '#E31E25',
+    fontSize: Typography.sizes.sm,
+    fontFamily: Typography.fontFamily.sansBold,
+    color: Colors.error,
   },
   filterSectionTitle: {
-    fontSize: 13,
-    fontWeight: '800',
-    color: '#0F2E2B',
-    marginTop: 12,
-    marginBottom: 8,
+    fontSize: Typography.sizes.sm,
+    fontFamily: Typography.fontFamily.sansBold,
+    color: Colors.primaryDark,
+    marginTop: Spacing.md,
+    marginBottom: Spacing.sm,
   },
   modalChipsRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 10,
+    gap: Spacing.sm,
+    marginBottom: Spacing.sm,
   },
   modalChip: {
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    backgroundColor: Colors.background,
     borderWidth: 1,
-    borderColor: 'rgba(15, 46, 43, 0.15)',
-    borderRadius: 14,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
+    borderColor: Colors.border,
+    borderRadius: BorderRadius.pill,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: 8,
   },
   modalChipActive: {
-    backgroundColor: '#0F2E2B',
-    borderColor: '#0F2E2B',
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
   },
   modalChipText: {
-    fontSize: 12,
-    color: '#0F2E2B',
-    fontWeight: '600',
+    fontSize: Typography.sizes.xs,
+    fontFamily: Typography.fontFamily.sansMedium,
+    color: Colors.text,
   },
   modalChipTextActive: {
-    color: '#FFFFFF',
-    fontWeight: '800',
+    color: Colors.surface,
   },
   photoToggleRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-    borderRadius: 16,
-    padding: 12,
-    marginTop: 4,
-    marginBottom: 12,
+    backgroundColor: Colors.background,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.md,
+    marginTop: Spacing.sm,
+    marginBottom: Spacing.md,
   },
   photoToggleLabel: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#0F2E2B',
-  },
-
-  applyFilterBtn: {
-    backgroundColor: '#0F2E2B',
-    borderRadius: 22,
-    paddingVertical: 14,
-    alignItems: 'center',
-    marginTop: 14,
-  },
-  applyFilterText: {
-    color: '#FFFFFF',
-    fontSize: 15,
-    fontWeight: '800',
+    fontSize: Typography.sizes.sm,
+    fontFamily: Typography.fontFamily.sansMedium,
+    color: Colors.primaryDark,
   },
 });
+

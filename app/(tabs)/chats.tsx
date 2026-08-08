@@ -1,51 +1,41 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
-  View, Text, StyleSheet, FlatList, TouchableOpacity, SafeAreaView, Image 
+  View, Text, StyleSheet, FlatList, TouchableOpacity, SafeAreaView, Image, StatusBar
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useApp, Profile } from '../../src/context/AppContext';
 import chatsData from '../../src/data/chats.json';
-import MintGlassBackground from '../../src/components/MintGlassBackground';
+import { Colors, Typography, Spacing, BorderRadius } from '../../src/constants/theme';
+import PremiumCard from '../../src/components/ui/PremiumCard';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function ChatsScreen() {
   const router = useRouter();
   const { profiles } = useApp();
   const currentUserId = 'P001';
 
-  const [activeTab, setActiveTab] = useState<'Chats' | 'Calls'>('Chats');
-
   // Filter conversations involving P001
   const userConversations = chatsData.filter((c: any) => c.participants.includes(currentUserId));
 
   return (
-    <MintGlassBackground>
+    <LinearGradient colors={Colors.gradient.background as any} style={styles.container}>
+      <StatusBar barStyle="dark-content" />
       <SafeAreaView style={styles.safeArea}>
         {/* Header Bar */}
         <View style={styles.topHeader}>
-          <Text style={styles.headerTitle}>Messages & Calls</Text>
+          <Text style={styles.headerTitle}>Messages</Text>
+          <View style={styles.headerActions}>
+            <TouchableOpacity onPress={() => (router as any).push('/calls')} style={styles.iconBtn}>
+              <Ionicons name="call-outline" size={24} color={Colors.primary} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push('/settings')} style={styles.iconBtn}>
+              <Ionicons name="settings-outline" size={24} color={Colors.primary} />
+            </TouchableOpacity>
+          </View>
         </View>
 
-        {/* Glass Segment Switcher (Chats | Calls) */}
-        <View style={styles.segmentGlassWrapper}>
-          <TouchableOpacity
-            style={[styles.segmentBtn, activeTab === 'Chats' && styles.segmentBtnActive]}
-            onPress={() => setActiveTab('Chats')}
-            activeOpacity={0.88}
-          >
-            <Text style={[styles.segmentText, activeTab === 'Chats' && styles.segmentTextActive]}>Chats</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.segmentBtn, activeTab === 'Calls' && styles.segmentBtnActive]}
-            onPress={() => setActiveTab('Calls')}
-            activeOpacity={0.88}
-          >
-            <Text style={[styles.segmentText, activeTab === 'Calls' && styles.segmentTextActive]}>Calls History</Text>
-          </TouchableOpacity>
-        </View>
-
-        {activeTab === 'Chats' ? (
+        {userConversations.length > 0 ? (
           <FlatList
             data={userConversations}
             keyExtractor={(item) => item.conversationId}
@@ -58,182 +48,179 @@ export default function ChatsScreen() {
 
               return (
                 <TouchableOpacity
-                  style={styles.chatRowGlassCard}
                   onPress={() => router.push(`/chat/${item.conversationId}`)}
-                  activeOpacity={0.88}
+                  activeOpacity={0.8}
+                  style={styles.cardWrapper}
                 >
-                  <View style={styles.avatarWrapper}>
-                    <Image
-                      source={{ uri: otherProfile.profilePhotoURL || 'https://randomuser.me/api/portraits/women/44.jpg' }}
-                      style={styles.avatarPhoto}
-                    />
-                    {otherProfile.isVerified && (
-                      <View style={styles.verifiedDot}>
-                        <Ionicons name="checkmark-circle" size={12} color="#0D9488" />
+                  <PremiumCard variant="default" style={styles.chatRowCard} noPadding>
+                    <View style={styles.avatarWrapper}>
+                      <Image
+                        source={{ uri: otherProfile.profilePhotoURL || 'https://randomuser.me/api/portraits/women/44.jpg' }}
+                        style={styles.avatarPhoto}
+                      />
+                      {otherProfile.isVerified && (
+                        <View style={styles.verifiedDot}>
+                          <Ionicons name="checkmark-circle" size={14} color={Colors.success} />
+                        </View>
+                      )}
+                    </View>
+
+                    <View style={styles.chatInfoCol}>
+                      <View style={styles.chatTopRow}>
+                        <Text style={styles.partnerNameText} numberOfLines={1}>{otherProfile.name}</Text>
+                        <Text style={styles.timeText}>10:45 AM</Text>
                       </View>
-                    )}
-                  </View>
 
-                  <View style={styles.chatInfoCol}>
-                    <View style={styles.chatTopRow}>
-                      <Text style={styles.partnerNameText} numberOfLines={1}>{otherProfile.name}</Text>
-                      <Text style={styles.timeText}>10:45 AM</Text>
+                      <Text style={[styles.lastMsgText, item.unreadCount ? styles.lastMsgUnread : null]} numberOfLines={1}>
+                        {item.lastMessage || 'Namaste! I liked your matrimony profile.'}
+                      </Text>
                     </View>
 
-                    <Text style={styles.lastMsgText} numberOfLines={1}>
-                      {item.lastMessage || 'Namaste! I liked your matrimony profile.'}
-                    </Text>
-                  </View>
-
-                  {item.unreadCount ? (
-                    <View style={styles.unreadBadge}>
-                      <Text style={styles.unreadCountText}>{item.unreadCount}</Text>
-                    </View>
-                  ) : null}
+                    {item.unreadCount ? (
+                      <View style={styles.unreadBadge}>
+                        <Text style={styles.unreadCountText}>{item.unreadCount}</Text>
+                      </View>
+                    ) : null}
+                  </PremiumCard>
                 </TouchableOpacity>
               );
             }}
           />
         ) : (
-          <View style={styles.emptyCallsContainer}>
-            <Ionicons name="call-outline" size={48} color="#0D9488" style={{ marginBottom: 12 }} />
-            <Text style={styles.emptyTitle}>No Recent Calls</Text>
-            <Text style={styles.emptySub}>Voice and Video call logs will appear here</Text>
+          <View style={styles.emptyContainer}>
+            <Ionicons name="chatbubbles-outline" size={64} color={Colors.primarySoft} style={{ marginBottom: Spacing.md }} />
+            <Text style={styles.emptyTitle}>Start a Conversation</Text>
+            <Text style={styles.emptySub}>Let's refine your preferences and find your perfect match to chat with.</Text>
           </View>
         )}
       </SafeAreaView>
-    </MintGlassBackground>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   safeArea: {
     flex: 1,
   },
   topHeader: {
-    paddingHorizontal: 16,
-    paddingTop: 10,
-    paddingBottom: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: Spacing.xl,
+    paddingTop: Spacing.md,
+    paddingBottom: Spacing.md,
   },
   headerTitle: {
-    fontSize: 22,
-    fontWeight: '800',
-    color: '#0F2E2B',
-    fontFamily: 'serif',
+    fontSize: Typography.sizes['2xl'],
+    fontFamily: Typography.fontFamily.serif,
+    color: Colors.primaryDark,
   },
-  segmentGlassWrapper: {
+  headerActions: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(255, 255, 255, 0.75)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 20,
-    marginHorizontal: 16,
-    padding: 4,
-    marginBottom: 12,
+    gap: Spacing.sm,
   },
-  segmentBtn: {
-    flex: 1,
-    paddingVertical: 10,
-    alignItems: 'center',
-    borderRadius: 16,
+  iconBtn: {
+    padding: Spacing.xs,
   },
-  segmentBtnActive: {
-    backgroundColor: '#0F2E2B',
-  },
-  segmentText: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#0F2E2B',
-  },
-  segmentTextActive: {
-    color: '#FFFFFF',
-  },
-
   listContent: {
-    paddingHorizontal: 16,
+    paddingHorizontal: Spacing.lg,
     paddingBottom: 90,
+    paddingTop: Spacing.sm,
   },
-  chatRowGlassCard: {
+  cardWrapper: {
+    marginBottom: Spacing.md,
+  },
+  chatRowCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.82)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 22,
-    padding: 12,
-    marginBottom: 10,
-    shadowColor: '#0F2E2B',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.06,
-    shadowRadius: 10,
-    elevation: 2,
+    padding: Spacing.md,
   },
   avatarWrapper: {
     position: 'relative',
-    marginRight: 12,
+    marginRight: Spacing.md,
   },
   avatarPhoto: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
+    width: 60,
+    height: 60,
+    borderRadius: BorderRadius.full,
+    borderWidth: 2,
+    borderColor: Colors.surfaceWarm,
   },
   verifiedDot: {
     position: 'absolute',
     bottom: 0,
     right: 0,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
+    backgroundColor: Colors.surface,
+    borderRadius: BorderRadius.full,
+    padding: 2,
   },
   chatInfoCol: {
     flex: 1,
+    justifyContent: 'center',
   },
   chatTopRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 4,
+    marginBottom: Spacing.xs,
   },
   partnerNameText: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: '#0F2E2B',
+    fontSize: Typography.sizes.lg,
+    fontFamily: Typography.fontFamily.sansBold,
+    color: Colors.primaryDark,
+    flex: 1,
   },
   timeText: {
-    fontSize: 11,
-    color: '#8C9E9B',
+    fontSize: Typography.sizes.sm,
+    color: Colors.textMuted,
+    fontFamily: Typography.fontFamily.sans,
+    marginLeft: Spacing.sm,
   },
   lastMsgText: {
-    fontSize: 13,
-    color: '#4A6B66',
+    fontSize: Typography.sizes.md,
+    color: Colors.textSecondary,
+    fontFamily: Typography.fontFamily.sans,
+  },
+  lastMsgUnread: {
+    fontFamily: Typography.fontFamily.sansMedium,
+    color: Colors.primaryDark,
   },
   unreadBadge: {
-    backgroundColor: '#0D9488',
-    borderRadius: 10,
+    backgroundColor: Colors.gold,
+    borderRadius: BorderRadius.full,
+    minWidth: 24,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: Spacing.sm,
     paddingHorizontal: 8,
-    paddingVertical: 3,
-    marginLeft: 8,
   },
   unreadCountText: {
-    color: '#FFFFFF',
-    fontSize: 11,
-    fontWeight: '800',
+    color: Colors.primaryDark,
+    fontSize: Typography.sizes.xs,
+    fontFamily: Typography.fontFamily.sansBold,
   },
-
-  emptyCallsContainer: {
+  emptyContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    padding: Spacing['2xl'],
   },
   emptyTitle: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#0F2E2B',
-    fontFamily: 'serif',
+    fontSize: Typography.sizes.xl,
+    fontFamily: Typography.fontFamily.serif,
+    color: Colors.primaryDark,
+    textAlign: 'center',
   },
   emptySub: {
-    fontSize: 13,
-    color: '#4A6B66',
-    marginTop: 4,
+    fontSize: Typography.sizes.md,
+    color: Colors.textSecondary,
+    fontFamily: Typography.fontFamily.sans,
+    marginTop: Spacing.sm,
+    textAlign: 'center',
+    lineHeight: 22,
   },
 });

@@ -2,34 +2,39 @@ import React from 'react';
 import { Tabs } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { View, StyleSheet, Platform } from 'react-native';
+import { Colors } from '../../src/constants/theme';
 
 export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#0F2E2B',
-        tabBarInactiveTintColor: '#8C9E9B',
-        tabBarStyle: {
-          backgroundColor: 'rgba(255, 255, 255, 0.92)',
-          borderTopWidth: 1.5,
-          borderTopColor: 'rgba(255, 255, 255, 0.95)',
-          height: Platform.OS === 'ios' ? 88 : 68,
-          paddingBottom: Platform.OS === 'ios' ? 28 : 10,
-          paddingTop: 8,
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          elevation: 10,
-          shadowColor: '#0F2E2B',
-          shadowOffset: { width: 0, height: -4 },
-          shadowOpacity: 0.08,
-          shadowRadius: 12,
-        },
+        tabBarShowLabel: true,
+        tabBarActiveTintColor: Colors.primary,
+        tabBarInactiveTintColor: Colors.textMuted,
         tabBarLabelStyle: {
+          fontFamily: 'Inter_500Medium',
           fontSize: 11,
-          fontWeight: '700',
+          marginTop: 4,
+          marginBottom: Platform.OS === 'ios' ? 0 : 8,
+        },
+        tabBarStyle: {
+          backgroundColor: Colors.surface,
+          position: 'absolute',
+          bottom: Platform.OS === 'ios' ? 30 : 20,
+          left: 20,
+          right: 20,
+          height: Platform.OS === 'ios' ? 80 : 70,
+          borderRadius: 35,
+          borderTopWidth: 0,
+          elevation: 10,
+          shadowColor: Colors.primaryDark,
+          shadowOffset: { width: 0, height: 10 },
+          shadowOpacity: 0.15,
+          shadowRadius: 20,
+          paddingHorizontal: 10,
+          paddingTop: Platform.OS === 'ios' ? 12 : 8,
+          paddingBottom: Platform.OS === 'ios' ? 20 : 8,
         },
       }}
     >
@@ -38,7 +43,7 @@ export default function TabsLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'home' : 'home-outline'} size={22} color={color} />
+            <TabIcon name={focused ? 'home' : 'home-outline'} focused={focused} IconComponent={Ionicons} />
           ),
         }}
       />
@@ -48,7 +53,7 @@ export default function TabsLayout() {
         options={{
           title: 'Matches',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'search' : 'search-outline'} size={22} color={color} />
+            <TabIcon name={focused ? 'search' : 'search-outline'} focused={focused} IconComponent={Ionicons} />
           ),
         }}
       />
@@ -58,7 +63,7 @@ export default function TabsLayout() {
         options={{
           title: 'Chats',
           tabBarIcon: ({ color, focused }) => (
-            <MaterialCommunityIcons name={focused ? 'message' : 'message-outline'} size={22} color={color} />
+            <TabIcon name={focused ? 'chatbubble' : 'chatbubble-outline'} focused={focused} IconComponent={Ionicons} />
           ),
         }}
       />
@@ -66,9 +71,9 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="shortlist"
         options={{
-          title: 'Shortlist',
+          title: 'Saved',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'star' : 'star-outline'} size={22} color={color} />
+            <TabIcon name={focused ? 'star' : 'star-outline'} focused={focused} IconComponent={Ionicons} />
           ),
         }}
       />
@@ -78,10 +83,45 @@ export default function TabsLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'person' : 'person-outline'} size={22} color={color} />
+            <TabIcon name={focused ? 'person' : 'person-outline'} focused={focused} IconComponent={Ionicons} />
           ),
         }}
       />
     </Tabs>
   );
 }
+
+function TabIcon({ name, focused, IconComponent }: { name: any, focused: boolean, IconComponent: any }) {
+  return (
+    <View
+      style={[
+        styles.iconContainer,
+        focused && styles.iconContainerFocused,
+      ]}
+    >
+      <IconComponent 
+        name={name} 
+        size={22} 
+        color={focused ? Colors.textOnPrimary : Colors.textMuted} 
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  iconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+  },
+  iconContainerFocused: {
+    backgroundColor: Colors.primary,
+    shadowColor: Colors.primaryLight,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+});

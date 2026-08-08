@@ -1,15 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
   View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity,
-  SafeAreaView, Image, KeyboardAvoidingView, Platform, StatusBar
+  SafeAreaView, Image, KeyboardAvoidingView, Platform, StatusBar, ScrollView
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { useApp } from '../../src/context/AppContext';
 import chatsData from '../../src/data/chats.json';
 import profilesData from '../../src/data/profiles.json';
-
-const PRIMARY = '#0F2E2B';
+import { Colors, Typography, Spacing, BorderRadius, Shadow } from '../../src/constants/theme';
+import PremiumButton from '../../src/components/ui/PremiumButton';
 
 interface Message {
   chatId: string;
@@ -19,7 +19,7 @@ interface Message {
   readStatus: boolean;
 }
 
-export default function ChatScreen() {
+export default function ChatDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const { state } = useApp();
@@ -36,24 +36,16 @@ export default function ChatScreen() {
     if (conversation?.messages) {
       setMessages(conversation.messages);
     } else {
-      setMessages([
-        {
-          chatId: 'MSG_INIT',
-          fromProfileId: otherProfileId,
-          text: `Namaste! I saw your profile and would love to connect.`,
-          timestamp: new Date(Date.now() - 3600000).toISOString(),
-          readStatus: true,
-        },
-      ]);
+      setMessages([]);
     }
   }, [id]);
 
-  const sendMessage = () => {
-    if (!inputText.trim()) return;
+  const sendMessage = (text: string = inputText) => {
+    if (!text.trim()) return;
     const newMsg: Message = {
       chatId: `MSG_${Date.now()}`,
       fromProfileId: myProfileId,
-      text: inputText.trim(),
+      text: text.trim(),
       timestamp: new Date().toISOString(),
       readStatus: false,
     };
@@ -73,7 +65,7 @@ export default function ChatScreen() {
       <View style={[styles.messagRow, isMine && styles.myRow]}>
         {!isMine && (
           <Image
-            source={{ uri: otherProfile?.profilePhotoURL || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400' }}
+            source={{ uri: otherProfile?.profilePhotoURL || 'https://randomuser.me/api/portraits/women/44.jpg' }}
             style={styles.avatarSmall}
           />
         )}
@@ -82,11 +74,11 @@ export default function ChatScreen() {
           <View style={styles.bubbleMeta}>
             <Text style={[styles.timeText, isMine && styles.myTimeText]}>{formatTime(item.timestamp)}</Text>
             {isMine && (
-              <MaterialCommunityIcons
-                name={item.readStatus ? 'check-all' : 'check'}
-                size={12}
-                color={item.readStatus ? '#FFFFFF' : 'rgba(255,255,255,0.7)'}
-                style={{ marginLeft: 3 }}
+              <Ionicons
+                name={item.readStatus ? 'checkmark-done' : 'checkmark'}
+                size={14}
+                color={item.readStatus ? Colors.gold : Colors.textMuted}
+                style={{ marginLeft: 4 }}
               />
             )}
           </View>
@@ -97,41 +89,53 @@ export default function ChatScreen() {
 
   const isPaidUser = state.currentPlan !== 'Free';
 
+  const icebreakers = [
+    "Hello! I liked your profile.",
+    "Hi, would you like to connect?",
+    "Namaste! Your interests align with mine."
+  ];
+
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={PRIMARY} />
+      <StatusBar barStyle="light-content" backgroundColor={Colors.primaryDark} />
+      
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
+          <Ionicons name="arrow-back" size={24} color={Colors.surface} />
         </TouchableOpacity>
+        
         <TouchableOpacity style={styles.headerProfile} onPress={() => router.push(`/profile/${otherProfileId}`)}>
           <Image
-            source={{ uri: otherProfile?.profilePhotoURL || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400' }}
+            source={{ uri: otherProfile?.profilePhotoURL || 'https://randomuser.me/api/portraits/women/44.jpg' }}
             style={styles.headerAvatar}
           />
-          <View>
+          <View style={styles.headerTextCol}>
             <Text style={styles.headerName}>{otherProfile?.name || 'Profile'}</Text>
-            <Text style={styles.headerStatus}>🟢 Online</Text>
+            <View style={styles.statusRow}>
+              <View style={styles.statusDot} />
+              <Text style={styles.headerStatus}>Online</Text>
+            </View>
           </View>
         </TouchableOpacity>
+        
         <View style={styles.headerActions}>
           <TouchableOpacity style={styles.headerIcon}>
-            <Ionicons name="videocam-outline" size={22} color="#FFFFFF" />
+            <Ionicons name="videocam-outline" size={22} color={Colors.surface} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.headerIcon}>
-            <Ionicons name="call-outline" size={22} color="#FFFFFF" />
+            <Ionicons name="call-outline" size={22} color={Colors.surface} />
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* Secure call notice */}
+      {/* Secure Notice */}
       <View style={styles.secureBanner}>
-        <MaterialCommunityIcons name="shield-check" size={14} color="#C5A059" />
-        <Text style={styles.secureBannerText}>Patrika Secure Chat • Mobile number is private</Text>
+        <Ionicons name="shield-checkmark" size={16} color={Colors.gold} />
+        <Text style={styles.secureBannerText}>Premium Secure Chat • Contact info is private</Text>
       </View>
 
-      {/* Messages */}
+      {/* Chat Area */}
       <FlatList
         ref={flatListRef}
         data={messages}
@@ -139,36 +143,67 @@ export default function ChatScreen() {
         renderItem={renderMessage}
         contentContainerStyle={styles.messagesList}
         onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: false })}
+        ListEmptyComponent={() => (
+          <View style={styles.emptyState}>
+            <Image
+              source={{ uri: otherProfile?.profilePhotoURL || 'https://randomuser.me/api/portraits/women/44.jpg' }}
+              style={styles.emptyAvatar}
+            />
+            <Text style={styles.emptyTitle}>You matched with {otherProfile?.name}!</Text>
+            <Text style={styles.emptySub}>Don't be shy, say hi with an icebreaker.</Text>
+            
+            <View style={styles.icebreakerContainer}>
+              {icebreakers.map((msg, idx) => (
+                <TouchableOpacity key={idx} style={styles.icebreakerChip} onPress={() => sendMessage(msg)}>
+                  <Text style={styles.icebreakerText}>{msg}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        )}
       />
 
-      {/* Input */}
+      {/* Input Area */}
       {isPaidUser ? (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-          <View style={styles.inputRow}>
+          <View style={styles.inputContainer}>
             <TouchableOpacity style={styles.attachBtn}>
-              <MaterialCommunityIcons name="attachment" size={22} color="#8C7A7C" />
+              <Ionicons name="add-circle-outline" size={28} color={Colors.primary} />
             </TouchableOpacity>
-            <TextInput
-              style={styles.input}
-              placeholder="Type a message..."
-              value={inputText}
-              onChangeText={setInputText}
-              multiline
-              maxLength={500}
-              placeholderTextColor="#8C7A7C"
-            />
-            <TouchableOpacity style={styles.sendBtn} onPress={sendMessage}>
-              <Ionicons name="send" size={18} color="#FFFFFF" />
+            
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="Type your message..."
+                placeholderTextColor={Colors.textMuted}
+                value={inputText}
+                onChangeText={setInputText}
+                multiline
+                maxLength={500}
+              />
+            </View>
+            
+            <TouchableOpacity 
+              style={[styles.sendBtn, !inputText.trim() && styles.sendBtnDisabled]} 
+              onPress={() => sendMessage(inputText)}
+              disabled={!inputText.trim()}
+            >
+              <Ionicons name="send" size={18} color={Colors.surface} style={{ marginLeft: 2 }} />
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
       ) : (
-        <View style={styles.upgradeBar}>
-          <MaterialCommunityIcons name="lock" size={18} color={PRIMARY} />
-          <Text style={styles.upgradeText}>Upgrade to Gold to send messages</Text>
-          <TouchableOpacity onPress={() => router.push('/subscription')} style={styles.upgradeBtn}>
-            <Text style={styles.upgradeBtnText}>Upgrade</Text>
-          </TouchableOpacity>
+        <View style={styles.upgradeContainer}>
+          <View style={styles.upgradeTextRow}>
+            <Ionicons name="lock-closed" size={18} color={Colors.gold} />
+            <Text style={styles.upgradeText}>Upgrade to Premium to message directly</Text>
+          </View>
+          <PremiumButton
+            title="View Premium Plans"
+            onPress={() => router.push('/subscription')}
+            variant="premium"
+            icon="star"
+          />
         </View>
       )}
     </SafeAreaView>
@@ -176,114 +211,242 @@ export default function ChatScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F9F6F0' },
+  container: { 
+    flex: 1, 
+    backgroundColor: Colors.background 
+  },
   header: {
-    backgroundColor: PRIMARY,
+    backgroundColor: Colors.primaryDark,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: Spacing.md,
   },
-  backBtn: { padding: 4, marginRight: 8 },
-  headerProfile: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 10 },
-  headerAvatar: { width: 42, height: 42, borderRadius: 21, borderWidth: 2, borderColor: '#FFFFFF' },
-  headerName: { color: '#FFFFFF', fontWeight: '800', fontSize: 16, fontFamily: 'serif' },
-  headerStatus: { color: 'rgba(255,255,255,0.85)', fontSize: 12, marginTop: 1 },
-  headerActions: { flexDirection: 'row', gap: 8 },
-  headerIcon: { padding: 6 },
+  backBtn: { 
+    padding: Spacing.sm,
+  },
+  headerProfile: { 
+    flex: 1, 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    gap: Spacing.sm,
+    marginLeft: Spacing.xs,
+  },
+  headerAvatar: { 
+    width: 44, 
+    height: 44, 
+    borderRadius: BorderRadius.full, 
+    borderWidth: 2, 
+    borderColor: Colors.gold 
+  },
+  headerTextCol: {
+    justifyContent: 'center',
+  },
+  headerName: { 
+    color: Colors.surface, 
+    fontFamily: Typography.fontFamily.serif,
+    fontSize: Typography.sizes.lg,
+  },
+  statusRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: 2,
+  },
+  statusDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: Colors.success,
+  },
+  headerStatus: { 
+    color: Colors.secondaryLight, 
+    fontSize: Typography.sizes.xs,
+    fontFamily: Typography.fontFamily.sansMedium,
+  },
+  headerActions: { 
+    flexDirection: 'row', 
+    gap: Spacing.xs 
+  },
+  headerIcon: { 
+    padding: Spacing.sm 
+  },
   secureBanner: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFF9E6',
+    backgroundColor: Colors.surfaceWarm,
+    paddingVertical: Spacing.sm,
     borderBottomWidth: 1,
-    borderBottomColor: '#EFE6DD',
-    paddingVertical: 8,
-    gap: 5,
+    borderBottomColor: Colors.border,
+    gap: Spacing.xs,
   },
-  secureBannerText: { fontSize: 12, color: '#C5A059', fontWeight: '700' },
-  messagesList: { padding: 14, paddingBottom: 8 },
+  secureBannerText: { 
+    fontSize: Typography.sizes.xs, 
+    color: Colors.primary, 
+    fontFamily: Typography.fontFamily.sansMedium 
+  },
+  messagesList: { 
+    padding: Spacing.lg, 
+    paddingBottom: Spacing.xl,
+  },
   messagRow: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    marginBottom: 10,
-    gap: 8,
+    marginBottom: Spacing.md,
+    gap: Spacing.sm,
   },
-  myRow: { flexDirection: 'row-reverse' },
-  avatarSmall: { width: 28, height: 28, borderRadius: 14 },
+  myRow: { 
+    flexDirection: 'row-reverse' 
+  },
+  avatarSmall: { 
+    width: 32, 
+    height: 32, 
+    borderRadius: BorderRadius.full 
+  },
   bubble: {
-    maxWidth: '75%',
-    borderRadius: 18,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    shadowColor: '#2C1A1D',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
-    elevation: 1,
+    maxWidth: '78%',
+    borderRadius: BorderRadius['2xl'],
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.md,
+    ...Shadow.sm,
   },
   myBubble: {
-    backgroundColor: PRIMARY,
-    borderBottomRightRadius: 4,
+    backgroundColor: Colors.primary,
+    borderBottomRightRadius: BorderRadius.sm,
   },
   theirBubble: {
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#EFE6DD',
-    borderBottomLeftRadius: 4,
+    backgroundColor: Colors.surface,
+    borderBottomLeftRadius: BorderRadius.sm,
   },
-  bubbleText: { fontSize: 14, color: '#2C1A1D', lineHeight: 20 },
-  myBubbleText: { color: '#FFFFFF' },
-  bubbleMeta: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginTop: 4 },
-  timeText: { fontSize: 10, color: '#8C7A7C' },
-  myTimeText: { color: 'rgba(255,255,255,0.8)' },
-  inputRow: {
+  bubbleText: { 
+    fontSize: Typography.sizes.md, 
+    color: Colors.text, 
+    fontFamily: Typography.fontFamily.sans,
+    lineHeight: 22,
+  },
+  myBubbleText: { 
+    color: Colors.surface 
+  },
+  bubbleMeta: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'flex-end', 
+    marginTop: Spacing.xs 
+  },
+  timeText: { 
+    fontSize: 11, 
+    color: Colors.textMuted,
+    fontFamily: Typography.fontFamily.sans,
+  },
+  myTimeText: { 
+    color: Colors.secondaryLight 
+  },
+  inputContainer: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    backgroundColor: Colors.surface,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.md,
+    paddingBottom: Platform.OS === 'ios' ? 30 : Spacing.md,
     borderTopWidth: 1,
-    borderTopColor: '#EFE6DD',
-    gap: 8,
+    borderTopColor: Colors.border,
+    gap: Spacing.sm,
   },
-  attachBtn: { padding: 6 },
-  input: {
+  attachBtn: { 
+    paddingBottom: Spacing.xs,
+  },
+  inputWrapper: {
     flex: 1,
-    backgroundColor: '#FAF5F7',
+    backgroundColor: Colors.background,
+    borderRadius: BorderRadius['2xl'],
     borderWidth: 1,
-    borderColor: '#EFE6DD',
-    borderRadius: 20,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    maxHeight: 100,
-    fontSize: 14,
-    color: '#2C1A1D',
+    borderColor: Colors.border,
+    paddingHorizontal: Spacing.md,
+  },
+  input: {
+    paddingTop: Spacing.md,
+    paddingBottom: Spacing.md,
+    maxHeight: 120,
+    fontSize: Typography.sizes.md,
+    fontFamily: Typography.fontFamily.sans,
+    color: Colors.text,
   },
   sendBtn: {
-    backgroundColor: PRIMARY,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    backgroundColor: Colors.primary,
+    width: 44,
+    height: 44,
+    borderRadius: BorderRadius.full,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 2,
+    ...Shadow.sm,
   },
-  upgradeBar: {
+  sendBtnDisabled: {
+    backgroundColor: Colors.textMuted,
+    shadowOpacity: 0,
+  },
+  upgradeContainer: {
+    backgroundColor: Colors.surface,
+    paddingHorizontal: Spacing.xl,
+    paddingVertical: Spacing.lg,
+    paddingBottom: Platform.OS === 'ios' ? 40 : Spacing.xl,
+    borderTopWidth: 1,
+    borderTopColor: Colors.border,
+    gap: Spacing.md,
+    ...Shadow.md,
+  },
+  upgradeTextRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF0F3',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderTopWidth: 1,
-    borderTopColor: '#EFE6DD',
-    gap: 8,
+    justifyContent: 'center',
+    gap: Spacing.sm,
   },
-  upgradeText: { flex: 1, fontSize: 13, color: '#2C1A1D', fontWeight: '600' },
-  upgradeBtn: {
-    backgroundColor: PRIMARY,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 16,
+  upgradeText: { 
+    fontSize: Typography.sizes.md, 
+    color: Colors.primaryDark, 
+    fontFamily: Typography.fontFamily.sansMedium 
   },
-  upgradeBtnText: { color: '#FFFFFF', fontWeight: '800', fontSize: 13 },
+  
+  // Empty State & Icebreakers
+  emptyState: {
+    alignItems: 'center',
+    paddingVertical: Spacing['3xl'],
+  },
+  emptyAvatar: {
+    width: 80,
+    height: 80,
+    borderRadius: BorderRadius.full,
+    marginBottom: Spacing.md,
+  },
+  emptyTitle: {
+    fontSize: Typography.sizes.lg,
+    fontFamily: Typography.fontFamily.serif,
+    color: Colors.primaryDark,
+    marginBottom: Spacing.xs,
+  },
+  emptySub: {
+    fontSize: Typography.sizes.sm,
+    color: Colors.textSecondary,
+    fontFamily: Typography.fontFamily.sans,
+    marginBottom: Spacing.xl,
+  },
+  icebreakerContainer: {
+    width: '100%',
+    gap: Spacing.sm,
+  },
+  icebreakerChip: {
+    backgroundColor: Colors.surface,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    borderRadius: BorderRadius.pill,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+    alignItems: 'center',
+  },
+  icebreakerText: {
+    fontSize: Typography.sizes.sm,
+    fontFamily: Typography.fontFamily.sansMedium,
+    color: Colors.primary,
+  }
 });
